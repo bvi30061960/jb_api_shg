@@ -1,0 +1,6 @@
+@jb_api_shg_HostAddress = http://localhost:5277
+
+GET {{jb_api_shg_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,18 @@
+ar_splines|
+          |- Group spline_group_xxx
+		|-children[4]
+			|-group segment_group_xxx
+					|-children[25]
+						|-mesh(1)
+						|
+						...
+						|-mesh(24)
+						|-Line segment_xxx(25)
+			|-
+			|-group segment_group_xxx(3)
+			|-Line spline_xxx (4)
+
+
+
+          |- Group
+          |- Group(3)

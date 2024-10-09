@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{BEB52D8C-3B09-41C1-B7AB-5B629A7D7A26}</ProjectGuid>
+    <RootNamespace>sgCoreWrapper</RootNamespace>
+    <Keyword>ManagedCProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>true</CLRSupport>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <IgnoreImportLibrary Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</IgnoreImportLibrary>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;WINDOWS_IGNORE_PACKING_MISMATCH</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <Link>
+      <AdditionalDependencies>..\sgCore_build\ms\Debug\sgCore.lib</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AssemblyDebug>true</AssemblyDebug>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;WINDOWS_IGNORE_PACKING_MISMATCH</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>..\sgCore_build\ms\Debug\sgCore.lib</AdditionalDependencies>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </Reference>
+    <Reference Include="System.Data">
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </Reference>
+    <Reference Include="System.Xml">
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AssemblyInfo.cpp" />
+    <ClCompile Include="sgCoreWrapper.cpp" />
+    <ClCompile Include="Stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Helpers\ArrayHelper.h" />
+    <ClInclude Include="Helpers\DrawLineCallbackHelper.h" />
+    <ClInclude Include="Interfaces\mIObjectsList.h" />
+    <ClInclude Include="Objects\2D\msg2DObject.h" />
+    <ClInclude Include="Objects\3D\msg3DObject.h" />
+    <ClInclude Include="Structs\3D\msgAllTrianglesStruct.h" />
+    <ClInclude Include="Objects\2D\msgArc.h" />
+    <ClInclude Include="Structs\2D\msgArcStruct.h" />
+    <ClInclude Include="Objects\Algorithms\msgBoolean.h" />
+    <ClInclude Include="Objects\3D\msgBox.h" />
+    <ClInclude Include="Structs\3D\msgBoxStruct.h" />
+    <ClInclude Include="Objects\3D\msgBRep.h" />
+    <ClInclude Include="Objects\3D\msgBRepPiece.h" />
+    <ClInclude Include="Objects\2D\msgCircle.h" />
+    <ClInclude Include="Structs\2D\msgCircleStruct.h" />
+    <ClInclude Include="Objects\3D\msgCone.h" />
+    <ClInclude Include="Structs\3D\msgConeStruct.h" />
+    <ClInclude Include="Objects\2D\msgContour.h" />
+    <ClInclude Include="msgCore.h" />
+    <ClInclude Include="Objects\3D\msgCylinder.h" />
+    <ClInclude Include="Structs\3D\msgCylinderStruct.h" />
+    <ClInclude Include="Objects\Text\msgDimensions.h" />
+    <ClInclude Include="Structs\Text\msgDimensionStyleStruct.h" />
+    <ClInclude Include="Structs\msgDoubleStruct.h" />
+    <ClInclude Include="Structs\3D\msgEdgeStruct.h" />
+    <ClInclude Include="Objects\3D\msgEllipsoid.h" />
+    <ClInclude Include="Structs\3D\msgEllipsoidStruct.h" />
+    <ClInclude Include="Structs\msgFileHeaderStruct.h" />
+    <ClInclude Include="Objects\msgFileManager.h" />
+    <ClInclude Include="Objects\Text\msgFont.h" />
+    <ClInclude Include="Structs\Text\msgFontDataStruct.h" />
+    <ClInclude Include="Objects\Text\msgFontManager.h" />
+    <ClInclude Include="Objects\msgGroup.h" />
+    <ClInclude Include="Objects\Algorithms\msgKinematic.h" />
+    <ClInclude Include="Objects\2D\msgLine.h" />
+    <ClInclude Include="Structs\2D\msgLineStruct.h" />
+    <ClInclude Include="Structs\3D\msgMaterialStruct.h" />
+    <ClInclude Include="Objects\msgMatrix.h" />
+    <ClInclude Include="Structs\msgMatrixRepresentationStruct.h" />
+    <ClInclude Include="Objects\msgObject.h" />
+    <ClInclude Include="Objects\msgPoint.h" />
+    <ClInclude Include="Structs\msgPointStruct.h" />
+    <ClInclude Include="Objects\msgScene.h" />
+    <ClInclude Include="Objects\Algorithms\msgSpaceMath.h" />
+    <ClInclude Include="Objects\3D\msgSphere.h" />
+    <ClInclude Include="Structs\3D\msgSphereStruct.h" />
+    <ClInclude Include="Objects\3D\msgSphericBand.h" />
+    <ClInclude Include="Structs\3D\msgSphericBandStruct.h" />
+    <ClInclude Include="Objects\2D\msgSpline.h" />
+    <ClInclude Include="Structs\2D\msgSplineStruct.h" />
+    <ClInclude Include="Objects\Algorithms\msgSurfaces.h" />
+    <ClInclude Include="Objects\Text\msgText.h" />
+    <ClInclude Include="Structs\Text\msgTextStyleStruct.h" />
+    <ClInclude Include="Objects\3D\msgTorus.h" />
+    <ClInclude Include="Structs\3D\msgTorusStruct.h" />
+    <ClInclude Include="Structs\msgUserDynamicDataStruct.h" />
+    <ClInclude Include="Helpers\ObjectCreateHelper.h" />
+    <ClInclude Include="..\..\sgCore\sg2D.h" />
+    <ClInclude Include="..\..\sgCore\sg3D.h" />
+    <ClInclude Include="..\..\sgCore\sgAlgs.h" />
+    <ClInclude Include="..\..\sgCore\sgCore.h" />
+    <ClInclude Include="..\..\sgCore\sgDefs.h" />
+    <ClInclude Include="..\..\sgCore\sgErrors.h" />
+    <ClInclude Include="..\..\sgCore\sgFileManager.h" />
+    <ClInclude Include="..\..\sgCore\sgGroup.h" />
+    <ClInclude Include="..\..\sgCore\sgMatrix.h" />
+    <ClInclude Include="..\..\sgCore\sgObject.h" />
+    <ClInclude Include="..\..\sgCore\sgScene.h" />
+    <ClInclude Include="..\..\sgCore\sgSpaceMath.h" />
+    <ClInclude Include="..\..\sgCore\sgTD.h" />
+    <ClInclude Include="Stdafx.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\sgCore\sgCore.lib" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

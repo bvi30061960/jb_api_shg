@@ -1,0 +1,27 @@
+wwwroot
+	|
+	datafiles
+		|
+		unic_username_1_path
+		|	|
+		|	models
+		|	|	
+		|	|  
+		|	|  unic_model_number_1.stl
+		|	|  .
+		|	|  .
+		|	|  .
+		|	|  unic_model_number_m.stl
+		|	|  
+		|	|
+		|	model_pictures
+		|		| 
+		|		unic_model_picture_number_1.png
+		|		.
+		|		.
+		|		.
+		|		unic_model_number_m.png
+		|	|
+		|	model_list.txt
+		|
+		unic_username_n_path

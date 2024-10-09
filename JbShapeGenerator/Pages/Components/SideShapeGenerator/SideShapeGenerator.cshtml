@@ -1,0 +1,190 @@
+﻿@using JbShapeGenerator.TagHelpers;
+@* //04102024 @using JbShapeGenerator.Models; *@
+
+@model IndexModel
+
+@{
+
+    var @lv_id_prefix = ViewData["id_prefix"];
+
+    var @id_shape_generator_container = @lv_id_prefix + "_" + "id_shape_generator_container";
+    var @id_shg_common = @lv_id_prefix + "_" + "id_shg_common";
+    var @id_shg_left = @lv_id_prefix + "_" + "id_shg_left";
+    var @id_shape = @lv_id_prefix + "_" + "id_shape";
+    var @id_shg_right = @lv_id_prefix + "_" + "id_shg_right";
+    var @id_shg_right_top = @lv_id_prefix + "_" + "id_shg_right_top";//25082024
+
+    
+
+    var @id_my_gui_1 = @lv_id_prefix + "_" + "id_my_gui_1";
+    var @id_chb_space_adjust = @lv_id_prefix + "_" + "id_chb_space_adjust";
+    var @id_chb_curve_width_adjust = @lv_id_prefix + "_" + "id_chb_curve_width_adjust";
+    var @id_gui = @lv_id_prefix + "_" + "id_gui";
+    var @id_my_gui_2 = @lv_id_prefix + "_" + "id_my_gui_2";
+    var @id_div_button_bar = @lv_id_prefix + "_" + "id_div_button_bar";
+    var @id_tab_button_bar = @lv_id_prefix + "_" + "id_tab_button_bar";
+    var @id_but_set_color = @lv_id_prefix + "_" + "id_but_set_color";
+    var @id_but_del_spline = @lv_id_prefix + "_" + "id_but_del_spline";
+
+    var @id_but_add_spline = @lv_id_prefix + "_" + "id_but_add_spline";
+    var @id_but_mirror = @lv_id_prefix + "_" + "id_but_mirror";
+    var @id_but_save_model = @lv_id_prefix + "_" + "id_but_save_model";
+    var @id_shg_bottom = @lv_id_prefix + "_" + "id_shg_bottom";
+    var @id_sp_numcurves = @lv_id_prefix + "_" + "id_sp_numcurves";
+    var @id_td_colorpicker = @lv_id_prefix + "_" + "id_td_colorpicker";
+    var @id_but_colorpicker = @lv_id_prefix + "_" + "id_but_colorpicker";
+    var @id_but_random_curve = @lv_id_prefix + "_" + "id_but_random_curve";
+    var @id_div_3dmodel = @lv_id_prefix + "_" + "id_div_3dmodel";
+    var @id_but_make_model = @lv_id_prefix + "_" + "id_but_make_model";
+
+    var @id_for_colorpicker = @lv_id_prefix + "_" + "id_for_colorpicker";
+      
+    var @id_div_visual_model = @lv_id_prefix + "_" + "id_div_visual_model";
+
+    var @id_canvas = @lv_id_prefix + "_" + "id_canvas";
+
+    var @id_but_read_model = @lv_id_prefix + "_" + "id_but_read_model";
+
+    
+
+    var @id_pos_color_picker = @lv_id_prefix + "_" + "id_pos_color_picker";
+    var @id_loading_indicator = @lv_id_prefix + "_" + "id_loading_indicator";
+
+    var @id_div_GridSelectModels = @lv_id_prefix + "_" + "id_div_GridSelectModels";
+    var @id_GridSelectModels = @lv_id_prefix + "_" + "id_GridSelectModels";
+    var @id_div_GridSelectModelsPager = @lv_id_prefix + "_" + "id_div_GridSelectModelsPager";
+
+
+        <div id=@id_shape_generator_container>
+
+        @* // <canvas id="@id_canvas"></canvas> *@
+
+            <div id=@id_shg_common>
+
+            @*// <input type="color"  value="#00ff00"/> *@
+
+
+                <div id=@id_shg_left>
+                    <div id=@id_shape></div>
+                </div>
+
+                <div id=@id_shg_right>
+
+                    <div id=@id_shg_right_top>
+
+                        <div id=@id_pos_color_picker style="display:none"></div> @*16082024 *@
+
+                         <div id=@id_my_gui_1>
+                            <div>
+                                <input type="checkbox" id=@id_chb_space_adjust checked>
+                                <label for=@id_chb_space_adjust><b>&nbsp;Adjusting space btw curves by the shape</b></label>
+                            </div>
+
+                            <div>
+                                <input id=@id_chb_curve_width_adjust type="checkbox" checked >@* </input> *@
+                                <label for=@id_chb_curve_width_adjust><b>&nbsp;Adjusting curve width by the shape</b></label>
+                            </div>
+
+                        </div>
+
+
+                        <div id=@id_gui></div>
+
+                        <div id=@id_my_gui_2>
+
+                            <div id=@id_div_button_bar >
+
+                                <table id=@id_tab_button_bar>
+                                    <tr>
+                                    <td>
+                                        <button id=@id_but_read_model class="btn" title="Open model.."> <i class="bi-folder2-open"></i> </button>
+                                    </td>
+
+                                        <td >
+                                        <button id=@id_but_set_color class="btn" title="Set color"> <i class="bi-palette"></i> </button>
+                                        </td>
+                                    <td>
+                                        <button id=@id_but_del_spline class="btn" title="Delete selected"> <i class="bi-dash-square"></i> </button>
+                                    </td>
+
+                                        <td>
+                                            <button id=@id_but_add_spline class="btn" title="Add curve"> <i class="bi-plus-square"></i> </button>
+                                        </td>
+                                        <td>
+                                            <button id=@id_but_mirror class="btn " title="Mirroring segments"> <i class="bi-symmetry-vertical"></i> </button>
+                                        </td>
+                                        <td>
+                                            @*// <button id=@id_but_save_model class="btn" title="Save model"> <i class="bi-file-earmark-arrow-down"></i> </button> *@
+                                            <button id=@id_but_save_model class="btn" title="Save model"> <i class="bi-save2"></i> </button>
+                                        </td>
+                                        <td>
+                                            <button id=@id_but_make_model class="btn" title="Make model"> <i class="bi-box"></i> </button>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                        </div>
+
+
+                    @* div для позиционирования палитры color picker-а *@
+                <div id=@id_for_colorpicker style="visibility:hidden"><br /></div>
+
+
+
+               @*  <div id=@id_div_visual_model >*@
+
+                    <section id=@id_div_visual_model>
+
+                    <img src="~/images/wait.gif" id="@id_loading_indicator"  style="display:none" />
+
+                    </section>
+
+               @*   </div>*@
+
+            </div>
+
+
+
+            <div id=@id_shg_bottom style="display:none">
+            
+                <table style="display:none">
+                    
+                        <tr>
+                            <td style="width:25%">
+                                <input id=@id_sp_numcurves class="ui-spinner" value="3" title="Число кривых">
+                            </td>
+                            <td id=@id_td_colorpicker style="width:25%">
+                                <button id=@id_but_colorpicker class="ui-button ui-widget ui-corner-all"
+                                        title="Задание цвета"></button>
+                            </td>
+                            <td style="width:25%">
+                                <button id=@id_but_random_curve class="ui-button ui-widget ui-corner-all"
+                                        title="Случайная кривая"></button>
+                            </td>
+                        </tr>
+
+                </table>
+                
+
+            </div>
+        
+        </div>
+
+    </div>
+
+    @*============================ grid select model files ===============================*@
+    <div id="@id_div_GridSelectModels">
+        <table id="@id_GridSelectModels"></table>
+        <div id="@id_div_GridSelectModelsPager"></div>
+
+        <br />
+    </div>
+    @*============================ grid select model files ===============================*@
+
+
+}
+

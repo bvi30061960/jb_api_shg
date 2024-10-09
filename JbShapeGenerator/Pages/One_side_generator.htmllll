@@ -1,0 +1,170 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <link rel="stylesheet" href="/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">@* 20042024 *@
+
+    <link rel="stylesheet" href="/css/site.css" asp-append-version="true" />
+
+
+
+
+
+
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+
+
+    <link href="/css/jquery/colorpicker.css" rel="stylesheet" />
+    <link href="/css/my/my_shape_generator.css" rel="stylesheet" />
+
+    <link href="/css/themes/SaintAmour/jquery-ui-1.9.2.custom.min.css" media="screen" rel="stylesheet" title="styles1" type="text/css" asp-append-version="true" disabled=false />
+
+
+    <script type="importmap">
+        {
+          "imports": {
+              "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+              "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
+          }
+        }
+    </script>
+
+
+    <script type="importmap">
+        {
+          "imports": {
+              "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+              "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
+          }
+        }
+    </script>
+    <script type="module" src="/js/my/my_shape_generator.js"></script>
+    <script type="module" src="/js/my/my_shapes.js"></script>
+    <script type="module" src="/js/my/my_spline.js"></script>
+    <script type="module" src="/js/my/my_segment.js"></script>
+    <script type="module" src="/js/my/my_common_types.js"></script>
+</head>
+<body>
+    моя страница
+    <div id="id_shape_generator_container">
+
+        <div id="id_shg_common">
+
+            <div id="id_shg_left">
+                <div id="id_shape"></div>
+            </div>
+
+
+            <div id="id_shg_right">
+
+                <div id="id_my_gui_1">
+
+                    <div>
+                        <input id="id_chb_space_adjust" type="checkbox" checked="true" title="Adjusting space between curves by the shape"><label for name="id_chb_space_adjust"><b>&nbsp;Adjusting space btw curves by the shape</b></label></>
+                    </div>
+
+                    <div>
+                        <input id="id_chb_curve_width_adjust" style="font:bold" type="checkbox" checked="true" title="Adjusting curve width by the shape"><label><b>&nbsp;Adjusting curve width by the shape</b></label></>
+                    </div>
+
+
+                </div>
+
+
+                <div id="id_gui"></div>
+
+                <div id="id_my_gui_2">
+                    @* style="background-color:blue" *@
+
+                    @*
+                    <label for="id_CurvesCount" id="id_lb_CurvesCount" class="localize" style="font-weight:bold;font-size:0.7vw;">Number of curves</label>
+                    <input id="id_CurvesCount" name="value" class="ui-spinner" value="1" style="width:2em;font-size:0.7vw; margin-bottom:3px;" />
+                    *@
+
+                    <div id="id_div_button_bar">
+
+                        <table id="id_tab_button_bar">
+                            <tr>
+                                <td>
+                                    <button id="id_but_set_color" class="btn" title="Set color"> <i class="bi-dash-square"></i> </button>
+                                </td>
+                                <td>
+                                    @* <input id="id_but_mirror" class="class_gui_button" type="button" title="mirror" /> *@
+                                    <button id="id_but_del_spline" class="btn" title="Delete selected"> <i class="bi-dash-square"></i> </button>
+                                </td>
+
+                                <td>
+                                    <button id="id_but_add_spline" class="btn" title="Add curve"> <i class="bi-plus-square"></i> </button>
+                                </td>
+                                <td>
+                                    <button id="id_but_mirror" class="btn " title="Mirroring segments"> <i class="bi-symmetry-vertical"></i> </button>
+                                </td>
+                                <td>
+                                    <button id="id_but_save_model" class="btn" title="Save model"> <i class="bi-file-earmark-arrow-down"></i> </button>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+
+
+
+            <div id="id_shg_bottom">
+
+                <table>
+
+                    <tr>
+                        <td style="width:25%">
+                            <input id="id_sp_numcurves" class="ui-spinner" value="3" title="Число кривых">
+                        </td>
+                        <td id="id_td_colorpicker" style="width:25%">
+                            <button id="id_but_colorpicker" class="ui-button ui-widget ui-corner-all"
+                                    title="Задание цвета"></button>
+                        </td>
+                        <td style="width:25%">
+                            <button id="id_but_random_curve" class="ui-button ui-widget ui-corner-all"
+                                    title="Случайная кривая"></button>
+                        </td>
+                        @*
+                        <td style="width:25%">
+                            <button id="id_but_default_shape" class="ui-button ui-widget ui-corner-all"
+                                    title="Начальная кривая"></button>
+                        </td>
+                        <td style="width:25%">
+                            <button id="id_but_save_model" class="ui-button ui-widget ui-corner-all"
+                                    title="Save model"></button>
+                        </td>
+                        *@
+                    </tr>
+
+                </table>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/jquery/jquery.colorpicker.min.js"></script>
+
+</body>
+</html>

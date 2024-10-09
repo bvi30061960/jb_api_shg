@@ -1,0 +1,57 @@
+﻿namespace JbShapeGenerator.AppData
+{
+    //public class CommonData
+    //{
+    //}
+
+
+
+
+    public struct gs_ListFiles
+    {
+        public string filename { get; set; }
+        public string descr { get; set; }
+        public string path_file_sides_data { get; set; }
+        public string path_file_prev_model { get; set; }
+        public string path_file_final_model { get; set; }
+        public wide_model_types wide_model_type { get; set; }
+        public string price { get; set; }
+        public string change_datetime { get; set; }
+
+
+        //public string change_time { get; set; }
+        //        public string size { get; set; }
+        //public string nfiles;
+        //public string pathFile;
+        //public string gnumber;
+        //public string text_theme;
+        //public string name;
+        //public string descr;
+        //public string duration;
+        //public int count_loads;
+        //public string size;
+        //public string sample;
+        //public string price;
+        //public string change_date;
+        //public string change_time;
+        //public string username_hash_with_postfix;
+        //public string last_folder_name;
+        //public bool is_paid_by_user;
+        //public string pathTextSourceFile;
+        //public string pathPlayBackFile;
+        //public string username_hash_with_postfix_SourceFile;
+        //public string username_hash_with_postfix_PlayBackFile;
+        //public bool is_shared_source_file;
+        //public bool is_shared_playback_file;
+        //public bool is_shared_audio_file;
+        //public decimal price_translate;
+        //public decimal price_playbackset;
+        //public decimal price_tts;
+
+    };
+
+
+
+
+
+}

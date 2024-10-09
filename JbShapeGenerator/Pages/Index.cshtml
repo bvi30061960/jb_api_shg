@@ -1,0 +1,80 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+@* <div class="top"> *@
+
+
+@* <div class="text-center"> *@
+    @* <h1 class="display-4">Welcome</h1> *@
+    @* <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
+@* </div> *@
+
+@* <div id="info">
+    <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - geometry - catmull spline editor
+</div> *@
+
+@* </div> *@ @* top *@
+
+
+<div class="left">
+    <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
+</div>
+
+<div id="id_center" class="center">
+
+    <div id="id_div_model_name">
+        <label for="id_model_name">Model name:</label>
+        <input type="text" id="id_model_name" value="New model" style="text-align:center">
+    </div>
+
+    <div id="id_tab_sides">
+
+        <ul>
+            <li><a href="#tab-1">Upper side</a></li>
+            <li><a href="#tab-2">Lateral side</a></li>
+        </ul>
+
+        
+
+        <div id="tab-1">
+            <vc:side-shape-generator id_prefix="up" />
+        </div> @* tabs-1 *@
+
+
+        <div id="tab-2">
+            <vc:side-shape-generator id_prefix="lateral" />
+        </div> @* tabs-2 *@
+
+
+    </div>
+
+</div>@* center *@
+
+
+@* 
+<div class="right">
+</div> *@@* right *@
+
+
+
+
+<div class="bottom">
+
+    <div id="id_div_footer" style="text-align:center;padding-top:0.5vw; ">
+        &copy; 2023 - JbShapeGenerator
+    </div>
+
+</div>
+
+
+<div id="id_empty_div_for_colorpick" "></div>
+<div id="id_div_dialog_question"></div>
+
+             
+
+
+
+

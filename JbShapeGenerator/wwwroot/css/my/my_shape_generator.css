@@ -1,0 +1,458 @@
+﻿/*Макет*/
+/*******************************************************************************/
+
+.top {
+    position: relative;
+    /*height: 9vh; */
+    width: 100%;
+    /*background-color:red;*/
+}
+
+
+
+.left {
+    position: relative;
+    float: left;
+    width: 2%; /*10%;*/
+    /*min-height: 34em;*/
+    min-width: 1em;
+    border-top: none;
+    border-bottom: none;
+    padding: 0.4em;
+    /*background-color: yellow;*/
+}
+
+.center {
+    position: relative;
+    float: left;
+    width: 97%;
+    /*margin-top:1em;*/
+
+    text-align: center;
+    
+    /*padding:2em;*/
+
+    /*background-color: lawngreen;*/
+
+}
+
+
+/*.right {
+    position: relative;
+    float: left;
+    min-width: 1em;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;*/
+    /*padding: 0.5em;*/
+    /*width: 7%; *//*10%;*/
+    /*min-height: 34em;*/
+    /*background-color: sandybrown;*/
+/*}*/
+
+.bottom {
+    position: relative;
+    clear: both;
+    padding:0;
+    margin:0;
+    
+/*    background-color: blue;*/
+
+}
+/*******************************************************************************/
+
+
+/*----------------------------------------------------------------------------------------*/
+
+.lil-gui {
+    display: inline-block;
+    --width: 17vw; /*200px;*/
+    /*--name-width: 75%;*/
+    --background-color: white; /*black; */ /*#0f0;*/ /* Фон названия параметра */
+
+    --text-color: black; /* Текст названия параметра */
+
+
+    --widget-color: #8080802b; /*gray; #0af; */ /*Фон параметра*/
+
+    --hover-color: #8080802b; /*Цвет ползунка при наведении мыши*/
+
+
+    --focus-color: #8080802b; /*фон цифрового ввода при клике на поле*/
+
+    --title-background-color: gray; /* фон заголовка */
+
+    padding-left: 1em;
+}
+
+
+    .lil-gui:hover {
+        --widget-color: #8080802b; /*Фон ползунка*/
+    }
+
+
+    .lil-gui .controller.number input {
+        color: black; /*Цвет цифрового значения*/
+        font-weight: bold; /* текст цифрового значения*/
+    }
+
+
+    /*.lil-gui input {
+        --background-color: #8080802b;
+    }*/
+
+
+    .lil-gui.root > .title { /* Заголовок */
+        font-weight: bold;
+        font-size: 1.2em;
+        color: white;
+    }
+
+        .lil-gui.root > .title:hover { /* Заголовок при наведении */
+            background-color: blueviolet;
+            color: white; /*greenyellow;*/
+        }
+
+
+    .lil-gui .controller.number .fill {
+        border-right: var(--slider-knob-width) solid black;
+    }
+
+    .lil-gui .controller > .name {
+        font-weight: bold; /* текст названия параметра */
+    }
+
+
+
+.class_gui_button {
+    height: 1em; /*3vh;*/
+    /*padding-top: 15px;*/
+    font-size: 0.8em;
+}
+
+
+/*******************************************************************************/
+
+
+#id_div_model_name {
+    padding-bottom: 1vw;
+}
+
+#up_id_shape_generator_container, #lateral_id_shape_generator_container {
+    width: 100%;
+    /*height: 100%;*/
+    /*background-color:orangered;*/
+}
+
+
+#up_id_shg_common, #lateral_id_shg_common {
+    margin-left: auto;
+    margin-right: auto;
+    height: 60vh; /*25em;*/
+    /*border-style: solid;
+    border-width: 1px;
+    border-color: black;*/
+    /*background-color:gold;*/
+}
+
+#up_id_shg_left, #lateral_id_shg_left {
+    position: relative;
+    width: 75%; /*70%; *//*72%;*/ /**/
+    float: left;
+    height: 100%; /* 85%;*/
+
+
+    /*border-style: solid;
+    border-width: 1px;
+    border-color: black;*/
+}
+
+#up_id_shg_right, #lateral_id_shg_right {
+    position: relative;
+    width: 25%; /*30%;*/
+    float: left;
+    /*background-color:greenyellow;*/
+
+    /*border-style: solid;
+    border-width: 1px;
+    border-color: black;*/
+}
+
+
+#up_id_shape, #lateral_id_shape {
+    width: 100%;
+    height: 100%;
+}
+
+
+
+#up_id_div_visual_model, #lateral_id_div_visual_model {
+    /*
+    background-color: greenyellow;
+    position: relative;
+    width: 25%; 
+    float: left;*/
+    /* height: 200%; */ /*12em;*/ /*100%;*/ /* 14em;*/ /*100%;*/
+    /*width: 100%;*/
+    /*border-style: solid;
+    border-width: 1px;
+    border-color: black;*/
+
+    height: 26.8vh;
+
+}
+
+
+
+#up_id_shg_bottom, #lateral_id_shg_bottom {
+    width: 100%;
+    height: 15%;
+    display: flex;
+    /*display: none; 08072024*/
+    /*background-color:blue;*/
+}
+
+
+
+#up_id_shg_bottom table, #lateral_id_shg_bottom table {
+    margin: auto;
+    width: 50%;
+}
+
+#up_id_shg_bottom table tr td, #lateral_id_shg_bottom table tr td {
+    text-align: center;
+    /*border-style: solid;
+    border-width: 1px;
+    border-color: black;*/
+}
+
+
+#up_id_lb_sp_numcurves, #lateral_id_lb_sp_numcurves {
+    width: 2em;
+    font-size: 0.5em;
+    margin-bottom: 3px;
+}
+
+#up_id_sp_numcurves, #lateral_id_sp_numcurves {
+    width: 2em;
+    font-size: 0.7em;
+    margin-bottom: 3px;
+    text-align: center;
+}
+
+
+/************************** gui *****************************************************/
+
+
+
+#up_id_gui, #lateral_id_gui {
+    padding: 1em;
+}
+
+
+#up_id_my_gui_1, #lateral_id_my_gui_1 {
+    float: left;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    padding-left: 1em;
+    text-align: left;
+    font-size: 0.7em
+}
+
+
+
+#up_id_my_gui_2, #lateral_id_my_gui_2 {
+    /*padding-top: 1em;*/
+}
+
+
+
+#up_id_div_button_bar, #lateral_id_div_button_bar {
+}
+
+#up_id_tab_button_bar, #lateral_id_tab_button_bar {
+    /*border: 1px solid;*/
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+
+#up_id_tab_button_bar td, #lateral_id_tab_button_bar td {
+}
+
+
+#up_id_div_3dmodel, #lateral_id_div_3dmodel {
+    /*position:initial;*/
+    height: 70vh;
+    /*background-color: aquamarine;*/
+}
+
+
+#up_id_loading_indicator, #lateral_id_loading_indicator {
+    width: 40px;
+    height: 40px;
+    /*z-index:10;*/
+
+    position: absolute;
+    top: 10vh;
+     /* left: 10vw;*/
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/*******************************************************************************/
+/*******************************************************************************/
+
+
+
+/*******************************************************************************/
+
+/*
+#lateral_id_shape_generator_container {
+    width: 100%; 
+   
+}
+
+
+#lateral_id_shg_common {
+    margin-left: auto;
+    margin-right: auto;
+    height: 60vh; 
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+#lateral_id_shg_left {
+    position: relative;
+    width: 70%; 
+    float: left;
+    height: 100%; 
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+#lateral_id_shg_right {
+    position: relative;
+    width: 30%;
+    float: left;
+}
+
+
+#lateral_id_shape {
+    width: 100%;
+    height: 100%;
+}
+
+
+#lateral_id_shg_bottom {
+    width: 100%;
+    height: 15%;
+    display: flex;
+    display: none;
+}
+
+
+
+#lateral_id_shg_bottom table {
+    margin: auto;
+    width: 50%;
+}
+
+#lateral_id_shg_bottom table tr td {
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+}
+
+
+#lateral_id_lb_sp_numcurves {
+    width: 2em;
+    font-size: 0.5em;
+    margin-bottom: 3px;
+}
+
+#lateral_id_sp_numcurves {
+    width: 2em;
+    font-size: 0.7em;
+    margin-bottom: 3px;
+    text-align: center;
+}
+*/
+
+/************************** gui *****************************************************/
+
+/*
+#lateral_id_gui {
+    padding: 2em;
+}
+
+
+#lateral_id_my_gui_1 {
+    float: left;
+    padding-top: 2vh;
+    padding-bottom: 2vh;
+    padding-left: 1em;
+    text-align: left;
+    font-size: 0.7em
+}
+
+
+
+#lateral_id_my_gui_2 {
+    padding-top: 1em;
+}
+
+
+
+#lateral_id_div_button_bar {
+}
+
+#lateral_id_tab_button_bar {
+    border: 1px solid;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+
+#lateral_id_tab_button_bar td {
+}
+
+
+*/
+
+
+/*  22082024 */
+/*.list-item {
+    display: inline-block;
+    margin: 1em;
+    padding: 1em;
+    box-shadow: 1px 2px 4px 0px rgba(0,0,0,0.25);
+
+    width: 200px;
+    height: 200px;
+}
+*/
+
+
+
+
+
+/*******************************************************************************/
+/*body {
+    background-color:deeppink;
+}
+*/
+
+
+
+/*================================ отладка ===============================*/
+
+/** {   border: 1px solid red; }*/
+
+/*================================ отладка ===============================*/

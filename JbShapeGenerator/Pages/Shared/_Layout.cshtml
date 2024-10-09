@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - JbShapeGenerator</title>
+    
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">@* 20042024 *@
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @* <link rel="stylesheet" href="~/JbShapeGenerator.styles.css" asp-append-version="true" /> *@
+ 
+
+
+
+    @* bvi { *@
+
+
+    @*19092024  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script> *@
+    @*19092024  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> *@
+    @*19092024  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/start/jquery-ui.css"> *@
+
+     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.5.1.min.js"></script> 
+     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> 
+     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/start/jquery-ui.css"> 
+
+
+@*     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>@* 19092024 *@
+    @*       <script src="https://code.jquery.com/ui/1.14.0/jquery-ui.min.js"></script>@* 19092024 *@
+    @*       <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/start/jquery-ui.css">@* 19092024 *@
+ 
+
+
+
+    @* Бесплатная jqgrid ?? https://free-jqgrid.github.io/getting-started/index.html *@
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/css/ui.jqgrid.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/jquery.jqgrid.min.js"></script>
+
+
+
+
+
+    <link href="~/css/jquery/colorpicker.css" rel="stylesheet" />
+    <link href="~/css/my/my_shape_generator.css" rel="stylesheet" />
+
+
+    @* <link href="~/css/themes/SaintAmour/jquery-ui-1.9.2.custom.min.css" media="screen" rel="stylesheet" title="styles1" type="text/css" asp-append-version="true" disabled=false /> *@
+
+
+    @* bvi } *@
+
+
+
+
+    <script type="importmap">
+      {
+        "imports": {
+            "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
+        }
+      }
+    </script>
+
+
+    @* <script type="module" src="~/js/my/my_start.js?version=1"></script> *@
+    <script type="module" src="~/js/my/my_common_const.js"></script>
+    <script type="module" src="~/js/my/my_shape_generator.js"></script>
+    <script type="module" src="~/js/my/my_common_types.js"></script>
+    <script type="module" src="~/js/my/my_common_func.js"></script>
+    <script type="module" src="~/js/my/my_segment.js"></script>
+    <script type="module" src="~/js/my/my_spline.js"></script>
+    <script type="module" src="~/js/my/my_shapes.js"></script>
+
+    <script src="~/js/my/my_filesaver.js"></script>
+
+</head>
+
+<body>
+
+    @*  <header> *@
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container">
+
+                @* <a class="navbar-brand" asp-area="" asp-page="/Index">JbShapeGenerator</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div> *@
+
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <partial name="_LoginPartial" />
+                </div>
+
+            </div>
+        </nav>
+    @* </header>  *@
+
+
+
+@*     <script type="module" src="~/js/my/my_draw_spline.js"></script>*@
+
+   @*  <div style="text-align:center"> *@
+      
+
+            @RenderBody()
+
+     
+    @* </div> *@
+
+    @* <footer *@
+
+
+
+@* 
+    <br /><br />
+    <div id="id_div_footer" style="text-align:center; ">
+            &copy; 2023 - JbShapeGenerator 
+    </div>
+ *@
+
+
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @* 10072024 { *@
+    @* <script src="~/js/jquery/jquery.colorpicker.min.js"></script> *@ 
+    <script src="~/js/jquery/jquery.colorpicker.js"></script>
+    @* 10072024 } *@
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
