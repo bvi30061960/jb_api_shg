@@ -681,27 +681,27 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
-                gv_spotLight1.position.set(30, 30, 30); //\\//
-                gv_spotLight1.name = 'spotLight2';
-                this.scene_mod.add(gv_spotLight1); //\\//
+                //////var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
+                //////gv_spotLight1.position.set(30, 30, 30); //\\//
+                //////gv_spotLight1.name = 'spotLight2';
+                //////this.scene_mod.add(gv_spotLight1); //\\//
 
-                //var gv_spotLight2 = new THREE.PointLight(0xf0f0f0); //\\//
-                //gv_spotLight2.position.set(30, 30, -30); //\\//
-                //gv_spotLight2.name = 'spotLight2';
-                //this.scene_mod.add(gv_spotLight2); //\\//
-
-
-                //var gv_spotLight3 = new THREE.PointLight(0xf0f0f0); //\\//
-                //gv_spotLight3.position.set(30, -30, 30); //\\//
-                //gv_spotLight3.name = 'spotLight3';
-                //this.scene_mod.add(gv_spotLight3); //\\//
+                //////var gv_spotLight2 = new THREE.PointLight(0xf0f0f0); //\\//
+                //////gv_spotLight2.position.set(30, 30, -30); //\\//
+                //////gv_spotLight2.name = 'spotLight2';
+                //////this.scene_mod.add(gv_spotLight2); //\\//
 
 
-                var gv_spotLight4 = new THREE.PointLight(0xf0f0f0); //\\//
-                gv_spotLight4.position.set(-30, -30, -30); //\\//
-                gv_spotLight4.name = 'spotLight4';
-                this.scene_mod.add(gv_spotLight4); //\\//
+                //////var gv_spotLight3 = new THREE.PointLight(0xf0f0f0); //\\//
+                //////gv_spotLight3.position.set(30, -30, 30); //\\//
+                //////gv_spotLight3.name = 'spotLight3';
+                //////this.scene_mod.add(gv_spotLight3); //\\//
+
+
+                //////var gv_spotLight4 = new THREE.PointLight(0xf0f0f0); //\\//
+                //////gv_spotLight4.position.set(-30, -30, -30); //\\//
+                //////gv_spotLight4.name = 'spotLight4';
+                //////this.scene_mod.add(gv_spotLight4); //\\//
 
 
 
@@ -732,6 +732,41 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //////light8.position.set(-30, -30, -30);
                 //////light8.name = 'Light8';
                 //////this.scene_mod.add(light8);
+
+
+
+
+
+
+
+                var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
+                gv_spotLight1.position.set(50, 50, 0); //\\//
+                //gv_spotLight1.name = 'spotLight1';
+                this.scene_mod.add(gv_spotLight1); //\\//
+
+
+                var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
+                gv_spotLight1.position.set(-50, -50, 0); //\\//
+                //gv_spotLight1.name = 'spotLight2';
+                this.scene_mod.add(gv_spotLight1); //\\//
+
+
+                //var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
+                //gv_spotLight1.position.set(-50, 0, 0); //\\//
+                ////gv_spotLight1.name = 'spotLight3';
+                //this.scene_mod.add(gv_spotLight1); //\\//
+
+
+                //var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
+                //gv_spotLight1.position.set(50, 0, 0); //\\//
+                ////gv_spotLight1.name = 'spotLight4';
+                //this.scene_mod.add(gv_spotLight1); //\\//
+
+
+
+
+
+
 
 
 
