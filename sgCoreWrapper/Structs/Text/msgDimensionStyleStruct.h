@@ -1,7 +1,7 @@
 #pragma once
 
-#include "..\..\sgCore\sgTD.h"
-#include "Structs/Text/msgTextStyleStruct.h"
+#include "..\..\..\sgCore\sgTD.h"
+#include "..\..\Structs/Text/msgTextStyleStruct.h"
 
 namespace sgCoreWrapper
 {
@@ -65,10 +65,10 @@ namespace sgCoreWrapper
 				void set(bool value) { _sgDimensionStyle->second_side_line = value; }
 			}
 			
-			property double lug_size
+			property long double lug_size
 			{
-				double get() { return _sgDimensionStyle->lug_size; }
-				void set(double value) { _sgDimensionStyle->lug_size = value; }
+				long double get() { return _sgDimensionStyle->lug_size; }
+				void set(long double value) { _sgDimensionStyle->lug_size = value; }
 			}
 
 			property bool automatic_arrows
@@ -101,10 +101,10 @@ namespace sgCoreWrapper
 				void set(unsigned char value) { _sgDimensionStyle->second_arrow_style = value; }
 			}
 
-			property double arrows_size
+			property long double arrows_size
 			{
-				double get() { return _sgDimensionStyle->arrows_size; }
-				void set(double value) { _sgDimensionStyle->arrows_size = value; }
+				long double get() { return _sgDimensionStyle->arrows_size; }
+				void set(long double value) { _sgDimensionStyle->arrows_size = value; }
 			}
 
 			property msgTextAlignEnum text_align

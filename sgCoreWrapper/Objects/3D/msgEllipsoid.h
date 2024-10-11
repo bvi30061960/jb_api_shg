@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sg3D.h"
+#include "..\..\..\sgCore\sg3D.h"
 #include "Objects\3D\msg3DObject.h"
 #include "Structs\3D\msgEllipsoidStruct.h"
 
@@ -12,7 +12,7 @@ namespace sgCoreWrapper
 		public ref class msgEllipsoid : msg3DObject
 		{
 		public:
-			static msgEllipsoid^ Create(double radius1, double radius2, double radius3,
+			static msgEllipsoid^ Create(long double radius1, long double radius2, long double radius3,
 				short merid_cnt, short parall_cnt)
 			{
 				return gcnew msgEllipsoid(sgCEllipsoid::Create(radius1, radius2, radius3, 

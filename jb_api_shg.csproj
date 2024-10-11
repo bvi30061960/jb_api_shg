@@ -28,7 +28,7 @@
 
   <ItemGroup>
     <Reference Include="sgCoreWrapper">
-      <HintPath>..\api_jb_sgcore\Debug\sgCoreWrapper.dll</HintPath>
+      <HintPath>Release\sgCoreWrapper.dll</HintPath>
     </Reference>
   </ItemGroup>
 

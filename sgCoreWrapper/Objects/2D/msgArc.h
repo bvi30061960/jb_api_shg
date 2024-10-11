@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sg2D.h"
+#include "..\sgCore\sg2D.h"
 #include "Objects/2D/msg2DObject.h"
 #include "Structs/2D/msgArcStruct.h"
 #include "Helpers/ArrayHelper.h"
@@ -39,7 +39,7 @@ namespace sgCoreWrapper
 				return sgArc->IsClosed();
 			}
 
-			bool virtual IsPlane(msgVectorStruct^ vec, double value) override
+			bool virtual IsPlane(msgVectorStruct^ vec, long double value) override
 			{
 				return sgArc->IsPlane(vec->_point, &value);
 			}

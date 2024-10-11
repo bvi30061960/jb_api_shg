@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sg3D.h"
+#include "..\..\..\sgCore\sg3D.h"
 
 namespace sgCoreWrapper
 {
@@ -8,22 +8,22 @@ namespace sgCoreWrapper
 		public ref struct msgBoxStruct
 		{
 		public:
-			property double SizeX
+			property long double SizeX
 			{
-				double get() { return _sgBox->SizeX; }
-				void set(double value) { _sgBox->SizeX = value; }
+				long double get() { return _sgBox->SizeX; }
+				void set(long double value) { _sgBox->SizeX = value; }
 			}
 
-			property double SizeY
+			property long double SizeY
 			{
-				double get() { return _sgBox->SizeY; }
-				void set(double value) { _sgBox->SizeY = value; }
+				long double get() { return _sgBox->SizeY; }
+				void set(long double value) { _sgBox->SizeY = value; }
 			}
 
-			property double SizeZ
+			property long double SizeZ
 			{
-				double get() { return _sgBox->SizeZ; }
-				void set(double value) { _sgBox->SizeZ = value; }
+				long double get() { return _sgBox->SizeZ; }
+				void set(long double value) { _sgBox->SizeZ = value; }
 			}
 		internal:
 			msgBoxStruct(SG_BOX* box)

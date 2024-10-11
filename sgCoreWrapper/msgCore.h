@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgCore.h"
+#include "..\sgCore\sgCore.h"
 #include "Objects\msgFileManager.h"
 #include "Objects\msgObject.h"
 #include "Objects\msgMatrix.h"

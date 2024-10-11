@@ -121,7 +121,7 @@ namespace jb_api_shg.AppCode
             try
             {
 
-                return "";
+                //return "";
 
 
 
@@ -322,7 +322,7 @@ namespace jb_api_shg.AppCode
 
                 // Разрезание
 
-                Stack<msg3DObject> lar_stack_result_details = null; // new Stack<msgObject>();
+                Stack<msg3DObject> lar_stack_result_details = null;
 
                 lar_stack_result_details = do_cutting(bx1, lar_stack_separators);
 
@@ -349,71 +349,14 @@ namespace jb_api_shg.AppCode
 
         }
 
-        //--------------------------------------------------------------------------------------------------
-        private static Stack<msg3DObject>? do_cutting(msgBox lo_body, Stack<msg3DObject> par_separators)
-        {
-            //Stack<msg3DObject> lar_result_details = new Stack<msg3DObject>();
 
-            Stack<msg3DObject> lar_input_parts = new Stack<msg3DObject>();
-            Stack<msg3DObject> lar_output_parts = new Stack<msg3DObject>();
-
-
-
-            msgGroup lo_group_result = null;
-            msgObject[] lar_res_parts = null;
-
-
-            lar_input_parts.Push(lo_body);
-
-            foreach (msg3DObject lo_curr_separator in par_separators)
-            {
-
-                lar_output_parts.Clear();
-
-                foreach (msg3DObject lo_curr_part in lar_input_parts)
-                {
-                    lo_group_result = msgBoolean.Sub(lo_curr_part, lo_curr_separator);
-
-                    if (!lo_group_result.isNull())
-                    {
-                        lo_group_result.BreakGroup(ref lar_res_parts);
-
-                        foreach (msg3DObject lo_curr_res_part in lar_res_parts)
-                        {
-                            lar_output_parts.Push(lo_curr_res_part);
-                        }
-                    }
-
-                }
-
-                // перезапись промежуточных частей во входной массив
-                lar_input_parts.Clear();
-                foreach (msg3DObject lo_curr_res_part in lar_output_parts)
-                {
-                    lar_input_parts.Push(lo_curr_res_part);
-                }
-
-            }
-
-
-            ////lar_result_details.Clear();
-            ////foreach (msg3DObject lo_curr_res_part in lar_output_parts)
-            ////{
-            ////    lar_result_details.Push(lo_curr_res_part);
-            ////}
-
-
-
-            //return lar_result_details;
-
-            return lar_output_parts;
-
-            //throw new NotImplementedException();
-        }
 
         //--------------------------------------------------------------------------------------------------
         private static msg3DObject GetSeparator(msgScene po_scene, enum_model_side pv_side /*int pv_variant*/, decimal[][] par_TestPoints, double pv_box_length, double pv_box_width, double pv_gap_width)
         {
+
+            const int SMOOTH = 130;// 135;// 150;//!!     120; //50;// 
+
             msg3DObject result = null;
 
             // create original spline
@@ -428,6 +371,11 @@ namespace jb_api_shg.AppCode
             msgSplineStruct lo_original_splinestruc = msgSplineStruct.Create();
 
             int lv_ind_struc = 0;
+
+            try 
+            {
+
+
 
             ls_tmpPnt.x = (double)par_TestPoints[0][0];
             ls_tmpPnt.y = (double)par_TestPoints[0][1] - cv_extra_size;
@@ -464,7 +412,6 @@ namespace jb_api_shg.AppCode
 
             //25092024 {
 
-            const int SMOOTH = 135;// 150;//!!     120; //50;// 
 
             //sgCObject* lnes[SMOOTH];
             msgObject[] lnes = new msgObject[SMOOTH];
@@ -474,7 +421,6 @@ namespace jb_api_shg.AppCode
             {
                 //SG_POINT p1 = sssss->GetPointFromCoefficient((double)i / SMOOTH);
                 msgPointStruct p1 = lo_original_spline.GetPointFromCoefficient((double)i / SMOOTH);
-
 
                 //SG_POINT p2 = sssss->GetPointFromCoefficient((double)(i + 1) / SMOOTH);
                 msgPointStruct p2 = lo_original_spline.GetPointFromCoefficient((double)(i + 1) / SMOOTH);
@@ -512,7 +458,7 @@ namespace jb_api_shg.AppCode
             bool lv_is_pipe_close = true;
 
 
-            //07102024 msg3DObject lo_spline_piped = (msg3DObject)msgKinematic.Pipe(lo_countour, null, lo_original_spline, ls_pipe_ps, 0, ref lv_is_pipe_close);//01062024
+            //10102024 msg3DObject lo_spline_piped = (msg3DObject)msgKinematic.Pipe(lo_countour, null, lo_original_spline, ls_pipe_ps, 0, ref lv_is_pipe_close);//01062024
             msg3DObject lo_spline_piped = (msg3DObject)msgKinematic.Pipe(lo_countour, null, cnt2, ls_pipe_ps, 0, ref lv_is_pipe_close);
 
 
@@ -686,10 +632,203 @@ namespace jb_api_shg.AppCode
             ////////}
 
 
+        }
+            catch (Exception ex)
+            {
+                return null;
+
+            }
 
             return result;
 
         }
+
+
+        //--------------------------------------------------------------------------------------------------
+        private static Stack<msg3DObject>? do_cutting(msgBox lo_body, Stack<msg3DObject> par_separators)
+        {
+            //Stack<msg3DObject> lar_result_details = new Stack<msg3DObject>();
+
+            const double lv_delta = 0.1; // погрешность длины детали
+
+            Stack<msg3DObject> lar_input_parts = new Stack<msg3DObject>();
+            Stack<msg3DObject> lar_output_parts = new Stack<msg3DObject>();
+
+
+
+            msgGroup lo_group_result = null;
+            msgObject[] lar_res_parts = null;
+
+            msgPointStruct lo_gabarit_body_min = new msgPointStruct();
+            msgPointStruct lo_gabarit_body_max = new msgPointStruct();
+            msgPointStruct lo_gabarit_body = new msgPointStruct();
+
+            msgPointStruct lo_gabarit_part_min = new msgPointStruct();
+            msgPointStruct lo_gabarit_part_max = new msgPointStruct();
+            msgPointStruct lo_curr_gabarits = new msgPointStruct();
+
+            ////msgPointStruct lo_gabarit_separat_min = new msgPointStruct();
+            ////msgPointStruct lo_gabarit_separat_max = new msgPointStruct();
+
+
+            lo_body.GetGabarits(lo_gabarit_body_min, lo_gabarit_body_max);
+            lo_gabarit_body.x = Math.Abs(lo_gabarit_body_max.x - lo_gabarit_body_min.x);
+            lo_gabarit_body.y = Math.Abs(lo_gabarit_body_max.y - lo_gabarit_body_min.y);
+            lo_gabarit_body.z = Math.Abs(lo_gabarit_body_max.z - lo_gabarit_body_min.z);
+
+
+
+            lar_input_parts.Push(lo_body);
+
+            foreach (msg3DObject lo_curr_separator in par_separators)
+            {
+
+                //lo_curr_separator.GetGabarits(lo_gabarit_separat_min, lo_gabarit_separat_max);
+
+
+                lar_output_parts.Clear();
+
+                foreach (msg3DObject lo_curr_part in lar_input_parts)
+                {
+
+                    // Если секущие и деталь не пересекаются, вычитание не делаем
+
+                    ////// Проверяем пересекаются ли фигуры
+                    ////bool areIntersecting = lo_curr_part. CheckInterference(lo_curr_separator);
+
+                    ////if (!IsIntersect(lo_curr_separator, lo_curr_part))
+                    ////{
+                    ////    continue;
+                    ////}
+
+
+
+
+                    lo_group_result = msgBoolean.Sub(lo_curr_part, lo_curr_separator);
+
+
+                    if (!lo_group_result.isNull())
+                    {
+                        lo_group_result.BreakGroup(ref lar_res_parts);
+
+                        foreach (msg3DObject lo_curr_res_part in lar_res_parts)
+                        {
+                            // Отбор результирующих деталей для дальнейшей резки:
+                            // - минимальная координата по Y д.б. равна 0;
+                            // - максимальный размер деталей не должен быть меньше длины исходной фигуры
+                            lo_curr_res_part.GetGabarits(lo_gabarit_part_min, lo_gabarit_part_max);
+
+                            if (lo_gabarit_part_min.y > lv_delta || lo_gabarit_part_max.y < lo_gabarit_body.y - lv_delta)
+                            {
+                                continue;
+                            }
+
+
+                            ////lo_curr_gabarits.x = Math.Abs(lo_gabarit_max.x - lo_gabarit_min.x);
+                            ////lo_curr_gabarits.y = Math.Abs(lo_gabarit_max.y - lo_gabarit_min.y);
+                            ////lo_curr_gabarits.z = Math.Abs(lo_gabarit_max.z - lo_gabarit_min.z);
+
+                            ////Double lv_size = Math.Max(lo_curr_gabarits.x, Math.Max(lo_curr_gabarits.y, lo_curr_gabarits.z));
+
+                            ////if (lv_size + lv_delta >= lo_gabarit_body.y)
+                            ////{
+                            ////    lar_output_parts.Push(lo_curr_res_part);
+                            ////}
+
+                            lar_output_parts.Push(lo_curr_res_part);
+
+
+                        }
+                    }
+
+                }
+
+
+                // перезапись промежуточных частей во входной массив
+                if (lar_output_parts.Count > 0)
+                {
+                    lar_input_parts.Clear();
+                    foreach (msg3DObject lo_curr_res_part in lar_output_parts)
+                    {
+                        lar_input_parts.Push(lo_curr_res_part);
+                    }
+                }
+            }
+
+
+            ////lar_result_details.Clear();
+            ////foreach (msg3DObject lo_curr_res_part in lar_output_parts)
+            ////{
+            ////    lar_result_details.Push(lo_curr_res_part);
+            ////}
+
+
+
+            //return lar_result_details;
+
+            return lar_output_parts;
+
+            //throw new NotImplementedException();
+        }
+
+        //////-------------------------------------------------------------------------------
+        ////private static bool IsIntersect(msg3DObject po_obj1, msg3DObject po_obj2)
+        ////{
+        ////    bool lv_result = false;
+
+
+        ////    msgPointStruct lo_obj1_min = new msgPointStruct();
+        ////    msgPointStruct lo_obj1_max = new msgPointStruct();
+
+        ////    msgPointStruct lo_obj2_min = new msgPointStruct();
+        ////    msgPointStruct lo_obj2_max = new msgPointStruct();
+
+
+        ////    po_obj1.GetGabarits(lo_obj1_min, lo_obj1_max);
+        ////    po_obj2.GetGabarits(lo_obj2_min, lo_obj2_max);
+
+
+
+        ////    lv_result =
+
+        ////        (
+        ////            ((lo_obj1_min.x >= lo_obj2_min.x && lo_obj1_min.x <= lo_obj2_max.x)
+        ////              || (lo_obj1_max.x >= lo_obj2_min.x && lo_obj1_max.x <= lo_obj2_max.x))
+        ////            &&
+        ////            ((lo_obj1_min.y >= lo_obj2_min.y && lo_obj1_min.y <= lo_obj2_max.y)
+        ////              || (lo_obj1_max.y >= lo_obj2_min.y && lo_obj1_max.y <= lo_obj2_max.y))
+        ////            &&
+        ////            ((lo_obj1_min.z >= lo_obj2_min.z && lo_obj1_min.z <= lo_obj2_max.z)
+        ////              || (lo_obj1_max.z >= lo_obj2_min.z && lo_obj1_max.z <= lo_obj2_max.z))
+        ////        );
+
+        ////    return lv_result;
+        ////    //throw new NotImplementedException();
+        ////}
+
+
+        //-------------------------------------------------------------------------------
+        private static bool IsBetween(msgPointStruct po_outer_min, msgPointStruct po_outer_max, msgPointStruct po_inner_min, msgPointStruct po_inner_max)
+        {
+            bool lv_result = false;
+
+            lv_result =
+
+                (
+                    ((po_inner_min.x >= po_outer_min.x && po_inner_min.x <= po_outer_max.x)
+                      || (po_inner_max.x >= po_outer_min.x && po_inner_max.x <= po_outer_max.x))
+                    &&
+                    ((po_inner_min.y >= po_outer_min.y && po_inner_min.y <= po_outer_max.y)
+                      || (po_inner_max.y >= po_outer_min.y && po_inner_max.y <= po_outer_max.y))
+                    &&
+                    ((po_inner_min.z >= po_outer_min.z && po_inner_min.z <= po_outer_max.z)
+                      || (po_inner_max.z >= po_outer_min.z && po_inner_max.z <= po_outer_max.z))
+                );
+
+
+            return lv_result;
+        }
+
 
         //--------------------------------------------------------------------------------------------------
         private static void do_sub(msgScene po_scene, msg3DObject po_minuend, msg3DObject po_subtrahend)

@@ -1,7 +1,7 @@
 #pragma once
-#include "..\..\sgCore\sgDefs.h"
+#include "..\..\..\sgCore\sgDefs.h"
 
-#include "Helpers/DrawLineCallbackHelper.h"
+#include "..\..\Helpers/DrawLineCallbackHelper.h"
 
 using namespace sgCoreWrapper::Helpers;
 
@@ -30,10 +30,10 @@ namespace sgCoreWrapper
 				}				
 			}
 			
-			property double radius
+			property long double radius
 			{
-				double get() { return _sgCircle->radius; }
-				void set(double value) { _sgCircle->radius = value; }
+				long double get() { return _sgCircle->radius; }
+				void set(long double value) { _sgCircle->radius = value; }
 			}
 
 			property msgVectorStruct^ normal
@@ -48,7 +48,7 @@ namespace sgCoreWrapper
 				void set(msgPointStruct^ value) { _center = value; }
 			}
 			
-			bool FromCenterRadiusNormal(msgPointStruct^ cen, double rad, msgVectorStruct^ nor)
+			bool FromCenterRadiusNormal(msgPointStruct^ cen, long double rad, msgVectorStruct^ nor)
 			{
 				return _sgCircle->FromCenterRadiusNormal(*cen->_point, rad, *nor->_point);
 			}

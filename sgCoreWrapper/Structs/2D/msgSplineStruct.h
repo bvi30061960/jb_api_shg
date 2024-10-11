@@ -1,7 +1,7 @@
 #pragma once
-#include "..\..\sgCore\sgDefs.h"
+#include "..\..\..\sgCore\sgDefs.h"
 
-#include "Helpers/ArrayHelper.h"
+#include "..\..\Helpers/ArrayHelper.h"
 
 using namespace sgCoreWrapper::Helpers;
 

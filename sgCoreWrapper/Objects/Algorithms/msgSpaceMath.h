@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgSpaceMath.h"
+#include "..\..\..\sgCore\sgSpaceMath.h"
 #include "Structs/msgPointStruct.h"
 
 using namespace sgCoreWrapper::Structs;
@@ -18,7 +18,7 @@ namespace sgCoreWrapper
 				return sgSpaceMath::IsPointsOnOneLine(*p1->_point, *p2->_point, *p3->_point);
 			}
 
-			static double PointsDistance(msgPointStruct^ p1, msgPointStruct^ p2)
+			static long double PointsDistance(msgPointStruct^ p1, msgPointStruct^ p2)
 			{
 				return sgSpaceMath::PointsDistance(*p1->_point, *p2->_point);
 			}
@@ -38,7 +38,7 @@ namespace sgCoreWrapper
 				return gcnew msgVectorStruct(&sgSpaceMath::VectorsSub(*v1->_point, *v2->_point));
 			}
 
-			static double VectorsScalarMult(msgVectorStruct^ v1, msgVectorStruct^ v2)
+			static long double VectorsScalarMult(msgVectorStruct^ v1, msgVectorStruct^ v2)
 			{
 				return sgSpaceMath::VectorsScalarMult(*v1->_point, *v2->_point);
 			}
@@ -48,7 +48,7 @@ namespace sgCoreWrapper
 				return gcnew msgVectorStruct(&sgSpaceMath::VectorsVectorMult(*v1->_point, *v2->_point));
 			}
 
-			static double ProjectPointToLineAndGetDist(msgPointStruct^ lineP, 
+			static long double ProjectPointToLineAndGetDist(msgPointStruct^ lineP, 
 														    msgVectorStruct^ lineDir, 
 															msgPointStruct^ pnt, 
 															msgPointStruct^ resPnt)

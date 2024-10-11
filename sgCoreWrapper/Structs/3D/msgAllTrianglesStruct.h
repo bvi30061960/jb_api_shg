@@ -34,7 +34,7 @@ namespace sgCoreWrapper
 					count);
 				_allNormals = ArrayHelper::GetManagedArray<msgVectorStruct, SG_POINT>(_sgAllTriangles->allNormals, 
 					count);
-				_allUV = ArrayHelper::GetManagedArray<msgDoubleStruct, double>(_sgAllTriangles->allUV, 
+				_allUV = ArrayHelper::GetManagedArray<msgDoubleStruct, long double>(_sgAllTriangles->allUV, 
 					count * 2);
 			}
 		private:

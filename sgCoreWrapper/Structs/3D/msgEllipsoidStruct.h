@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sg3D.h"
+#include "..\..\..\sgCore\sg3D.h"
 
 namespace sgCoreWrapper
 {
@@ -8,22 +8,22 @@ namespace sgCoreWrapper
 		public ref struct msgEllipsoidStruct
 		{
 		public:
-			property double Radius1
+			property long double Radius1
 			{
-				double get() { return _sgEllipsoid->Radius1; }
-				void set(double value) { _sgEllipsoid->Radius1 = value; }
+				long double get() { return _sgEllipsoid->Radius1; }
+				void set(long double value) { _sgEllipsoid->Radius1 = value; }
 			}
 
-			property double Radius2
+			property long double Radius2
 			{
-				double get() { return _sgEllipsoid->Radius2; }
-				void set(double value) { _sgEllipsoid->Radius2 = value; }
+				long double get() { return _sgEllipsoid->Radius2; }
+				void set(long double value) { _sgEllipsoid->Radius2 = value; }
 			}
 
-			property double Radius3
+			property long double Radius3
 			{
-				double get() { return _sgEllipsoid->Radius3; }
-				void set(double value) { _sgEllipsoid->Radius3 = value; }
+				long double get() { return _sgEllipsoid->Radius3; }
+				void set(long double value) { _sgEllipsoid->Radius3 = value; }
 			}
 
 			property short MeridiansCount

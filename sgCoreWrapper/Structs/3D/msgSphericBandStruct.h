@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sg3D.h"
+#include "..\..\..\sgCore\sg3D.h"
 
 namespace sgCoreWrapper
 {
@@ -8,22 +8,22 @@ namespace sgCoreWrapper
 		public ref struct msgSphericBandStruct
 		{
 		public:
-			property double Radius
+			property long double Radius
 			{
-				double get() { return _sgSphericBand->Radius; }
-				void set(double value) { _sgSphericBand->Radius = value; }
+				long double get() { return _sgSphericBand->Radius; }
+				void set(long double value) { _sgSphericBand->Radius = value; }
 			}
 
-			property double BeginCoef
+			property long double BeginCoef
 			{
-				double get() { return _sgSphericBand->BeginCoef; }
-				void set(double value) { _sgSphericBand->BeginCoef = value; }
+				long double get() { return _sgSphericBand->BeginCoef; }
+				void set(long double value) { _sgSphericBand->BeginCoef = value; }
 			}
 
-			property double EndCoef
+			property long double EndCoef
 			{
-				double get() { return _sgSphericBand->EndCoef; }
-				void set(double value) { _sgSphericBand->EndCoef = value; }
+				long double get() { return _sgSphericBand->EndCoef; }
+				void set(long double value) { _sgSphericBand->EndCoef = value; }
 			}
 
 			property short MeridiansCount

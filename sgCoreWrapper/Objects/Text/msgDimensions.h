@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgTD.h"
+#include "..\..\..\sgCore\sgTD.h"
 #include "Structs/Text/msgDimensionStyleStruct.h"
 #include "Objects/Text/msgFont.h"
 #include "Objects/msgObject.h"

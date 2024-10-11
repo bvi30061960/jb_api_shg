@@ -13,7 +13,7 @@ namespace sgCoreWrapper
 				CreateNewPoint();
 			}
 
-			msgPointStruct(double x, double y, double z)
+			msgPointStruct(long double x, long double y, long double z)
 			{
 				CreateNewPoint();
 
@@ -35,21 +35,21 @@ namespace sgCoreWrapper
 				}
 			}
 
-			property double x
+			property long double x
 			{
-				double get() { return _point->x; }
-				void set(double value) { _point->x = value; }
+				long double get() { return _point->x; }
+				void set(long double value) { _point->x = value; }
 			}
 			
-			property double y
+			property long double y
 			{
-				double get() { return _point->y; }
-				void set(double value) { _point->y = value; }
+				long double get() { return _point->y; }
+				void set(long double value) { _point->y = value; }
 			}
-			property double z
+			property long double z
 			{
-				double get() { return _point->z; }
-				void set(double value) { _point->z = value; }
+				long double get() { return _point->z; }
+				void set(long double value) { _point->z = value; }
 			}
 
 		private:
@@ -79,7 +79,7 @@ namespace sgCoreWrapper
 			msgVectorStruct()
 			{}
 
-			msgVectorStruct(double x, double y, double z) : msgPointStruct(x, y, z)
+			msgVectorStruct(long double x, long double y, long double z) : msgPointStruct(x, y, z)
 			{}
 
 		internal:

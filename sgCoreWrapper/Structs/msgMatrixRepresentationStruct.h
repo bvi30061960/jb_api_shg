@@ -16,9 +16,9 @@ namespace sgCoreWrapper
 				array<msgDoubleStruct^>^ get() { return _doubles; }
 			}
 		internal:
-			msgMatrixRepresentationStruct(double* data)
+			msgMatrixRepresentationStruct(long double* data)
 			{
-				_doubles = ArrayHelper::GetManagedArray<msgDoubleStruct, double>(data, 16);
+				_doubles = ArrayHelper::GetManagedArray<msgDoubleStruct, long double>(data, 16);
 			}
 		private:
 			array<msgDoubleStruct^>^ _doubles;

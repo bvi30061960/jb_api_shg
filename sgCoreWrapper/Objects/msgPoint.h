@@ -12,7 +12,7 @@ namespace sgCoreWrapper
 		public ref class msgPoint : msgObject
 		{
 		public:
-			static msgPoint^ Create(double pX, double pY, double pZ)
+			static msgPoint^ Create(long double pX, long double pY, long double pZ)
 			{
 				return gcnew msgPoint(sgCPoint::Create(pX, pY, pZ));
 			}

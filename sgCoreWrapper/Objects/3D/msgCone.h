@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sg3D.h"
+#include "..\..\..\sgCore\sg3D.h"
 #include "Objects\3D\msg3DObject.h"
 #include "Structs\3D\msgConeStruct.h"
 
@@ -12,7 +12,7 @@ namespace sgCoreWrapper
 		public ref class msgCone : msg3DObject
 		{
 		public:
-			static msgCone^ Create(double rad_1,double rad_2,double heig, short merid)
+			static msgCone^ Create(long double rad_1,long double rad_2,long double heig, short merid)
 			{
 				return gcnew msgCone(sgCCone::Create(rad_1, rad_2, heig, merid));
 			}

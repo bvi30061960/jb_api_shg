@@ -112,8 +112,8 @@ typedef enum                        /* Edge bundle state                 */
 
 typedef struct v_shape              /* Internal vertex list datatype     */
 {
-  double              x;            /* X coordinate component            */
-  double              y;            /* Y coordinate component            */
+  long double              x;            /* X coordinate component            */
+  long double              y;            /* Y coordinate component            */
   struct v_shape     *next;         /* Pointer to next vertex in list    */
 } vertex_node;
 
@@ -131,9 +131,9 @@ typedef struct edge_shape
   sg_vertex          vertex;       /* Piggy-backed contour vertex data  */
   sg_vertex          bot;          /* Edge lower (x, y) coordinate      */
   sg_vertex          top;          /* Edge upper (x, y) coordinate      */
-  double              xb;           /* Scanbeam bottom x coordinate      */
-  double              xt;           /* Scanbeam top x coordinate         */
-  double              dx;           /* Change in x for a unit y increase */
+  long double              xb;           /* Scanbeam bottom x coordinate      */
+  long double              xt;           /* Scanbeam top x coordinate         */
+  long double              dx;           /* Change in x for a unit y increase */
   int                 type;         /* Clip / subject edge flag          */
   int                 bundle[2][2]; /* Bundle edge flags                 */
   int                 bside[2];     /* Bundle left / right indicators    */
@@ -148,14 +148,14 @@ typedef struct edge_shape
 
 typedef struct lmt_shape            /* Local minima table                */
 {
-  double              y;            /* Y coordinate at local minimum     */
+  long double              y;            /* Y coordinate at local minimum     */
   edge_node          *first_bound;  /* Pointer to bound list             */
   struct lmt_shape   *next;         /* Pointer to next local minimum     */
 } lmt_node;
 
 typedef struct sbt_t_shape          /* Scanbeam tree                     */
 {
-  double              y;            /* Scanbeam node y value             */
+  long double              y;            /* Scanbeam node y value             */
   struct sbt_t_shape *less;         /* Pointer to nodes with lower y     */
   struct sbt_t_shape *more;         /* Pointer to nodes with higher y    */
 } sb_tree;
@@ -170,18 +170,18 @@ typedef struct it_shape             /* Intersection table                */
 typedef struct st_shape             /* Sorted edge table                 */
 {
   edge_node          *edge;         /* Pointer to AET edge               */
-  double              xb;           /* Scanbeam bottom x coordinate      */
-  double              xt;           /* Scanbeam top x coordinate         */
-  double              dx;           /* Change in x for a unit y increase */
+  long double              xb;           /* Scanbeam bottom x coordinate      */
+  long double              xt;           /* Scanbeam top x coordinate         */
+  long double              dx;           /* Change in x for a unit y increase */
   struct st_shape    *prev;         /* Previous edge in sorted list      */
 } st_node;
 
 typedef struct bbox_shape           /* Contour axis-aligned bounding box */
 {
-  double             xmin;          /* Minimum x coordinate              */
-  double             ymin;          /* Minimum y coordinate              */
-  double             xmax;          /* Maximum x coordinate              */
-  double             ymax;          /* Maximum y coordinate              */
+  long double             xmin;          /* Minimum x coordinate              */
+  long double             ymin;          /* Minimum y coordinate              */
+  long double             xmax;          /* Maximum x coordinate              */
+  long double             ymax;          /* Maximum y coordinate              */
 } bbox;
 
 
@@ -281,7 +281,7 @@ static void insert_bound(edge_node **b, edge_node *e)
 }
 
 
-static edge_node **bound_list(lmt_node **lmt, double y)
+static edge_node **bound_list(lmt_node **lmt, long double y)
 {
   lmt_node *existing_node;
 
@@ -315,7 +315,7 @@ static edge_node **bound_list(lmt_node **lmt, double y)
 }
 
 
-static void add_to_sbtree(int *entries, sb_tree **sbtree, double y)
+static void add_to_sbtree(int *entries, sb_tree **sbtree, long double y)
 {
   if (!*sbtree)
   {
@@ -345,7 +345,7 @@ static void add_to_sbtree(int *entries, sb_tree **sbtree, double y)
 }
 
 
-static void build_sbt(int *entries, double *sbt, sb_tree *sbtree)
+static void build_sbt(int *entries, long double *sbt, sb_tree *sbtree)
 {
   if (sbtree->less)
     build_sbt(entries, sbt, sbtree->less);
@@ -577,7 +577,7 @@ static void add_edge_to_aet(edge_node **aet, edge_node *edge, edge_node *prev)
 
 
 static void add_intersection(it_node **it, edge_node *edge0, edge_node *edge1,
-                             double x, double y)
+                             long double x, long double y)
 {
   it_node *existing_node;
 
@@ -612,10 +612,10 @@ static void add_intersection(it_node **it, edge_node *edge0, edge_node *edge1,
 
 
 static void add_st_edge(st_node **st, it_node **it, edge_node *edge,
-                        double dy)
+                        long double dy)
 {
   st_node *existing_node;
-  double   den, r, x, y;
+  long double   den, r, x, y;
 
   if (!*st)
   {
@@ -661,7 +661,7 @@ static void add_st_edge(st_node **st, it_node **it, edge_node *edge,
 }
 
 
-static void build_intersection_table(it_node **it, edge_node *aet, double dy)
+static void build_intersection_table(it_node **it, edge_node *aet, long double dy)
 {
   st_node   *st, *stp;
   edge_node *edge;
@@ -721,7 +721,7 @@ static int count_contours(polygon_node *polygon)
 }
 
 
-static void add_left(polygon_node *p, double x, double y)
+static void add_left(polygon_node *p, long double x, long double y)
 {
   vertex_node *nv;
 
@@ -765,7 +765,7 @@ static void merge_left(polygon_node *p, polygon_node *q, polygon_node *list)
 }
 
 
-static void add_right(polygon_node *p, double x, double y)
+static void add_right(polygon_node *p, long double x, long double y)
 {
   vertex_node *nv;
 
@@ -810,7 +810,7 @@ static void merge_right(polygon_node *p, polygon_node *q, polygon_node *list)
 
 
 static void add_local_min(polygon_node **p, edge_node *edge,
-                          double x, double y)
+                          long double x, long double y)
 {
   polygon_node *existing_min;
   vertex_node  *nv;
@@ -850,7 +850,7 @@ static int count_tristrips(polygon_node *tn)
 }
 
 
-static void add_vertex(vertex_node **t, double x, double y)
+static void add_vertex(vertex_node **t, long double x, long double y)
 {
   if (!(*t))
   {
@@ -866,7 +866,7 @@ static void add_vertex(vertex_node **t, double x, double y)
 
 
 static void new_tristrip(polygon_node **tn, edge_node *edge,
-                         double x, double y)
+                         long double x, long double y)
 {
   if (!(*tn))
   {
@@ -1089,7 +1089,7 @@ void sg_polygon_clip(sg_op op, sg_polygon *subj, sg_polygon *clip,
   int            in[2], exists[2], parity[2]= {LEFT, LEFT};
   int            c, v, contributing, search, scanbeam= 0, sbt_entries= 0;
   int            vclass, bl, br, tl, tr;
-  double        *sbt= NULL, xb, px, yb, yt, dy, ix, iy;
+  long double        *sbt= NULL, xb, px, yb, yt, dy, ix, iy;
 
   /* Test for trivial NULL result cases */
   if (((subj->num_contours == 0) && (clip->num_contours == 0))
@@ -1126,7 +1126,7 @@ void sg_polygon_clip(sg_op op, sg_polygon *subj, sg_polygon *clip,
   }
 
   /* Build scanbeam table from scanbeam tree */
-  MALLOC(sbt, sbt_entries * sizeof(double), "sbt creation", double);
+  MALLOC(sbt, sbt_entries * sizeof(long double), "sbt creation", long double);
   build_sbt(&scanbeam, sbt, sbtree);
   scanbeam= 0;
   free_sbtree(&sbtree);
@@ -1750,7 +1750,7 @@ void sg_tristrip_clip(sg_op op, sg_polygon *subj, sg_polygon *clip,
   int            in[2], exists[2], parity[2]= {LEFT, LEFT};
   int            s, v, contributing, search, scanbeam= 0, sbt_entries= 0;
   int            vclass, bl, br, tl, tr;
-  double        *sbt= NULL, xb, px, nx, yb, yt, dy, ix, iy;
+  long double        *sbt= NULL, xb, px, nx, yb, yt, dy, ix, iy;
 
   /* Test for trivial NULL result cases */
   if (((subj->num_contours == 0) && (clip->num_contours == 0))
@@ -1785,7 +1785,7 @@ void sg_tristrip_clip(sg_op op, sg_polygon *subj, sg_polygon *clip,
   }
 
   /* Build scanbeam table from scanbeam tree */
-  MALLOC(sbt, sbt_entries * sizeof(double), "sbt creation", double);
+  MALLOC(sbt, sbt_entries * sizeof(long double), "sbt creation", long double);
   build_sbt(&scanbeam, sbt, sbtree);
   scanbeam= 0;
   free_sbtree(&sbtree);

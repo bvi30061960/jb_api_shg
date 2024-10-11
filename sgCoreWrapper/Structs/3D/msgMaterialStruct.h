@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sg3D.h"
+#include "..\..\..\sgCore\sg3D.h"
 
 namespace sgCoreWrapper
 {
@@ -47,34 +47,34 @@ namespace sgCoreWrapper
 				void set(int value) { _sgMaterial->MaterialIndex = value;}
 			}
 
-			property double TextureScaleU
+			property long double TextureScaleU
 			{
-				double get() { return _sgMaterial->TextureScaleU; }
-				void set(double value) { _sgMaterial->TextureScaleU = value; }
+				long double get() { return _sgMaterial->TextureScaleU; }
+				void set(long double value) { _sgMaterial->TextureScaleU = value; }
 			}
 			
-			property double TextureScaleV
+			property long double TextureScaleV
 			{
-				double get() { return _sgMaterial->TextureScaleV; }
-				void set(double value) { _sgMaterial->TextureScaleV = value; }
+				long double get() { return _sgMaterial->TextureScaleV; }
+				void set(long double value) { _sgMaterial->TextureScaleV = value; }
 			}
 
-			property double TextureShiftU
+			property long double TextureShiftU
 			{
-				double get() { return _sgMaterial->TextureShiftU; }
-				void set(double value) { _sgMaterial->TextureShiftU = value; }
+				long double get() { return _sgMaterial->TextureShiftU; }
+				void set(long double value) { _sgMaterial->TextureShiftU = value; }
 			}
 
-			property double TextureShiftV
+			property long double TextureShiftV
 			{
-				double get() { return _sgMaterial->TextureShiftV; }
-				void set(double value) { _sgMaterial->TextureShiftV = value; }
+				long double get() { return _sgMaterial->TextureShiftV; }
+				void set(long double value) { _sgMaterial->TextureShiftV = value; }
 			}
 
-			property double TextureAngle
+			property long double TextureAngle
 			{
-				double get() { return _sgMaterial->TextureAngle; }
-				void set(double value) { _sgMaterial->TextureAngle = value; }
+				long double get() { return _sgMaterial->TextureAngle; }
+				void set(long double value) { _sgMaterial->TextureAngle = value; }
 			}
 
 			property bool TextureSmooth

@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sg3D.h"
+#include "..\..\..\sgCore\sg3D.h"
 #include "Objects\3D\msg3DObject.h"
 #include "Structs\3D\msgTorusStruct.h"
 
@@ -12,7 +12,7 @@ namespace sgCoreWrapper
 		public ref class msgTorus : msg3DObject
 		{
 		public:
-			static msgTorus^ Create(double r1,double r2,short m1,short m2)
+			static msgTorus^ Create(long double r1,long double r2,short m1,short m2)
 			{
 				return gcnew msgTorus(sgCTorus::Create(r1, r2, m1, m2));
 			}

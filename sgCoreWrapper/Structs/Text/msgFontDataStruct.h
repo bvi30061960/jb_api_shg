@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgTD.h"
+#include "..\..\..\sgCore\sgTD.h"
 #include <string.h>
 
 using namespace System;
@@ -109,14 +109,14 @@ namespace sgCoreWrapper
 				}
 			}
 
-			property double proportion
+			property long double proportion
 			{
-				double get()
+				long double get()
 				{
 					return _sgFontData->proportion;
 				}
 
-				void set(double value)
+				void set(long double value)
 				{
 					_sgFontData->proportion = value;
 				}

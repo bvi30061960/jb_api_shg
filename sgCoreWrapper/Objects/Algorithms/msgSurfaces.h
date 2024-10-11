@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgAlgs.h"
+#include "..\sgCore\sgAlgs.h"
 #include "Objects/msgGroup.h"
 #include "Objects/msgObject.h"
 #include "Objects/2D/msg2DObject.h"
@@ -66,24 +66,24 @@ namespace sgCoreWrapper
 			}
 
 			static msgObject^ LinearSurfaceFromSections(msg2DObject^ firstSide,
-				msg2DObject^ secondSide, double firstParam, bool isClose)
+				msg2DObject^ secondSide, long double firstParam, bool isClose)
 			{
 				return ObjectCreateHelper::CreateObject(sgSurfaces::LinearSurfaceFromSections(
 					*firstSide->sg2DObject,	*secondSide->sg2DObject, firstParam, isClose));
 			}
 
 			static msgObject^ SplineSurfaceFromSections(array<msg2DObject^>^ sections,
-				array<double>^ params, bool isClose)
+				array<long double>^ params, bool isClose)
 			{
 				const sgC2DObject** usections = GetC2DObject(sections);
-				double* uparams = new double[params->Length];
+				long double* uparams = new long double[params->Length];
 				for (int i = 0; i < params->Length; i++)
 				{
 					uparams[i] = params[i];
 				}
 				msgObject^ result =  ObjectCreateHelper::CreateObject(
 					sgSurfaces::SplineSurfaceFromSections(
-					usections, (const double*)uparams, sections->Length, isClose));
+					usections, (const long double*)uparams, sections->Length, isClose));
 				delete[] uparams;
 				return result;
 			}

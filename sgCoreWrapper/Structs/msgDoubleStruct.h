@@ -6,18 +6,18 @@ namespace sgCoreWrapper
 	{
 		public ref struct msgDoubleStruct
 		{
-			property double value
+			property long double value
 			{
-				double get() { return *_value; }
-				void set(double value) { *_value = value; }
+				long double get() { return *_value; }
+				void set(long double value) { *_value = value; }
 			}
 		internal:
-			msgDoubleStruct(double* value)
+			msgDoubleStruct(long double* value)
 			{
 				_value = value;
 			}
 		private:
-			double* _value;
+			long double* _value;
 		};
 	}
 }

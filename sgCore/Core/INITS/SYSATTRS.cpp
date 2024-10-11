@@ -29,10 +29,10 @@ IDENT_V	 id_Name;
 IDENT_V	 id_TypeID;
 IDENT_V  id_SmoothNormals;
 
-static  IDENT_V RegSysAttrFloat(char *Name, char* text, UCHAR Size, short Prec, WORD AddStatus, double val)
+static  IDENT_V RegSysAttrFloat(char *Name, char* text, UCHAR Size, short Prec, WORD AddStatus, long double val)
 {
 	sgFloat  num;
-    double   tmpDouble;   // for ANDROID;
+    long double   tmpDouble;   // for ANDROID;
     
 	void*   adr;
 	IDENT_V id;
@@ -49,7 +49,7 @@ static  IDENT_V RegSysAttrFloat(char *Name, char* text, UCHAR Size, short Prec, 
 static  IDENT_V RegSysAttrString(char *Name, char* text, UCHAR Size, short Prec, WORD AddStatus, const char* val)
 {
     sgFloat  num;
-    double   tmpDouble;   // for ANDROID;
+    long double   tmpDouble;   // for ANDROID;
     
     void*   adr;
     IDENT_V id;

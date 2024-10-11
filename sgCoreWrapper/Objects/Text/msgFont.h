@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgTD.h"
+#include "..\sgCore\sgTD.h"
 #include "Structs/Text/msgFontDataStruct.h"
 
 using namespace System;
