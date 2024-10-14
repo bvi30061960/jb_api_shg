@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgFileManager.h"
+#include "..\sgCore\sgFileManager.h"
 #include "Structs/msgFileHeaderStruct.h"
 #include "Structs/3D/msgAllTrianglesStruct.h"
 #include "Objects/msgScene.h"

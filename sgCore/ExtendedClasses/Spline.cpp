@@ -328,7 +328,7 @@ bool	sgCSpline::ApplyTempMatrix()
 
           #if (SG_CURRENT_PLATFORM==SG_PLATFORM_IOS  || SG_CURRENT_PLATFORM==SG_PLATFORM_ANDROID ||  SG_CURRENT_PLATFORM==SG_PLATFORM_LINUX)
 			sgFloat savingEpsD = eps_d;
-			eps_d *=100.0;    //  fix for sgFloat = float  (not long double )
+			eps_d *=100.0;    //  fix for sgFloat = float  (not double )
           #endif
 			if (set_flat_on_path(GetObjectHandle(this), &plane))
 			{

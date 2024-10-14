@@ -39,7 +39,7 @@ namespace sgCoreWrapper
 				return sgArc->IsClosed();
 			}
 
-			bool virtual IsPlane(msgVectorStruct^ vec, long double value) override
+			bool virtual IsPlane(msgVectorStruct^ vec, double value) override
 			{
 				return sgArc->IsPlane(vec->_point, &value);
 			}

@@ -1,6 +1,6 @@
 #pragma once
-#include "..\..\..\sgCore\sg3D.h"
-#include "..\..\Objects\3D\msgBRepPiece.h"
+#include "..\sgCore\sg3D.h"
+#include "Objects\3D\msgBRepPiece.h"
 
 namespace sgCoreWrapper
 {

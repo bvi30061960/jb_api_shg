@@ -15,8 +15,8 @@ typedef enum                        /* Set operation type                */
 
 typedef struct                      /* Polygon vertex structure          */
 {
-  long double              x;            /* Vertex x component                */
-  long double              y;            /* vertex y component                */
+  double              x;            /* Vertex x component                */
+  double              y;            /* vertex y component                */
 } sg_vertex;
 
 typedef struct                      /* Vertex list structure             */

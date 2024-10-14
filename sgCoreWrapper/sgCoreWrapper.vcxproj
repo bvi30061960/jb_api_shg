@@ -58,7 +58,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;WINDOWS_IGNORE_PACKING_MISMATCH</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
@@ -68,7 +68,7 @@
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
     <Link>
-      <AdditionalDependencies>..\sgCore_build\ms\Debug\sgCore.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\sgCore_build/ms/Release\sgCore.lib</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <TargetMachine>MachineX86</TargetMachine>
@@ -76,14 +76,14 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <PreprocessorDefinitions>WIN32;WINDOWS_IGNORE_PACKING_MISMATCH</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>..\sgCore_build\ms\Debug\sgCore.lib</AdditionalDependencies>
+      <AdditionalDependencies>..\sgCore_build/ms/Release\sgCore.lib</AdditionalDependencies>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
@@ -182,9 +182,6 @@
     <ClInclude Include="..\..\sgCore\sgSpaceMath.h" />
     <ClInclude Include="..\..\sgCore\sgTD.h" />
     <ClInclude Include="Stdafx.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <Library Include="..\sgCore_build\ms\Release\sgCore.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

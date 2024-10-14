@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\sgCore\sgAlgs.h"
+#include "..\sgCore\sgAlgs.h"
 #include "Objects/msgGroup.h"
 #include "Objects/2D/msg2DObject.h"
 #include "Structs/msgPointStruct.h"
@@ -16,7 +16,7 @@ namespace sgCoreWrapper
 		{
 		public:
 			static msgObject^ Rotation(msg2DObject^ rotObj, msgPointStruct^ axePnt1,
-				msgPointStruct^ axePnt2, long double angl_degree, bool isClose)
+				msgPointStruct^ axePnt2, double angl_degree, bool isClose)
 			{
 				return ObjectCreateHelper::CreateObject(sgKinematic::Rotation(*rotObj->sg2DObject,
 					*axePnt1->_point, *axePnt2->_point, angl_degree, isClose));
@@ -39,8 +39,8 @@ namespace sgCoreWrapper
 			}
 
 			static msgObject^ Spiral(msg2DObject^ outContour, array<msg2DObject^>^ holes,
-				msgPointStruct^ axePnt1, msgPointStruct^ axePnt2, long double screw_step,
-				long double screw_height, short meridians_count, bool isClose)
+				msgPointStruct^ axePnt1, msgPointStruct^ axePnt2, double screw_step,
+				double screw_height, short meridians_count, bool isClose)
 			{
 				if (holes == nullptr)
 				{
@@ -59,7 +59,7 @@ namespace sgCoreWrapper
 
 			static msgObject^ Pipe(msg2DObject^ outContour, array<msg2DObject^>^ holes,
 				msg2DObject^ guideContour, msgPointStruct^ point_in_outContour_plane,
-				long double angle_around_point_in_outContour_plane, bool% isClose)
+				double angle_around_point_in_outContour_plane, bool% isClose)
 			{
 				bool isClose_val = isClose;
 				if (holes == nullptr)

@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\sgCore\sg3D.h"
+#include "..\sgCore\sg3D.h"
 #include "Objects\3D\msg3DObject.h"
 #include "Structs\3D\msgBoxStruct.h"
 
@@ -12,7 +12,7 @@ namespace sgCoreWrapper
 		public ref class msgBox : msg3DObject
 		{
 		public:
-			static msgBox^ Create(long double sizeX, long double sizeY, long double sizeZ)
+			static msgBox^ Create(double sizeX, double sizeY, double sizeZ)
 			{
 				return gcnew msgBox(sgCBox::Create(sizeX, sizeY, sizeZ));				
 			}

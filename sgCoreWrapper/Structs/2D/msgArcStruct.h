@@ -1,7 +1,7 @@
 #pragma once
-#include "..\..\..\sgCore\sgDefs.h"
+#include "..\sgCore\sgDefs.h"
 
-#include "..\..\Helpers/DrawLineCallbackHelper.h"
+#include "Helpers/DrawLineCallbackHelper.h"
 
 using namespace sgCoreWrapper::Helpers;
 
@@ -30,10 +30,10 @@ namespace sgCoreWrapper
 				}				
 			}
 
-			property long double radius
+			property double radius
 			{
-				long double get() { return _sgArc->radius; }
-				void set(long double value) { _sgArc->radius = value; }
+				double get() { return _sgArc->radius; }
+				void set(double value) { _sgArc->radius = value; }
 			}
 
 			property msgVectorStruct^ normal
@@ -60,16 +60,16 @@ namespace sgCoreWrapper
 				void set(msgPointStruct^ value) { _end = value; }
 			}
 
-			property long double begin_angle
+			property double begin_angle
 			{
-				long double get() { return _sgArc->begin_angle; }
-				void set(long double value) { _sgArc->begin_angle = value; }
+				double get() { return _sgArc->begin_angle; }
+				void set(double value) { _sgArc->begin_angle = value; }
 			}
 
-			property long double angle
+			property double angle
 			{
-				long double get() { return _sgArc->angle; }
-				void set(long double value) { _sgArc->angle = value; }
+				double get() { return _sgArc->angle; }
+				void set(double value) { _sgArc->angle = value; }
 			}
 
 			bool FromThreePoints(msgPointStruct^ begP, msgPointStruct^ endP, msgPointStruct^ midP, 
@@ -85,20 +85,20 @@ namespace sgCoreWrapper
 			}
 
 			bool FromBeginEndNormalRadius(msgPointStruct^ begP,	msgPointStruct^ endP, msgVectorStruct^ nrmlV, 
-				long double rad,	bool invert)
+				double rad,	bool invert)
 			{
 				return _sgArc->FromBeginEndNormalRadius(*begP->_point, *endP->_point, *nrmlV->_point, rad, 
 					invert);
 			}
 
 			bool FromCenterBeginNormalAngle(msgPointStruct^ cenP, msgPointStruct^ begP, msgVectorStruct^ nrmlV, 
-				long double ang)
+				double ang)
 			{
 				return _sgArc->FromCenterBeginNormalAngle(*cenP->_point, *begP->_point, *nrmlV->_point, ang);
 			}
 
 			bool FromBeginEndNormalAngle(msgPointStruct^ begP, msgPointStruct^ endP, msgVectorStruct^ nrmlV, 
-				long double ang)
+				double ang)
 			{
 				return _sgArc->FromBeginEndNormalAngle(*begP->_point, *endP->_point, *nrmlV->_point, ang);
 			}

@@ -1,6 +1,6 @@
 #pragma once;
 #include "Objects/msgObject.h"
-#include "..\..\sgCore\sgObject.h"
+#include "..\sgCore\sgObject.h"
 
 using namespace sgCoreWrapper::Objects;
 

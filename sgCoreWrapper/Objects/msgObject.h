@@ -1,8 +1,8 @@
 #pragma once
-#include "..\..\sgCore\sgObject.h"
-#include "..\Structs/msgPointStruct.h"
-#include "..\Structs/msgUserDynamicDataStruct.h"
-#include "..\Objects/msgMatrix.h"
+#include "..\sgCore\sgObject.h"
+#include "Structs/msgPointStruct.h"
+#include "Structs/msgUserDynamicDataStruct.h"
+#include "Objects/msgMatrix.h"
 
 using namespace System;
 using namespace System::Runtime::InteropServices;

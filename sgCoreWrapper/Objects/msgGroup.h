@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgGroup.h"
+#include "..\sgCore\sgGroup.h"
 #include "Objects/msgObject.h"
 #include "Interfaces/mIObjectsList.h"
 
@@ -38,17 +38,6 @@ namespace sgCoreWrapper
 
 			bool BreakGroup(array<msgObject^>^% objcts);
 			
-
-			//---------------------------------------------------------
-			//bvi 08102024 {
-			bool isNull()
-			{
-				return sgGroup == 0x000000;
-			}
-			//---------------------------------------------------------
-			//bvi 08102024 }
-
-
 		internal:
 			msgGroup(sgCGroup* group) : msgObject(group)
 			{

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\..\..\sgCore\sgTD.h"
+#include "..\sgCore\sgTD.h"
 
 namespace sgCoreWrapper
 {
@@ -34,34 +34,34 @@ namespace sgCoreWrapper
 				void set (unsigned char value) { _sgTextStyle->state = value; }
 			}
 			
-			property long double height
+			property double height
 			{
-				long double get() { return _sgTextStyle->height; }
-				void set (long double value) { _sgTextStyle->height = value; }
+				double get() { return _sgTextStyle->height; }
+				void set (double value) { _sgTextStyle->height = value; }
 			}
 			
-			property long double proportions 
+			property double proportions 
 			{
-				long double get() { return _sgTextStyle->proportions; }
-				void set (long double value) { _sgTextStyle->proportions = value; }
+				double get() { return _sgTextStyle->proportions; }
+				void set (double value) { _sgTextStyle->proportions = value; }
 			}
 
-			property long double angle
+			property double angle
 			{
-				long double get() { return _sgTextStyle->angle; }
-				void set (long double value) { _sgTextStyle->angle = value; }
+				double get() { return _sgTextStyle->angle; }
+				void set (double value) { _sgTextStyle->angle = value; }
 			}
 			
-			property long double horiz_space_proportion
+			property double horiz_space_proportion
 			{
-				long double get() { return _sgTextStyle->horiz_space_proportion; }
-				void set (long double value) { _sgTextStyle->horiz_space_proportion = value; }
+				double get() { return _sgTextStyle->horiz_space_proportion; }
+				void set (double value) { _sgTextStyle->horiz_space_proportion = value; }
 			}
 			
-			property long double vert_space_proportion
+			property double vert_space_proportion
 			{
-				long double get() { return _sgTextStyle->vert_space_proportion; }
-				void set (long double value) { _sgTextStyle->vert_space_proportion = value; }
+				double get() { return _sgTextStyle->vert_space_proportion; }
+				void set (double value) { _sgTextStyle->vert_space_proportion = value; }
 			}
 
 		internal:

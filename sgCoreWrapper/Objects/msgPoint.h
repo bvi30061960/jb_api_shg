@@ -1,6 +1,6 @@
 #pragma once
 #include "Objects\msgObject.h"
-#include "..\..\sgCore\sg2D.h"
+#include "..\sgCore\sg2D.h"
 #include "Structs\msgPointStruct.h"
 
 using namespace sgCoreWrapper::Structs;
@@ -12,7 +12,7 @@ namespace sgCoreWrapper
 		public ref class msgPoint : msgObject
 		{
 		public:
-			static msgPoint^ Create(long double pX, long double pY, long double pZ)
+			static msgPoint^ Create(double pX, double pY, double pZ)
 			{
 				return gcnew msgPoint(sgCPoint::Create(pX, pY, pZ));
 			}

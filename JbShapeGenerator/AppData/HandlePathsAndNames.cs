@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace JbShapeGenerator.AppData
 {
-    public static class HandleNamesAndPaths
+    public static class HandlePathsAndNames
     {
 
         public static string av_path_datafiles { get; set; } = "~/" + AdminSets.wwwroot_datafiles + Path.PathSeparator; // Относительный путь до файлов с данными пользователей
@@ -71,27 +71,27 @@ namespace JbShapeGenerator.AppData
             if (lv_identity_name != null && lv_identity_name != "")
             {
                 lv_session_username = lv_identity_name;
-                HandleNamesAndPaths.av_username_postfix = UserSets.postfix_user;
+                HandlePathsAndNames.av_username_postfix = UserSets.postfix_user;
 
             }
             else
             {
                 lv_session_username = CommonMethods.get_str_from_session(lo_session, CommonConstants.session_username);
-                HandleNamesAndPaths.av_username_postfix = UserSets.postfix_temp;
+                HandlePathsAndNames.av_username_postfix = UserSets.postfix_temp;
 
             }
 
 
-            HandleNamesAndPaths.av_username_wo_postfix = lv_session_username; // pv_username;
+            HandlePathsAndNames.av_username_wo_postfix = lv_session_username; // pv_username;
 
-            if (HandleNamesAndPaths.av_username_wo_postfix == null || HandleNamesAndPaths.av_username_wo_postfix == "")
+            if (HandlePathsAndNames.av_username_wo_postfix == null || HandlePathsAndNames.av_username_wo_postfix == "")
             {
-                HandleNamesAndPaths.av_username_wo_postfix = get_random_name();
+                HandlePathsAndNames.av_username_wo_postfix = get_random_name();
 
                 //GlobalData.av_username_postfix = UserSets.postfix_temp;
 
                 // Запоминание в сессии имени пользователя
-                CommonMethods.set_str_from_session(lo_session, CommonConstants.session_username, HandleNamesAndPaths.av_username_wo_postfix);
+                CommonMethods.set_str_from_session(lo_session, CommonConstants.session_username, HandlePathsAndNames.av_username_wo_postfix);
 
             }
             //else
@@ -102,10 +102,10 @@ namespace JbShapeGenerator.AppData
 
 
 
-            HandleNamesAndPaths.av_username_hashed_wo_postfix = get_hash_code_wo_spec_symbols(HandleNamesAndPaths.av_username_wo_postfix);
-            HandleNamesAndPaths.av_username_hashed_with_postfix = HandleNamesAndPaths.av_username_hashed_wo_postfix + HandleNamesAndPaths.av_username_postfix;
+            HandlePathsAndNames.av_username_hashed_wo_postfix = get_hash_code_wo_spec_symbols(HandlePathsAndNames.av_username_wo_postfix);
+            HandlePathsAndNames.av_username_hashed_with_postfix = HandlePathsAndNames.av_username_hashed_wo_postfix + HandlePathsAndNames.av_username_postfix;
 
-            lv_result = HandleNamesAndPaths.av_username_wo_postfix;
+            lv_result = HandlePathsAndNames.av_username_wo_postfix;
 
             return lv_result;
         }
@@ -138,16 +138,16 @@ namespace JbShapeGenerator.AppData
             ////GlobalData.av_username_hashed_with_postfix = GlobalData.av_username_hashed_wo_postfix + GlobalData.av_username_postfix;
 
 
-            HandleNamesAndPaths.av_path_unic_user_directory = get_unic_user_directory_by_hashed_username_postfix(HandleNamesAndPaths.av_username_hashed_with_postfix);
-            CommonMethods.create_directory_if_no_exist(HandleNamesAndPaths.av_path_unic_user_directory);
+            HandlePathsAndNames.av_path_unic_user_directory = get_unic_user_directory_by_hashed_username_postfix(HandlePathsAndNames.av_username_hashed_with_postfix);
+            CommonMethods.create_directory_if_no_exist(HandlePathsAndNames.av_path_unic_user_directory);
 
             //GlobalData.av_unic_model_path_and_filename = get_unic_model_path_and_filename(av_path_unic_user_directory);
 
 
-            HandleNamesAndPaths.av_unic_user_models_dir = Path.Combine(HandleNamesAndPaths.av_path_unic_user_directory, AdminSets.models_directory);
-            CommonMethods.create_directory_if_no_exist(HandleNamesAndPaths.av_unic_user_models_dir);
+            HandlePathsAndNames.av_unic_user_models_dir = Path.Combine(HandlePathsAndNames.av_path_unic_user_directory, AdminSets.models_directory);
+            CommonMethods.create_directory_if_no_exist(HandlePathsAndNames.av_unic_user_models_dir);
 
-            HandleNamesAndPaths.av_path_unic_user_list_files = Path.Combine(HandleNamesAndPaths.av_unic_user_models_dir, AdminSets.models_list_filename);
+            HandlePathsAndNames.av_path_unic_user_list_files = Path.Combine(HandlePathsAndNames.av_unic_user_models_dir, AdminSets.models_list_filename);
         }
 
         //----------------------------------------------------------------------------------------------------------------
@@ -214,11 +214,11 @@ namespace JbShapeGenerator.AppData
 
             string lv_filename = get_random_name() + pv_extension_with_dot;
 
-            string lv_unic_user_unic_dir = Path.Combine(HandleNamesAndPaths.av_path_unic_user_directory, AdminSets.models_directory);
+            string lv_unic_user_unic_dir = Path.Combine(HandlePathsAndNames.av_path_unic_user_directory, AdminSets.models_directory);
 
             CommonMethods.create_directory_if_no_exist(lv_unic_user_unic_dir);
 
-            lv_result = Path.Combine(HandleNamesAndPaths.av_path_unic_user_directory, Path.Combine(AdminSets.models_directory, lv_filename));
+            lv_result = Path.Combine(HandlePathsAndNames.av_path_unic_user_directory, Path.Combine(AdminSets.models_directory, lv_filename));
 
             return lv_result;
         }
@@ -231,11 +231,11 @@ namespace JbShapeGenerator.AppData
             //string lv_filename = get_random_name() + pv_extension_with_dot;
             string lv_filename = get_hash_code_wo_spec_symbols(pv_filename) + pv_extension_with_dot;
 
-            string lv_unic_user_unic_dir = Path.Combine(HandleNamesAndPaths.av_path_unic_user_directory, AdminSets.models_directory);
+            string lv_unic_user_unic_dir = Path.Combine(HandlePathsAndNames.av_path_unic_user_directory, AdminSets.models_directory);
 
             CommonMethods.create_directory_if_no_exist(lv_unic_user_unic_dir);
 
-            lv_result = Path.Combine(HandleNamesAndPaths.av_path_unic_user_directory, Path.Combine(AdminSets.models_directory, lv_filename));
+            lv_result = Path.Combine(HandlePathsAndNames.av_path_unic_user_directory, Path.Combine(AdminSets.models_directory, lv_filename));
 
             return lv_result;
         }

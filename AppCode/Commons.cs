@@ -1,8 +1,5 @@
 ﻿namespace jb_api_shg.AppCode
 {
-    //public class Commons
-    //{
-    //}
 
     //******************************************************************************************
     public struct CommonConstants
@@ -10,6 +7,8 @@
 
         public const string method_refresh_premodel = "refresh_premodel";
         public const string method_make_model = "make_model";
+        public const string path_AppData = "AppData";
+        public const string path_temp_data = "temp_data";
 
 
         //public const string cv_pattern_sentences = @"((?:(?-i)[А-ЯA-Z]).*(?<=(?:[а-яa-z]){2,})\.)";
@@ -34,6 +33,63 @@
         //public const string Separator_between_excel_columns_when_read_file = "@##@";
         //public const string Separator_lines_crlf = "\r\n";
         ////02072023 public const decimal price_per_playbackset = 0.1M; // 0.1 $/playbackset
+    }
+
+
+
+//=============================================================================================
+
+
+    public class Commons
+    {
+
+        public static string GetPathTempDataFileName()
+        {
+            string lv_result = "";
+
+
+
+
+            return lv_result;
+
+        }
+
+        //////---------------------------------------------------------------------------------------------
+        ////static public string get_random_name()
+        ////{
+        ////    string lv_result = "";
+
+        ////    // lv_result = Guid.NewGuid().ToString(); //- слишком длинное получается название
+
+        ////    lv_result = Path.GetFileNameWithoutExtension(Path.GetRandomFileName()) + DateTime.Now.Ticks.ToString();
+
+        ////    return lv_result;
+        ////}
+
+
+        //-----------------------------------------------------------------------------------------------
+        // Создание директории, если не существует
+        public static void create_directory_if_no_exist(string? pv_path_dir)
+        {
+            if (pv_path_dir == null || pv_path_dir == "")
+            {
+                return;
+            }
+
+
+            DirectoryInfo lv_di = new DirectoryInfo(pv_path_dir);
+            if (!lv_di.Exists)
+            {
+                try
+                {
+                    lv_di.Create();
+                }
+                catch (Exception ex)
+                {
+                }
+
+            }
+        }
     }
 
 

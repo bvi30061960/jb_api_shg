@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\sgCore\sg3D.h"
+#include "..\sgCore\sg3D.h"
 #include "Objects\3D\msg3DObject.h"
 #include "Structs\3D\msgSphereStruct.h"
 
@@ -12,7 +12,7 @@ namespace sgCoreWrapper
 		public ref class msgSphere : msg3DObject
 		{
 		public:
-			static msgSphere^ Create(long double rad, short merid, short parall)
+			static msgSphere^ Create(double rad, short merid, short parall)
 			{
 				return gcnew msgSphere(sgCSphere::Create(rad, merid, parall));
 			}

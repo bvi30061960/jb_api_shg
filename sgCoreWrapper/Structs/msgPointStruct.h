@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgDefs.h"
+#include "..\sgCore\sgDefs.h"
 
 namespace sgCoreWrapper
 {
@@ -13,7 +13,7 @@ namespace sgCoreWrapper
 				CreateNewPoint();
 			}
 
-			msgPointStruct(long double x, long double y, long double z)
+			msgPointStruct(double x, double y, double z)
 			{
 				CreateNewPoint();
 
@@ -35,21 +35,21 @@ namespace sgCoreWrapper
 				}
 			}
 
-			property long double x
+			property double x
 			{
-				long double get() { return _point->x; }
-				void set(long double value) { _point->x = value; }
+				double get() { return _point->x; }
+				void set(double value) { _point->x = value; }
 			}
 			
-			property long double y
+			property double y
 			{
-				long double get() { return _point->y; }
-				void set(long double value) { _point->y = value; }
+				double get() { return _point->y; }
+				void set(double value) { _point->y = value; }
 			}
-			property long double z
+			property double z
 			{
-				long double get() { return _point->z; }
-				void set(long double value) { _point->z = value; }
+				double get() { return _point->z; }
+				void set(double value) { _point->z = value; }
 			}
 
 		private:
@@ -79,7 +79,7 @@ namespace sgCoreWrapper
 			msgVectorStruct()
 			{}
 
-			msgVectorStruct(long double x, long double y, long double z) : msgPointStruct(x, y, z)
+			msgVectorStruct(double x, double y, double z) : msgPointStruct(x, y, z)
 			{}
 
 		internal:

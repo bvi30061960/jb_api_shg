@@ -6,7 +6,7 @@
 #include "Structs/msgUserDynamicDataStruct.h"
 #include "Helpers/ObjectCreateHelper.h"
 
-msgContour^ msg2DObject::GetEquidistantContour(long double h1, long double h2, bool toRound)
+msgContour^ msg2DObject::GetEquidistantContour(double h1, double h2, bool toRound)
 {
   return msgContour::InternalCreate(sg2DObject->GetEquidistantContour(h1, h2, toRound));
 }

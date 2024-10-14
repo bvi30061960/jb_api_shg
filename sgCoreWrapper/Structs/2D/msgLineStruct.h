@@ -1,6 +1,6 @@
 #pragma once
-#include "..\..\..\sgCore\sgDefs.h"
-#include "..\..\Structs/msgPointStruct.h"
+#include "..\sgCore\sgDefs.h"
+#include "Structs/msgPointStruct.h"
 
 namespace sgCoreWrapper
 {

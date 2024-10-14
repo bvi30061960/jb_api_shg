@@ -1,7 +1,7 @@
 #pragma once
-#include "..\..\..\sgCore\sg2D.h"
-#include "..\..\Structs\msgPointStruct.h"
-#include "..\..\Objects\msgObject.h"
+#include "..\sgCore\sg2D.h"
+#include "Structs\msgPointStruct.h"
+#include "Objects\msgObject.h"
 
 namespace sgCoreWrapper
 {
@@ -33,11 +33,11 @@ namespace sgCoreWrapper
 			}
 
 			virtual bool IsClosed() abstract;
-			virtual bool IsPlane(msgVectorStruct^ vec, long double value) abstract;
+			virtual bool IsPlane(msgVectorStruct^ vec, double value) abstract;
 			virtual bool IsLinear() abstract;
 			virtual bool IsSelfIntersecting() abstract;
 
-			msgContour^ GetEquidistantContour(long double h1, long double h2, bool toRound);
+			msgContour^ GetEquidistantContour(double h1, double h2, bool toRound);
 			
 			msg2DObjectOrientEnum GetOrient(msgVectorStruct^ planeNormal)
 			{
@@ -49,7 +49,7 @@ namespace sgCoreWrapper
 				return sg2DObject->ChangeOrient();
 			}
 
-			msgPointStruct^ GetPointFromCoefficient(long double coeff)
+			msgPointStruct^ GetPointFromCoefficient(double coeff)
 			{
 				return gcnew msgPointStruct(&sg2DObject->GetPointFromCoefficient(coeff));
 			}

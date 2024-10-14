@@ -14,10 +14,10 @@ namespace JbShapeGenerator.AppData
             try
             {
 
-                HandleNamesAndPaths.clear_names_and_paths();
+                HandlePathsAndNames.clear_names_and_paths();
 
-                string lv_session_username = HandleNamesAndPaths.get_session_username_by_PageContext(po_PageContext);
-                HandleNamesAndPaths.create_names_and_directories(lv_session_username);
+                string lv_session_username = HandlePathsAndNames.get_session_username_by_PageContext(po_PageContext);
+                HandlePathsAndNames.create_names_and_directories(lv_session_username);
 
                 //////string? lv_path_and_name_file_wo_extension = HandleNamesAndPaths.get_full_path_with_unic_filename("");
                 ////string? lv_path_and_name_file_wo_extension = HandleNamesAndPaths.get_full_path_with_hashed_filename("");
@@ -40,7 +40,7 @@ namespace JbShapeGenerator.AppData
 
 
                 //----------------------------------------------------------------------------------------------------------
-                string? lv_path_and_name_file_wo_extension = HandleNamesAndPaths.get_full_path_with_hashed_filename(united_model_data.model_name, "");
+                string? lv_path_and_name_file_wo_extension = HandlePathsAndNames.get_full_path_with_hashed_filename(united_model_data.model_name, "");
 
                 string lv_filename_sides_data = lv_path_and_name_file_wo_extension + UsingFileExtensions.dat;
                 string lv_filename_prev_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.prev;
@@ -81,7 +81,7 @@ namespace JbShapeGenerator.AppData
 
                 // Добавление записи в список файлов
                 PersistentDictionary<gs_ListFiles> lo_list_model_files =
-                            new PersistentDictionary<gs_ListFiles>(HandleNamesAndPaths.av_path_unic_user_list_files);
+                            new PersistentDictionary<gs_ListFiles>(HandlePathsAndNames.av_path_unic_user_list_files);
 
                 lo_list_model_files.ModifyItem(lv_path_and_name_file_wo_extension, ls_data_file);
 

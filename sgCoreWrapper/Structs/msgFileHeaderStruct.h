@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgFileManager.h"
+#include "..\sgCore\sgFileManager.h"
 
 using namespace sgFileManager;
 using namespace System;

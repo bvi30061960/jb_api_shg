@@ -241,6 +241,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\sgCore_build\ms\Release\sgCore.lib" />
+    <Library Include="..\..\sgCore\sgCore.lib" />
   </ItemGroup>
 </Project>

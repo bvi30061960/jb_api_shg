@@ -1,8 +1,8 @@
 #pragma once
-#include "..\..\..\sgCore\sg3D.h"
-#include "..\..\Structs/msgPointStruct.h"
-#include "..\..\Structs/3D/msgEdgeStruct.h"
-#include "..\..\Helpers/ArrayHelper.h"
+#include "..\sgCore\sg3D.h"
+#include "Structs/msgPointStruct.h"
+#include "Structs/3D/msgEdgeStruct.h"
+#include "Helpers/ArrayHelper.h"
 
 using namespace sgCoreWrapper::Helpers;
 using namespace sgCoreWrapper::Structs;

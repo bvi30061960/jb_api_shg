@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\..\..\sgCore\sgTD.h"
+#include "..\sgCore\sgTD.h"
 #include "Objects/Text/msgFont.h"
 
 namespace sgCoreWrapper

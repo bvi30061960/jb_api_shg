@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgScene.h"
+#include "..\sgCore\sgScene.h"
 #include "Interfaces/mIObjectsList.h"
 #include "Structs/msgPointStruct.h"
 #include "Objects/msgObject.h"

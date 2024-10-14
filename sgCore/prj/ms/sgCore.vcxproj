@@ -106,7 +106,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <PreprocessorDefinitions>WIN32;WINDOWS_IGNORE_PACKING_MISMATCH;_DEBUG;sgCore_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>sgCore_API;_WIN32;WIN32;WINDOWS_IGNORE_PACKING_MISMATCH</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
@@ -135,7 +135,7 @@
     <ClCompile>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <PreprocessorDefinitions>WIN32;WINDOWS_IGNORE_PACKING_MISMATCH;NDEBUG;sgCore_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>sgCore_API;_WIN32;WIN32;WINDOWS_IGNORE_PACKING_MISMATCH</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
       <MinimalRebuild>true</MinimalRebuild>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>

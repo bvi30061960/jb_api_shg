@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\sgCore\sg2D.h"
+#include "..\sgCore\sg2D.h"
 #include "Objects/2D/msg2DObject.h"
 #include "Structs/2D/msgSplineStruct.h"
 
@@ -30,7 +30,7 @@ namespace sgCoreWrapper
 				return sgSpline->IsClosed();
 			}
 
-			bool virtual IsPlane(msgVectorStruct^ vec, long double value) override
+			bool virtual IsPlane(msgVectorStruct^ vec, double value) override
 			{
 				return sgSpline->IsPlane(vec->_point, &value);
 			}

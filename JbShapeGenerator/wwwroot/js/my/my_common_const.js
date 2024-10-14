@@ -2,7 +2,8 @@
     export var Constants = {
 
         method_refresh_premodel: "refresh_premodel",
-        method_make_model: "make_model"
+        method_make_model: "make_model",
+        method_load_model_parts: "load_model_parts"
 
         //Number_of_blocks: 6,
         //SeparatorNameSet_from_data: "_@&@_",

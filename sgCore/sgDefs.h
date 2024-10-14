@@ -45,7 +45,7 @@
 #if (SG_CURRENT_PLATFORM==SG_PLATFORM_IOS || SG_CURRENT_PLATFORM==SG_PLATFORM_ANDROID ||  SG_CURRENT_PLATFORM==SG_PLATFORM_LINUX)
     typedef   float   sgFloat;
 #else
-    typedef   long double  sgFloat;
+    typedef   double  sgFloat;
 #endif
 
 

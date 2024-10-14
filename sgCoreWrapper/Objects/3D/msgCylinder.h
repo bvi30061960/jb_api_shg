@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\sgCore\sg3D.h"
+#include "..\sgCore\sg3D.h"
 #include "Objects\3D\msg3DObject.h"
 #include "Structs\3D\msgCylinderStruct.h"
 
@@ -12,7 +12,7 @@ namespace sgCoreWrapper
 		public ref class msgCylinder : msg3DObject
 		{
 		public:
-			static msgCylinder^ Create(long double rad, long double heig, short merid)
+			static msgCylinder^ Create(double rad, double heig, short merid)
 			{
 				return gcnew msgCylinder(sgCCylinder::Create(rad, heig, merid));
 			}

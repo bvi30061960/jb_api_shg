@@ -72,6 +72,18 @@ namespace jb_api_shg.AppCode
     {
         public string stl_model_data { set; get; }
     };
+
+
+    public class typ_make_model_result_data
+    {
+
+        public string common_outfilename_part { set; get; }
+
+        public int number_outfiles { set; get; }
+
+    };
+
+
     //******************************************************************************************************************
 
 
@@ -216,7 +228,8 @@ namespace jb_api_shg.AppCode
         }
 
         //--------------------------------------------------------------------------------------------------
-        public static string MakeModel(typ_sides_data? po_sides_data)
+        //public static string MakeModel(typ_sides_data? po_sides_data)
+        public static typ_make_model_result_data MakeModel(typ_sides_data? po_sides_data)
         {
             try
             {
@@ -261,12 +274,13 @@ namespace jb_api_shg.AppCode
                 {
                     //if (lv_i == 1)
                     //{
-
+                    ////int lv_num_separator = lv_i + 1;
                     lv_side = enum_model_side.up_side;
                     lo_separator1 = GetSeparator(
                                         lo_scene,
                                         //lv_variant,
                                         lv_side,
+                                        ////lv_num_separator,
                                         po_sides_data.data1.PointsCurves[lv_i],
                                         lv_box_length,
                                         lv_box_width,
@@ -292,10 +306,13 @@ namespace jb_api_shg.AppCode
                 for (int lv_i = 0; lv_i < po_sides_data.data2.numCurves; lv_i++)
                 {
                     lv_side = enum_model_side.lateral_side;
+                    ////int lv_num_separator = lv_i + 1;
+
                     lo_separator2 = GetSeparator(
                                         lo_scene,
                                         //lv_variant,
                                         lv_side,
+                                        ////lv_num_separator,
                                         po_sides_data.data2.PointsCurves[lv_i],
                                         lv_box_length,
                                         lv_box_width,
@@ -322,28 +339,46 @@ namespace jb_api_shg.AppCode
 
                 // Разрезание
 
-                Stack<msg3DObject> lar_stack_result_details = null;
-
-                lar_stack_result_details = do_cutting(bx1, lar_stack_separators);
-
-                foreach (msg3DObject lo_curr_res_part in lar_stack_result_details)
-                {
-                    lo_scene.AttachObject(lo_curr_res_part);
-                }
+                Stack<msg3DObject>? lar_stack_result_details = null;
 
 
 
+                string lv_common_path_result_files = "";
 
 
-                string lv_path_result_file = EndWork(lo_scene);
+                /////lar_stack_result_details = do_cutting(lo_scene, bx1, lar_stack_separators);
+                //lv_common_path_result_files = do_cutting(lo_scene, bx1, lar_stack_separators);
 
-                return lv_path_result_file;
 
+                ////foreach (msg3DObject lo_curr_res_part in lar_stack_result_details)
+                ////{
+                ////    lo_scene.AttachObject(lo_curr_res_part);
+                ////}
+
+
+                typ_make_model_result_data lv_result_data = do_cutting(lo_scene, bx1, lar_stack_separators);
+
+                msgCore.FreeKernel(false);
+
+
+                ////string lv_path_result_file = EndWork(lo_scene);
+
+                ///return lv_path_result_file;
+
+
+                return lv_result_data;
 
             }
             catch (Exception ex)
             {
-                return ex.Message;
+
+                typ_make_model_result_data lv_result_data = new typ_make_model_result_data();
+                lv_result_data.common_outfilename_part = "Making model error";
+                lv_result_data.number_outfiles = 0;
+
+                return lv_result_data;
+
+                //return ex.Message;
 
             }
 
@@ -352,7 +387,15 @@ namespace jb_api_shg.AppCode
 
 
         //--------------------------------------------------------------------------------------------------
-        private static msg3DObject GetSeparator(msgScene po_scene, enum_model_side pv_side /*int pv_variant*/, decimal[][] par_TestPoints, double pv_box_length, double pv_box_width, double pv_gap_width)
+        private static msg3DObject GetSeparator(
+                msgScene po_scene,
+                enum_model_side pv_side /*int pv_variant*/,
+                ////int pv_num_separator,
+                decimal[][] par_TestPoints,
+                double pv_box_length,
+                double pv_box_width,
+                double pv_gap_width
+            )
         {
 
             const int SMOOTH = 130;// 135;// 150;//!!     120; //50;// 
@@ -372,267 +415,270 @@ namespace jb_api_shg.AppCode
 
             int lv_ind_struc = 0;
 
-            try 
+            try
             {
 
+                ls_tmpPnt.x = (double)par_TestPoints[0][0];
+                ls_tmpPnt.y = (double)par_TestPoints[0][1] - cv_extra_size;
+                ls_tmpPnt.z = 0.0;
+                lo_original_splinestruc.AddKnot(ls_tmpPnt, lv_ind_struc++);
 
+                for (int icurr = lv_ibegpoint; icurr <= lv_iendpoint; icurr++)
+                {
+                    ls_tmpPnt.x = (double)par_TestPoints[icurr][0]; // + lv_curve_shift;
+                    ls_tmpPnt.y = (double)par_TestPoints[icurr][1];
+                    ls_tmpPnt.z = 0.0;
 
-            ls_tmpPnt.x = (double)par_TestPoints[0][0];
-            ls_tmpPnt.y = (double)par_TestPoints[0][1] - cv_extra_size;
-            ls_tmpPnt.z = 0.0;
-            lo_original_splinestruc.AddKnot(ls_tmpPnt, lv_ind_struc++);
+                    lo_original_splinestruc.AddKnot(ls_tmpPnt, lv_ind_struc++);
+                }
 
-            for (int icurr = lv_ibegpoint; icurr <= lv_iendpoint; icurr++)
-            {
-                ls_tmpPnt.x = (double)par_TestPoints[icurr][0]; // + lv_curve_shift;
-                ls_tmpPnt.y = (double)par_TestPoints[icurr][1];
+                // Дополнительный узел для выход поверхности за размеры разрезаемого тела
+                ls_tmpPnt.y = ls_tmpPnt.y + cv_extra_size;
                 ls_tmpPnt.z = 0.0;
 
-                lo_original_splinestruc.AddKnot(ls_tmpPnt, lv_ind_struc++);
+                lo_original_splinestruc.AddKnot(ls_tmpPnt, lv_ind_struc);
+
+
+
+
+                // Spline with original curve
+
+                msgSpline lo_original_spline = msgSpline.Create(lo_original_splinestruc);
+
+                //07102024 msgSplineStruct.Delete(lo_original_splinestruc);
+
+
+
+
+
+                //25092024 {
+
+
+                //sgCObject* lnes[SMOOTH];
+                msgObject[] lnes = new msgObject[SMOOTH];
+
+
+                for (int i = 0; i < SMOOTH; i++)
+                {
+                    //SG_POINT p1 = sssss->GetPointFromCoefficient((double)i / SMOOTH);
+                    msgPointStruct p1 = lo_original_spline.GetPointFromCoefficient((double)i / SMOOTH);
+
+                    //SG_POINT p2 = sssss->GetPointFromCoefficient((double)(i + 1) / SMOOTH);
+                    msgPointStruct p2 = lo_original_spline.GetPointFromCoefficient((double)(i + 1) / SMOOTH);
+
+                    //lnes[i] = sgCreateLine(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+                    lnes[i] = msgLine.Create(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
+
+                }
+
+                //sgDeleteObject(sssss);
+                msgSplineStruct.Delete(lo_original_splinestruc);
+
+
+
+                //sgC2DObject* cnt2 = sgCContour::CreateContour(&lnes[0], SMOOTH);
+                msg2DObject cnt2 = msgContour.CreateContour(lnes);
+
+                //25092024 }
+
+
+
+
+                //construct a cutting solid is through pipe
+
+                msgObject[] ls_pipe_objcts = new msgObject[4];
+
+                ls_pipe_objcts[0] = msgLine.Create(0.0, 0.0, -cv_extra_size, pv_gap_width, 0.0, -cv_extra_size);
+                ls_pipe_objcts[1] = msgLine.Create(pv_gap_width, 0.0, -cv_extra_size, pv_gap_width, 0.0, pv_box_width + cv_extra_size);
+                ls_pipe_objcts[2] = msgLine.Create(pv_gap_width, 0.0, pv_box_width + cv_extra_size, 0.0, 0.0, pv_box_width + cv_extra_size);
+                ls_pipe_objcts[3] = msgLine.Create(0.0, 0.0, pv_box_width + cv_extra_size, 0.0, 0.0, -cv_extra_size);
+
+                msgContour lo_countour = msgContour.CreateContour(ls_pipe_objcts);
+
+                msgPointStruct ls_pipe_ps = new msgPointStruct(0, 0, 0);
+                bool lv_is_pipe_close = true;
+
+
+                //10102024 msg3DObject lo_spline_piped = (msg3DObject)msgKinematic.Pipe(lo_countour, null, lo_original_spline, ls_pipe_ps, 0, ref lv_is_pipe_close);//01062024
+                msg3DObject lo_spline_piped = (msg3DObject)msgKinematic.Pipe(lo_countour, null, cnt2, ls_pipe_ps, 0, ref lv_is_pipe_close);
+
+
+
+
+                //string lv_name_separator = "";
+
+                //po_scene.AttachObject(original_spline_piped);
+                switch (pv_side)
+                {
+                    // верхняя сторона
+                    case enum_model_side.up_side:
+                        //lv_name_separator = pv_num_separator.ToString();
+                        break;
+
+                    // боковая сторона - поворот и сдвиг
+                    case enum_model_side.lateral_side:
+
+                        //lv_name_separator = "_" + pv_num_separator.ToString();
+
+                        msgPointStruct zeroP = new msgVectorStruct(0, 0, 0);
+                        msgVectorStruct yAxe = new msgVectorStruct(0, 1.0, 0);
+                        double M_PI = Math.PI;
+
+                        lo_spline_piped.InitTempMatrix().Rotate(zeroP, yAxe, 90.0 * M_PI / 180.0);
+                        lo_spline_piped.ApplyTempMatrix();
+                        lo_spline_piped.DestroyTempMatrix();
+
+                        msgVectorStruct transV = new msgVectorStruct(0, 0, pv_box_width);
+                        lo_spline_piped.InitTempMatrix().Translate(transV);
+                        lo_spline_piped.ApplyTempMatrix();
+                        lo_spline_piped.DestroyTempMatrix();
+
+                        break;
+
+                }
+
+                //lo_spline_piped.SetName(lv_name_separator);
+
+                result = lo_spline_piped;
+
+
+
+
+
+                ////////        //switch (pv_variant)
+                ////////        switch (pv_side)
+                ////////{
+
+
+                ////////    //case 1:
+                ////////    case enum_model_side.up_side:
+
+                //////////////The first way to construct a cutting solid is through pipe
+
+                //////////// 1) rectangular countour
+                //////////msgObject[] ls_pipe_objcts = new msgObject[4];
+
+                //////////////ls_pipe_objcts[0] = msgLine.Create(0.0, 0.0, -10.0, 2, 0.0, -10.0);
+                //////////////ls_pipe_objcts[1] = msgLine.Create(2, 0.0, -10.0, 2, 0.0, pv_box_width+10);
+                //////////////ls_pipe_objcts[2] = msgLine.Create(2, 0.0, pv_box_width+10, 0.0, 0.0, pv_box_width+10);
+                //////////////ls_pipe_objcts[3] = msgLine.Create(0.0, 0.0, pv_box_width+10, 0.0, 0.0, -10.0);
+                //////////ls_pipe_objcts[0] = msgLine.Create(0.0, 0.0, -cv_extra_size, pv_gap_width, 0.0, -cv_extra_size);
+                //////////ls_pipe_objcts[1] = msgLine.Create(pv_gap_width, 0.0, -cv_extra_size, pv_gap_width, 0.0, pv_box_width+ cv_extra_size);
+                //////////ls_pipe_objcts[2] = msgLine.Create(pv_gap_width, 0.0, pv_box_width+ cv_extra_size, 0.0, 0.0, pv_box_width+ cv_extra_size);
+                //////////ls_pipe_objcts[3] = msgLine.Create(0.0, 0.0, pv_box_width+ cv_extra_size, 0.0, 0.0, -10.0);
+
+                //////////msgContour lo_countour = msgContour.CreateContour(ls_pipe_objcts);
+
+
+                //////////msgPointStruct ls_pipe_ps = new msgPointStruct(0, 0, 0);
+                //////////bool lv_is_pipe_close = true;
+                //////////msg3DObject lo_spline_piped = (msg3DObject)msgKinematic.Pipe(lo_countour, null, lo_original_spline, ls_pipe_ps, 0, ref lv_is_pipe_close);//01062024
+                ////////////po_scene.AttachObject(original_spline_piped);
+
+
+
+
+                ////////    result = lo_spline_piped;
+
+                ////////    break;
+
+
+                //////////case 2:
+
+
+                ////////case enum_model_side.lateral_side:
+
+
+                ////////:
+                ////////                    //The first way to construct a cutting surface is through through equidistant curves and extrusion
+
+                ////////                    double lv_half_thickness = 1; // half the thickness of the cutting surface
+
+
+                ////////                    // Construction of equidistant curves on both sides of the spline
+                ////////                    msgContour equiContour1 = lo_original_spline.GetEquidistantContour(lv_half_thickness, lv_half_thickness, true);
+                ////////                    msgContour equiContour2 = lo_original_spline.GetEquidistantContour(-lv_half_thickness, -lv_half_thickness, true);
+
+
+                ////////                    // creating a closed slide through two equidistant curves
+
+                ////////                    equiContour2.ChangeOrient();
+
+
+                ////////                    int lv_numPoints = lv_iendpoint - lv_ibegpoint + 1;
+                ////////                    int lv_double_num_points = lv_numPoints * 2;
+
+
+                ////////                    msgPointStruct ls_PntStruc = new msgPointStruct();
+                ////////                    msgSplineStruct lo_close_spline_struct = msgSplineStruct.Create();
+
+
+                ////////                    int lv_i = 0;
+
+                ////////                    for (lv_i = 0; lv_i <= lv_double_num_points; lv_i++)
+                ////////                    {
+                ////////                        if (lv_i < lv_numPoints + 1)
+                ////////                        {
+                ////////                            ls_PntStruc = equiContour1.GetPointFromCoefficient(lv_i / (double)lv_numPoints);
+                ////////                            ls_PntStruc.z = 0;
+                ////////                            lo_close_spline_struct.AddKnot(ls_PntStruc, lv_i);
+                ////////                        }
+                ////////                        else
+                ////////                        {
+                ////////                            ls_PntStruc = equiContour2.GetPointFromCoefficient((lv_i - (lv_numPoints + 1)) / (double)lv_numPoints);
+                ////////                            ls_PntStruc.z = 0;
+                ////////                            lo_close_spline_struct.AddKnot(ls_PntStruc, lv_i);
+                ////////                        }
+
+                ////////                    }
+
+                ////////                    ls_PntStruc = equiContour1.GetPointFromCoefficient(0);
+                ////////                    ls_PntStruc.z = 0;
+                ////////                    lo_close_spline_struct.AddKnot(ls_PntStruc, lv_double_num_points + 1);
+
+                ////////                    lo_close_spline_struct.Close();
+
+
+                ////////                    msgSpline lo_close_spline = msgSpline.Create(lo_close_spline_struct);
+
+                ////////                    bool lv_is = lo_close_spline.IsClosed();
+
+
+                ////////                    //msgObject[] contour_objcts = new msgObject[4];
+                ////////                    //contour_objcts[0] = equiContour1;
+                ////////                    //contour_objcts[1] = equiContour2;
+                ////////                    //msgContour lo_common_countour = msgContour.CreateContour(contour_objcts);
+
+                ////////                    msgVectorStruct lo_EquiExtrudeVector = new msgVectorStruct(0, 0, 5);//052024
+
+
+
+                ////////                    //msg3DObject lo_original_spline_extruded = (msg3DObject)msgKinematic.Extrude(lo_original_spline, null, lo_EquiExtrudeVector, true);
+                ////////                    //po_scene.AttachObject(lo_original_spline_extruded);//01062024 îòëàäêà!! Ïîòîì óáðàòü! 
+
+
+                ////////                    msg3DObject lo_Equidistan_contour_extruded1 = (msg3DObject)msgKinematic.Extrude(equiContour1, null, lo_EquiExtrudeVector, true);
+                ////////                    msg3DObject lo_Equidistan_contour_extruded2 = (msg3DObject)msgKinematic.Extrude(equiContour2, null, lo_EquiExtrudeVector, true);
+                ////////                    po_scene.AttachObject(lo_Equidistan_contour_extruded1);
+                ////////                    po_scene.AttachObject(lo_Equidistan_contour_extruded2);
+
+
+                ////////                    //msg3DObject lo_close_spline_extruded = (msg3DObject)msgKinematic.Extrude(lo_close_spline, null, lo_EquiExtrudeVector, true);// error!
+                ////////                    // error!
+
+                ////////                    //po_scene.AttachObject(lo_close_spline_extruded);
+
+                ////////                    //result = lo_close_spline_extruded;
+
+                ////////                    break;
+                ///
+
+                ////////        break;
+
+                ////////}
+
+
             }
-
-            // Дополнительный узел для выход поверхности за размеры разрезаемого тела
-            ls_tmpPnt.y = ls_tmpPnt.y + cv_extra_size;
-            ls_tmpPnt.z = 0.0;
-
-            lo_original_splinestruc.AddKnot(ls_tmpPnt, lv_ind_struc);
-
-
-
-
-            // Spline with original curve
-
-            msgSpline lo_original_spline = msgSpline.Create(lo_original_splinestruc);
-
-            //07102024 msgSplineStruct.Delete(lo_original_splinestruc);
-
-
-
-
-
-            //25092024 {
-
-
-            //sgCObject* lnes[SMOOTH];
-            msgObject[] lnes = new msgObject[SMOOTH];
-
-
-            for (int i = 0; i < SMOOTH; i++)
-            {
-                //SG_POINT p1 = sssss->GetPointFromCoefficient((double)i / SMOOTH);
-                msgPointStruct p1 = lo_original_spline.GetPointFromCoefficient((double)i / SMOOTH);
-
-                //SG_POINT p2 = sssss->GetPointFromCoefficient((double)(i + 1) / SMOOTH);
-                msgPointStruct p2 = lo_original_spline.GetPointFromCoefficient((double)(i + 1) / SMOOTH);
-
-                //lnes[i] = sgCreateLine(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-                lnes[i] = msgLine.Create(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z);
-
-            }
-
-            //sgDeleteObject(sssss);
-            msgSplineStruct.Delete(lo_original_splinestruc);
-
-
-
-            //sgC2DObject* cnt2 = sgCContour::CreateContour(&lnes[0], SMOOTH);
-            msg2DObject cnt2 = msgContour.CreateContour(lnes);
-
-            //25092024 }
-
-
-
-
-            //construct a cutting solid is through pipe
-
-            msgObject[] ls_pipe_objcts = new msgObject[4];
-
-            ls_pipe_objcts[0] = msgLine.Create(0.0, 0.0, -cv_extra_size, pv_gap_width, 0.0, -cv_extra_size);
-            ls_pipe_objcts[1] = msgLine.Create(pv_gap_width, 0.0, -cv_extra_size, pv_gap_width, 0.0, pv_box_width + cv_extra_size);
-            ls_pipe_objcts[2] = msgLine.Create(pv_gap_width, 0.0, pv_box_width + cv_extra_size, 0.0, 0.0, pv_box_width + cv_extra_size);
-            ls_pipe_objcts[3] = msgLine.Create(0.0, 0.0, pv_box_width + cv_extra_size, 0.0, 0.0, -cv_extra_size);
-
-            msgContour lo_countour = msgContour.CreateContour(ls_pipe_objcts);
-
-            msgPointStruct ls_pipe_ps = new msgPointStruct(0, 0, 0);
-            bool lv_is_pipe_close = true;
-
-
-            //10102024 msg3DObject lo_spline_piped = (msg3DObject)msgKinematic.Pipe(lo_countour, null, lo_original_spline, ls_pipe_ps, 0, ref lv_is_pipe_close);//01062024
-            msg3DObject lo_spline_piped = (msg3DObject)msgKinematic.Pipe(lo_countour, null, cnt2, ls_pipe_ps, 0, ref lv_is_pipe_close);
-
-
-
-
-
-            //po_scene.AttachObject(original_spline_piped);
-            switch (pv_side)
-            {
-                // верхняя сторона
-                case enum_model_side.up_side:
-                    break;
-
-                // боковая сторона - поворот и сдвиг
-                case enum_model_side.lateral_side:
-
-
-                    msgPointStruct zeroP = new msgVectorStruct(0, 0, 0);
-                    msgVectorStruct yAxe = new msgVectorStruct(0, 1.0, 0);
-                    double M_PI = Math.PI;
-
-                    lo_spline_piped.InitTempMatrix().Rotate(zeroP, yAxe, 90.0 * M_PI / 180.0);
-                    lo_spline_piped.ApplyTempMatrix();
-                    lo_spline_piped.DestroyTempMatrix();
-
-                    msgVectorStruct transV = new msgVectorStruct(0, 0, pv_box_width);
-                    lo_spline_piped.InitTempMatrix().Translate(transV);
-                    lo_spline_piped.ApplyTempMatrix();
-                    lo_spline_piped.DestroyTempMatrix();
-
-                    break;
-
-            }
-
-            result = lo_spline_piped;
-
-
-
-
-
-            ////////        //switch (pv_variant)
-            ////////        switch (pv_side)
-            ////////{
-
-
-            ////////    //case 1:
-            ////////    case enum_model_side.up_side:
-
-            //////////////The first way to construct a cutting solid is through pipe
-
-            //////////// 1) rectangular countour
-            //////////msgObject[] ls_pipe_objcts = new msgObject[4];
-
-            //////////////ls_pipe_objcts[0] = msgLine.Create(0.0, 0.0, -10.0, 2, 0.0, -10.0);
-            //////////////ls_pipe_objcts[1] = msgLine.Create(2, 0.0, -10.0, 2, 0.0, pv_box_width+10);
-            //////////////ls_pipe_objcts[2] = msgLine.Create(2, 0.0, pv_box_width+10, 0.0, 0.0, pv_box_width+10);
-            //////////////ls_pipe_objcts[3] = msgLine.Create(0.0, 0.0, pv_box_width+10, 0.0, 0.0, -10.0);
-            //////////ls_pipe_objcts[0] = msgLine.Create(0.0, 0.0, -cv_extra_size, pv_gap_width, 0.0, -cv_extra_size);
-            //////////ls_pipe_objcts[1] = msgLine.Create(pv_gap_width, 0.0, -cv_extra_size, pv_gap_width, 0.0, pv_box_width+ cv_extra_size);
-            //////////ls_pipe_objcts[2] = msgLine.Create(pv_gap_width, 0.0, pv_box_width+ cv_extra_size, 0.0, 0.0, pv_box_width+ cv_extra_size);
-            //////////ls_pipe_objcts[3] = msgLine.Create(0.0, 0.0, pv_box_width+ cv_extra_size, 0.0, 0.0, -10.0);
-
-            //////////msgContour lo_countour = msgContour.CreateContour(ls_pipe_objcts);
-
-
-            //////////msgPointStruct ls_pipe_ps = new msgPointStruct(0, 0, 0);
-            //////////bool lv_is_pipe_close = true;
-            //////////msg3DObject lo_spline_piped = (msg3DObject)msgKinematic.Pipe(lo_countour, null, lo_original_spline, ls_pipe_ps, 0, ref lv_is_pipe_close);//01062024
-            ////////////po_scene.AttachObject(original_spline_piped);
-
-
-
-
-            ////////    result = lo_spline_piped;
-
-            ////////    break;
-
-
-            //////////case 2:
-
-
-            ////////case enum_model_side.lateral_side:
-
-
-            ////////:
-            ////////                    //The first way to construct a cutting surface is through through equidistant curves and extrusion
-
-            ////////                    double lv_half_thickness = 1; // half the thickness of the cutting surface
-
-
-            ////////                    // Construction of equidistant curves on both sides of the spline
-            ////////                    msgContour equiContour1 = lo_original_spline.GetEquidistantContour(lv_half_thickness, lv_half_thickness, true);
-            ////////                    msgContour equiContour2 = lo_original_spline.GetEquidistantContour(-lv_half_thickness, -lv_half_thickness, true);
-
-
-            ////////                    // creating a closed slide through two equidistant curves
-
-            ////////                    equiContour2.ChangeOrient();
-
-
-            ////////                    int lv_numPoints = lv_iendpoint - lv_ibegpoint + 1;
-            ////////                    int lv_double_num_points = lv_numPoints * 2;
-
-
-            ////////                    msgPointStruct ls_PntStruc = new msgPointStruct();
-            ////////                    msgSplineStruct lo_close_spline_struct = msgSplineStruct.Create();
-
-
-            ////////                    int lv_i = 0;
-
-            ////////                    for (lv_i = 0; lv_i <= lv_double_num_points; lv_i++)
-            ////////                    {
-            ////////                        if (lv_i < lv_numPoints + 1)
-            ////////                        {
-            ////////                            ls_PntStruc = equiContour1.GetPointFromCoefficient(lv_i / (double)lv_numPoints);
-            ////////                            ls_PntStruc.z = 0;
-            ////////                            lo_close_spline_struct.AddKnot(ls_PntStruc, lv_i);
-            ////////                        }
-            ////////                        else
-            ////////                        {
-            ////////                            ls_PntStruc = equiContour2.GetPointFromCoefficient((lv_i - (lv_numPoints + 1)) / (double)lv_numPoints);
-            ////////                            ls_PntStruc.z = 0;
-            ////////                            lo_close_spline_struct.AddKnot(ls_PntStruc, lv_i);
-            ////////                        }
-
-            ////////                    }
-
-            ////////                    ls_PntStruc = equiContour1.GetPointFromCoefficient(0);
-            ////////                    ls_PntStruc.z = 0;
-            ////////                    lo_close_spline_struct.AddKnot(ls_PntStruc, lv_double_num_points + 1);
-
-            ////////                    lo_close_spline_struct.Close();
-
-
-            ////////                    msgSpline lo_close_spline = msgSpline.Create(lo_close_spline_struct);
-
-            ////////                    bool lv_is = lo_close_spline.IsClosed();
-
-
-            ////////                    //msgObject[] contour_objcts = new msgObject[4];
-            ////////                    //contour_objcts[0] = equiContour1;
-            ////////                    //contour_objcts[1] = equiContour2;
-            ////////                    //msgContour lo_common_countour = msgContour.CreateContour(contour_objcts);
-
-            ////////                    msgVectorStruct lo_EquiExtrudeVector = new msgVectorStruct(0, 0, 5);//052024
-
-
-
-            ////////                    //msg3DObject lo_original_spline_extruded = (msg3DObject)msgKinematic.Extrude(lo_original_spline, null, lo_EquiExtrudeVector, true);
-            ////////                    //po_scene.AttachObject(lo_original_spline_extruded);//01062024 îòëàäêà!! Ïîòîì óáðàòü! 
-
-
-            ////////                    msg3DObject lo_Equidistan_contour_extruded1 = (msg3DObject)msgKinematic.Extrude(equiContour1, null, lo_EquiExtrudeVector, true);
-            ////////                    msg3DObject lo_Equidistan_contour_extruded2 = (msg3DObject)msgKinematic.Extrude(equiContour2, null, lo_EquiExtrudeVector, true);
-            ////////                    po_scene.AttachObject(lo_Equidistan_contour_extruded1);
-            ////////                    po_scene.AttachObject(lo_Equidistan_contour_extruded2);
-
-
-            ////////                    //msg3DObject lo_close_spline_extruded = (msg3DObject)msgKinematic.Extrude(lo_close_spline, null, lo_EquiExtrudeVector, true);// error!
-            ////////                    // error!
-
-            ////////                    //po_scene.AttachObject(lo_close_spline_extruded);
-
-            ////////                    //result = lo_close_spline_extruded;
-
-            ////////                    break;
-            ///
-
-            ////////        break;
-
-            ////////}
-
-
-        }
             catch (Exception ex)
             {
                 return null;
@@ -645,7 +691,8 @@ namespace jb_api_shg.AppCode
 
 
         //--------------------------------------------------------------------------------------------------
-        private static Stack<msg3DObject>? do_cutting(msgBox lo_body, Stack<msg3DObject> par_separators)
+        ////private static Stack<msg3DObject>? do_cutting(msgScene po_scene, msgBox lo_body, Stack<msg3DObject> par_separators)
+        private static typ_make_model_result_data? do_cutting(msgScene po_scene, msgBox lo_body, Stack<msg3DObject> par_separators)
         {
             //Stack<msg3DObject> lar_result_details = new Stack<msg3DObject>();
 
@@ -657,7 +704,7 @@ namespace jb_api_shg.AppCode
 
 
             msgGroup lo_group_result = null;
-            msgObject[] lar_res_parts = null;
+            msgObject[] lar_sub_res_parts = null;
 
             msgPointStruct lo_gabarit_body_min = new msgPointStruct();
             msgPointStruct lo_gabarit_body_max = new msgPointStruct();
@@ -676,42 +723,34 @@ namespace jb_api_shg.AppCode
             lo_gabarit_body.y = Math.Abs(lo_gabarit_body_max.y - lo_gabarit_body_min.y);
             lo_gabarit_body.z = Math.Abs(lo_gabarit_body_max.z - lo_gabarit_body_min.z);
 
-
+            //----------------------------------------------------------------------------------
 
             lar_input_parts.Push(lo_body);
 
             foreach (msg3DObject lo_curr_separator in par_separators)
             {
 
-                //lo_curr_separator.GetGabarits(lo_gabarit_separat_min, lo_gabarit_separat_max);
-
-
                 lar_output_parts.Clear();
 
                 foreach (msg3DObject lo_curr_part in lar_input_parts)
                 {
 
-                    // Если секущие и деталь не пересекаются, вычитание не делаем
-
-                    ////// Проверяем пересекаются ли фигуры
-                    ////bool areIntersecting = lo_curr_part. CheckInterference(lo_curr_separator);
-
-                    ////if (!IsIntersect(lo_curr_separator, lo_curr_part))
-                    ////{
-                    ////    continue;
-                    ////}
-
-
-
-
                     lo_group_result = msgBoolean.Sub(lo_curr_part, lo_curr_separator);
 
-
-                    if (!lo_group_result.isNull())
+                    if (lo_group_result.isNull())
                     {
-                        lo_group_result.BreakGroup(ref lar_res_parts);
+                        if (lo_curr_part != lo_body)
+                        {
+                            lar_output_parts.Push(lo_curr_part);
+                        }
 
-                        foreach (msg3DObject lo_curr_res_part in lar_res_parts)
+                        continue;
+                    }
+                    else
+                    {
+                        lo_group_result.BreakGroup(ref lar_sub_res_parts);
+
+                        foreach (msg3DObject lo_curr_res_part in lar_sub_res_parts)
                         {
                             // Отбор результирующих деталей для дальнейшей резки:
                             // - минимальная координата по Y д.б. равна 0;
@@ -723,26 +762,13 @@ namespace jb_api_shg.AppCode
                                 continue;
                             }
 
-
-                            ////lo_curr_gabarits.x = Math.Abs(lo_gabarit_max.x - lo_gabarit_min.x);
-                            ////lo_curr_gabarits.y = Math.Abs(lo_gabarit_max.y - lo_gabarit_min.y);
-                            ////lo_curr_gabarits.z = Math.Abs(lo_gabarit_max.z - lo_gabarit_min.z);
-
-                            ////Double lv_size = Math.Max(lo_curr_gabarits.x, Math.Max(lo_curr_gabarits.y, lo_curr_gabarits.z));
-
-                            ////if (lv_size + lv_delta >= lo_gabarit_body.y)
-                            ////{
-                            ////    lar_output_parts.Push(lo_curr_res_part);
-                            ////}
-
                             lar_output_parts.Push(lo_curr_res_part);
 
-
                         }
+
                     }
 
                 }
-
 
                 // перезапись промежуточных частей во входной массив
                 if (lar_output_parts.Count > 0)
@@ -753,6 +779,7 @@ namespace jb_api_shg.AppCode
                         lar_input_parts.Push(lo_curr_res_part);
                     }
                 }
+
             }
 
 
@@ -764,11 +791,51 @@ namespace jb_api_shg.AppCode
 
 
 
-            //return lar_result_details;
 
-            return lar_output_parts;
+            // сохранение отдельных деталей в промежуточных файлах для чтения
+            // модели в клиенте
 
-            //throw new NotImplementedException();
+            //double[] lar_parts_x = { };
+            //double[] lar_parts_z = { };
+
+            int lv_i = 1;
+
+
+
+            string lv_dir_to_save = Path.Combine(Environment.CurrentDirectory,
+                                                    Path.Combine(CommonConstants.path_AppData,
+                                                        CommonConstants.path_temp_data));
+            Commons.create_directory_if_no_exist(lv_dir_to_save);
+
+
+            string lv_common_part_filename = HandlePathsAndNames.get_random_name();
+
+            string lv_path_file_to_save = "";
+
+            //po_scene.Clear();
+            foreach (msg3DObject lo_curr_res_part in lar_output_parts)
+            {
+                po_scene.AttachObject(lo_curr_res_part);
+
+                lv_path_file_to_save = Path.Combine(lv_dir_to_save, lv_common_part_filename + "_" + lv_i++.ToString() + ".stl");
+
+                msgFileManager.ExportSTL(po_scene, lv_path_file_to_save);
+                po_scene.DetachObject(lo_curr_res_part);
+            }
+
+            typ_make_model_result_data lo_result_data = new typ_make_model_result_data();
+
+            lo_result_data.common_outfilename_part = lv_common_part_filename;
+            lo_result_data.number_outfiles = lar_output_parts.Count;
+
+
+
+            //////return lar_result_details;
+            ////return lar_output_parts;
+            ///
+            ////return lv_common_part_filename;
+
+            return lo_result_data;
         }
 
         //////-------------------------------------------------------------------------------
@@ -808,26 +875,26 @@ namespace jb_api_shg.AppCode
 
 
         //-------------------------------------------------------------------------------
-        private static bool IsBetween(msgPointStruct po_outer_min, msgPointStruct po_outer_max, msgPointStruct po_inner_min, msgPointStruct po_inner_max)
-        {
-            bool lv_result = false;
+        ////private static bool IsBetween(msgPointStruct po_outer_min, msgPointStruct po_outer_max, msgPointStruct po_inner_min, msgPointStruct po_inner_max)
+        ////{
+        ////    bool lv_result = false;
 
-            lv_result =
+        ////    lv_result =
 
-                (
-                    ((po_inner_min.x >= po_outer_min.x && po_inner_min.x <= po_outer_max.x)
-                      || (po_inner_max.x >= po_outer_min.x && po_inner_max.x <= po_outer_max.x))
-                    &&
-                    ((po_inner_min.y >= po_outer_min.y && po_inner_min.y <= po_outer_max.y)
-                      || (po_inner_max.y >= po_outer_min.y && po_inner_max.y <= po_outer_max.y))
-                    &&
-                    ((po_inner_min.z >= po_outer_min.z && po_inner_min.z <= po_outer_max.z)
-                      || (po_inner_max.z >= po_outer_min.z && po_inner_max.z <= po_outer_max.z))
-                );
+        ////        (
+        ////            ((po_inner_min.x >= po_outer_min.x && po_inner_min.x <= po_outer_max.x)
+        ////              || (po_inner_max.x >= po_outer_min.x && po_inner_max.x <= po_outer_max.x))
+        ////            &&
+        ////            ((po_inner_min.y >= po_outer_min.y && po_inner_min.y <= po_outer_max.y)
+        ////              || (po_inner_max.y >= po_outer_min.y && po_inner_max.y <= po_outer_max.y))
+        ////            &&
+        ////            ((po_inner_min.z >= po_outer_min.z && po_inner_min.z <= po_outer_max.z)
+        ////              || (po_inner_max.z >= po_outer_min.z && po_inner_max.z <= po_outer_max.z))
+        ////        );
 
 
-            return lv_result;
-        }
+        ////    return lv_result;
+        ////}
 
 
         //--------------------------------------------------------------------------------------------------
@@ -852,7 +919,6 @@ namespace jb_api_shg.AppCode
 
         static string EndWork(msgScene po_scene)
         {
-            // âðåìåííîå èìÿ ôàéëà
             string lv_flename = Path.GetFileName(Path.GetTempFileName());
 
             //string lv_path_to_export = Path.Combine(Environment.CurrentDirectory, @"test_data/testResult.stl");

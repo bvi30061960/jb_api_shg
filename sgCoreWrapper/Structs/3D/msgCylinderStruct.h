@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\sgCore\sg3D.h"
+#include "..\sgCore\sg3D.h"
 
 namespace sgCoreWrapper
 {
@@ -8,16 +8,16 @@ namespace sgCoreWrapper
 		public ref struct msgCylinderStruct
 		{
 		public:
-			property long double Radius
+			property double Radius
 			{
-				long double get() { return _sgCylinder->Radius; }
-				void set(long double value) { _sgCylinder->Radius = value; }
+				double get() { return _sgCylinder->Radius; }
+				void set(double value) { _sgCylinder->Radius = value; }
 			}
 
-			property long double Height
+			property double Height
 			{
-				long double get() { return _sgCylinder->Height; }
-				void set(long double value) { _sgCylinder->Height = value; }
+				double get() { return _sgCylinder->Height; }
+				void set(double value) { _sgCylinder->Height = value; }
 			}
 
 			property short MeridiansCount

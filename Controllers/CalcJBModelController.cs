@@ -94,10 +94,20 @@ namespace jb_api.Controllers
                     case CommonConstants.method_refresh_premodel:
                         lv_path_result_file = CalcModel.RefreshModel(lo_sides_data);
 
+                        return Results.File(lv_path_result_file); //13102024
+
                         break;
 
                     case CommonConstants.method_make_model:
-                        lv_path_result_file = CalcModel.MakeModel(lo_sides_data);
+
+                        typ_make_model_result_data lv_data_outfiles = CalcModel.MakeModel(lo_sides_data);
+
+
+                        string lv_str_result_data = JsonConvert.SerializeObject(lv_data_outfiles);
+
+
+                        return Results.Text(lv_str_result_data);//13102024
+
                         break;
 
                 }

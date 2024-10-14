@@ -7,7 +7,7 @@ sgFloat getMaxCoord(const SG_POINT& pA)
 
 bool   isPointsNearInSomeCoord(const SG_POINT& pA, const SG_POINT& pB)
 {
-	const long double _MINDIST = max(getMaxCoord(pA), getMaxCoord(pB))*0.000001;
+	const double _MINDIST = max(getMaxCoord(pA), getMaxCoord(pB))*0.000001;
 
 	if (fabs(pA.x - pB.x) < _MINDIST)
 		return true;

@@ -61,8 +61,8 @@ namespace JbShapeGenerator.Pages
         public IActionResult OnGetReadListModels(/*string pv_taskid*/)
         {
 
-            HandleNamesAndPaths.clear_names_and_paths();
-            HandleNamesAndPaths.create_names_and_directories(Request.HttpContext.User.Identity.Name);
+            HandlePathsAndNames.clear_names_and_paths();
+            HandlePathsAndNames.create_names_and_directories(Request.HttpContext.User.Identity.Name);
 
 
             //Request.HttpContext.User.Identity.Name

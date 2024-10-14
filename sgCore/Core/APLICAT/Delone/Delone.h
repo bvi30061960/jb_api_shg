@@ -1,7 +1,7 @@
 #ifndef  __DELONE__
 #define  __DELONE__
 
-typedef   long double   trFloat;
+typedef   double   trFloat;
 
 class CTriangulator
 {

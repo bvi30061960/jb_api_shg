@@ -34,7 +34,7 @@ namespace JbShapeGenerator.Areas.Identity.Pages.Account
             ////GlobalData.av_username_wo_postfix = "";// очистка login name
 
 
-            HandleNamesAndPaths.clear_names_and_paths();
+            HandlePathsAndNames.clear_names_and_paths();
             // Очистка username в сессии
             CommonMethods.set_str_from_session(PageContext.HttpContext.Session, CommonConstants.session_username, "");
 

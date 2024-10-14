@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\sgCore\sg3D.h"
+#include "..\sgCore\sg3D.h"
 #include "Objects\msgObject.h"
 #include "Objects\3D\msgBRep.h"
 #include "Structs\3D\msgAllTrianglesStruct.h"
@@ -66,7 +66,7 @@ namespace sgCoreWrapper
 
 			msgMatrixRepresentationStruct^ GetWorldMatrixData()
 			{
-				return gcnew msgMatrixRepresentationStruct((long double*)sg3DObject->GetWorldMatrixData());
+				return gcnew msgMatrixRepresentationStruct((double*)sg3DObject->GetWorldMatrixData());
 			}
 
 			void SetMaterial(msgMaterialStruct^ material)
@@ -79,22 +79,22 @@ namespace sgCoreWrapper
 				return gcnew msgMaterialStruct((SG_MATERIAL*)sg3DObject->GetMaterial());
 			}
 
-			bool CalculateOptimalUV(long double% optU, long double% optV)
+			bool CalculateOptimalUV(double% optU, double% optV)
 			{
-				long double optU_val = optU;
-				long double optV_val = optV;
+				double optU_val = optU;
+				double optV_val = optV;
 				bool result = sg3DObject->CalculateOptimalUV(optU_val, optV_val);
 				optU = optU_val;
 				optV = optV_val;
 				return result;
 			}
 
-			long double GetVolume()
+			double GetVolume()
 			{
 				return sg3DObject->GetVolume();
 			}
 
-			long double GetSquare()
+			double GetSquare()
 			{
 				return sg3DObject->GetSquare();
 			}

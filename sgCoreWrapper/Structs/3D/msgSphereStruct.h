@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\sgCore\sg3D.h"
+#include "..\sgCore\sg3D.h"
 
 namespace sgCoreWrapper
 {
@@ -8,10 +8,10 @@ namespace sgCoreWrapper
 		public ref struct msgSphereStruct
 		{
 		public:
-			property long double Radius
+			property double Radius
 			{
-				long double get() { return _sgSphere->Radius; }
-				void set(long double value) { _sgSphere->Radius = value; }
+				double get() { return _sgSphere->Radius; }
+				void set(double value) { _sgSphere->Radius = value; }
 			}
 
 			property short MeridiansCount

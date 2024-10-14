@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\sgCore\sg3D.h"
+#include "..\sgCore\sg3D.h"
 #include "Objects\3D\msg3DObject.h"
 #include "Structs\3D\msgSphericBandStruct.h"
 
@@ -12,7 +12,7 @@ namespace sgCoreWrapper
 		public ref class msgSphericBand : msg3DObject
 		{
 		public:
-			static msgSphericBand^ Create(long double radius, long double beg_koef, long double end_koef,
+			static msgSphericBand^ Create(double radius, double beg_koef, double end_koef,
 				short merid_cnt)
 			{
 				return gcnew msgSphericBand(sgCSphericBand::Create(radius, beg_koef, end_koef, 

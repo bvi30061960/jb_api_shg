@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\sgCore\sgMatrix.h"
+#include "..\sgCore\sgMatrix.h"
 #include "Structs/msgMatrixRepresentationStruct.h"
 
 using namespace sgCoreWrapper::Structs;
@@ -10,7 +10,7 @@ namespace sgCoreWrapper
 	{
 
 		/*sgCMatrix();
-		sgCMatrix(const long double*);
+		sgCMatrix(const double*);
 		sgCMatrix& operator = (const sgCMatrix& );*/
 		public ref class msgMatrix
 		{
@@ -21,7 +21,7 @@ namespace sgCoreWrapper
 				_needDelete = true;
 			}
 
-			msgMatrix(long double dim)
+			msgMatrix(double dim)
 			{
 				_sgCMatrix = new sgCMatrix(&dim);
 				_needDelete = true;
@@ -47,12 +47,12 @@ namespace sgCoreWrapper
 
 			msgMatrixRepresentationStruct^ GetData()
 			{
-				return gcnew msgMatrixRepresentationStruct((long double*)_sgCMatrix->GetData());
+				return gcnew msgMatrixRepresentationStruct((double*)_sgCMatrix->GetData());
 			}
 
 			msgMatrixRepresentationStruct^ GetTransparentData()
 			{
-				return gcnew msgMatrixRepresentationStruct((long double*)_sgCMatrix->GetTransparentData());
+				return gcnew msgMatrixRepresentationStruct((double*)_sgCMatrix->GetTransparentData());
 			}
 
 			void Identity()
@@ -80,7 +80,7 @@ namespace sgCoreWrapper
 				_sgCMatrix->Translate(*transVector->_point);
 			}
 
-			void Rotate(msgPointStruct^ axePoint, msgVectorStruct^ axeDir, long double alpha_radians)
+			void Rotate(msgPointStruct^ axePoint, msgVectorStruct^ axeDir, double alpha_radians)
 			{
 				_sgCMatrix->Rotate(*axePoint->_point, *axeDir->_point, alpha_radians);
 			}

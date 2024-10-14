@@ -66,24 +66,24 @@ namespace sgCoreWrapper
 			}
 
 			static msgObject^ LinearSurfaceFromSections(msg2DObject^ firstSide,
-				msg2DObject^ secondSide, long double firstParam, bool isClose)
+				msg2DObject^ secondSide, double firstParam, bool isClose)
 			{
 				return ObjectCreateHelper::CreateObject(sgSurfaces::LinearSurfaceFromSections(
 					*firstSide->sg2DObject,	*secondSide->sg2DObject, firstParam, isClose));
 			}
 
 			static msgObject^ SplineSurfaceFromSections(array<msg2DObject^>^ sections,
-				array<long double>^ params, bool isClose)
+				array<double>^ params, bool isClose)
 			{
 				const sgC2DObject** usections = GetC2DObject(sections);
-				long double* uparams = new long double[params->Length];
+				double* uparams = new double[params->Length];
 				for (int i = 0; i < params->Length; i++)
 				{
 					uparams[i] = params[i];
 				}
 				msgObject^ result =  ObjectCreateHelper::CreateObject(
 					sgSurfaces::SplineSurfaceFromSections(
-					usections, (const long double*)uparams, sections->Length, isClose));
+					usections, (const double*)uparams, sections->Length, isClose));
 				delete[] uparams;
 				return result;
 			}

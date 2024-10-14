@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="AppData\temp_data\" />
     <Folder Include="Data\" />
     <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\datafiles\" />

@@ -1,5 +1,5 @@
 #pragma once
-#include "..\..\..\sgCore\sgAlgs.h"
+#include "..\sgCore\sgAlgs.h"
 #include "Objects/msgGroup.h"
 #include "Objects/3D/msg3DObject.h"
 #include "Structs/msgPointStruct.h"
@@ -37,7 +37,7 @@ namespace sgCoreWrapper
 					*bOb->sg3DObject));
 			}
 
-			static msgGroup^ Section(msg3DObject^ obj, msgVectorStruct^ planeNormal, long double planeD)
+			static msgGroup^ Section(msg3DObject^ obj, msgVectorStruct^ planeNormal, double planeD)
 			{
 				return gcnew msgGroup(sgBoolean::Section(*obj->sg3DObject, 
 					*planeNormal->_point, planeD));

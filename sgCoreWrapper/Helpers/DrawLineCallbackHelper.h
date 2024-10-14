@@ -1,7 +1,7 @@
 #pragma once
 
-#include "..\..\sgCore\sgDefs.h"
-#include "..\..\sgCore\sgObject.h"
+#include "..\sgCore\sgDefs.h"
+#include "..\sgCore\sgObject.h"
 #include "Objects/msgObject.h"
 #include "Structs/msgPointStruct.h"
 

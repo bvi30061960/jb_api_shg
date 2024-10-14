@@ -1,8 +1,8 @@
 #pragma once
 
-#include "..\..\Structs/msgPointStruct.h"
-#include "..\..\Structs/msgDoubleStruct.h"
-#include "..\..\Structs/3D/msgEdgeStruct.h"
+#include "Structs/msgPointStruct.h"
+#include "Structs/msgDoubleStruct.h"
+#include "Structs/3D/msgEdgeStruct.h"
 
 using namespace sgCoreWrapper::Structs;
 

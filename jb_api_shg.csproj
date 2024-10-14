@@ -32,4 +32,9 @@
     </Reference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AppData\" />
+    <Folder Include="test_data\" />
+  </ItemGroup>
+
 </Project>

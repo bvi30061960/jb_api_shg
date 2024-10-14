@@ -970,7 +970,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                this.send_side_data(lv_url, lo_sides_data);
+                this.send_side_data_make_model(lv_url, lo_sides_data);
 
 
             }
@@ -1043,6 +1043,241 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
 
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.send_side_data_make_model = function (pv_url, po_json_data) {
+
+            $('#up_id_loading_indicator').show();// индикация ожидани
+            $('#lateral_id_loading_indicator').show();// индикация ожидания
+
+            send(pv_url, po_json_data);
+
+            async function send(pv_url, po_json_data) {
+
+
+                let lo_active_side = get_active_side_shape_generator(); //04102024
+                let lo_passive_side = get_passive_side_shape_generator(); //04102024
+
+                try {
+
+                    var lv_for_body = JSON.stringify(po_json_data);
+                    const response = await fetch(pv_url, {
+                        method: "POST",
+                        headers: {
+                            //"Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        body: lv_for_body
+                    });
+
+                    const message = await response.json();
+                    //const message = await response.text();
+
+                    lo_active_side.OnCompleteMakeModel(message);
+
+                }
+
+                catch (e) {
+
+                    lo_active_side.model_params_changed = false; //04102024
+
+
+                    // 04102024 {
+                    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+                    lo_active_side.model_params_changed = false;
+                    lo_active_side.is_building_model = false;
+                    lo_passive_side.is_building_model = false;
+                    // 04102024 }
+
+
+                    /////alert('error send: ' + e.stack);
+
+                }
+
+
+            }
+
+        }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.OnCompleteMakeModel = function (po_data) {
+
+            let lo_active_side = get_active_side_shape_generator();
+            let lo_passive_side = get_passive_side_shape_generator();
+
+            if (po_data == null || po_data == "") {
+
+                $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+                lo_active_side.model_params_changed = false;
+                lo_active_side.is_building_model = false;
+                lo_passive_side.is_building_model = false;
+
+                return;
+            }
+
+            this.load_model_parts(po_data);
+
+
+
+            ////const loader = new STLLoader();
+            ////const lo_object = loader.parse(po_data);
+
+            ////// Очистка сцены
+            ////let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
+            ////lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+
+            ////lo_active_side.on_load_model(lo_object);
+
+        }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.load_model_parts = function (po_data) {
+
+
+            if (po_data == null || po_data.number_outfiles == null || po_data.number_outfiles <= 0) {
+                return;
+            }
+
+            // Очистка сцены
+            let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
+            lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+
+            //const loader = new STLLoader();
+
+            let lv_filename = "";
+
+            for (let lv_i = 0; lv_i < items.length; lv_i++) {
+
+                lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString();
+
+                this.load_model_parts(lv_filename);
+
+            }
+
+
+
+
+            ////const lo_object = loader.parse(po_data);
+            ////lo_active_side.on_load_model(lo_object);
+
+
+
+
+        }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.load_model_parts = function () {
+
+            try {
+
+                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_load_model_parts;
+
+                this.read_model_part(lv_url);
+
+
+            }
+
+            catch (e) {
+
+                this.model_params_changed = false; //29082024
+
+                alert('error make_model: ' + e.stack);
+
+            }
+
+
+        }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.read_model_part = function () {
+
+            try {
+
+                $('#up_id_loading_indicator').show();// индикация ожидани
+                $('#lateral_id_loading_indicator').show();// индикация ожидания
+
+                send(pv_url, po_json_data);
+
+                async function send(pv_url, po_json_data) {
+
+
+                    let lo_active_side = get_active_side_shape_generator(); //04102024
+                    let lo_passive_side = get_passive_side_shape_generator(); //04102024
+
+
+                    //---------------------------------------------------------------------
+                    try {
+
+                        var lv_for_body = JSON.stringify(po_json_data);
+                        const response = await fetch(pv_url, {
+                            method: "POST",
+                            headers: {
+                                //"Accept": "application/json",
+                                "Content-Type": "application/json"
+                            },
+                            body: lv_for_body
+                        });
+
+                        const message = await response.json();
+                        //const message = await response.text();
+
+                        lo_active_side.OnCompleteMakeModel(message);
+
+                    }
+
+                    catch (e) {
+
+                        lo_active_side.model_params_changed = false; //04102024
+
+
+                        // 04102024 {
+                        $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                        $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+                        lo_active_side.model_params_changed = false;
+                        lo_active_side.is_building_model = false;
+                        lo_passive_side.is_building_model = false;
+                        // 04102024 }
+
+
+                        /////alert('error send: ' + e.stack);
+
+                    }
+
+                    //----------------------------------------------------------------------------
+
+
+                }
+
+            }
+            catch (e) {
+
+            }
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.OnCompleteRefreshModel = function (po_data) {
@@ -1050,22 +1285,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lo_active_side = get_active_side_shape_generator();
             let lo_passive_side = get_passive_side_shape_generator();
 
-            // 04102024 {
             if (po_data == null || po_data == "") {
 
-                // 04102024 {
                 $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
                 $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
 
                 lo_active_side.model_params_changed = false;
                 lo_active_side.is_building_model = false;
                 lo_passive_side.is_building_model = false;
-                // 04102024 }
-
 
                 return;
             }
-            // 04102024 }
 
             const loader = new STLLoader();
             const lo_object = loader.parse(po_data);

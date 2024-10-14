@@ -1,6 +1,6 @@
 #pragma once
 
-#include "..\..\sgCore\sgDefs.h"
+#include "..\sgCore\sgDefs.h"
 #include <vcclr.h>
 using namespace System;
 
