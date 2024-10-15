@@ -343,14 +343,21 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.camera_mod;
     this.scene_mod;
 
+    //14102024 {
+    //////this.material_mod = new THREE.MeshLambertMaterial({
+    //////    //color: 0xffffff,
+    //////    color: 0xfff0f0,
+    //////    opacity: 0.5,
+    //////    //side: THREE.DoubleSide,
+    //////    ////////////////transparent: true
+    //////});
 
-    this.material_mod = new THREE.MeshLambertMaterial({
-        //color: 0xffffff,
-        color: 0xfff0f0,
-        opacity: 0.5,
-        //side: THREE.DoubleSide,
-        ////////////////transparent: true
-    });
+
+    this.material_mod = new THREE.MeshPhongMaterial({ color: 0xff5533, specular: 0x111111, shininess: 200 });
+
+    this.group_parts_mod;
+
+    //14102024 }
 
 
 
@@ -564,6 +571,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.container_mod = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape_mod);//20062024
 
                 this.scene_mod = new THREE.Scene();
+                ///this.group_parts_mod = new THREE.Object3D(); //14102024 
+                //this.group_parts_mod.position.set(0, 0, 0);
+                this.group_parts_mod = new THREE.Group(); //14102024 
+                this.scene_mod.add(this.group_parts_mod); //14102024 
+
                 //this.scene_mod.background = new THREE.Color(0xf0f0f0);
 
 
@@ -1141,121 +1153,193 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 return;
             }
 
-            // Очистка сцены
-            let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
-            lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+            // Очистка сцены new THREE.Group();
+            //14102024 let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
+            let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// 14102024
+            this.common_func.clearScene(this.scene_mod, lar_no_delete);
 
-            //const loader = new STLLoader();
+
+            //this.group_parts_mod = new THREE.Object3D(); //14102024 
+            ////this.group_parts_mod.position.set(0, 0, 0);
+            //this.scene_mod.add(this.group_parts_mod); //14102024 
+
+
+
+
 
             let lv_filename = "";
 
-            for (let lv_i = 0; lv_i < items.length; lv_i++) {
+            for (let lv_i = 1; lv_i <= po_data.number_outfiles; lv_i++) {
 
-                lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString();
+                lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString() + Constants.file_model_ext;
 
-                this.load_model_parts(lv_filename);
+                this.load_model_part(lv_filename);
 
             }
-
-
-
-
-            ////const lo_object = loader.parse(po_data);
-            ////lo_active_side.on_load_model(lo_object);
-
-
-
 
         }
 
 
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.load_model_parts = function () {
+        Shape_generator.prototype.load_model_part = function (pv_filename) {
 
             try {
 
-                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_load_model_parts;
-
-                this.read_model_part(lv_url);
-
-
-            }
-
-            catch (e) {
-
-                this.model_params_changed = false; //29082024
-
-                alert('error make_model: ' + e.stack);
-
-            }
+                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts +
+                    "&filename=" + pv_filename;
 
 
-        }
+                let lo_active_side = get_active_side_shape_generator();
+                let lo_passive_side = get_passive_side_shape_generator();
 
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.read_model_part = function () {
 
-            try {
+                //this.read_model_part(lv_url);
 
                 $('#up_id_loading_indicator').show();// индикация ожидани
                 $('#lateral_id_loading_indicator').show();// индикация ожидания
 
-                send(pv_url, po_json_data);
-
-                async function send(pv_url, po_json_data) {
+                get_model_part(lv_url);
 
 
-                    let lo_active_side = get_active_side_shape_generator(); //04102024
-                    let lo_passive_side = get_passive_side_shape_generator(); //04102024
-
-
-                    //---------------------------------------------------------------------
-                    try {
-
-                        var lv_for_body = JSON.stringify(po_json_data);
-                        const response = await fetch(pv_url, {
-                            method: "POST",
-                            headers: {
-                                //"Accept": "application/json",
-                                "Content-Type": "application/json"
-                            },
-                            body: lv_for_body
-                        });
-
-                        const message = await response.json();
-                        //const message = await response.text();
-
-                        lo_active_side.OnCompleteMakeModel(message);
-
-                    }
-
-                    catch (e) {
-
-                        lo_active_side.model_params_changed = false; //04102024
-
-
-                        // 04102024 {
-                        $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                        $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-
-                        lo_active_side.model_params_changed = false;
-                        lo_active_side.is_building_model = false;
-                        lo_passive_side.is_building_model = false;
-                        // 04102024 }
-
-
-                        /////alert('error send: ' + e.stack);
-
-                    }
-
-                    //----------------------------------------------------------------------------
-
-
+                //--------------------------------------------------
+                async function get_model_part(pv_url) {
+                    //--------------------------------------------------
+                    await $.get(pv_url, "", lo_active_side.oncomplete_read_model_part); //, OnError_get_file_cost);
                 }
+                //--------------------------------------------------
 
             }
             catch (e) {
+
+                lo_active_side.model_params_changed = false; //04102024
+
+                $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+                lo_active_side.model_params_changed = false;
+                lo_active_side.is_building_model = false;
+                lo_passive_side.is_building_model = false;
+            }
+
+        }
+
+        ////////------------------------------------------------------------------------
+        //////Shape_generator.prototype.read_model_part = function (pv_url) {
+
+        //////    try {
+
+        //////        $('#up_id_loading_indicator').show();// индикация ожидани
+        //////        $('#lateral_id_loading_indicator').show();// индикация ожидания
+
+        //////        get_model_part(pv_url);
+
+        //////        async function get_model_part(pv_url) {
+
+
+        //////            let lo_active_side = get_active_side_shape_generator(); //04102024
+        //////            let lo_passive_side = get_passive_side_shape_generator(); //04102024
+
+
+        //////            //---------------------------------------------------------------------
+        //////            try {
+
+        //////                await $.get(pv_url, "", lo_active_side.oncomplete_read_model_part); //, OnError_get_file_cost);
+
+        //////                ////var lv_for_body = JSON.stringify(po_json_data);
+        //////                ////const response = await fetch(pv_url, {
+        //////                ////    method: "POST",
+        //////                ////    headers: {
+        //////                ////        //"Accept": "application/json",
+        //////                ////        "Content-Type": "application/json"
+        //////                ////    },
+        //////                ////    body: lv_for_body
+        //////                ////});
+
+        //////                ////const message = await response.json();
+        //////                //////const message = await response.text();
+
+        //////                ////lo_active_side.OnCompleteMakeModel(message);
+
+        //////            }
+
+        //////            catch (e) {
+
+        //////                lo_active_side.model_params_changed = false; //04102024
+
+
+        //////                // 04102024 {
+        //////                $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+        //////                $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+        //////                lo_active_side.model_params_changed = false;
+        //////                lo_active_side.is_building_model = false;
+        //////                lo_passive_side.is_building_model = false;
+        //////                // 04102024 }
+
+
+        //////                /////alert('error send: ' + e.stack);
+
+        //////            }
+
+        //////            //----------------------------------------------------------------------------
+
+
+        //////        }
+
+        //////    }
+        //////    catch (e) {
+
+        //////    }
+
+
+        //////}
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.oncomplete_read_model_part = function (po_data) {
+
+
+            try {
+
+                const loader = new STLLoader();
+                ////const lo_object = loader.parse(po_data);
+                const geometry_mod = loader.parse(po_data);
+
+                //lo_active_side.on_load_read_model_part(lo_object);
+
+
+
+
+                let lo_active_side = get_active_side_shape_generator();
+                let lo_passive_side = get_passive_side_shape_generator();
+
+                /////////////geometry_mod.center();// Объект - в центре вращения
+
+
+
+
+                //=========================================================================
+                const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+
+                //14102024 lo_active_side.scene_mod.add(mesh_mod);
+                lo_active_side.group_parts_mod.add(mesh_mod);//14102024 
+
+                $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+
+                lo_active_side.animate_mod();
+
+                lo_active_side.is_building_model = false;
+                lo_passive_side.is_building_model = false;
+
+
+            }
+
+
+            catch (e) {
+
+                alert('error oncomplete_read_model_part: ' + e.stack);
 
             }
 
@@ -1263,18 +1347,101 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
 
+        ////////-------------------------------------------------------------------
+        //////Shape_generator.prototype.on_load_read_model_part = function (geometry_mod) {
 
 
 
+        //////    let lo_active_side = get_active_side_shape_generator();
+        //////    let lo_passive_side = get_passive_side_shape_generator();
+
+        //////    geometry_mod.center();// Объект - в центре вращения
 
 
 
+        //////    //////////////////////const dirLight2 = new THREE.DirectionalLight(0xccccff, 3);
+        //////    //////////////////////dirLight2.position.set(- 1, 0.75, - 0.5);
+        //////    //////////////////////lo_active_side.scene_mod.add(dirLight2);
+
+
+        //////    //const material_mod = new THREE.MeshPhongMaterial(/*{ color: 0x555555 }*/);
+
+
+        //////    //const material_mod = new THREE.MeshPhongMaterial({
+        //////    //    specular: 0x444444,
+        //////    //    //map: decalDiffuse,
+        //////    //    //normalMap: decalNormal,
+        //////    //    normalScale: new THREE.Vector2(1, 1),
+        //////    //    shininess: 30,
+        //////    //    transparent: false, //true,
+        //////    //    depthTest: true,
+        //////    //    depthWrite: false,
+        //////    //    polygonOffset: true,
+        //////    //    polygonOffsetFactor: - 4,
+        //////    //    wireframe: false //true // false
+        //////    //});
+
+
+        //////    ////const material_mod = new THREE.MeshLambertMaterial({
+        //////    ////    //color: 0xffffff,
+        //////    ////    color: 0xfff0f0,
+        //////    ////    opacity: 0.5,
+        //////    ////    //side: THREE.DoubleSide,
+        //////    ////    transparent: true
+        //////    ////});
+
+
+        //////    //const material_mod = new THREE.MeshBasicMaterial({
+        //////    //    color: 0x00ff00, // черный цвет номера
+        //////    //    side: THREE.DoubleSide,
+        //////    //    shading: THREE.FlatShading
+        //////    //});
 
 
 
+        //////    ////camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100);
+        //////    ////camera.position.set(1, 2, - 3);
+        //////    ////camera.lookAt(0, 1, 0);
+        //////    //var material_mod = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+        //////    ///const material_mod = new THREE.MeshPhongMaterial({ color: 0xcbcbcb, depthWrite: false }) 
+
+        //////    //////let materialFront = new THREE.MeshBasicMaterial({ color: new THREE.Color(Math.random() * 0xffffff) });
+        //////    //////let materialSide = new THREE.MeshBasicMaterial({ color: new THREE.Color(Math.random() * 0x00ffff) });
+
+        //////    //////let materialArray = [materialFront, materialSide];
+        //////    //////let material_mod = new THREE.MeshLambertMaterial(materialArray);
+
+
+        //////    //const dirLight = new THREE.DirectionalLight(0xffffff, 3);
+        //////    //dirLight.position.set(- 3, 10, - 10);
+        //////    //dirLight.castShadow = true;
+        //////    //dirLight.shadow.camera.top = 2;
+        //////    //dirLight.shadow.camera.bottom = - 2;
+        //////    //dirLight.shadow.camera.left = - 2;
+        //////    //dirLight.shadow.camera.right = 2;
+        //////    //dirLight.shadow.camera.near = 0.1;
+        //////    //dirLight.shadow.camera.far = 40;
+        //////    //lo_active_side.scene_mod.add(dirLight);
 
 
 
+        //////    //=========================================================================
+        //////    const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+
+        //////    lo_active_side.scene_mod.add(mesh_mod);
+
+
+        //////    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+        //////    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+
+        //////    lo_active_side.animate_mod();
+
+        //////    lo_active_side.is_building_model = false;
+        //////    lo_passive_side.is_building_model = false;
+
+
+        //////}
 
 
 
@@ -1301,7 +1468,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             const lo_object = loader.parse(po_data);
 
             // Очистка сцены
-            let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
+            let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
             lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
 
             lo_active_side.on_load_model(lo_object);
@@ -1404,6 +1571,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             //=========================================================================
             const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+
+
+
 
             lo_active_side.scene_mod.add(mesh_mod);
 

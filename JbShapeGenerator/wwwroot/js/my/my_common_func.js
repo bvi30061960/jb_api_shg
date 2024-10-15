@@ -428,13 +428,13 @@ export function CommonFunc() {
 
 
 
-    //////------------------------------------------------------------------------
-    ////    CommonFunc.prototype.OnComple_save_model = function (po_data) {
+        //////------------------------------------------------------------------------
+        ////    CommonFunc.prototype.OnComple_save_model = function (po_data) {
 
-    ////    let lo_active_side = get_active_side_shape_generator();
+        ////    let lo_active_side = get_active_side_shape_generator();
 
 
-    ////    }
+        ////    }
 
         //------------------------------------------------------------------------
         CommonFunc.prototype.onSuccessSaveModel = function (text, filename) {
@@ -842,6 +842,29 @@ export function CommonFunc() {
         //------------------------------------------------------------------------
 
 
+        //======================================================================================
+        function set_group_to_center(po_group) {
+
+            // from http://stackoverflow.com/questions/28848863/threejs-how-to-rotate-around-objects-own-center-instead-of-world-center
+
+            var objBbox = new THREE.Box3().setFromObject(po_group);
+
+            // Geometry vertices centering to world axis
+            var bboxCenter = objBbox.getCenter().clone();
+            bboxCenter.multiplyScalar(-1);
+
+            po_group.traverse(function (child) {
+                if (child instanceof THREE.Mesh) {
+                    child.geometry.translate(bboxCenter.x, bboxCenter.y, bboxCenter.z);
+                }
+            });
+
+            objBbox.setFromObject(po_group); // Update the bounding box
+
+
+        }
+
+        //------------------------------------------------------------------------
 
         ////CommonFunc.prototype.fitCameraToObject = function (scene, camera, object, offset, controls) {
 

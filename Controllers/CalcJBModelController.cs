@@ -42,13 +42,33 @@ namespace jb_api.Controllers
         //----------------------------------------------------------------------------------
 
         [HttpGet(Name = "GetCalcJBModel")]
-        public IEnumerable<CalcModel> Get()
+        //public IEnumerable<CalcModel> Get()
+        async public Task<IResult> Get()
         {
-            string lv_app_path = Environment.CurrentDirectory; //Request.HttpContext.base;
 
-            //CalcModel.BuildModel();
 
-            return null;
+            string lv_path_model_part = "";
+
+            switch (Request.Query["method"])
+            {
+                // верхняя сторона
+                case CommonConstants.method_read_model_parts:
+
+
+                    string lv_filename = Request.Query["filename"];
+
+                    lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
+                                            Path.Combine(CommonConstants.path_AppData,
+                                                Path.Combine(CommonConstants.path_temp_data), lv_filename));
+                    break;
+
+                //case CommonConstants.method_make_model:
+
+            }
+
+
+            return Results.File(lv_path_model_part); //13102024
+
         }
 
 
@@ -76,7 +96,6 @@ namespace jb_api.Controllers
 
             try
             {
-
 
                 // получаем данные json
                 var lo_sides_data = await Request.ReadFromJsonAsync<typ_sides_data>();
