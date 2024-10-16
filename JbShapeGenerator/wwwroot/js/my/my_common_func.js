@@ -843,14 +843,21 @@ export function CommonFunc() {
 
 
         //======================================================================================
-        function set_group_to_center(po_group) {
+        CommonFunc.prototype.set_group_to_center = function (po_group) {
 
             // from http://stackoverflow.com/questions/28848863/threejs-how-to-rotate-around-objects-own-center-instead-of-world-center
 
-            var objBbox = new THREE.Box3().setFromObject(po_group);
+            let objBbox = new THREE.Box3().setFromObject(po_group);
 
             // Geometry vertices centering to world axis
-            var bboxCenter = objBbox.getCenter().clone();
+            ///////var bboxCenter = objBbox.getCenter().clone();
+
+
+            let lo_center = new THREE.Vector3(0, 0, 0);
+
+            objBbox.getCenter(lo_center);//
+            var bboxCenter = lo_center.clone();//
+
             bboxCenter.multiplyScalar(-1);
 
             po_group.traverse(function (child) {
@@ -859,12 +866,155 @@ export function CommonFunc() {
                 }
             });
 
-            objBbox.setFromObject(po_group); // Update the bounding box
+            ///////////////////////objBbox.setFromObject(po_group); // Update the bounding box
 
 
         }
 
         //------------------------------------------------------------------------
+        CommonFunc.prototype.move_details_from_to_center = function (po_group, pv_delta_slider_value) {
+
+            //var cv_atten = 1; // 0.3; // коэффициент ослабления положения ползунка расстояний между деталями
+
+            let lv_koef = 2;
+
+            //var allch = null;
+            //var nallch = 0;
+            var Obj = null;
+            //var lv_delta = 0;
+            //var im = 0;
+            //var jm = 0;
+            //------------------//
+            //var str_im = "";
+            //var str_jm = "";
+
+            if (!po_group || pv_delta_slider_value == 0) {
+                return;
+            }
+
+            ////gv_distance = $('#three_vslider').slider('value');
+
+
+            ////lv_delta = cv_atten * (gv_distance - gv_distance_prev);
+
+
+            ///lv_delta = gv_distance; ////
+
+            //if (pv_delta_slider_value == 0)
+            //    return;
+
+            //gv_distance_prev = gv_distance;
+
+            //allch = po_group.children;
+
+            //nallch = allch.length;
+
+
+            ////let objBbox = new THREE.Box3().setFromObject(po_group);
+            ////let lo_center = new THREE.Vector3(0, 0, 0);
+            ////objBbox.getCenter(lo_center);//
+
+
+
+
+
+
+            for (var lv_i = 0; lv_i < po_group.children.length; lv_i++) {
+
+                Obj = po_group.children[lv_i];
+                if (Obj instanceof THREE.Mesh) {
+
+
+
+                    let lo_part_box = new THREE.Box3().setFromObject(Obj);
+
+
+
+
+                    ////str_im = Obj.name.substring(5, 7);
+                    ////str_jm = Obj.name.substring(8, 10);
+
+                    ////im = parseInt(str_im);
+                    ////jm = parseInt(str_jm);
+
+                    //if (lv_i == 0 || lv_i == 3 || lv_i == 10) {
+
+                    ////////Obj.position.set(
+                    ////////    Obj.position.x + (pv_delta_slider_value /*/ 5.0*/),// * jm,
+                    ////////    0,
+                    ////////    Obj.position.z + (pv_delta_slider_value /* / 5.0*/) // * im
+                    ////////);
+
+                    let posx = 0;
+                    let posz = 0;
+
+                    ////if (Obj.position.x < 0) {
+                    ////    posx = Obj.position.x + pv_delta_slider_value * lv_koef;
+                    ////}
+                    ////else {
+                    ////    posx = Obj.position.x - pv_delta_slider_value * lv_koef;
+                    ////}
+
+                    ////if (Obj.position.z < 0) {
+                    ////    posz = Obj.position.z + pv_delta_slider_value * lv_koef;
+                    ////}
+                    ////else {
+                    ////    posz = Obj.position.z - pv_delta_slider_value * lv_koef;
+                    ////}
+
+
+
+
+                    if (lo_part_box.min.x < 0) {
+                        posx = Obj.position.x + pv_delta_slider_value * lv_koef;
+                    }
+                    else {
+                        posx = Obj.position.x - pv_delta_slider_value * lv_koef;
+                    }
+
+                    if (lo_part_box.min.z < 0) {
+                        posz = Obj.position.z + pv_delta_slider_value * lv_koef;
+                    }
+                    else {
+                        posz = Obj.position.z - pv_delta_slider_value * lv_koef;
+                    }
+
+                    Obj.position.set(
+                        posx,
+                        0,
+                        posz
+                    );
+                    //}
+
+                }
+            }
+
+
+            //////////////////////    set_group_to_center(gv_group);
+
+
+
+
+
+            //cv_atten = null; // 0.3; // коэффициент ослабления положения ползунка расстояний между деталями
+            //allch = null;
+            //nallch = null;
+            ////Obj = null;
+            //lv_delta = null;
+            //im = null;
+            //jm = null;
+
+
+
+
+        }
+
+        //------------------------------------------------------------------------
+
+
+
+
+        //============================================================================================
 
         ////CommonFunc.prototype.fitCameraToObject = function (scene, camera, object, offset, controls) {
 

@@ -370,6 +370,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.model_params_changed = false;
     this.is_building_model = false;
 
+
+    this.model_numparts = 0; // всего загружаемых деталей модели
+    this.model_curr_numpart = 0; //номер текущей загружаемой детали модели
+
+    this.slider_value_prev = 0; // предыдущее значение слайдера расстояния между деталями
+
     //this.is_load_both_model_sides = false;
 
 
@@ -460,9 +466,20 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 );
 
+          
+                //15102024 {
+                $(this.id_prefix + "id_dist_part_slider").slider(
+                    {
+                        orientation: "vertical",
+                        value: 0, 
+                        max: 20, 
+                        ///stop: set_model_to_center,
+                        ///slide:  move_details_from_to_center
+                    }
+                );
 
-
-
+                $(this.id_prefix + 'id_dist_part_slider').slider('value', 0);
+                //15102024 }
 
 
 
@@ -1173,6 +1190,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString() + Constants.file_model_ext;
 
+                this.model_numparts = po_data.number_outfiles;
+                this.model_curr_numpart = lv_i;
+
                 this.load_model_part(lv_filename);
 
             }
@@ -1324,15 +1344,28 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //14102024 lo_active_side.scene_mod.add(mesh_mod);
                 lo_active_side.group_parts_mod.add(mesh_mod);//14102024 
 
-                $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
 
+                if (lo_active_side.model_curr_numpart == lo_active_side.model_numparts)
+                // конец загрузки
+                {
+                    // Задержка для загрузки всех деталей
+                    var delayInMilliseconds = 1000; // 1 second
 
-                lo_active_side.animate_mod();
+                    setTimeout(function () {
 
-                lo_active_side.is_building_model = false;
-                lo_passive_side.is_building_model = false;
+                            lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);//15102024
 
+                            lo_active_side.is_building_model = false;
+                            lo_passive_side.is_building_model = false;
+
+                            $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                            $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+                            lo_active_side.animate_mod();
+
+                    }, delayInMilliseconds);
+
+                }
 
             }
 
@@ -1596,15 +1629,44 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.animate_mod = function () {
 
             let lo_active_side = get_active_side_shape_generator();
+
+            let lv_slider_value = 0;
+            let lv_delta_slider_value = 0;
+
             if (lo_active_side) {
 
-                requestAnimationFrame(lo_active_side.animate_mod);
-                lo_active_side.render_mod();
+                lv_slider_value = $(lo_active_side.id_prefix + "id_dist_part_slider").slider('value');
+
+                lv_delta_slider_value = lv_slider_value - lo_active_side.slider_value_prev;
+                lo_active_side.common_func.move_details_from_to_center(lo_active_side.group_parts_mod, lv_delta_slider_value);
+                lo_active_side.slider_value_prev = lv_slider_value;
+
+                //requestAnimationFrame(lo_active_side.animate_mod);
+
+                setTimeout(function () {
+                    requestAnimationFrame(lo_active_side.animate_mod);
+                    lo_active_side.render_mod();
+
+                }, 100);
+
             }
             else {
 
-                requestAnimationFrame(this.animate_mod);
-                this.render_mod();
+                lv_slider_value = $(this.id_prefix + "id_dist_part_slider").slider('value');
+                lv_delta_slider_value = lv_slider_value - this.slider_value_prev;
+
+                this.common_func.move_details_from_to_center(this.group_parts_mod, lv_delta_slider_value);
+
+
+                setTimeout(function () {
+                    requestAnimationFrame(this.animate_mod);
+                    this.render_mod();
+
+                }, 100);
+                
+
+
+
             }
 
 
