@@ -6,7 +6,7 @@ export function struc_gabarits() {
     this.width = 0;
     this.height = 0;
 }
-   
+
 export function struc_segment_transform_data() {
     this.kx = 0;
     this.ky = 0;
@@ -55,7 +55,7 @@ export function typ_color_data() {
 
 export function typ_side_data() {
     this.numCurves = 0;
-    this.idMaterial = 0; 
+    this.idMaterial = 0;
     this.idSize = 0;
     this.Lockedit = false;
     this.Fl_manual_parameters = false;
@@ -66,7 +66,7 @@ export function typ_side_data() {
     this.M_Price_rub = 0.0;
     this.Part_gap = 0;
     this.CurveColors = new Array();
-    this.PointsCurves = new Array(); 
+    this.PointsCurves = new Array();
 }
 
 
@@ -91,4 +91,21 @@ export function typ_mesh_colors() {
     this.num_spline_left = null;
     this.num_spline_right = null;
     this.color = null;
+};
+
+//export function type_rotate_status() {
+//    this.None = 0;              // нет вращения
+//    this.Stop = 1;              // остановка вращения
+//    this.clockwise = 2;         // вращение по часовой стрелке
+//    this.Stop2 = 3;              // остановка вращения
+//    this.counterclockwise = 4;  // вращение по часовой стрелке
+//};
+
+export var type_rotate_mode = {
+    None: 0,                // нет вращения
+    Stop: 1,                // остановка вращения
+    clockwise: 2,           // вращение по часовой стрелке
+    Stop2: 3,               // остановка вращения
+    counterclockwise: 4     // вращение по часовой стрелке
+
 };

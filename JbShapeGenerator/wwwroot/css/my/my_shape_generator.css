@@ -199,7 +199,7 @@
 #up_id_dist_part_slider, #lateral_id_dist_part_slider {
    
     position: absolute;
-    top: 50%; /*20vh;*/
+    top: 40%; /*20vh;*/
     right: 5%; /*10vw;*/
 
     width: 0.7vw; /*9px;*/
@@ -230,7 +230,16 @@
     /*background-color:blue;*/
 }
 
-
+#id_but_rotate_mode {
+    font-size: 2em;
+    border-radius: 12px;
+    width: 2em;
+    height: 2em;
+    /*background-image: url('/images/my/css_sprites.png');*/
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    background-attachment: initial;
+}
 
     #up_id_shg_bottom table, #lateral_id_shg_bottom table {
         margin: auto;

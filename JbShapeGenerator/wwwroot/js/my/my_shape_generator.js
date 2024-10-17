@@ -19,7 +19,8 @@ import {
 
     typ_color_data,
     typ_side_data,
-    typ_mesh_colors
+    typ_mesh_colors,
+    type_rotate_mode
 
 } from "./my_common_types.js";
 
@@ -374,7 +375,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.model_numparts = 0; // всего загружаемых деталей модели
     this.num_loaded_model_parts = 0; //число загруженных деталей модели
     this.model_parts_positions = []; // new Array();
-
+    this.rotate_status = 0; // режим вращения модели
     //this.slider_value_prev = 0; // предыдущее значение слайдера расстояния между деталями
 
     //this.is_load_both_model_sides = false;
@@ -1022,6 +1023,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             $('#up_id_loading_indicator').show();// индикация ожидани
             $('#lateral_id_loading_indicator').show();// индикация ожидания
 
+            this.rotate_status = type_rotate_mode.None; // выключить вращение модели
+
             send(pv_url, po_json_data);
 
             async function send(pv_url, po_json_data) {
@@ -1078,6 +1081,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             $('#up_id_loading_indicator').show();// индикация ожидани
             $('#lateral_id_loading_indicator').show();// индикация ожидания
+            this.rotate_status = type_rotate_mode.None; // выключить вращение модели
 
             send(pv_url, po_json_data);
 
@@ -1297,7 +1301,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                         ////lo_active_side.model_parts_positions.
                         ////    push(lo_active_side.group_parts_mod.children[lv_i].geometry.boundingBox);
-                        lo_active_side.model_parts_positions[lv_i] = 
+                        lo_active_side.model_parts_positions[lv_i] =
                             lo_active_side.group_parts_mod.children[lv_i].geometry.boundingBox;
 
 
@@ -1310,6 +1314,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
                     $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                    lo_active_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
 
                     lo_active_side.animate_mod();
 

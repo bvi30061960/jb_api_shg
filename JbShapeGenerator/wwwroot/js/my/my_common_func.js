@@ -13,9 +13,13 @@ import {
     //Shape_generator
 } from './my_shape_generator.js';//27072024
 
-import { Shapes } from './my_shapes.js';//27072024 
+import { Shapes } from './my_shapes.js';//27072024
 //import { GetTwoShapeIntersect } from './my_shapes.js';//27072024 
-import { typ_united_model_data } from './my_common_types.js';//2409202 
+
+import {
+    typ_united_model_data,
+    type_rotate_mode
+} from './my_common_types.js';//2409202 
 
 // Class CommonFunc
 export function CommonFunc() {
@@ -910,7 +914,7 @@ export function CommonFunc() {
                         let lv_minz = lo_gabarits_obj.min.z;
                         let lv_center_z = (lo_gabarits_obj.max.z + lo_gabarits_obj.min.z) / 2;
 
-                        
+
                         posx = (lv_center_x / 5) * pv_slider_value * lv_koef;
                         posz = (lv_center_z / 5) * pv_slider_value * lv_koef;
 
@@ -924,7 +928,7 @@ export function CommonFunc() {
                 }
 
 
-                //////////////////////    set_group_to_center(gv_group);
+                ////this.set_group_to_center(po_group);
 
             }
 
@@ -942,9 +946,15 @@ export function CommonFunc() {
         //------------------------------------------------------------------------
         CommonFunc.prototype.model_rotation = function (po_group) {
 
-            var lv_delta_rotation = this.get_delta_rotation(2);
+            let lo_active_side = get_active_side_shape_generator();
 
-            po_group.rotation.y += lv_delta_rotation; 
+            if (lo_active_side.rotate_status == type_rotate_mode.None) {
+                return;
+            }
+
+            var lv_delta_rotation = this.get_delta_rotation(lo_active_side.rotate_status);
+
+            po_group.rotation.y += lv_delta_rotation;
 
         }
         //------------------------------------------------------------------------
@@ -953,15 +963,16 @@ export function CommonFunc() {
             let lv_delta_rotation = 0;
 
             switch (pv_rotate_status) {
-                case 1:
-                case 3:
+                case type_rotate_mode.None:
+                case type_rotate_mode.Stop:
+                case type_rotate_mode.Stop2:
                     lv_delta_rotation = 0.0;
                     break;
 
-                case 2:
+                case type_rotate_mode.clockwise:
                     lv_delta_rotation = -0.01;
                     break;
-                case 4:
+                case type_rotate_mode.counterclockwise:
                     lv_delta_rotation = +0.01;
                     break;
 
