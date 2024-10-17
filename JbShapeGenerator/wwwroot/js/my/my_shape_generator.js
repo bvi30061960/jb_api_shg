@@ -372,9 +372,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
     this.model_numparts = 0; // всего загружаемых деталей модели
-    this.model_curr_numpart = 0; //номер текущей загружаемой детали модели
+    this.num_loaded_model_parts = 0; //число загруженных деталей модели
+    this.model_parts_positions = []; // new Array();
 
-    this.slider_value_prev = 0; // предыдущее значение слайдера расстояния между деталями
+    //this.slider_value_prev = 0; // предыдущее значение слайдера расстояния между деталями
 
     //this.is_load_both_model_sides = false;
 
@@ -466,13 +467,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 );
 
-          
+
                 //15102024 {
                 $(this.id_prefix + "id_dist_part_slider").slider(
                     {
                         orientation: "vertical",
-                        value: 0, 
-                        max: 20, 
+                        value: 0,
+                        max: 20,
                         ///stop: set_model_to_center,
                         ///slide:  move_details_from_to_center
                     }
@@ -795,7 +796,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-
+                this.model_parts_positions = []; // new Array();
 
 
 
@@ -1183,15 +1184,19 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-
             let lv_filename = "";
+
+            this.num_loaded_model_parts = 0;//16102024
+
+            // Очистка группы деталей
+            this.group_parts_mod.clear();
 
             for (let lv_i = 1; lv_i <= po_data.number_outfiles; lv_i++) {
 
                 lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString() + Constants.file_model_ext;
 
                 this.model_numparts = po_data.number_outfiles;
-                this.model_curr_numpart = lv_i;
+                //this.model_curr_numpart = lv_i;
 
                 this.load_model_part(lv_filename);
 
@@ -1244,76 +1249,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         }
 
-        ////////------------------------------------------------------------------------
-        //////Shape_generator.prototype.read_model_part = function (pv_url) {
-
-        //////    try {
-
-        //////        $('#up_id_loading_indicator').show();// индикация ожидани
-        //////        $('#lateral_id_loading_indicator').show();// индикация ожидания
-
-        //////        get_model_part(pv_url);
-
-        //////        async function get_model_part(pv_url) {
-
-
-        //////            let lo_active_side = get_active_side_shape_generator(); //04102024
-        //////            let lo_passive_side = get_passive_side_shape_generator(); //04102024
-
-
-        //////            //---------------------------------------------------------------------
-        //////            try {
-
-        //////                await $.get(pv_url, "", lo_active_side.oncomplete_read_model_part); //, OnError_get_file_cost);
-
-        //////                ////var lv_for_body = JSON.stringify(po_json_data);
-        //////                ////const response = await fetch(pv_url, {
-        //////                ////    method: "POST",
-        //////                ////    headers: {
-        //////                ////        //"Accept": "application/json",
-        //////                ////        "Content-Type": "application/json"
-        //////                ////    },
-        //////                ////    body: lv_for_body
-        //////                ////});
-
-        //////                ////const message = await response.json();
-        //////                //////const message = await response.text();
-
-        //////                ////lo_active_side.OnCompleteMakeModel(message);
-
-        //////            }
-
-        //////            catch (e) {
-
-        //////                lo_active_side.model_params_changed = false; //04102024
-
-
-        //////                // 04102024 {
-        //////                $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-        //////                $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-
-        //////                lo_active_side.model_params_changed = false;
-        //////                lo_active_side.is_building_model = false;
-        //////                lo_passive_side.is_building_model = false;
-        //////                // 04102024 }
-
-
-        //////                /////alert('error send: ' + e.stack);
-
-        //////            }
-
-        //////            //----------------------------------------------------------------------------
-
-
-        //////        }
-
-        //////    }
-        //////    catch (e) {
-
-        //////    }
-
-
-        //////}
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.oncomplete_read_model_part = function (po_data) {
@@ -1322,13 +1257,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             try {
 
                 const loader = new STLLoader();
-                ////const lo_object = loader.parse(po_data);
                 const geometry_mod = loader.parse(po_data);
-
-                //lo_active_side.on_load_read_model_part(lo_object);
-
-
-
 
                 let lo_active_side = get_active_side_shape_generator();
                 let lo_passive_side = get_passive_side_shape_generator();
@@ -1336,34 +1265,55 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 /////////////geometry_mod.center();// Объект - в центре вращения
 
 
-
+                lo_active_side.num_loaded_model_parts++; // подсчёт числа загруженных деталей 
 
                 //=========================================================================
                 const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
 
                 //14102024 lo_active_side.scene_mod.add(mesh_mod);
-                lo_active_side.group_parts_mod.add(mesh_mod);//14102024 
+                lo_active_side.group_parts_mod.add(mesh_mod);//14102024
 
 
-                if (lo_active_side.model_curr_numpart == lo_active_side.model_numparts)
+                //=========================================================================
+                //16102024 if (lo_active_side.model_curr_numpart == lo_active_side.model_numparts)
+                if (lo_active_side.num_loaded_model_parts == lo_active_side.model_numparts) //16102024
                 // конец загрузки
                 {
-                    // Задержка для загрузки всех деталей
-                    var delayInMilliseconds = 1000; // 1 second
+                    ////// Задержка для загрузки всех деталей
+                    ////var delayInMilliseconds = 1000; // 1 second
 
-                    setTimeout(function () {
+                    ////setTimeout(function () {
 
-                            lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);//15102024
+                    lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);//15102024
 
-                            lo_active_side.is_building_model = false;
-                            lo_passive_side.is_building_model = false;
+                    // Запоминание в массиве начальных координат деталей
 
-                            $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                            $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                    lo_active_side.model_parts_positions.length = 0;
+                    for (let lv_i = 0; lv_i < lo_active_side.group_parts_mod.children.length; lv_i++) {
 
-                            lo_active_side.animate_mod();
 
-                    }, delayInMilliseconds);
+                        //lo_active_side.group_parts_mod.children[lv_i].updateMatrix();
+                        //lo_active_side.group_parts_mod.children[lv_i].updateMatrixWorld();
+
+                        ////lo_active_side.model_parts_positions.
+                        ////    push(lo_active_side.group_parts_mod.children[lv_i].geometry.boundingBox);
+                        lo_active_side.model_parts_positions[lv_i] = 
+                            lo_active_side.group_parts_mod.children[lv_i].geometry.boundingBox;
+
+
+                    }
+
+
+
+                    lo_active_side.is_building_model = false;
+                    lo_passive_side.is_building_model = false;
+
+                    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+                    lo_active_side.animate_mod();
+
+                    ////}, delayInMilliseconds);
 
                 }
 
@@ -1631,15 +1581,20 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lo_active_side = get_active_side_shape_generator();
 
             let lv_slider_value = 0;
-            let lv_delta_slider_value = 0;
+            //let lv_delta_slider_value = 0;
 
             if (lo_active_side) {
 
                 lv_slider_value = $(lo_active_side.id_prefix + "id_dist_part_slider").slider('value');
 
-                lv_delta_slider_value = lv_slider_value - lo_active_side.slider_value_prev;
-                lo_active_side.common_func.move_details_from_to_center(lo_active_side.group_parts_mod, lv_delta_slider_value);
-                lo_active_side.slider_value_prev = lv_slider_value;
+                //lv_delta_slider_value = lv_slider_value - lo_active_side.slider_value_prev;
+                //lo_active_side.common_func.move_details_from_to_center(lo_active_side.group_parts_mod, lv_delta_slider_value);
+
+                //lv_delta_slider_value = lv_slider_value - lo_active_side.slider_value_prev;
+                lo_active_side.common_func.move_details_from_to_center(lo_active_side.group_parts_mod, lv_slider_value);
+
+
+                //lo_active_side.slider_value_prev = lv_slider_value;
 
                 //requestAnimationFrame(lo_active_side.animate_mod);
 
@@ -1653,9 +1608,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             else {
 
                 lv_slider_value = $(this.id_prefix + "id_dist_part_slider").slider('value');
-                lv_delta_slider_value = lv_slider_value - this.slider_value_prev;
+                //lv_delta_slider_value = lv_slider_value - this.slider_value_prev;
 
-                this.common_func.move_details_from_to_center(this.group_parts_mod, lv_delta_slider_value);
+                //this.common_func.move_details_from_to_center(this.group_parts_mod, lv_delta_slider_value);
+                this.common_func.move_details_from_to_center(this.group_parts_mod, lv_slider_value);
 
 
                 setTimeout(function () {
@@ -1663,7 +1619,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.render_mod();
 
                 }, 100);
-                
+
 
 
 
@@ -1682,7 +1638,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 if (lo_active_side) {
 
+                    lo_active_side.common_func.model_rotation(lo_active_side.group_parts_mod);
+
                     lo_active_side.renderer_mod.render(lo_active_side.scene_mod, lo_active_side.camera_mod);
+
+
 
                 }
 

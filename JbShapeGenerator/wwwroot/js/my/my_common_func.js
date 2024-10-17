@@ -872,145 +872,104 @@ export function CommonFunc() {
         }
 
         //------------------------------------------------------------------------
-        CommonFunc.prototype.move_details_from_to_center = function (po_group, pv_delta_slider_value) {
+        CommonFunc.prototype.move_details_from_to_center = function (po_group, pv_slider_value) {
 
-            //var cv_atten = 1; // 0.3; // коэффициент ослабления положения ползунка расстояний между деталями
+            let lv_koef = 1;
 
-            let lv_koef = 2;
-
-            //var allch = null;
-            //var nallch = 0;
             var Obj = null;
-            //var lv_delta = 0;
-            //var im = 0;
-            //var jm = 0;
-            //------------------//
-            //var str_im = "";
-            //var str_jm = "";
-
-            if (!po_group || pv_delta_slider_value == 0) {
+            //if (!po_group || pv_delta_slider_value == 0) {
+            if (!po_group) {
                 return;
             }
 
-            ////gv_distance = $('#three_vslider').slider('value');
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
 
 
-            ////lv_delta = cv_atten * (gv_distance - gv_distance_prev);
+                for (var lv_i = 0; lv_i < po_group.children.length; lv_i++) {
+
+                    Obj = po_group.children[lv_i];
+
+                    if (Obj instanceof THREE.Mesh) {
+
+                        let lo_part_box = new THREE.Box3().setFromObject(Obj);
 
 
-            ///lv_delta = gv_distance; ////
-
-            //if (pv_delta_slider_value == 0)
-            //    return;
-
-            //gv_distance_prev = gv_distance;
-
-            //allch = po_group.children;
-
-            //nallch = allch.length;
+                        let lo_gabarits_obj = lo_active_side.model_parts_positions[lv_i];
 
 
-            ////let objBbox = new THREE.Box3().setFromObject(po_group);
-            ////let lo_center = new THREE.Vector3(0, 0, 0);
-            ////objBbox.getCenter(lo_center);//
+                        let posx = 0;
+                        let posz = 0;
+
+                        let lv_minx = lo_gabarits_obj.min.x;
+                        let lv_center_x = (lo_gabarits_obj.max.x + lo_gabarits_obj.min.x) / 2;
 
 
+                        let lv_minz = lo_gabarits_obj.min.z;
+                        let lv_center_z = (lo_gabarits_obj.max.z + lo_gabarits_obj.min.z) / 2;
+
+                        
+                        posx = (lv_center_x / 5) * pv_slider_value * lv_koef;
+                        posz = (lv_center_z / 5) * pv_slider_value * lv_koef;
 
 
-
-
-            for (var lv_i = 0; lv_i < po_group.children.length; lv_i++) {
-
-                Obj = po_group.children[lv_i];
-                if (Obj instanceof THREE.Mesh) {
-
-
-
-                    let lo_part_box = new THREE.Box3().setFromObject(Obj);
-
-
-
-
-                    ////str_im = Obj.name.substring(5, 7);
-                    ////str_jm = Obj.name.substring(8, 10);
-
-                    ////im = parseInt(str_im);
-                    ////jm = parseInt(str_jm);
-
-                    //if (lv_i == 0 || lv_i == 3 || lv_i == 10) {
-
-                    ////////Obj.position.set(
-                    ////////    Obj.position.x + (pv_delta_slider_value /*/ 5.0*/),// * jm,
-                    ////////    0,
-                    ////////    Obj.position.z + (pv_delta_slider_value /* / 5.0*/) // * im
-                    ////////);
-
-                    let posx = 0;
-                    let posz = 0;
-
-                    ////if (Obj.position.x < 0) {
-                    ////    posx = Obj.position.x + pv_delta_slider_value * lv_koef;
-                    ////}
-                    ////else {
-                    ////    posx = Obj.position.x - pv_delta_slider_value * lv_koef;
-                    ////}
-
-                    ////if (Obj.position.z < 0) {
-                    ////    posz = Obj.position.z + pv_delta_slider_value * lv_koef;
-                    ////}
-                    ////else {
-                    ////    posz = Obj.position.z - pv_delta_slider_value * lv_koef;
-                    ////}
-
-
-
-
-                    if (lo_part_box.min.x < 0) {
-                        posx = Obj.position.x + pv_delta_slider_value * lv_koef;
+                        Obj.position.set(
+                            posx,
+                            0,
+                            posz
+                        );
                     }
-                    else {
-                        posx = Obj.position.x - pv_delta_slider_value * lv_koef;
-                    }
-
-                    if (lo_part_box.min.z < 0) {
-                        posz = Obj.position.z + pv_delta_slider_value * lv_koef;
-                    }
-                    else {
-                        posz = Obj.position.z - pv_delta_slider_value * lv_koef;
-                    }
-
-                    Obj.position.set(
-                        posx,
-                        0,
-                        posz
-                    );
-                    //}
-
                 }
+
+
+                //////////////////////    set_group_to_center(gv_group);
+
             }
 
+            catch (e) {
 
-            //////////////////////    set_group_to_center(gv_group);
+                //alert('error extractRGBComponents: ' + e.stack);
 
-
-
-
-
-            //cv_atten = null; // 0.3; // коэффициент ослабления положения ползунка расстояний между деталями
-            //allch = null;
-            //nallch = null;
-            ////Obj = null;
-            //lv_delta = null;
-            //im = null;
-            //jm = null;
-
-
+            }
 
 
         }
 
-        //------------------------------------------------------------------------
 
+
+        //------------------------------------------------------------------------
+        CommonFunc.prototype.model_rotation = function (po_group) {
+
+            var lv_delta_rotation = this.get_delta_rotation(2);
+
+            po_group.rotation.y += lv_delta_rotation; 
+
+        }
+        //------------------------------------------------------------------------
+        CommonFunc.prototype.get_delta_rotation = function (pv_rotate_status) {
+
+            let lv_delta_rotation = 0;
+
+            switch (pv_rotate_status) {
+                case 1:
+                case 3:
+                    lv_delta_rotation = 0.0;
+                    break;
+
+                case 2:
+                    lv_delta_rotation = -0.01;
+                    break;
+                case 4:
+                    lv_delta_rotation = +0.01;
+                    break;
+
+            }
+
+            return lv_delta_rotation;
+
+        }
 
 
 
