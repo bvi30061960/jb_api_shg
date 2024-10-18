@@ -1317,11 +1317,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
                                     "&filename=" + lo_active_side.model_prefix_filename;
 
-                    //get_delete_on_server_model_parts()
-                    //async function get_delete_on_server_model_parts(pv_url) {
-                    //    //--------------------------------------------------
-                    //    await $.get(pv_url, "", lo_active_side.oncomplete_read_model_part); //, OnError_get_file_cost);
-                    //}
+                    get_delete_on_server_model_parts(lv_url)
+                    async function get_delete_on_server_model_parts(pv_url) {
+                        //--------------------------------------------------
+                        await $.get(pv_url); 
+                    }
 
 
                     lo_active_side.animate_mod();
