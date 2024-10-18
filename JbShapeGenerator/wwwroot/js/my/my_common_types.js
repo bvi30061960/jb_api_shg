@@ -102,10 +102,10 @@ export function typ_mesh_colors() {
 //};
 
 export var type_rotate_mode = {
-    None: 0,                // нет вращения
-    Stop: 1,                // остановка вращения
-    clockwise: 2,           // вращение по часовой стрелке
-    Stop2: 3,               // остановка вращения
-    counterclockwise: 4     // вращение по часовой стрелке
+    //None: 0,                // нет вращения
+    stop: 0,                // остановка вращения
+    clockwise: 1,           // вращение по часовой стрелке
+    stop2: 2,               // остановка вращения
+    counterclockwise: 3     // вращение по часовой стрелке
 
 };

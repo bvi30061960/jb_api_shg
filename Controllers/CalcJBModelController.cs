@@ -48,26 +48,44 @@ namespace jb_api.Controllers
 
 
             string lv_path_model_part = "";
+            string lv_filename = "";
 
             switch (Request.Query["method"])
             {
-                // верхняя сторона
                 case CommonConstants.method_read_model_parts:
 
 
-                    string lv_filename = Request.Query["filename"];
+                    lv_filename = Request.Query["filename"];
 
                     lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
                                             Path.Combine(CommonConstants.path_AppData,
                                                 Path.Combine(CommonConstants.path_temp_data), lv_filename));
+
+                    return Results.File(lv_path_model_part); //13102024
+
                     break;
 
-                //case CommonConstants.method_make_model:
+
+
+                case CommonConstants.method_delete_model_parts:
+
+                    string lv_prefix_file = Request.Query["filename"];
+
+                    lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
+                                            Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
+
+
+                    HandlePathsAndNames.Delete_files_by_dir_and_mask(lv_path_model_part, lv_prefix_file + "_*.stl");
+
+                    return Results.Empty;
+
+                    break;
 
             }
 
 
-            return Results.File(lv_path_model_part); //13102024
+            //return Results.File(lv_path_model_part); //13102024
+            return Results.Empty;
 
         }
 
@@ -78,20 +96,12 @@ namespace jb_api.Controllers
 
         async public Task<IResult> PostCalcJBModel()
         {
-            //string lv_result = "";
 
             string lv_app_path = Environment.CurrentDirectory; //Request.HttpContext.base;
 
             typ_model_data lo_model_data = new typ_model_data();
 
             string lv_path_result_file = "";
-
-            //var response = Response;
-            //var request = Request;
-
-            //if (request.Path == "/api/user")
-            //{
-            ////var message = "Некорректные данные";   // содержание сообщения по умолчанию
 
 
             try
@@ -109,15 +119,17 @@ namespace jb_api.Controllers
 
                 switch (Request.Query["method"])
                 {
-                    // верхняя сторона
                     case CommonConstants.method_refresh_premodel:
+                    // предварительный вид модели с разрезающими поверхностями
                         lv_path_result_file = CalcModel.RefreshModel(lo_sides_data);
 
                         return Results.File(lv_path_result_file); //13102024
 
                         break;
 
+
                     case CommonConstants.method_make_model:
+                    // разрезание исходного тела на детали модели
 
                         typ_make_model_result_data lv_data_outfiles = CalcModel.MakeModel(lo_sides_data);
 
@@ -125,7 +137,7 @@ namespace jb_api.Controllers
                         string lv_str_result_data = JsonConvert.SerializeObject(lv_data_outfiles);
 
 
-                        return Results.Text(lv_str_result_data);//13102024
+                        return Results.Text(lv_str_result_data);
 
                         break;
 

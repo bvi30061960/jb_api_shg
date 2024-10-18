@@ -55,7 +55,9 @@
     var @id_GridSelectModels = @lv_id_prefix + "_" + "id_GridSelectModels";
     var @id_div_GridSelectModelsPager = @lv_id_prefix + "_" + "id_div_GridSelectModelsPager";
 
+    var @id_but_rotate_mode = @lv_id_prefix + "_" + "id_but_rotate_mode";
 
+    
 
     <div id=@id_shape_generator_container>
 
@@ -141,11 +143,12 @@
 
                 <div id=@id_div_visual_model>
 
-                    <img src="~/images/wait.gif" id="@id_loading_indicator" style="display:none" />
+                    <img src="~/images/wait.gif" id="@id_loading_indicator" /> @* style="display:none" *@
 
 
-                    <div id=@id_dist_part_slider title="Set the distance between parts">
-                        <input id="id_but_rotate_mode" type="button" title="Rotation mode" class="ui-button ui-corner-all" />
+                    <div id=@id_dist_part_slider title="Set the distance between parts" style="visibility: hidden">
+                        <button id="@id_but_rotate_mode" title="Rotation mode" class="ui-button ui-corner-all" > 
+                        <i class="bi-arrow-clockwise"></i> </button>
                     </div>
 
                 </div>    

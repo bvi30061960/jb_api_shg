@@ -206,6 +206,40 @@ namespace jb_api_shg.AppCode
             return lv_answer;
         }
 
+
+
+        public static void Delete_files_by_dir_and_mask(string pv_path_directory, string pv_mask)
+        //============================================================================================
+        {
+
+            string[] lv_list_files = GetListFilesByDirectoryAndExtension(pv_path_directory, pv_mask);
+
+            foreach (string lv_filename in lv_list_files)
+            {
+                try
+                {
+                    File.Delete(lv_filename);
+                }
+                catch (Exception ex)
+                { //если файл не может быть удалён, не реагируем
+                }
+
+            }
+
+        }
+
+
+
+        //============================================================================================
+        public static string[] GetListFilesByDirectoryAndExtension(string pv_user_file_directory, string pv_mask)
+        {
+            string[] lv_arr_files = Directory.GetFiles(pv_user_file_directory, pv_mask);
+
+            return lv_arr_files;
+
+        }
+
+
         //////----------------------------------------------------------------------------------------------------------------
         ////public static string? get_full_path_with_unic_filename(string pv_extension_with_dot)
         ////{

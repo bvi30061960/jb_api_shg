@@ -963,9 +963,9 @@ export function CommonFunc() {
             let lv_delta_rotation = 0;
 
             switch (pv_rotate_status) {
-                case type_rotate_mode.None:
-                case type_rotate_mode.Stop:
-                case type_rotate_mode.Stop2:
+                //case type_rotate_mode.None:
+                case type_rotate_mode.stop:
+                case type_rotate_mode.stop2:
                     lv_delta_rotation = 0.0;
                     break;
 
