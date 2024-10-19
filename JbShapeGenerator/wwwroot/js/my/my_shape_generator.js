@@ -1033,7 +1033,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             ////this.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
 
             let lv_is_before = true;
-            this.do_before_after_model_request(lv_is_before, false);
+            this.do_before_after_model_request(lv_is_before, true);
 
             send(pv_url, po_json_data);
 
@@ -1324,8 +1324,29 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     lo_active_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
                     lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
 
+                    lo_active_side.group_parts_mod.position.x = 0;
+                    lo_active_side.group_parts_mod.position.y = 0;
+                    lo_active_side.group_parts_mod.position.z = 0;
 
-                    //lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+                    lo_active_side.group_parts_mod.rotation.x = 0;
+                    lo_active_side.group_parts_mod.rotation.y = 0;
+                    lo_active_side.group_parts_mod.rotation.z = 0;
+                    lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+                    $(lo_active_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
+
+                    lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
+
+
+                    ////if (pv_is_build_model) {
+
+                    ////    //$(#up_id_dist_part_slider).slider.("value", 0);
+
+                    ////    lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+
+                    ////    $(lo_active_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
+
+                    ////}
+
                 }
 
                 else {
@@ -1714,7 +1735,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
             ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
             ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-
+              
 
             let lv_is_before = false;
             lo_active_side.do_before_after_model_request(lv_is_before, false);
