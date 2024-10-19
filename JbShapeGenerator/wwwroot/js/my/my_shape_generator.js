@@ -1020,11 +1020,20 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.send_side_data = function (pv_url, po_json_data) {
 
-            $('#up_id_loading_indicator').show();// индикация ожидани
-            $('#lateral_id_loading_indicator').show();// индикация ожидания
+            ////$('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+            ////$('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
 
-            this.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-            this.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+
+            ////$('#up_id_loading_indicator').show();// индикация ожидани
+            ////$('#lateral_id_loading_indicator').show();// индикация ожидания
+            ////$('#up_id_loading_indicator').css('opacity', 1);// индикация ожидани
+            ////$('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
+
+            ////this.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+            ////this.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+
+            let lv_is_before = true;
+            this.do_before_after_model_request(lv_is_before, false);
 
             send(pv_url, po_json_data);
 
@@ -1057,14 +1066,19 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     lo_active_side.model_params_changed = false; //04102024
 
 
-                    // 04102024 {
-                    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                    ////// 04102024 {
+                    ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                    ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                    ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                    ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
 
-                    lo_active_side.model_params_changed = false;
-                    lo_active_side.is_building_model = false;
-                    lo_passive_side.is_building_model = false;
-                    // 04102024 }
+                    ////lo_active_side.model_params_changed = false;
+                    ////lo_active_side.is_building_model = false;
+                    ////lo_passive_side.is_building_model = false;
+                    ////// 04102024 }
+
+                    let lv_is_before = false;
+                    lo_active_side.do_before_after_model_request(lv_is_before, false);
 
 
                     /////alert('error send: ' + e.stack);
@@ -1080,9 +1094,21 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.send_side_data_make_model = function (pv_url, po_json_data) {
 
-            $('#up_id_loading_indicator').show();// индикация ожидани
-            $('#lateral_id_loading_indicator').show();// индикация ожидания
-            this.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+            ////$('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+            ////$('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+
+            ////$('#up_id_loading_indicator').show();// индикация ожидания
+            ////$('#lateral_id_loading_indicator').show();// индикация ожидания
+
+            ////$('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
+            ////$('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
+
+            ////this.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+
+            let lv_is_before = true;
+            this.do_before_after_model_request(lv_is_before, true);
+
+
 
             send(pv_url, po_json_data);
 
@@ -1117,13 +1143,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                     // 04102024 {
-                    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                    ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                    ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                    ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                    ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
 
-                    lo_active_side.model_params_changed = false;
-                    lo_active_side.is_building_model = false;
-                    lo_passive_side.is_building_model = false;
+                    ////lo_active_side.model_params_changed = false;
+                    ////lo_active_side.is_building_model = false;
+                    ////lo_passive_side.is_building_model = false;
                     // 04102024 }
+                    let lv_is_before = false;
+                    lo_active_side.do_before_after_model_request(lv_is_before, false);
 
 
                     /////alert('error send: ' + e.stack);
@@ -1143,15 +1173,24 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             if (po_data == null || po_data == "") {
 
-                $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
 
-                lo_active_side.model_params_changed = false;
-                lo_active_side.is_building_model = false;
-                lo_passive_side.is_building_model = false;
+                ////lo_active_side.model_params_changed = false;
+                ////lo_active_side.is_building_model = false;
+                ////lo_passive_side.is_building_model = false;
+
+                let lv_is_before = false;
+                lo_active_side.do_before_after_model_request(lv_is_before, true);
 
                 return;
             }
+
+
+            ////lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);//19102024
+
 
             this.load_model_parts(po_data);
 
@@ -1210,20 +1249,26 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.load_model_part = function (pv_filename) {
 
+            let lo_active_side = get_active_side_shape_generator();
+            let lo_passive_side = get_passive_side_shape_generator();
+
             try {
 
                 let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts +
                     "&filename=" + pv_filename;
 
 
-                let lo_active_side = get_active_side_shape_generator();
-                let lo_passive_side = get_passive_side_shape_generator();
+                let lv_is_before = true;
 
 
-                //this.read_model_part(lv_url);
 
-                $('#up_id_loading_indicator').show();// индикация ожидани
-                $('#lateral_id_loading_indicator').show();// индикация ожидания
+                ////$('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+                ////$('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+
+                ////$('#up_id_loading_indicator').show();// индикация ожидани
+                ////$('#lateral_id_loading_indicator').show();// индикация ожидания
+                ////$('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
+                ////$('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
 
                 get_model_part(lv_url);
 
@@ -1238,19 +1283,96 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
             catch (e) {
 
-                lo_active_side.model_params_changed = false; //04102024
+                ////lo_active_side.model_params_changed = false; //04102024
 
-                $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
 
-                lo_active_side.model_params_changed = false;
-                lo_active_side.is_building_model = false;
-                lo_passive_side.is_building_model = false;
+                ////lo_active_side.model_params_changed = false;
+                ////lo_active_side.is_building_model = false;
+                ////lo_passive_side.is_building_model = false;
+
+                let lv_is_before = false;
+                lo_active_side.do_before_after_model_request(lv_is_before, false);
+
             }
 
         }
 
 
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.do_before_after_model_request = function (pv_is_before, pv_is_build_model) {
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+                let lo_passive_side = get_passive_side_shape_generator();
+
+                if (pv_is_before) {
+
+                    $('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+                    $('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+
+                    $('#up_id_loading_indicator').show();// индикация ожидани
+                    $('#lateral_id_loading_indicator').show();// индикация ожидания
+                    $('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
+                    $('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
+
+                    lo_active_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+                    lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+
+
+                    //lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+                }
+
+                else {
+
+                    // after
+
+                    /////lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+
+                    $('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                    $('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
+
+                    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+                    lo_active_side.model_params_changed = false;
+                    lo_active_side.is_building_model = false;
+                    lo_passive_side.is_building_model = false;
+
+
+
+
+
+
+
+                    if (pv_is_build_model) {
+                        lo_active_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+                        lo_active_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+                    }
+                    else {
+                        lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                        lo_active_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
+                    }
+
+
+
+
+                }
+            }
+
+            catch (e) {
+
+                alert('error do_before_after_model_request: ' + e.stack);
+
+            }
+
+
+        }
         //------------------------------------------------------------------------
         Shape_generator.prototype.oncomplete_read_model_part = function (po_data) {
 
@@ -1275,7 +1397,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 //=========================================================================
-                if (lo_active_side.num_loaded_model_parts == lo_active_side.model_numparts) 
+                if (lo_active_side.num_loaded_model_parts == lo_active_side.model_numparts)
                 // конец загрузки
                 {
                     ////// Задержка для загрузки всех деталей
@@ -1304,23 +1426,29 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                    lo_active_side.is_building_model = false;
-                    lo_passive_side.is_building_model = false;
+                    ////lo_active_side.is_building_model = false;
+                    ////lo_passive_side.is_building_model = false;
 
-                    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-                    lo_active_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
-                    lo_active_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+                    ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                    ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                    ////lo_active_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+                    ////lo_active_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+                    ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                    ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
+
+
+                    let lv_is_before = false;
+                    lo_active_side.do_before_after_model_request(lv_is_before, true);
 
                     // Посылка команды на удаление промежуточных файлов на сервере
 
                     let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
-                                    "&filename=" + lo_active_side.model_prefix_filename;
+                        "&filename=" + lo_active_side.model_prefix_filename;
 
                     get_delete_on_server_model_parts(lv_url)
                     async function get_delete_on_server_model_parts(pv_url) {
                         //--------------------------------------------------
-                        await $.get(pv_url); 
+                        await $.get(pv_url);
                     }
 
 
@@ -1450,12 +1578,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             if (po_data == null || po_data == "") {
 
-                $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
 
-                lo_active_side.model_params_changed = false;
-                lo_active_side.is_building_model = false;
-                lo_passive_side.is_building_model = false;
+                ////lo_active_side.model_params_changed = false;
+                ////lo_active_side.is_building_model = false;
+                ////lo_passive_side.is_building_model = false;
+
+                let lv_is_before = false;
+                lo_active_side.do_before_after_model_request(lv_is_before, false);
 
                 return;
             }
@@ -1474,11 +1607,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.OnErrorRefreshModel = function () {
 
 
-            $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-            $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-
+            ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+            ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+            ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+            ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
 
             let lo_active_side = get_active_side_shape_generator();
+            let lv_is_before = false;
+
+            lo_active_side.do_before_after_model_request(lv_is_before, false);
+
 
             /////alert("OnErrorRefreshModel");
 
@@ -1565,17 +1703,21 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-            //=========================================================================
+            //-------------------------------------------------------------------
             const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
-
-
 
 
             lo_active_side.scene_mod.add(mesh_mod);
 
 
-            $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-            $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+            ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+            ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+            ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+            ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
+
+
+            let lv_is_before = false;
+            lo_active_side.do_before_after_model_request(lv_is_before, false);
 
 
             lo_active_side.animate_mod();

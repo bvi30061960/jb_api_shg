@@ -139,11 +139,12 @@
 
 
 
-                @*  <div id=@id_div_visual_model >*@
+                @* Индикатор ожидания формирования модели *@
+                <img src="~/images/wait.gif" id="@id_loading_indicator" />
 
-                <div id=@id_div_visual_model>
+                <div id=@id_div_visual_model>    @* style="z-index:1;" *@
 
-                    <img src="~/images/wait.gif" id="@id_loading_indicator" /> @* style="display:none" *@
+                    @* <img src="~/images/wait.gif" id="@id_loading_indicator" /> *@
 
 
                     <div id=@id_dist_part_slider title="Set the distance between parts" style="visibility: hidden">
@@ -152,7 +153,6 @@
                     </div>
 
                 </div>    
-
 
             </div>
 

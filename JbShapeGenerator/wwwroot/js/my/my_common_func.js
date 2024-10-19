@@ -942,6 +942,34 @@ export function CommonFunc() {
         }
 
 
+        //------------------------------------------------------------------------
+        CommonFunc.prototype.clear_parts_group = function (po_group) {
+
+            if (!po_group) {
+                return;
+            }
+
+            let lo_active_side = get_active_side_shape_generator();
+
+
+            try {
+
+                for (var lv_i = 0; lv_i < po_group.children.length; lv_i++) {
+
+                    this.removeObjectsWithChildren(po_group.children[lv_i], true);
+
+                }
+
+
+            }
+            catch (e) {
+
+                alert('error clear_parts_group: ' + e.stack);
+
+            }
+
+
+        }
 
         //------------------------------------------------------------------------
         CommonFunc.prototype.model_rotation = function (po_group) {

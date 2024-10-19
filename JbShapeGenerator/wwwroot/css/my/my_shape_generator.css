@@ -191,29 +191,24 @@
     border-color: black;*/
 
     height: 26.8vh;
-
     /*width:80%;*/
 }
 
 
 #up_id_dist_part_slider, #lateral_id_dist_part_slider {
-   
     position: absolute;
     top: 15%; /*20vh;*/
     right: 6%; /*10vw;*/
 
     width: 0.7vw; /*9px;*/
     font-size: 0.75em; /*10px;*/
-    
 }
 
 #up_id_but_rotate_mode, #lateral_id_but_rotate_mode {
     position: absolute;
-    bottom: -6vh; 
-    right: -0.8vw; 
-
+    bottom: -6vh;
+    right: -0.8vw;
     font-size: 0.8em;
-
     /*//2 border-radius: 12px;*/
     /*width: 0.2em;*/
     /*//2em;*/
@@ -327,13 +322,21 @@
 #up_id_loading_indicator, #lateral_id_loading_indicator {
     width: 40px;
     height: 40px;
-    /*z-index:10;*/
-
     position: absolute;
-    top: 10vh;
-    /* left: 10vw;*/
+    /*top: 40vh;*/ /*10vh;*/
+    bottom:12vh;
     margin-left: auto;
     margin-right: auto;
+
+
+
+    /*position: absolute;
+    top: 10vh;*/
+    /*margin-left: auto;
+    margin-right: auto;
+    z-index:5;
+    opacity:1;*/
+    /* left: 10vw;*/
 }
 
 
