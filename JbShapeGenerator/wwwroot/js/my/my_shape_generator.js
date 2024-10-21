@@ -606,7 +606,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 //this.camera_mod.position.set(0, 150, 400);
                 this.camera_mod.position.set(50, 150, 250);
-
                 this.camera_mod.lookAt(this.scene_mod.position);
 
 
@@ -776,16 +775,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.scene_mod.add(gv_spotLight1); //\\//
 
 
-                var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
-                gv_spotLight1.position.set(-50, -50, 0); //\\//
+                var gv_spotLight2 = new THREE.PointLight(0xf0f0f0); //\\//
+                gv_spotLight2.position.set(-50, -50, 0); //\\//
                 //gv_spotLight1.name = 'spotLight2';
-                this.scene_mod.add(gv_spotLight1); //\\//
+                this.scene_mod.add(gv_spotLight2); //\\//
 
 
-                //var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
-                //gv_spotLight1.position.set(-50, 0, 0); //\\//
-                ////gv_spotLight1.name = 'spotLight3';
-                //this.scene_mod.add(gv_spotLight1); //\\//
+                var gv_spotLight3 = new THREE.PointLight(0xf0f0f0); 
+                gv_spotLight3.position.set(50, 50, 50); 
+                //gv_spotLight1.name = 'spotLight3';
+                this.scene_mod.add(gv_spotLight3); 
 
 
                 //var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
@@ -1313,7 +1312,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 if (pv_is_before) {
 
-
                     $('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
                     $('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
 
@@ -1323,60 +1321,15 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     $('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
 
 
-                    //lo_active_side.model_params_changed = false;
-                    //lo_passive_side.model_params_changed = false;
-
                     lo_active_side.is_building_model = true;
                     lo_passive_side.is_building_model = true;
 
-
                     lo_active_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
                     lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-
-                    lo_active_side.group_parts_mod.position.x = 0;
-                    lo_active_side.group_parts_mod.position.y = 0;
-                    lo_active_side.group_parts_mod.position.z = 0;
-
-                    lo_active_side.group_parts_mod.rotation.x = 0;
-                    lo_active_side.group_parts_mod.rotation.y = 0;
-                    lo_active_side.group_parts_mod.rotation.z = 0;
-                    lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
                     $(lo_active_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
 
-
-                    //lo_active_side.camera_mod.position.set(50, 150, 250);
-                    lo_active_side.camera_mod.position.set(50, 150, 200);
-                    //lo_active_side.camera_mod.lookAt(this.scene_mod.position);
-                    lo_active_side.camera_mod.lookAt(lo_active_side.group_parts_mod.position);
-
-                    //lo_active_side.camera_mod.rotation.x = 0;
-                    //lo_active_side.camera_mod.rotation.y = 0;
-                    //lo_active_side.camera_mod.rotation.z = 0;
-
-                    lo_active_side.camera_mod.scale.x = 1;
-                    lo_active_side.camera_mod.scale.y = 1;
-                    lo_active_side.camera_mod.scale.z = 1;
-
-
-
-                    lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
-
-
-                    //lo_active_side.camera_mod.position.set(50, 150, 250);
-                    //lo_active_side.camera_mod.up = new THREE.Vector3(0, 0, 1);
-                    //lo_active_side.camera_mod.lookAt(new THREE.Vector3(0, 0, 0));
-
-
-
-                    ////if (pv_is_build_model) {
-
-                    ////    //$(#up_id_dist_part_slider).slider.("value", 0);
-
-                    ////    lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
-
-                    ////    $(lo_active_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
-
-                    ////}
+                    lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+                    lo_active_side.controls_mod.reset();
 
                 }
 
@@ -1393,14 +1346,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
 
 
-                    //lo_active_side.camera_mod.position.set(50, 150, 200);//19102024 
-
-
                     lo_active_side.model_params_changed = false;
                     lo_passive_side.model_params_changed = false;
                     lo_active_side.is_building_model = false;
                     lo_passive_side.is_building_model = false;
-
 
 
                     if (pv_is_build_model) {
@@ -1412,9 +1361,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         lo_active_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
                     }
 
-
                     lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
-
 
                 }
             }

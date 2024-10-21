@@ -57,7 +57,9 @@
 
     var @id_but_rotate_mode = @lv_id_prefix + "_" + "id_but_rotate_mode";
 
-    
+    var @id_div_shape_dblclk = @lv_id_prefix + "_" + "id_div_shape_dblclk";
+
+    var @id_div_dblclk = @lv_id_prefix + "_" + "id_div_dblclk";
 
     <div id=@id_shape_generator_container>
 
@@ -69,7 +71,11 @@
 
 
             <div id=@id_shg_left>
-                <div id=@id_shape></div>
+                <div id=@id_shape>
+
+                    <div id="@id_div_shape_dblclk"> <label>Double click</label>&nbsp;<i class="bi-arrows-fullscreen"></i> </div>
+
+                </div>
             </div>
 
             <div id=@id_shg_right>
@@ -151,6 +157,9 @@
                         <button id="@id_but_rotate_mode" title="Rotation mode" class="ui-button ui-corner-all" > 
                         <i class="bi-arrow-clockwise"></i> </button>
                     </div>
+
+
+                    <div id="@id_div_dblclk"> <label>Double click</label>&nbsp;<i class="bi-arrows-fullscreen"></i> </div>
 
                 </div>    
 

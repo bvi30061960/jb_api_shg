@@ -158,6 +158,8 @@
     /*border-style: solid;
     border-width: 1px;
     border-color: black;*/
+
+   /* z-index: 5;*/
 }
 
 #up_id_shg_right, #lateral_id_shg_right {
@@ -168,6 +170,8 @@
     /*border-style: solid;
     border-width: 1px;
     border-color: black;*/
+
+    /*z-index: 5;*/
 }
 
 
@@ -179,17 +183,7 @@
 
 
 #up_id_div_visual_model, #lateral_id_div_visual_model {
-    /*
-    background-color: greenyellow;
-    position: relative;
-    width: 25%; 
-    float: left;*/
-    /* height: 200%; */ /*12em;*/ /*100%;*/ /* 14em;*/ /*100%;*/
-    /*width: 100%;*/
-    /*border-style: solid;
-    border-width: 1px;
-    border-color: black;*/
-
+    
     height: 26.8vh;
     /*width:80%;*/
 }
@@ -203,6 +197,23 @@
     width: 0.7vw; /*9px;*/
     font-size: 0.75em; /*10px;*/
 }
+
+#up_id_div_shape_dblclk, #lateral_id_div_shape_dblclk
+{
+    position: absolute;
+    bottom: 5%;
+    left: 5%;
+    opacity: 0.5;
+}
+
+
+#up_id_div_dblclk, #lateral_id_div_dblclk {
+    position: absolute;
+    bottom: 5%;
+    right: 5%;
+    opacity: 0.5;
+}
+
 
 #up_id_but_rotate_mode, #lateral_id_but_rotate_mode {
     position: absolute;
