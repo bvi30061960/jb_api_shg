@@ -15,9 +15,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-
-
-using JbShapeGenerator.AppData;
+using JbShapeGenerator.AppCode;
 
 namespace JbShapeGenerator.Areas.Identity.Pages.Account
 {
@@ -122,7 +120,7 @@ namespace JbShapeGenerator.Areas.Identity.Pages.Account
 
                     // bvi {
                     //_logger.LogInformation("*****!!!!!******  before login:  hash_username = " + GlobalData.av_hash_username + "     *****!!!!!******");
-                    HandlePathsAndNames.av_username_wo_postfix = HandlePathsAndNames.get_hash_code_wo_spec_symbols(Input.Email);
+                    HandlePathsAndNames.av_username_wo_postfix = HandlePathsAndNames.Get_hash_code_wo_spec_symbols(Input.Email);
                     //_logger.LogInformation("*****!!!!!******  after login:    hash_username = " + GlobalData.av_hash_username + "     *****!!!!!******");
                     // bvi }
 

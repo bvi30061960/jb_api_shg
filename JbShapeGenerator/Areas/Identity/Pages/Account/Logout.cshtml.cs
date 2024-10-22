@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using JbShapeGenerator.AppData;
+using JbShapeGenerator.AppCode;
 
 namespace JbShapeGenerator.Areas.Identity.Pages.Account
 {
@@ -34,7 +34,7 @@ namespace JbShapeGenerator.Areas.Identity.Pages.Account
             ////GlobalData.av_username_wo_postfix = "";// очистка login name
 
 
-            HandlePathsAndNames.clear_names_and_paths();
+            HandlePathsAndNames.Clear_names_and_paths();
             // Очистка username в сессии
             CommonMethods.set_str_from_session(PageContext.HttpContext.Session, CommonConstants.session_username, "");
 

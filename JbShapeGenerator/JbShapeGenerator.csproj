@@ -18,6 +18,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="AppData\CommonData.cs__" />
+    <None Remove="AppData\Commons.cs__" />
+    <None Remove="AppData\GlobalData.cs__" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="AppData\temp_data\" />
     <Folder Include="Data\" />
     <Folder Include="wwwroot\css\" />

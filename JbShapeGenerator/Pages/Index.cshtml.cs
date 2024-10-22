@@ -1,7 +1,7 @@
 using Azure;
 using Azure.Core;
 using Humanizer;
-using JbShapeGenerator.AppData;
+using JbShapeGenerator.AppCode;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -58,34 +58,47 @@ namespace JbShapeGenerator.Pages
 
         //-----------------------------------------------------------------------------------------------------
          
-        public IActionResult OnGetReadListModels(/*string pv_taskid*/)
+        //public IActionResult OnGetReadListModels(/*string pv_taskid*/)
+        public async Task<IActionResult> OnGetReadListModels(/*string pv_taskid*/)
         {
 
-            HandlePathsAndNames.clear_names_and_paths();
-            HandlePathsAndNames.create_names_and_directories(Request.HttpContext.User.Identity.Name);
+            HandlePathsAndNames.Create_names_and_directories(PageContext/*Request.HttpContext.User.Identity.Name*/);
 
-
-            //Request.HttpContext.User.Identity.Name
-
-
-            ////ao_GlobalSessionData = new GlobalSessionData(this); //25102023
-            ////ao_GlobalSessionData.ao_indexModel = this;// Глобальная ссылка на класс
-            ////ao_GlobalSessionData.CreateApplPathDirectories();
-            ////ao_GlobalSessionData.ao_DataManager = ao_DataManager;//27072023
-            ////ao_GlobalSessionData.ReadConfiguration(ao_Configuration);//31102023
-            ////                                                         //28102023 }
-
-            ////jqGridSelectListBlockSetingsHandler lo_jqs = new jqGridSelectListBlockSetingsHandler(ao_GlobalSessionData);
-
-            ////JQGridResults lv_ob_result = lo_jqs.ProcessRequest(PageContext.HttpContext);
+            string lv_res_str = "";
+            try
+            {
+                ////ao_GlobalSessionData = new GlobalSessionData(this); //25102023
+                ////ao_GlobalSessionData.ao_indexModel = this;// Глобальная ссылка на класс
+                ////ao_GlobalSessionData.CreateApplPathDirectories();
+                ////ao_GlobalSessionData.ao_DataManager = ao_DataManager;//27072023
+                ////ao_GlobalSessionData.ReadConfiguration(ao_Configuration);//31102023
+                ////                                                         //28102023 }
 
 
 
+                jqGridSelectListModelFiles lo_grid_list_models = new jqGridSelectListModelFiles(/*ao_GlobalSessionData*/);
 
+                JQGridResults lv_ob_result = await lo_grid_list_models.ProcessRequest(PageContext.HttpContext);
 
-            string lv_res_str = JsonConvert.SerializeObject(""/*lv_ob_result*/);
+                lv_res_str = JsonConvert.SerializeObject(lv_ob_result);
+
+            }
+            catch (Exception ex)
+            {
+                //// Формирование аварийного статуса задачи -1
+                //ProgressMonitor.SetStatus(-1);
+
+                //// Занесение в журнал событий
+                //ao_GlobalSessionData.ao_indexModel.LogMessage(ex);
+
+            }
 
             return new OkObjectResult(lv_res_str);
+
+
+            //string lv_res_str = JsonConvert.SerializeObject(""/*lv_ob_result*/);
+
+            //return new OkObjectResult(lv_res_str);
 
         }
 

@@ -781,10 +781,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.scene_mod.add(gv_spotLight2); //\\//
 
 
-                var gv_spotLight3 = new THREE.PointLight(0xf0f0f0); 
-                gv_spotLight3.position.set(50, 50, 50); 
+                var gv_spotLight3 = new THREE.PointLight(0xf0f0f0);
+                gv_spotLight3.position.set(50, 50, 50);
                 //gv_spotLight1.name = 'spotLight3';
-                this.scene_mod.add(gv_spotLight3); 
+                this.scene_mod.add(gv_spotLight3);
 
 
                 //var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
@@ -1710,7 +1710,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             //19102024 lo_active_side.scene_mod.add(mesh_mod);
             lo_active_side.group_parts_mod.add(mesh_mod);//19102024
-            
+
 
 
 
@@ -1719,7 +1719,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
             ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
             ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-              
+
 
             let lv_is_before = false;
             lo_active_side.do_before_after_model_request(lv_is_before, false);
@@ -2575,40 +2575,48 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.onclick_read_model = function () {
 
 
+            try {
 
-
-            ////////////////////let lo_active_side = get_active_side_shape_generator();
-            //////////////////////lo_active_side_shape_generator.common_func.save_model(lo_active_side_shape_generator.scene);
-
-
-
-            //////////////////////// Перевод фокуса для убирания подсказки кнопки
-            //////////////////////$("#id_name_block_settings")[0].focus();// 01082023
+                let lo_active_side = get_active_side_shape_generator();
+                //////////////////////lo_active_side_shape_generator.common_func.save_model(lo_active_side_shape_generator.scene);
 
 
 
-            //////////////////////my_main.Set_button_new_set_pressed(false);// Сброс режима создания нового набора настроек
-            //////////////////////my_main.Set_button_choice_set_pressed(true);// Установка режима выбора существующих настроек
-
-
-            //////////////////////$("#id_div_GridSelectBlockSettings").show();
-
-
-            ////////////////////var lv_path = "/Index?handler=ReadListModels"; //11092022
-            ////////////////////lo_active_side.grid_select_models.$grid.jqGrid('setGridParam', { url: lv_path, datatype: 'json' }).trigger("reloadGrid");
-            /////////////////////////////////////////////////////$("#id_div_GridSelectModels").slideToggle(300);
-
-            ////////////////////lo_active_side.grid_select_models.$div_grid.dialog("open");
-
-            ////////////////////return false;
+                //////////////////////// Перевод фокуса для убирания подсказки кнопки
+                //////////////////////$("#id_name_block_settings")[0].focus();// 01082023
 
 
 
-            // test !!
+                //////////////////////my_main.Set_button_new_set_pressed(false);// Сброс режима создания нового набора настроек
+                //////////////////////my_main.Set_button_choice_set_pressed(true);// Установка режима выбора существующих настроек
 
-            let lo_active_side = get_active_side_shape_generator();
 
-            lo_active_side.common_func.build_scenes_by_sides_data(null);
+                //////////////////////$("#id_div_GridSelectBlockSettings").show();
+
+
+                var lv_path = "/Index?handler=ReadListModels"; //11092022
+                lo_active_side.grid_select_models.$grid.jqGrid('setGridParam', { url: lv_path, datatype: 'json' }).trigger("reloadGrid");
+                /////////////////////////////////$("#id_div_GridSelectModels").slideToggle(300);
+
+                lo_active_side.grid_select_models.$div_grid.dialog("open");
+
+                return false;
+
+
+
+                //// test !!
+
+                //let lo_active_side = get_active_side_shape_generator();
+                //lo_active_side.common_func.build_scenes_by_sides_data(null);
+
+
+            }
+
+            catch (e) {
+
+                alert('error onclick_read_model: ' + e.stack);
+
+            }
         }
 
         //------------------------------------------------------------------------

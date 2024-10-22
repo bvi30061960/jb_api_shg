@@ -1228,16 +1228,16 @@ export function CommonFunc() {
 
             //---------------------------------------------------------------------------
             // test data {
-            let lo_active_side_shape_generator = get_active_side_shape_generator();
-            let lo_passive_side_shape_generator = get_passive_side_shape_generator();
+            //let lo_active_side_shape_generator = get_active_side_shape_generator();
+            //let lo_passive_side_shape_generator = get_passive_side_shape_generator();
 
-            let lo_sides_data = lo_active_side_shape_generator.read_model_sides_data();
+            //let lo_sides_data = lo_active_side_shape_generator.read_model_sides_data();
             // test data }
             //---------------------------------------------------------------------------
 
 
-            this.clearScene(lo_active_side_shape_generator.scene);
-            this.clearScene(lo_passive_side_shape_generator.scene);
+            ////this.clearScene(lo_active_side_shape_generator.scene);
+            ////this.clearScene(lo_passive_side_shape_generator.scene);
 
 
         }

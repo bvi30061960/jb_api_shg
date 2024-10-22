@@ -172,12 +172,12 @@ export function GridSelectModels(pv_prefix /*po_container , po_camera, po_scene,
 					//],
 
 
-					colNames: ['pathFile', '<i class="bi-share"></i>', 'Model name', 'Description', 'Picture', 'Change date', 'Change time', 'username_hash_with_postfix'],
+					colNames: ['pathFile', '<i class="bi-share"></i>', 'Model name', /*'Description',*/ 'Picture', 'Change date', 'Change time', 'username_hash_with_postfix'],
 					colModel: [
 						{ name: 'pathFile', index: 'pathFile', hidden: true },
 						{ name: 'IsCommonModel', index: 'IsCommonModel', sortable: true, width: 35, align: 'center'/*, formatter: is_shared_file_formatter*/ },
 						{ name: 'ModelName', index: 'ModelName', align: 'center', width: 160, sortable: true/*, formatter: cellLinkFormater*/ },
-						{ name: 'Description', index: 'Description', width: 300, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
+						//{ name: 'Description', index: 'Description', width: 300, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
 						{ name: 'Picture', index: 'Picture', width: 80, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
 						{ name: 'DateChange', index: 'DateChange', width: 70, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
 						{ name: 'ChangeTime', index: 'ChangeTime', width: 90, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
