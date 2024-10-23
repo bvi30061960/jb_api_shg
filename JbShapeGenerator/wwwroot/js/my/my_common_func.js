@@ -295,6 +295,7 @@ export function CommonFunc() {
         //------------------------------------------------------------------------
         CommonFunc.prototype.save_model = function (po_sides_data, po_scene_mod) {
 
+            let lo_active_side = get_active_side_shape_generator();
 
             let lv_url = "/Index?handler=SaveModel";
 
@@ -316,6 +317,14 @@ export function CommonFunc() {
             lo_united_model_data.model_name = $("#id_model_name")[0].value;
             lo_united_model_data.sides_data = lv_str_sides_data;
             lo_united_model_data.prev_model = lv_str_scene_mod_data;
+
+            //let lo_element = $(lo_active_side.id_prefix + "id_div_visual_model")[0];
+
+            let lo_element = document.querySelector(lo_active_side.id_prefix + "id_div_visual_model");
+
+
+            lo_united_model_data.screenshot = this.screenshot(lo_element );
+
 
             let lv_str_united_model_data = JSON.stringify(lo_united_model_data);
 
@@ -844,7 +853,7 @@ export function CommonFunc() {
 
         }
         //------------------------------------------------------------------------
-           
+
         //======================================================================================
         CommonFunc.prototype.set_group_to_center = function (po_group) {
 
@@ -1221,7 +1230,32 @@ export function CommonFunc() {
         //////}
 
 
+        //------------------------------------------------------------------------
+        CommonFunc.prototype.screenshot = function ($pv_element)
+        {
 
+                // Select the element that you want to capture
+            let captureElement = $pv_element;
+
+            //let lv_imageData = null;
+
+                // Call the html2canvas function and pass the element as an argument
+                html2canvas(captureElement).then((po_canvas) => {
+                    // Get the image data as a base64-encoded string
+                    let lv_imageData = po_canvas.toDataURL("image/png");
+
+                    // Do something with the image data, such as saving it as a file or sending it to a server
+                    // For example, you can create an anchor element and trigger a download action
+                //////    const link = document.createElement("a");
+                //////    link.setAttribute("download", "screenshot.png");
+                //////    link.setAttribute("href", imageData);
+                    //////    link.click();
+
+                    return lv_imageData;
+                });
+            //}
+
+        }
 
         //------------------------------------------------------------------------
         CommonFunc.prototype.build_scenes_by_sides_data = function (po_sides_data) {

@@ -103,11 +103,11 @@ namespace JbShapeGenerator.AppCode
                     case "filename":
                         if (pv_sortOrderBy == "asc")
                         {
-                            lo_sorted_dict = lo_dict.OrderBy(x => long.Parse(x.Value.filename)); //long.Parse(x.Value.gnumber));
+                            lo_sorted_dict = lo_dict.OrderBy(x => x.Value.filename); //long.Parse(x.Value.gnumber));
                         }
                         else
                         {
-                            lo_sorted_dict = lo_dict.OrderByDescending(x => long.Parse(x.Value.filename));
+                            lo_sorted_dict = lo_dict.OrderByDescending(x => x.Value.filename);
                         }
 
                         break;
@@ -175,14 +175,16 @@ namespace JbShapeGenerator.AppCode
 
                     row.id = lv_i++;
 
-                    row.cell = new string[7];//!!  Изменяемая размерность
+                    row.cell = new string[6];//!!  Изменяемая размерность   !!
 
 
+                    //public string path_file_wo_ext { get; set; }
                     //public string filename { get; set; }
                     ////public string descr { get; set; }
-                    //public string path_file_sides_data { get; set; }
-                    //public string path_file_prev_model { get; set; }
-                    //public string path_file_final_model { get; set; }
+                    //public byte[] picture { get; set; }
+                    //////public string path_file_sides_data { get; set; }
+                    //////public string path_file_prev_model { get; set; }
+                    //////public string path_file_final_model { get; set; }
                     //public wide_model_types wide_model_type { get; set; }
                     //public string price { get; set; }
                     //public string change_datetime { get; set; }
@@ -191,12 +193,13 @@ namespace JbShapeGenerator.AppCode
 
 
 
-
+                    row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "path_file_wo_ext")] = gs_data.path_file_wo_ext; 
                     row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "filename")] = gs_data.filename; 
+                    ///////row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "picture")] = gs_data.picture; 
                     //row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "descr")] = gs_data.descr; 
-                    row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "path_file_sides_data")] = gs_data.path_file_sides_data; 
-                    row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "path_file_prev_model")] = gs_data.path_file_prev_model; 
-                    row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "path_file_final_model")] = gs_data.path_file_final_model; 
+                    //row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "path_file_sides_data")] = gs_data.path_file_sides_data; 
+                    //row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "path_file_prev_model")] = gs_data.path_file_prev_model; 
+                    //row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "path_file_final_model")] = gs_data.path_file_final_model; 
                     row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "wide_model_types")]      = gs_data.wide_model_type.ToString();
                     row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "price")]                 = gs_data.price; 
                     row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "change_datetime")]       = gs_data.change_datetime;    

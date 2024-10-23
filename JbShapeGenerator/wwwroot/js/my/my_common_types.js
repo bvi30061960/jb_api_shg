@@ -74,6 +74,7 @@ export function typ_united_model_data() {
     this.model_name = "";
     this.sides_data = "";
     this.prev_model = "";
+    this.screenshot = null;
 
 }
 

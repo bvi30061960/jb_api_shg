@@ -64,14 +64,15 @@ namespace JbShapeGenerator.AppCode
 
                 gs_ListFiles ls_data_file = new gs_ListFiles();
 
-                ls_data_file.filename = Path.GetFileName(lv_path_and_name_file_wo_extension);
+                ls_data_file.path_file_wo_ext = lv_path_and_name_file_wo_extension;
+                ls_data_file.filename = united_model_data.model_name;
                 //ls_data_file.descr = "New file";
-                ls_data_file.path_file_sides_data = lv_filename_sides_data;
-                ls_data_file.path_file_prev_model = lv_filename_prev_model;
-                ls_data_file.path_file_final_model = lv_filename_final_model;
+                ////ls_data_file.path_file_sides_data = lv_filename_sides_data;
+                ////ls_data_file.path_file_prev_model = lv_filename_prev_model;
+                ////ls_data_file.path_file_final_model = lv_filename_final_model;
                 ls_data_file.wide_model_type = wide_model_types.user;
                 ls_data_file.price = 0.ToString();
-                ls_data_file.change_datetime = DateTime.Now.ToLongTimeString();
+                ls_data_file.change_datetime = DateTime.Now.ToString(); // ToShortDateString();
 
 
 

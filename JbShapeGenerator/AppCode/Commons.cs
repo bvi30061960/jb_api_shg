@@ -369,11 +369,13 @@ namespace JbShapeGenerator.AppCode
 
     public struct gs_ListFiles
     {
+        public string path_file_wo_ext { get; set; }
         public string filename { get; set; }
         //public string descr { get; set; }
-        public string path_file_sides_data { get; set; }
-        public string path_file_prev_model { get; set; }
-        public string path_file_final_model { get; set; }
+        public byte[] picture { get; set; }
+        ////public string path_file_sides_data { get; set; }
+        ////public string path_file_prev_model { get; set; }
+        ////public string path_file_final_model { get; set; }
         public wide_model_types wide_model_type { get; set; }
         public string price { get; set; }
         public string change_datetime { get; set; }
@@ -507,14 +509,31 @@ namespace JbShapeGenerator.AppCode
                 lv_ListModelFiles_dictionary = new System.Collections.Generic.Dictionary<string, int>()
                   {
 
-                    { "filename"               ,0 },
+
+        //public string path_file_wo_ext { get; set; }
+        //public string filename { get; set; }
+        ////public string descr { get; set; }
+        //public byte[] picture { get; set; }
+        //////public string path_file_sides_data { get; set; }
+        //////public string path_file_prev_model { get; set; }
+        //////public string path_file_final_model { get; set; }
+        //public wide_model_types wide_model_type { get; set; }
+        //public string price { get; set; }
+        //public string change_datetime { get; set; }
+
+
+
+
+                    { "path_file_wo_ext"        ,0 },
+                    { "filename"                ,1 },
                     //{ "descr"                  ,1 },
-                    { "path_file_sides_data"   ,1 },
-                    { "path_file_prev_model"   ,2 },
-                    { "path_file_final_model"  ,3 },
-                    { "wide_model_types"       ,4 },
-                    { "price"                  ,5 },
-                    { "change_datetime"        ,6 }
+                    { "picture"                 ,2 },
+                    //{ "path_file_sides_data"    ,2 },
+                    //{ "path_file_prev_model"    ,3 },
+                    //{ "path_file_final_model"   ,4 },
+                    { "wide_model_types"        ,3 },
+                    { "price"                   ,4 },
+                    { "change_datetime"         ,5 }
 
 
                     //{ "nfiles",0 },

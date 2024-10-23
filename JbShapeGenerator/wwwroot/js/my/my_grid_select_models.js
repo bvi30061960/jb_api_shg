@@ -170,18 +170,31 @@ export function GridSelectModels(pv_prefix /*po_container , po_camera, po_scene,
 					//	{ name: 'username_hash_with_postfix', index: 'username_hash_with_postfix', hidden: true }
 
 					//],
+  //	  public string path_file_wo_ext { get; set; }
+  //      public string filename { get; set; }
+  //      //public string descr { get; set; }
+  //      public byte[] picture { get; set; }
+  //      ////public string path_file_sides_data { get; set; }
+  //      ////public string path_file_prev_model { get; set; }
+  //      ////public string path_file_final_model { get; set; }
+  //      public wide_model_types wide_model_type { get; set; }
+  //      public string price { get; set; }
+  //      public string change_datetime { get; set; }
 
 
-					colNames: ['pathFile', '<i class="bi-share"></i>', 'Model name', /*'Description',*/ 'Picture', 'Change date', 'Change time', 'username_hash_with_postfix'],
-					colModel: [
-						{ name: 'pathFile', index: 'pathFile', hidden: true },
-						{ name: 'IsCommonModel', index: 'IsCommonModel', sortable: true, width: 35, align: 'center'/*, formatter: is_shared_file_formatter*/ },
-						{ name: 'ModelName', index: 'ModelName', align: 'center', width: 160, sortable: true/*, formatter: cellLinkFormater*/ },
+					//colNames: ['pathFile', '<i class="bi-share"></i>', 'Model name', /*'Description',*/ 'Picture', 'Change date', 'Change time', 'username_hash_with_postfix'],
+					colNames: ['path_file_wo_ext','filename', 'picture', '< i class= "bi-share" ></i >', 'price', 'Change time'],
+						colModel: [
+						{ name: 'path_file_wo_ext', index: 'path_file_wo_ext', hidden: true },
+						{ name: 'filename', index: 'filename', align: 'center', width: 80, sortable: true/*, formatter: cellLinkFormater*/ },
+						{ name: 'picture', index: 'Picture', width: 80, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
+						//{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
+						//{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
+						//{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
+						{ name: 'wide_model_type', index: 'wide_model_type', sortable: true, width: 35, align: 'center'/*, formatter: is_shared_file_formatter*/ },
 						//{ name: 'Description', index: 'Description', width: 300, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
-						{ name: 'Picture', index: 'Picture', width: 80, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
-						{ name: 'DateChange', index: 'DateChange', width: 70, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
-						{ name: 'ChangeTime', index: 'ChangeTime', width: 90, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
-						{ name: 'username_hash_with_postfix', index: 'username_hash_with_postfix', hidden: true }
+						{ name: 'price', index: 'price', width: 100, sortable: true, align: 'center'/*, formatter: cellLinkFormater */},
+							{ name: 'change_datetime', index: 'change_datetime', width: 90, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ }
 
 					],
 
