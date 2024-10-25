@@ -45,7 +45,11 @@ namespace JbShapeGenerator.AppCode
         sp  // испаский
     };
 
-
+    //******************************************************************************************
+    public struct server_commands
+    {
+        public const string read_screenshot = "read_screenshot";
+    }
     //******************************************************************************************
     public struct CommonConstants
     {
@@ -75,9 +79,11 @@ namespace JbShapeGenerator.AppCode
     public struct UsingFileExtensions
     {
 
-        public const string stl = ".stl"; // Файлы stl
-        public const string dat = ".dat"; // Файлы с данными фигуры и кривых
-        public const string prev = ".prev"; // stl Файл модели до разрезания
+        public const string stl     = ".stl";   // Файлы stl
+        public const string dat     = ".dat";   // Файлы с данными фигуры и кривых
+        public const string prev    = ".prev";  // stl Файл модели до разрезания
+        //public const string png     = ".png";   // копия экрана с изображением модели
+        public const string scr     = ".scr";   // копия экрана с изображением модели
 
         //    public const string t1c = ".t1c"; // Выход - файл для перевода с двухколоночной таблицей с текстом в одной левой колонке  
         //                                      //public const string t2c = ".t2c"; // Выход - файл с двухколоночной таблицей с переведённым текстом в двух колонках  
@@ -283,6 +289,8 @@ namespace JbShapeGenerator.AppCode
         public string model_name { set; get; }
         public string sides_data { set; get; }
         public string prev_model { set; get; }
+        public string screenshot { set; get; }
+
 
     };
     //========================================================================================

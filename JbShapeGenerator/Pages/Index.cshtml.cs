@@ -55,28 +55,58 @@ namespace JbShapeGenerator.Pages
             return await HandleModel.SaveModel(Request, PageContext);
         }
 
-
         //-----------------------------------------------------------------------------------------------------
-         
-        //public IActionResult OnGetReadListModels(/*string pv_taskid*/)
-        public async Task<IActionResult> OnGetReadListModels(/*string pv_taskid*/)
+        public async Task<IActionResult> OnGetReadScreenshot()
+        //public async Task<IResult> OnGetReadScreenshot()
         {
 
-            HandlePathsAndNames.Create_names_and_directories(PageContext/*Request.HttpContext.User.Identity.Name*/);
+            string lv_result = "";
+
+            string? lv_path_filename = "";
+
+
+            try
+            {
+
+
+                lv_path_filename = Request.Query["pathfilename"];
+                if (lv_path_filename != null && lv_path_filename != "")
+                {
+                    ////lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
+                    ////                        Path.Combine(CommonConstants.path_AppData,
+                    ////                            Path.Combine(CommonConstants.path_temp_data), lv_filename));
+
+
+                    //return ActionResult<File>
+                    //return   (lv_path_filename); //13102024
+
+                    //await Response.SendFileAsync(lv_path_filename);
+
+                    lv_result = await HandleModel.ReadTextFile(lv_path_filename);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //return Results.Empty;
+                return new OkObjectResult("");
+            }
+
+            return new OkObjectResult(lv_result);
+
+        }
+        //-----------------------------------------------------------------------------------------------------
+        public async Task<IActionResult> OnGetReadListModels()
+        {
 
             string lv_res_str = "";
             try
             {
-                ////ao_GlobalSessionData = new GlobalSessionData(this); //25102023
-                ////ao_GlobalSessionData.ao_indexModel = this;// Глобальная ссылка на класс
-                ////ao_GlobalSessionData.CreateApplPathDirectories();
-                ////ao_GlobalSessionData.ao_DataManager = ao_DataManager;//27072023
-                ////ao_GlobalSessionData.ReadConfiguration(ao_Configuration);//31102023
-                ////                                                         //28102023 }
+
+                HandlePathsAndNames.Create_names_and_directories(PageContext/*Request.HttpContext.User.Identity.Name*/);
 
 
-
-                jqGridSelectListModelFiles lo_grid_list_models = new jqGridSelectListModelFiles(/*ao_GlobalSessionData*/);
+                jqGridSelectListModelFiles lo_grid_list_models = new jqGridSelectListModelFiles();
 
                 JQGridResults lv_ob_result = await lo_grid_list_models.ProcessRequest(PageContext.HttpContext);
 
@@ -94,11 +124,6 @@ namespace JbShapeGenerator.Pages
             }
 
             return new OkObjectResult(lv_res_str);
-
-
-            //string lv_res_str = JsonConvert.SerializeObject(""/*lv_ob_result*/);
-
-            //return new OkObjectResult(lv_res_str);
 
         }
 

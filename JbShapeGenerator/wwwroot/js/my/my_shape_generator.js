@@ -666,7 +666,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                this.renderer_mod = new THREE.WebGLRenderer({ antialias: true });
+                this.renderer_mod = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
                 //////////////his.renderer_mod.setSize(this.id_side_shape_mod.clientWidth, this.id_side_shape_mod.clientHeight);// 06052024
                 this.container_mod.appendChild(this.renderer_mod.domElement);
 

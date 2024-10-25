@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
+using System.IO;
+
 
 namespace JbShapeGenerator.AppCode
 {
@@ -44,6 +46,7 @@ namespace JbShapeGenerator.AppCode
                 string lv_filename_sides_data = lv_path_and_name_file_wo_extension + UsingFileExtensions.dat;
                 string lv_filename_prev_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.prev;
                 string lv_filename_final_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.stl;
+                string lv_filename_screen_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.scr; // png;
 
 
 
@@ -61,6 +64,11 @@ namespace JbShapeGenerator.AppCode
                     await sw.WriteAsync(united_model_data.prev_model);
                 }
 
+                // сохранение файла копии экрана с изображением модели
+                using (StreamWriter sw = new StreamWriter(lv_filename_screen_model))
+                {
+                    await sw.WriteAsync(united_model_data.screenshot);
+                }
 
                 gs_ListFiles ls_data_file = new gs_ListFiles();
 
@@ -100,6 +108,32 @@ namespace JbShapeGenerator.AppCode
             return new ObjectResult("my username");
 
         } // method 
+
+        //----------------------------------------------------------------------------------------------------------
+        internal static async Task<string> ReadTextFile(string pv_path_filename)
+        {
+            //throw new NotImplementedException();
+
+            string lv_result = "";
+
+            try
+            {
+                //await using (StreamReader lo_sr = new StreamReader(pv_path_filename))
+                using (StreamReader lo_sr = new StreamReader(pv_path_filename))
+                {
+                    lv_result = await lo_sr.ReadToEndAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+
+            return lv_result;
+
+        }
 
         //-------------------- class  ----------------------------------------------
     }

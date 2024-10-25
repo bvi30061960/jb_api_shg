@@ -5,7 +5,9 @@
         method_make_model: "make_model",
         method_read_model_parts: "read_model_parts",
         method_delete_model_parts: "delete_model_parts",
-        file_model_ext: ".stl"
+        method_read_screenshot: "ReadScreenshot",
+        file_model_ext: ".stl",
+        file_model_screenshot: ".scr"
         //Number_of_blocks: 6,
         //SeparatorNameSet_from_data: "_@&@_",
         //Separator_between_items: "_&&_",
