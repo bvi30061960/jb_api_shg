@@ -82,7 +82,7 @@ namespace JbShapeGenerator.AppCode
         public const string stl     = ".stl";   // Файлы stl
         public const string dat     = ".dat";   // Файлы с данными фигуры и кривых
         public const string prev    = ".prev";  // stl Файл модели до разрезания
-        //public const string png     = ".png";   // копия экрана с изображением модели
+        public const string png     = ".png";   // графический файл копии экрана с изображением модели
         public const string scr     = ".scr";   // копия экрана с изображением модели
 
         //    public const string t1c = ".t1c"; // Выход - файл для перевода с двухколоночной таблицей с текстом в одной левой колонке  

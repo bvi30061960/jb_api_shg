@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using NuGet.Protocol.Plugins;
 using System.IO;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 
 
 namespace JbShapeGenerator.AppCode
@@ -47,6 +48,7 @@ namespace JbShapeGenerator.AppCode
                 string lv_filename_prev_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.prev;
                 string lv_filename_final_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.stl;
                 string lv_filename_screen_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.scr; // png;
+                string lv_filename_screen_model_graph = lv_path_and_name_file_wo_extension + UsingFileExtensions.png; // png;
 
 
 
@@ -70,6 +72,53 @@ namespace JbShapeGenerator.AppCode
                     await sw.WriteAsync(united_model_data.screenshot);
                 }
 
+
+                // Преобразование screenshot в формат графического файла
+
+                string lv_graph = united_model_data.screenshot.Replace("data:image/png;base64,", "");
+                //lv_graph = united_model_data.screenshot.Replace(" ", "+");
+                //lv_graph = united_model_data.screenshot.Replace(" ", "");
+
+                var base64EncodedBytes = System.Convert.FromBase64String(lv_graph);
+                
+
+
+
+                /////////var lv_format_graph = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+
+
+
+
+
+                // сохранение файла копии экрана в графическом формате с изображением модели
+                ////using (StreamWriter sw = new StreamWriter(lv_filename_screen_model_graph))
+                ////{
+                ////    await sw.WriteAsync(lv_format_graph);
+                ////}
+
+
+                ////FileStream fs = new FileStream(lv_filename_screen_model_graph, FileMode.OpenOrCreate);
+
+                ////BinaryWriter bw = new BinaryWriter(fs);
+                ////for (int lv_i = 0; lv_i < lv_format_graph.Length; lv_i++)
+                ////{
+                ////    bw.Write(lv_format_graph[lv_i]);
+
+                ////}
+
+                ////bw.Close();
+
+                using (BinaryWriter writer = new BinaryWriter(File.Open(lv_filename_screen_model_graph, FileMode.OpenOrCreate)))
+                {
+                    //writer.Write(lv_format_graph);
+                    writer.Write(base64EncodedBytes);
+                }
+                
+
+
+
+                // Занесение информации в файл списка файлов
+
                 gs_ListFiles ls_data_file = new gs_ListFiles();
 
                 ls_data_file.path_file_wo_ext = lv_path_and_name_file_wo_extension;
@@ -81,9 +130,6 @@ namespace JbShapeGenerator.AppCode
                 ls_data_file.wide_model_type = wide_model_types.user;
                 ls_data_file.price = 0.ToString();
                 ls_data_file.change_datetime = DateTime.Now.ToString(); // ToShortDateString();
-
-
-
 
 
 

@@ -205,7 +205,7 @@ export function GridSelectModels(pv_prefix) {
                     colModel: [
                         { name: 'path_file_wo_ext', index: 'path_file_wo_ext', hidden: true },
                         { name: 'filename', index: 'filename', align: 'center', width: 80, sortable: true/*, formatter: cellLinkFormater*/ },
-                        { name: 'picture', index: 'Picture', width: 80, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
+                        { name: 'picture', index: 'Picture', width: 80, sortable: true, align: 'center', formatter:this.imageformatter /*, formatter: cellLinkFormater*/ },
                         //{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
                         //{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
                         //{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
@@ -288,7 +288,34 @@ export function GridSelectModels(pv_prefix) {
         }
 
 
+        //-----------------------------------------------------------------------------------------
 
+        GridSelectModels.prototype.imageformatter = function (pv_cellvalue, ps_options, po_rowObject) {
+
+
+            let lv_return = pv_cellvalue;
+
+            ////if (ps_options.colModel.name == "text_theme") {
+            ////    var lv_lang = my_common.getLang();
+
+            ////    //return my_common.get_localize_txt(lv_lang, pv_cellvalue);
+
+            ////    lv_return = "<a href='#' onclick='my_list_common_files_grid.onClickLink(" + ps_options.rowId
+            ////        + ")'/>" + my_common.get_localize_txt(lv_lang, pv_cellvalue) + "</a>";
+            ////}
+
+            //lv_return = '<img style="margin-left: 5px;" height="60" width="50" src="'
+            lv_return = '<img src="'
+                //+ po_rowObject[0] + Constants.file_model_screenshot + '"/>';
+                + po_rowObject[0] + '.png" />';
+
+
+            //lv_return = lv_return.replace('\\','/');
+            ////////////lv_return = lv_return.replace('/','\\');
+
+            return lv_return;
+
+        }
 
         //------------------------------------------------------------------------------------------
         GridSelectModels.prototype.OndblClickRow = function (e) {
