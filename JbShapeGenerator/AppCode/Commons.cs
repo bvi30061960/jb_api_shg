@@ -532,14 +532,14 @@ namespace JbShapeGenerator.AppCode
 
 
 
-                    { "path_file_wo_ext"        ,0 },
-                    { "filename"                ,1 },
-                    //{ "descr"                  ,1 },
-                    { "picture"                 ,2 },
+                    { "wide_model_types"        ,0 },
+                    { "path_file_wo_ext"        ,1 },
+                    { "filename"                ,2 },
+                    //{ "descr"                  ,3 },
+                    { "picture"                 ,3 },
                     //{ "path_file_sides_data"    ,2 },
                     //{ "path_file_prev_model"    ,3 },
                     //{ "path_file_final_model"   ,4 },
-                    { "wide_model_types"        ,3 },
                     { "price"                   ,4 },
                     { "change_datetime"         ,5 }
 

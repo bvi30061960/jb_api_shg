@@ -193,6 +193,7 @@ namespace JbShapeGenerator.AppCode
 
 
 
+                    row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "wide_model_types")] = gs_data.wide_model_type.ToString();
                     row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "path_file_wo_ext")] = gs_data.path_file_wo_ext; 
                     row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "filename")] = gs_data.filename; 
                     ///////row.cell[Get_num_by_name_column(GridFieldsSet.ListModelFiles, "picture")] = gs_data.picture; 

@@ -9,7 +9,10 @@ import {
     get_passive_side_shape_generator
 } from './my_shape_generator.js';
 
-import { Constants } from './my_common_const.js';
+import {
+    Constants,
+    Wide_model_types
+} from './my_common_const.js';
 
 
 var go_this = null;
@@ -147,16 +150,19 @@ export function GridSelectModels(pv_prefix) {
 
 
                 this.$div_grid.dialog({
-                    title: "Read model",
+                    title: false, //"Read model",
                     autoOpen: false,
                     modal: true,
                     resizable: false,
-                    height: "auto",
+                    height: 600, //"auto",
                     width: "auto", // 600,
                     buttons: {
                         "Close": function () {
                             $(this).dialog("close");
                         }
+                    },
+                    open: function () {
+                        $(this).dialog("widget").find(".ui-dialog-titlebar").hide();
                     }
                 });
 
@@ -169,7 +175,7 @@ export function GridSelectModels(pv_prefix) {
                     //go_Grid.jqGrid({
                     //url: 'jqGridSelectBlockSetingsHandler.ashx',
                     datatype: 'json',
-                    height: 230,//120,//90, //250,
+                    //height: auto, //230,//120,//90, //250,
                     width: 1100, //800, //1000,
 
                     //23092021 autowidth: true,
@@ -201,15 +207,16 @@ export function GridSelectModels(pv_prefix) {
 
 
                     //colNames: ['pathFile', '<i class="bi-share"></i>', 'Model name', /*'Description',*/ 'Picture', 'Change date', 'Change time', 'username_hash_with_postfix'],
-                    colNames: ['path_file_wo_ext', 'filename', 'picture', '< i class= "bi-share" ></i >', 'price', 'Change time'],
+                    //colNames: ['path_file_wo_ext', 'filename', 'picture', '< i class= "bi-share" ></i >', 'price', 'Change time'],
+                    colNames: ['&nbsp;<i class= "bi-share" title="Shared or private model" />&nbsp;', 'path_file_wo_ext', 'filename', 'picture',  'price', 'Change time'],
                     colModel: [
+                        { name: 'wide_model_type', index: 'wide_model_type', sortable: true, width: 35, align: 'center', formatter: this.is_shared_file_formatter },
                         { name: 'path_file_wo_ext', index: 'path_file_wo_ext', hidden: true },
                         { name: 'filename', index: 'filename', align: 'center', width: 80, sortable: true/*, formatter: cellLinkFormater*/ },
-                        { name: 'picture', index: 'Picture', width: 80, sortable: true, align: 'center', formatter:this.imageformatter /*, formatter: cellLinkFormater*/ },
+                        { name: 'picture', index: 'Picture', width: 60, sortable: true, align: 'center', formatter:this.imageformatter /*, formatter: cellLinkFormater*/ },
                         //{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
                         //{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
                         //{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
-                        { name: 'wide_model_type', index: 'wide_model_type', sortable: true, width: 35, align: 'center'/*, formatter: is_shared_file_formatter*/ },
                         //{ name: 'Description', index: 'Description', width: 300, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
                         { name: 'price', index: 'price', width: 100, sortable: true, align: 'center'/*, formatter: cellLinkFormater */ },
                         { name: 'change_datetime', index: 'change_datetime', width: 90, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ }
@@ -305,18 +312,48 @@ export function GridSelectModels(pv_prefix) {
             ////}
 
             //lv_return = '<img style="margin-left: 5px;" height="60" width="50" src="'
-            lv_return = '<img src="'
-                //+ po_rowObject[0] + Constants.file_model_screenshot + '"/>';
-                + po_rowObject[0] + '.png" />';
 
 
-            //lv_return = lv_return.replace('\\','/');
-            ////////////lv_return = lv_return.replace('/','\\');
+            let lv_str = po_rowObject[1];
+
+            lv_str = lv_str.replace("wwwroot/", "");
+
+
+           /* lv_return = '<img class="cell_img" src="' + lv_str + Constants.file_model_screenshot + '" />';*/
+
+
+
+            lv_return = '<div class="wrapper_img for_cell"> <img  src="' + lv_str + Constants.file_model_screenshot + '" /></div>'; //class="cell_img"
+
 
             return lv_return;
 
         }
 
+
+        //-----------------------------------------------------------------------------------------
+
+        GridSelectModels.prototype.is_shared_file_formatter = function (pv_cellvalue, ps_options, po_rowObject) {
+
+
+            let lv_return = pv_cellvalue;
+
+            if (pv_cellvalue == "") {
+
+                return "";
+            }
+
+            if (pv_cellvalue == Wide_model_types.common) {
+                lv_return = '<i class= "bi-share" title = "Shared model" />';
+            };
+
+            if (pv_cellvalue == Wide_model_types.user) {
+                lv_return = '<i class="bi-person-fill" title="Private model" />';
+            };
+
+            return lv_return;
+
+        }
         //------------------------------------------------------------------------------------------
         GridSelectModels.prototype.OndblClickRow = function (e) {
 
