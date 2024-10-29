@@ -385,7 +385,7 @@ export function GridSelectModels(pv_prefix) {
             }
 
 
-            lv_pathFile = lv_pathFile + Constants.file_model_prev;
+            //29102024 lv_pathFile = lv_pathFile + Constants.file_model_prev;
             this.read_model_from_server(lv_pathFile);
 
             this.$div_grid.dialog("close");
@@ -396,7 +396,8 @@ export function GridSelectModels(pv_prefix) {
         GridSelectModels.prototype.read_model_from_server = function (pv_pathFile) {
 
 
-            let lv_url = "/Index?handler=" + Constants.method_read_model_from_server + "&pathfilename=" + pv_pathFile;
+            //29102024 let lv_url = "/Index?handler=" + Constants.method_read_model_from_server + "&pathfilename=" + pv_pathFile;
+            let lv_url = "/Index?handler=" + Constants.method_read_model_from_server + "&pathmodel=" + pv_pathFile;
 
 
             get_read_model_from_server(lv_url);
@@ -430,6 +431,20 @@ export function GridSelectModels(pv_prefix) {
 
                 let lo_active_side = get_active_side_shape_generator();
 
+
+                //export function typ_united_model_data() {
+                //    this.model_name = "";
+                //    this.sides_data = "";
+                //    this.prev_model = "";
+                //    this.screenshot = null;
+
+                //}
+
+
+
+
+
+
                 //////// тестовый пример загрузки изображения
                 //////let $id_div_visual_model = $("#id_screenshot");
                 //////$id_div_visual_model.empty();
@@ -439,6 +454,9 @@ export function GridSelectModels(pv_prefix) {
                 //////$id_div_visual_model.css('display', 'block');
 
 
+                let lo_data = JSON.parse(po_data); //29102024
+
+
 
                 // Очистка группы с деталями модели
                 lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
@@ -446,7 +464,8 @@ export function GridSelectModels(pv_prefix) {
 
 
                 const loader = new STLLoader();
-                const lo_geometry = loader.parse(po_data);
+                //const lo_geometry = loader.parse(po_data);
+                const lo_geometry = loader.parse(lo_data.prev_model);
 
                 // Задержка после парсинга ?
                 setTimeout(function () {

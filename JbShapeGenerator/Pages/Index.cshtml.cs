@@ -109,8 +109,8 @@ namespace JbShapeGenerator.Pages
 
                 //28102024 {
 
-                ////////HandlePathsAndNames.Clear_names_and_paths();
-                ////////HandlePathsAndNames.Create_names_and_directories(PageContext);
+                HandlePathsAndNames.Clear_names_and_paths();
+                HandlePathsAndNames.Create_names_and_directories(PageContext);
 
 
 
@@ -121,7 +121,10 @@ namespace JbShapeGenerator.Pages
 
 
                 string? lv_path_model = Request.Query["pathmodel"];
-                typ_united_model_data lo_united_model_data = HandleModel.ReadUnitedModelData(lv_path_model);
+                typ_united_model_data lo_united_model_data = await HandleModel.ReadUnitedModelData(lv_path_model);
+
+
+                lv_result = JsonConvert.SerializeObject(lo_united_model_data);
 
                 //28102024 }
 
