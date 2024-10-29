@@ -158,8 +158,7 @@
     /*border-style: solid;
     border-width: 1px;
     border-color: black;*/
-
-   /* z-index: 5;*/
+    /* z-index: 5;*/
 }
 
 #up_id_shg_right, #lateral_id_shg_right {
@@ -170,7 +169,6 @@
     /*border-style: solid;
     border-width: 1px;
     border-color: black;*/
-
     /*z-index: 5;*/
 }
 
@@ -183,7 +181,6 @@
 
 
 #up_id_div_visual_model, #lateral_id_div_visual_model {
-    
     height: 26.8vh;
     /*width:80%;*/
 }
@@ -198,8 +195,7 @@
     font-size: 0.75em; /*10px;*/
 }
 
-#up_id_div_shape_dblclk, #lateral_id_div_shape_dblclk
-{
+#up_id_div_shape_dblclk, #lateral_id_div_shape_dblclk {
     position: absolute;
     bottom: 5%;
     left: 5%;
@@ -335,12 +331,9 @@
     height: 40px;
     position: absolute;
     /*top: 40vh;*/ /*10vh;*/
-    bottom:12vh;
+    bottom: 12vh;
     margin-left: auto;
     margin-right: auto;
-
-
-
     /*position: absolute;
     top: 10vh;*/
     /*margin-left: auto;
@@ -352,12 +345,20 @@
 
 /*******************************************************************************/
 
+/*Заголовок окна диалога посередине*/
+.ui-dialog .ui-dialog-title {
+    text-align: center;
+    width: 100%;
+}
+
+/*******************************************************************************/
+
 /* Формат изображений в grid */
 .wrapper_img {
     width: 150px;
     height: auto;
     /*border: 5px solid #515151;*/
-    align-content:center;
+    align-content: center;
 }
 
 
@@ -547,9 +548,39 @@
 }
 */
 
+/**********************  jqgrid **********************************************************/
+/*
+.ui-jqgrid {
+    border-right-width: 0px !important; 
+    border-left-width: 0px !important; 
+}*/
 
+ .ui-jqgrid {
+    border-width: 0px !important 
+}
 
+.ui-jqgrid tr.ui-row-ltr td {
+    border-right-color: transparent !important; 
+}
 
+.ui-jqgrid tr.ui-row-ltr td {
+    border-bottom-color: transparent !important; 
+}
+
+th.ui-th-column {
+    border-right-color: transparent !important /**/
+}
+
+/*
+.ui-jqgrid-labels .ui-th-column {
+    border-right-color: transparent 
+}
+*/
+
+/* Размер шрифта */
+.ui-jqgrid .ui-jqgrid-view {
+    font-size: 0.9em !important; /*0.84em*/
+}
 
 /*******************************************************************************/
 /*body {

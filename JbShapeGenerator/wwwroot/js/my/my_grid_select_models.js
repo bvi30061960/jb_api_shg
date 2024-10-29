@@ -1,7 +1,13 @@
-﻿//import * as THREE from 'three';
+﻿import * as THREE from 'three';
 //import { Line2 } from 'three/addons/lines/Line2.js';
 //import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 //import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+
+
+//import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+//import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';//20082024
 
 
 import {
@@ -150,20 +156,24 @@ export function GridSelectModels(pv_prefix) {
 
 
                 this.$div_grid.dialog({
-                    title: false, //"Read model",
+                    title: '                                  List of models', 
                     autoOpen: false,
                     modal: true,
                     resizable: false,
-                    height: 600, //"auto",
+                    height: 650, //"auto", //600, //"auto",
                     width: "auto", // 600,
                     buttons: {
                         "Close": function () {
                             $(this).dialog("close");
                         }
                     },
-                    open: function () {
-                        $(this).dialog("widget").find(".ui-dialog-titlebar").hide();
-                    }
+                    //open: function () {
+                    //    $(this).dialog("widget").find(".ui-dialog-titlebar").hide();
+                    //},
+
+                    //position: { my: "center top", at: "left bottom"/*, of: button*/ }
+                    /*position: { at: "center center+25%", my: "center center+25%" }*/
+
                 });
 
                 go_grid = this.$grid;
@@ -179,6 +189,7 @@ export function GridSelectModels(pv_prefix) {
                     width: 1100, //800, //1000,
 
                     //23092021 autowidth: true,
+
                     hoverrows: false, // подсвечивание строк
 
                     //colNames: ['pathFile', 'Hash_name', '№ п/п', 'Имя настройки', 'Описание', 'Дата изм.', 'Время изм.', '<i class="bi-share"></i>', 'username_hash_with_postfix'],
@@ -208,18 +219,18 @@ export function GridSelectModels(pv_prefix) {
 
                     //colNames: ['pathFile', '<i class="bi-share"></i>', 'Model name', /*'Description',*/ 'Picture', 'Change date', 'Change time', 'username_hash_with_postfix'],
                     //colNames: ['path_file_wo_ext', 'filename', 'picture', '< i class= "bi-share" ></i >', 'price', 'Change time'],
-                    colNames: ['&nbsp;<i class= "bi-share" title="Shared or private model" />&nbsp;', 'path_file_wo_ext', 'filename', 'picture',  'price', 'Change time'],
+                    colNames: ['&nbsp;<i class= "bi-share" title="Shared or private model" />&nbsp;', 'path_file_wo_ext', 'Filename', 'Picture', 'Price', 'Change time'],
                     colModel: [
-                        { name: 'wide_model_type', index: 'wide_model_type', sortable: true, width: 35, align: 'center', formatter: this.is_shared_file_formatter },
+                        { name: 'wide_model_type', index: 'wide_model_type', sortable: true, width: 10, align: 'center', formatter: this.is_shared_file_formatter },
                         { name: 'path_file_wo_ext', index: 'path_file_wo_ext', hidden: true },
-                        { name: 'filename', index: 'filename', align: 'center', width: 80, sortable: true/*, formatter: cellLinkFormater*/ },
-                        { name: 'picture', index: 'Picture', width: 60, sortable: true, align: 'center', formatter:this.imageformatter /*, formatter: cellLinkFormater*/ },
+                        { name: 'filename', index: 'filename', align: 'center', width: 70, sortable: true/*, formatter: cellLinkFormater*/ },
+                        { name: 'picture', index: 'Picture', width: 60, sortable: true, formatter: this.imageformatter /*, formatter: cellLinkFormater*/ },
                         //{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
                         //{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
                         //{ name: 'path_file_sides_data', index: 'path_file_sides_data', hidden: true },
                         //{ name: 'Description', index: 'Description', width: 300, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ },
-                        { name: 'price', index: 'price', width: 100, sortable: true, align: 'center'/*, formatter: cellLinkFormater */ },
-                        { name: 'change_datetime', index: 'change_datetime', width: 90, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ }
+                        { name: 'price', index: 'price', width: 30, sortable: true, align: 'center'/*, formatter: cellLinkFormater */ },
+                        { name: 'change_datetime', index: 'change_datetime', width: 40, sortable: true, align: 'center'/*, formatter: cellLinkFormater*/ }
 
                     ],
 
@@ -227,14 +238,14 @@ export function GridSelectModels(pv_prefix) {
 
 
 
-                    //caption: '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' +
-                    //    'Список настроек',
+                    //caption: '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + 'List of models',
                     caption: "", //"Выбор настройки",
                     rowNum: 100, //10,
                     //rowList: [10, 50, 100],
                     pager: this.$gridPager,
                     sortname: 'RowID',
-                    ////////////////viewrecords: true,
+
+                    ////viewrecords: false, //true,//////////////////////////
 
                     /////////////////////////////////editurl: "/Index?handler=GridListBlockSetings?delete=yes", //10092022
 
@@ -243,7 +254,15 @@ export function GridSelectModels(pv_prefix) {
 
                     datatype: 'local',
 
-                    hiddengrid: 'true'
+
+
+                    //deepempty: true,
+
+                    //loadonce: false,
+                    //cache: true,
+
+
+                    //hiddengrid: 'false' //'true'
 
 
                     //        gridComplete: function () {
@@ -301,30 +320,11 @@ export function GridSelectModels(pv_prefix) {
 
 
             let lv_return = pv_cellvalue;
-
-            ////if (ps_options.colModel.name == "text_theme") {
-            ////    var lv_lang = my_common.getLang();
-
-            ////    //return my_common.get_localize_txt(lv_lang, pv_cellvalue);
-
-            ////    lv_return = "<a href='#' onclick='my_list_common_files_grid.onClickLink(" + ps_options.rowId
-            ////        + ")'/>" + my_common.get_localize_txt(lv_lang, pv_cellvalue) + "</a>";
-            ////}
-
-            //lv_return = '<img style="margin-left: 5px;" height="60" width="50" src="'
-
-
             let lv_str = po_rowObject[1];
-
             lv_str = lv_str.replace("wwwroot/", "");
 
-
-           /* lv_return = '<img class="cell_img" src="' + lv_str + Constants.file_model_screenshot + '" />';*/
-
-
-
-            lv_return = '<div class="wrapper_img for_cell"> <img  src="' + lv_str + Constants.file_model_screenshot + '" /></div>'; //class="cell_img"
-
+            // дату добавляем для исключения кеширования
+            lv_return = '<div class="wrapper_img for_cell"> <img  src="' + lv_str + Constants.file_model_graph + '?date=' + new Date() + '" /></div>'; //class="cell_img"
 
             return lv_return;
 
@@ -334,7 +334,6 @@ export function GridSelectModels(pv_prefix) {
         //-----------------------------------------------------------------------------------------
 
         GridSelectModels.prototype.is_shared_file_formatter = function (pv_cellvalue, ps_options, po_rowObject) {
-
 
             let lv_return = pv_cellvalue;
 
@@ -386,40 +385,36 @@ export function GridSelectModels(pv_prefix) {
             }
 
 
-            lv_pathFile = lv_pathFile + Constants.file_model_screenshot;
-            this.read_screenshot(lv_pathFile);
+            lv_pathFile = lv_pathFile + Constants.file_model_prev;
+            this.read_model_from_server(lv_pathFile);
 
             this.$div_grid.dialog("close");
 
         }
 
         //------------------------------------------------------------------------------------------
-        GridSelectModels.prototype.read_screenshot = function (pv_pathFile) {
+        GridSelectModels.prototype.read_model_from_server = function (pv_pathFile) {
 
 
-            ////let lv_url = "https://localhost:7164/CalcJBModel?method=" + Constants.method_read_screenshot +
-            ////    "&pathfilename=" + pv_pathFile;
+            let lv_url = "/Index?handler=" + Constants.method_read_model_from_server + "&pathfilename=" + pv_pathFile;
 
 
-            let lv_url = "/Index?handler=" + Constants.method_read_screenshot + "&pathfilename=" + pv_pathFile;
-
-
-            get_read_screenshot(lv_url);
+            get_read_model_from_server(lv_url);
 
 
             //--------------------------------------------------
-            async function get_read_screenshot(pv_url) {
+            async function get_read_model_from_server(pv_url) {
 
 
                 try {
 
-                    await $.get(pv_url, "", go_this.oncomplete_read_screenshot);
+                    await $.get(pv_url, "", go_this.oncomplete_read_model_from_server);
 
                 }
 
                 catch (e) {
 
-                    alert('error get_read_screenshot: ' + e.stack);
+                    alert('error get_read model_from_server: ' + e.stack);
 
                 }
 
@@ -429,38 +424,63 @@ export function GridSelectModels(pv_prefix) {
 
 
         //------------------------------------------------------------------------------------------
-        GridSelectModels.prototype.oncomplete_read_screenshot = function (po_data) {
+        GridSelectModels.prototype.oncomplete_read_model_from_server = function (po_data) {
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                //////// тестовый пример загрузки изображения
+                //////let $id_div_visual_model = $("#id_screenshot");
+                //////$id_div_visual_model.empty();
+                //////let lo_img = document.createElement("img");
+                //////lo_img.src = po_data;
+                //////$id_div_visual_model.append(lo_img);
+                //////$id_div_visual_model.css('display', 'block');
 
 
-            let lo_active_side = get_active_side_shape_generator();
 
-            ///let $id_div_visual_model = $(lo_active_side.id_prefix + "id_div_visual_model");
-
-            let $id_div_visual_model = $("#id_screenshot");
-
-            //$("#divThreeJS").empty();
-            //if (gv_ModelImage.length > cv_ModelImage_length) {
-            //    var img = document.createElement("img");
-            //    img.src = gv_ModelImage; //canvas.toDataURL();
-            //    $("#divThreeJS").append(img);
-            //    $('#divThreeJS').css('display', 'block');//0105
-            //}
+                // Очистка группы с деталями модели
+                lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+                lo_active_side.render_mod();
 
 
-            $id_div_visual_model.empty();
+                const loader = new STLLoader();
+                const lo_geometry = loader.parse(po_data);
+
+                // Задержка после парсинга ?
+                setTimeout(function () {
+
+                    let lo_active_side = get_active_side_shape_generator();
+                    lo_active_side.on_load_model(lo_geometry);
+                    lo_active_side.render_mod();
 
 
-            let lo_img = document.createElement("img");
-            lo_img.src = po_data;
-            $id_div_visual_model.append(lo_img);
-            $id_div_visual_model.css('display', 'block');
+                }, 100);
 
-           // let lo_img = document.createElement("canvas");
-           // //lo_img.src = po_data;
-           // $id_div_visual_model.append(lo_img);
-           //  lo_img.src = po_data;
-           //$id_div_visual_model.css('display', 'block');
 
+
+                //// Очистка сцены
+                //let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh",
+                //28102024 lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+
+                ////lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+                ////lo_active_side.render_mod();
+
+
+
+
+                ////////////////////////lo_active_side.on_load_model(lo_geometry);
+                ////////////////////////lo_active_side.render_mod();
+
+
+            }
+
+            catch (e) {
+
+                alert('error get_read oncomplete_read_model_from_server: ' + e.stack);
+
+            }
 
         }
 

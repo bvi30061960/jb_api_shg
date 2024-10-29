@@ -57,7 +57,6 @@ namespace JbShapeGenerator.Pages
 
         //-----------------------------------------------------------------------------------------------------
         public async Task<IActionResult> OnGetReadScreenshot()
-        //public async Task<IResult> OnGetReadScreenshot()
         {
 
             string lv_result = "";
@@ -96,6 +95,49 @@ namespace JbShapeGenerator.Pages
 
         }
         //-----------------------------------------------------------------------------------------------------
+        public async Task<IActionResult> OnGetReadModelFromServer()
+        {
+
+
+            string lv_result = "";
+
+            string? lv_path_filename = "";
+
+
+            try
+            {
+
+                //28102024 {
+
+                ////////HandlePathsAndNames.Clear_names_and_paths();
+                ////////HandlePathsAndNames.Create_names_and_directories(PageContext);
+
+
+
+                //if (lv_path_filename != null && lv_path_filename != "")
+                //{
+                //    lv_result = await HandleModel.ReadTextFile(lv_path_filename);
+                //}
+
+
+                string? lv_path_model = Request.Query["pathmodel"];
+                typ_united_model_data lo_united_model_data = HandleModel.ReadUnitedModelData(lv_path_model);
+
+                //28102024 }
+
+
+            }
+            catch (Exception ex)
+            {
+                //return Results.Empty;
+                return new OkObjectResult("");
+            }
+
+            return new OkObjectResult(lv_result);
+        }
+
+
+        //-----------------------------------------------------------------------------------------------------
         public async Task<IActionResult> OnGetReadListModels()
         {
 
@@ -103,7 +145,7 @@ namespace JbShapeGenerator.Pages
             try
             {
 
-                HandlePathsAndNames.Create_names_and_directories(PageContext/*Request.HttpContext.User.Identity.Name*/);
+                HandlePathsAndNames.Create_names_and_directories(PageContext);
 
 
                 jqGridSelectListModelFiles lo_grid_list_models = new jqGridSelectListModelFiles();

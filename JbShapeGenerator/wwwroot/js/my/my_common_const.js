@@ -6,9 +6,12 @@ export var Constants = {
     method_read_model_parts: "read_model_parts",
     method_delete_model_parts: "delete_model_parts",
     method_read_screenshot: "ReadScreenshot",
+    method_read_model_from_server: "ReadModelFromServer",
+
     file_model_ext: ".stl",
     file_model_screenshot: ".scr",
-    file_model_screenshot: ".png",
+    file_model_prev: ".prev",
+    file_model_graph: ".png",
     //Number_of_blocks: 6,
     //SeparatorNameSet_from_data: "_@&@_",
     //Separator_between_items: "_&&_",

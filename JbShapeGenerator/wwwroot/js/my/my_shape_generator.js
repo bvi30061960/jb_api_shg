@@ -1595,13 +1595,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
 
             const loader = new STLLoader();
-            const lo_object = loader.parse(po_data);
+            const lo_geometry = loader.parse(po_data);
 
             // Очистка сцены
             let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
             lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
 
-            lo_active_side.on_load_model(lo_object);
+            lo_active_side.on_load_model(lo_geometry);
 
         }
         //------------------------------------------------------------------------
@@ -1708,8 +1708,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
 
 
-            //19102024 lo_active_side.scene_mod.add(mesh_mod);
-            lo_active_side.group_parts_mod.add(mesh_mod);//19102024
+            lo_active_side.group_parts_mod.add(mesh_mod);
 
 
 

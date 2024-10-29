@@ -31,7 +31,6 @@ namespace jb_api_shg.AppCode
 
     public class typ_sides_data
     {
-
         public typ_color_data ColorParts { set; get; }
 
         public typ_side_data data1 { set; get; }
