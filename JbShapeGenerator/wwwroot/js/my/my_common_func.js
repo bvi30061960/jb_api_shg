@@ -1016,13 +1016,13 @@ export function CommonFunc() {
 
 
         //------------------------------------------------------------------------
-        CommonFunc.prototype.clear_parts_group = function (po_group) {
+        CommonFunc.prototype.clear_group_childrens = function (po_group) {
 
             if (!po_group) {
                 return;
             }
 
-            let lo_active_side = get_active_side_shape_generator();
+            //29102024 let lo_active_side = get_active_side_shape_generator();
 
 
             try {
@@ -1036,7 +1036,7 @@ export function CommonFunc() {
             }
             catch (e) {
 
-                alert('error clear_parts_group: ' + e.stack);
+                alert('error clear_group_childrens: ' + e.stack);
 
             }
 

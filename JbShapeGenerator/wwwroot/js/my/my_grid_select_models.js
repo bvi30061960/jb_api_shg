@@ -459,7 +459,7 @@ export function GridSelectModels(pv_prefix) {
 
 
                 // Очистка группы с деталями модели
-                lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+                lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
                 lo_active_side.render_mod();
 
 
@@ -471,9 +471,9 @@ export function GridSelectModels(pv_prefix) {
                 setTimeout(function () {
 
                     let lo_active_side = get_active_side_shape_generator();
-                    lo_active_side.on_load_model(lo_geometry);
+                    lo_active_side.on_load_model(lo_geometry);  
                     lo_active_side.render_mod();
-
+                    lo_active_side.draw_shape_by_sides_data(lo_data.sides_data);
 
                 }, 100);
 
@@ -483,7 +483,7 @@ export function GridSelectModels(pv_prefix) {
                 //let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh",
                 //28102024 lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
 
-                ////lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+                ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
                 ////lo_active_side.render_mod();
 
 

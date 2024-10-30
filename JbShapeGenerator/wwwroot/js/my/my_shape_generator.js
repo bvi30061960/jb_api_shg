@@ -20,7 +20,8 @@ import {
     typ_color_data,
     typ_side_data,
     typ_mesh_colors,
-    type_rotate_mode
+    type_rotate_mode,
+    typ_sides_data //29102024
 
 } from "./my_common_types.js";
 
@@ -163,11 +164,13 @@ function get_side_shape_generator_by_prefix(pv_prefix) {
 
 //============================================================================================
 
-function typ_sides_data() {
-    this.colorParts = new typ_color_data();
-    this.data1 = new typ_side_data();
-    this.data2 = new typ_side_data();
-};
+//29102023 {
+//function typ_sides_data() {
+//    this.colorParts = new typ_color_data();
+//    this.data1 = new typ_side_data();
+//    this.data2 = new typ_side_data();
+//};
+//29102023 }
 
 
 var go_sides_data = new typ_sides_data();
@@ -1188,7 +1191,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
 
 
-            ////lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);//19102024
+            ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);//19102024
 
 
             this.load_model_parts(po_data);
@@ -1328,7 +1331,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
                     $(lo_active_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
 
-                    lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+                    lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
                     lo_active_side.controls_mod.reset();
 
                 }
@@ -1337,7 +1340,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     // after
 
-                    /////lo_active_side.common_func.clear_parts_group(lo_active_side.group_parts_mod);
+                    /////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
 
                     $('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
                     $('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
@@ -2296,10 +2299,18 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.onChange_shape_width = function (pv_value) {
 
             let lo_active_side = get_active_side_shape_generator();
+            let lo_passive_side = get_passive_side_shape_generator();
+
+            if (lo_active_side.shapes == null) {
+                return;
+            }
+
+            if (lo_passive_side.shapes == null) {
+                return;
+            }
 
             let lv_scale = pv_value / lo_active_side.params.shape_width_beg;
 
-            let lo_passive_side = get_passive_side_shape_generator();
             if (lo_passive_side) {
                 if (typeof lo_passive_side.gui !== "undefined" && lo_passive_side.gui) {
                     lo_passive_side.params.shape_width = pv_value;
@@ -2689,6 +2700,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 lo_active_side_shape_generator = get_active_side_shape_generator();
 
+
+                if (lo_active_side_shape_generator.shapes == null) {
+                    return;
+                }
+                if (lo_active_side_shape_generator.shapes.ar_splines_nodes == null) {
+                    return;
+                }
+
+
+
                 //25072024 {
                 //if (po_event.button != 0) {
                 lo_active_side_shape_generator.is_gragging = true;
@@ -2880,6 +2901,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             lo_active_side.button_down = false;
             lo_active_side.draggableObject = undefined;
 
+            if (lo_active_side.shapes == null) {
+                return;
+            }
 
 
             let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
@@ -2931,6 +2955,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lo_active_side_shape_generator = get_active_side_shape_generator();
 
             try {
+
+                if (lo_active_side_shape_generator.shapes == null) {
+                    return;
+                }
+
 
                 let lo_clicked_spline_and_segment = lo_active_side_shape_generator.shapes.get_splines_and_segment_of_clicked_figure(po_event);
 
@@ -3249,8 +3278,78 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         }
 
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.draw_shape_by_sides_data = function (po_sides_data) {
+
+            let sides_data = JSON.parse(po_sides_data);
+
+            //ColorParts  = new typ_color_data();
+            //data1       = new typ_side_data();
+            //data2       = new typ_side_data();
+
+            //numCurves               = 0;
+            //idMaterial              = 0;
+            //idSize                  = 0;
+            //Lockedit                = false;
+            //Fl_manual_parameters    = false;
+            //M_Material              = 0;
+            //M_Width                 = 0.0;
+            //M_Height                = 0.0;
+            //M_Length                = 0.0;
+            //M_Price_rub             = 0.0;
+            //Part_gap                = 0;
+            //CurveColors             = new Array();
+            //PointsCurves            = new Array();
 
 
+            this.clear_shape_objects(go_up_side_shape_generator);
+            this.draw_side_shape(go_up_side_shape_generator, sides_data.data1);
+
+            go_up_side_shape_generator.render();
+
+
+
+
+
+            this.clear_shape_objects(go_lateral_side_shape_generator);
+            this.draw_side_shape(go_lateral_side_shape_generator, sides_data.data2);
+
+            go_lateral_side_shape_generator.render();
+
+        }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.clear_shape_objects = function (po_side) {
+
+
+            //this.common_func.clear_group_childrens(po_side.main_curves_group);
+            //this.common_func.clear_group_childrens(po_side.group_contours);
+            //this.common_func.clear_group_childrens(po_side.group_color_mesh);
+            //this.common_func.clear_group_childrens(po_side.group_rect);
+
+            po_side.segment_transform_data = null;
+            po_side.segment_gabarits = null;
+            po_side.segments = null;
+            po_side.splines = null;
+            po_side.shapes = null;
+
+
+            let lar_no_delete = ["AmbientLight", "SpotLight", "Mesh"/*, "Group"*/];// 14102024
+            this.common_func.clearScene(po_side.scene, lar_no_delete);
+
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.draw_side_shape = function (po_side, po_side_data) {
+
+            for (let lv_i = 0; lv_i < po_side_data.numCurves; lv_i++) {
+
+
+            }
+
+
+        }
 
         //=====================================================================
 

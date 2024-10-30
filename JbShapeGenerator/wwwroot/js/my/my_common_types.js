@@ -69,6 +69,26 @@ export function typ_side_data() {
     this.PointsCurves = new Array();
 }
 
+//29102024v {
+
+
+//export function typ_sides_data() {
+
+//    this.ColorParts = new typ_color_data();
+//    this.data1 = new typ_side_data();
+//    this.data2 = new typ_side_data();
+
+//};
+
+export function typ_sides_data() {
+    this.colorParts = new typ_color_data();
+    this.data1 = new typ_side_data();
+    this.data2 = new typ_side_data();
+};
+
+
+//29102024v }
+
 
 export function typ_united_model_data() {
     this.model_name = "";
