@@ -194,10 +194,6 @@ export function Segments(
 						nspline: po_parent.id, //lv_i,
 						nsegment: pv_segment_id, //lv_j,
 						npoint: lv_k
-						//point: lo_point,
-						//count_all_splines: this.shape_amount_curves,
-						//count_allsegments: this.spline_amount_segments,
-						//count_allpoints: lo_segment.ar_segment_points.length
 					};
 
 
@@ -415,8 +411,6 @@ export function Segments(
 
 					// distance
 					let lv_total_curves_width = lo_segment_size.width * lo_segment_transform_data.kx * this.params.shape_amount_curves;
-					//lo_segment_transform_data.distance_bt_x = ((this.shape_width * this.distance_between_curves_in_percent_of_width / 100) + lo_segment_size.width) * lo_segment_transform_data.kx;
-
 					lo_segment_transform_data.distance_bt_x = this.params.distance_bt_curves;//12082024
 
 					if (lo_segment_transform_data.distance_bt_x < 0) {

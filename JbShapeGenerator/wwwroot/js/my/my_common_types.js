@@ -52,8 +52,19 @@ export const cv_segment_name_prefix = "segment";
 export function typ_color_data() {
     this.ColorParts = new Array();
 }
+export function typ_parameters() {
+    this.is_space_adjust = false;
+    this.is_curve_width_adjust = false;
+
+    this.distance_bt_curves = 0;
+    this.shape_height = 0;
+    this.shape_width = 0;
+}
 
 export function typ_side_data() {
+
+    this.parameters = new typ_parameters();
+
     this.numCurves = 0;
     this.idMaterial = 0;
     this.idSize = 0;
@@ -81,6 +92,7 @@ export function typ_side_data() {
 //};
 
 export function typ_sides_data() {
+    //this.parameters = new typ_parameters();
     this.colorParts = new typ_color_data();
     this.data1 = new typ_side_data();
     this.data2 = new typ_side_data();

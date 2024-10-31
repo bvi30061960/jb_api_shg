@@ -5,13 +5,13 @@ import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 
 import {
-	struc_gabarits,
-	struc_segment_transform_data,
-	cv_spline_group_name_prefix,
-	cv_spline_name_prefix,
-	cv_segment_group_name_prefix,
-	cv_segment_name_prefix,
-	typ_mesh_colors
+    struc_gabarits,
+    struc_segment_transform_data,
+    cv_spline_group_name_prefix,
+    cv_spline_name_prefix,
+    cv_segment_group_name_prefix,
+    cv_segment_name_prefix,
+    typ_mesh_colors
 
 } from "./my_common_types.js";
 
@@ -27,1375 +27,1375 @@ import * as GeometryUtils from 'three/addons/utils/GeometryUtils.js';
 
 var my_object;
 // Class Shapes
-export function Shapes(po_main, po_scene, po_params)
-{
-	my_object = this;
+export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_data) {
 
-	this.main_curves_group_prefix = "main_curves_group";
+    my_object = this;
 
-	////const cv_node_diameter = 0.7;
-	////const cv_node_size = 2;
+    this.main_curves_group_prefix = "main_curves_group";
 
+    ////const cv_node_diameter = 0.7;
+    ////const cv_node_size = 2;
 
-	// Свойства
-	this.main = po_main;
-	////this.container = po_container;
-	////this.camera = po_camera;
-	this.scene = po_scene;
 
-	this.params = po_params;
+    // Свойства
+    this.main = po_main;
+    ////this.container = po_container;
+    ////this.camera = po_camera;
+    this.scene = po_scene;
 
-	this.shape_amount_curves = po_params.shape_amount_curves;
-	this.spline_amount_segments = po_params.spline_amount_segments;
+    this.params = po_params;
 
 
-	this.shape_width = po_params.shape_width;
-	this.shape_height = po_params.shape_height;
+    ////export function typ_side_data() {
+    ////    this.numCurves = 0;
+    ////    this.idMaterial = 0;
+    ////    this.idSize = 0;
+    ////    this.Lockedit = false;
+    ////    this.Fl_manual_parameters = false;
+    ////    this.M_Material = 0;
+    ////    this.M_Width = 0.0;
+    ////    this.M_Height = 0.0;
+    ////    this.M_Length = 0.0;
+    ////    this.M_Price_rub = 0.0;
+    ////    this.Part_gap = 0;
+    ////    this.CurveColors = new Array();
+    ////    this.PointsCurves = new Array();
+    ////}
 
-	this.ajust_shape_by_curves = po_params.ajust_shape_by_curves;
-	this.ajust_curves_by_shape = po_params.ajust_curves_by_shape;
 
-	this.distance_between_curves_in_percent_of_width = po_params.distance_between_curves_in_percent_of_width	;
-	//this.distance_between_curves = pv_distance_between_curves;
-	this.distance_between_curves = po_params.distance_bt_curves;
+    if (pv_is_use_data) {
 
+        po_params.shape_amount_curves = po_side_data.numCurves;
+        this.shape_amount_curves = po_params.shape_amount_curves;
 
-	////this.splines = [];
-	////this.splines_nodes = [];
+        po_params.shape_width = po_side_data.M_Width;
+        this.shape_width = po_params.shape_width;
 
-	////this.ar_indices_shape_spline_segment_points = [];
+        po_params.shape_height = po_side_data.M_Height;
+        this.shape_height = po_params.shape_height;
 
+    }
+    else {
 
-	this.group_rect = null;
+        //this.shape_amount_curves = po_params.shape_amount_curves;
 
-	this.segment_gabarits = new struc_gabarits();
-	this.segment_transform_data = new struc_segment_transform_data();
+        this.spline_amount_segments = po_params.spline_amount_segments;
 
-	//this.is_move_mode = pv_is_move_mode; // true - режим смещения кривой
+        //this.shape_width = po_params.shape_width;
+        //this.shape_height = po_params.shape_height;
 
+        //this.ajust_shape_by_curves = po_params.ajust_shape_by_curves;
+        //this.ajust_curves_by_shape = po_params.ajust_curves_by_shape;
 
-	//this.shape_name_group_prefix = "shape_group";
-	this.ar_splines = [];// Список group - сплайнов кривых в сцене
-	this.ar_splines_nodes = [];// Список узлов всех сплайнов
+        //this.distance_between_curves_in_percent_of_width = po_params.distance_between_curves_in_percent_of_width;
+        //this.distance_between_curves = po_params.distance_bt_curves;
 
-	this.ar_selected_segments = []; // список выбранных сегментов 
 
-	//this.previous_splines_count = 0;
+    }
 
 
-	this.height_koef_previous = 1;
+    this.shape_amount_curves = po_params.shape_amount_curves;
+    this.spline_amount_segments = po_params.spline_amount_segments;
 
-	this.ar_shapes_colors = []; // список объектов со сплайнами и цветами фигур, упорядоченных слева направо
+    this.shape_width = po_params.shape_width;
+    this.shape_height = po_params.shape_height;
 
+    this.ajust_shape_by_curves = po_params.ajust_shape_by_curves;
+    this.ajust_curves_by_shape = po_params.ajust_curves_by_shape;
 
-	//=====================================================================
+    this.distance_between_curves_in_percent_of_width = po_params.distance_between_curves_in_percent_of_width;
+    this.distance_between_curves = po_params.distance_bt_curves;
 
-	if (typeof this.redraw_shapes != "function") {
 
-		//----------------------------------------------------------
-		// Методы
-		//----------------------------------------------------------
 
+    ////this.splines = [];
+    ////this.splines_nodes = [];
 
+    ////this.ar_indices_shape_spline_segment_points = [];
 
-		Shapes.prototype.create_shapes = function () {
 
-			try {
+    this.group_rect = null;
 
-				///* инициализация */
-				//this.ar_indices_shape_spline_segment_points.length = 0;//12082024
-				//this.splines.length = 0;
+    this.segment_gabarits = new struc_gabarits();
+    this.segment_transform_data = new struc_segment_transform_data();
 
+    //this.is_move_mode = pv_is_move_mode; // true - режим смещения кривой
 
-				//////////let lo_segment = new Segment(1, 1, 1, 0, [0, 0]);
 
+    //this.shape_name_group_prefix = "shape_group";
+    this.ar_splines = [];// Список group - сплайнов кривых в сцене
+    this.ar_splines_nodes = [];// Список узлов всех сплайнов
 
-				//this.segment_gabarits = po_main.segments.get_segment_size();
-				this.segment_gabarits = this.main.segment_gabarits;
-				this.segment_transform_data = this.main.segment_transform_data;
+    this.ar_selected_segments = []; // список выбранных сегментов 
 
+    //this.previous_splines_count = 0;
 
-				////if (this.ajust_curves_by_shape) {
 
-				////	// Коэффициенты трансформации
+    this.height_koef_previous = 1;
 
-				////	this.segment_transform_data = this.get_coefs_and_sizes_for_segments(this.segment_gabarits, this.ajust_curves_by_shape);
+    this.ar_shapes_colors = []; // список объектов со сплайнами и цветами фигур, упорядоченных слева направо
 
-				////}
-				////else {
 
-				////	if (this.ajust_shape_by_curves) {
+    //=====================================================================
 
-				////		this.segment_transform_data = this.get_coefs_and_sizes_for_segments();
-				////	}
-				////	else {
+    if (typeof this.redraw_shapes != "function") {
 
+        //----------------------------------------------------------
+        // Методы
+        //----------------------------------------------------------
 
-				////	}
 
-				////}
 
+        Shapes.prototype.create_shapes = function (pv_is_use_data, po_side_data) {
 
 
-				let lv_spline_distance = this.segment_transform_data.distance_bt_x;
+            let lv_spline_distance = 0;
 
+            try {
 
-				let lo_shape_splines_group = new THREE.Group();
-				//lo_group_shape.name = this.main.common_func.get_object_name(this.shape_name_group_prefix, lo_group_shape);
-				lo_shape_splines_group.name = this.main_curves_group_prefix;
+                if (!pv_is_use_data) {
+                    this.segment_gabarits = this.main.segment_gabarits;
+                    this.segment_transform_data = this.main.segment_transform_data;
+                    lv_spline_distance = this.segment_transform_data.distance_bt_x;
+                }
 
+                let lo_shape_splines_group = new THREE.Group();
+                lo_shape_splines_group.name = this.main_curves_group_prefix;
 
-				for (let lv_i = 0; lv_i < this.shape_amount_curves; lv_i++) {
 
-					let lv_spline_offset_x;
+                for (let lv_i = 0; lv_i < this.shape_amount_curves; lv_i++) {
 
-					lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
-						+ lv_spline_distance * lv_i;
+                    let lv_spline_offset_x;
 
-					this.main.splines.create_spline(lo_shape_splines_group, lv_spline_offset_x, this.segment_transform_data);
+                    lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
+                        + lv_spline_distance * lv_i;
 
-				}
+                    this.main.splines.create_spline(lo_shape_splines_group, lv_spline_offset_x, this.segment_transform_data);
 
-				this.main.scene.add(lo_shape_splines_group);
+                }
 
-				this.ar_splines = this.get_splines();
-				//this.previous_splines_count = this.ar_splines.length;
+                this.main.scene.add(lo_shape_splines_group);
 
-				this.ar_splines_nodes = this.get_splines_points();
+                this.ar_splines = this.get_splines();
+                this.ar_splines_nodes = this.get_splines_points();
 
+            }
 
-				////// Формирование кривых по узлам
+            catch (e) {
 
-				////let lar_splines = this.get_splines();
+                alert('error create_shapes: ' + e.stack);
 
-				////for (let lv_i = 0; lv_i < lar_splines.length; lv_i++) {
+            }
 
-				////	//let lar_spline_points = get_spline_points(lar_splines[lv_i]);
 
-				////	this.updateSplineOutline(lar_splines[lv_i]);
+        }
+        //------------------------------------------------------------------------
+        Shapes.prototype.get_splines = function () {
 
-				////}
+            let lar_out = [];
 
+            try {
 
+                let lar = this.main.scene.getObjectsByProperty("type", "Group");
 
+                //let lv_i_end = lar.length;
+                //for (let lv_i = 0; lv_i < lv_i_end; lv_i++) {
+                for (let lv_i = 0; lv_i < lar.length; lv_i++) {
+                    //30042024 if (lar[lv_i].name.indexOf(cv_spline_name_prefix) >= 0) {
+                    if (lar[lv_i].name.indexOf(cv_spline_group_name_prefix) >= 0) { //30042024
+                        lar_out.push(lar[lv_i]);
+                    }
+                }
 
-			}
 
-			catch (e) {
+            }
 
-				alert('error create_shapes: ' + e.stack);
+            catch (e) {
 
-			}
+                alert('error get_splines: ' + e.stack);
 
+            }
 
-		}
-		//------------------------------------------------------------------------
-		Shapes.prototype.get_splines = function () {
 
-			let lar_out = [];
+            return lar_out;
+        }
 
-			try {
+        //-----------------------------------------------------------------
+        Shapes.prototype.clear_group_contours = function () {
 
-				let lar = this.main.scene.getObjectsByProperty("type", "Group");
+            for (let lv_i = 0; lv_i < this.main.group_contours.children.length; lv_i++) {
+                this.main.common_func.removeObjectsWithChildren(this.main.group_contours.children[lv_i], true);
+            }
+        }
+        //-----------------------------------------------------------------
+        Shapes.prototype.clear_group_color_mesh = function () {
 
-				//let lv_i_end = lar.length;
-				//for (let lv_i = 0; lv_i < lv_i_end; lv_i++) {
-				for (let lv_i = 0; lv_i < lar.length; lv_i++) {
-					//30042024 if (lar[lv_i].name.indexOf(cv_spline_name_prefix) >= 0) {
-					if (lar[lv_i].name.indexOf(cv_spline_group_name_prefix) >= 0) { //30042024
-						lar_out.push(lar[lv_i]);
-					}
-				}
+            for (let lv_i = 0; lv_i < this.main.group_color_mesh.children.length; lv_i++) {
+                this.main.common_func.removeObjectsWithChildren(this.main.group_color_mesh.children[lv_i], true);
+            }
+        }
 
+        //-----------------------------------------------------------------
+        Shapes.prototype.get_splines_and_segment_of_clicked_figure = function (po_event) {
 
-			}
+            let lo_spline_result_right = null;
+            let lo_segment_result_right = null;
+            let lo_prev_spline_right;
+            let lo_prev_segment_right;
 
-			catch (e) {
+            //12072024 {
+            let lo_spline_result_left = null;
+            let lo_segment_result_left = null;
+            let lo_prev_spline_left;
+            let lo_prev_segment_left;
+            //12072024 }
 
-				alert('error get_splines: ' + e.stack);
+            let lo_line_to_right;
+            let lo_line_to_left; //12072024
 
-			}
+            try {
 
+                let lo_active_side_shape_generator = get_active_side_shape_generator();//14072024 
 
-			return lar_out;
-		}
+                //14072024 let lo_container = $('#' + po_event.currentTarget.id)[0];
+                let lo_container = lo_active_side_shape_generator.container; //14072024
 
-		//-----------------------------------------------------------------
-		Shapes.prototype.clear_group_contours = function () {
 
-			for (let lv_i = 0; lv_i < this.main.group_contours.children.length; lv_i++) {
-				this.main.common_func.removeObjectsWithChildren(this.main.group_contours.children[lv_i], true);
-			}
-		}
-		//-----------------------------------------------------------------
-		Shapes.prototype.clear_group_color_mesh = function () {
 
-			for (let lv_i = 0; lv_i < this.main.group_color_mesh.children.length; lv_i++) {
-				this.main.common_func.removeObjectsWithChildren(this.main.group_color_mesh.children[lv_i], true);
-			}
-		}
 
-		//-----------------------------------------------------------------
-		Shapes.prototype.get_splines_and_segment_of_clicked_figure = function (po_event) {
+                let lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
 
-			let lo_spline_result_right = null;
-			let lo_segment_result_right = null;
-			let lo_prev_spline_right;
-			let lo_prev_segment_right;
+                const lc_endline_right_x = 500;
+                const lc_endline_left_x = -500;// 12072024
 
-			//12072024 {
-			let lo_spline_result_left = null;
-			let lo_segment_result_left = null;
-			let lo_prev_spline_left;
-			let lo_prev_segment_left;
-			//12072024 }
 
-			let lo_line_to_right;
-			let lo_line_to_left; //12072024
+                lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
+                let lo_pos_plane = new THREE.Vector2(lo_pos.x, lo_pos.y);
 
-			try {
+                const lo_material = new THREE.LineBasicMaterial({ /*color: 0x0000ff*/ });//12072024
 
-				let lo_active_side_shape_generator = get_active_side_shape_generator();//14072024 
+                let lar_points = [];
 
-				//14072024 let lo_container = $('#' + po_event.currentTarget.id)[0];
-				let lo_container = lo_active_side_shape_generator.container; //14072024
+                // Line from mouse point to right
+                lar_points.push(new THREE.Vector2(lo_pos_plane.x, lo_pos_plane.y));
+                lar_points.push(new THREE.Vector2(lc_endline_right_x, lo_pos.y));
+                let lo_geometry = new THREE.BufferGeometry().setFromPoints(lar_points);
+                lo_line_to_right = new THREE.Line(lo_geometry, lo_material);
 
+                // Line from mouse point to left
 
+                lar_points = [];
+                lar_points.push(new THREE.Vector2(lo_pos_plane.x, lo_pos_plane.y));
+                lar_points.push(new THREE.Vector2(lc_endline_left_x, lo_pos.y));
+                lo_geometry = new THREE.BufferGeometry().setFromPoints(lar_points);
+                lo_line_to_left = new THREE.Line(lo_geometry, lo_material);
 
+                lo_active_side_shape_generator.scene.add(lo_line_to_left);/////15072024
 
-				let lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
 
-				const lc_endline_right_x = 500;
-				const lc_endline_left_x = -500;// 12072024
 
+                lo_prev_spline_right = null;
+                lo_prev_spline_left = null;
 
-				lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
-				let lo_pos_plane = new THREE.Vector2(lo_pos.x, lo_pos.y);
 
-				const lo_material = new THREE.LineBasicMaterial({ /*color: 0x0000ff*/ });//12072024
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-				let lar_points = [];
+                    let lv_line_index = this.ar_splines[lv_i].children.length - 1; //последний член массива - line
 
-				// Line from mouse point to right
-				lar_points.push(new THREE.Vector2(lo_pos_plane.x, lo_pos_plane.y));
-				lar_points.push(new THREE.Vector2(lc_endline_right_x, lo_pos.y));
-				let lo_geometry = new THREE.BufferGeometry().setFromPoints(lar_points);
-				lo_line_to_right = new THREE.Line(lo_geometry, lo_material);
+                    let lo_spl = this.ar_splines[lv_i].children[lv_line_index];
 
-				// Line from mouse point to left
+                    let lo_intersect_to_right_object = this.GetTwoShapeIntersect(lo_line_to_right, lo_spl);
+                    let lo_intersect_to_left_object = this.GetTwoShapeIntersect(lo_line_to_left, lo_spl);
 
-				lar_points = [];
-				lar_points.push(new THREE.Vector2(lo_pos_plane.x, lo_pos_plane.y));
-				lar_points.push(new THREE.Vector2(lc_endline_left_x, lo_pos.y));
-				lo_geometry = new THREE.BufferGeometry().setFromPoints(lar_points);
-				lo_line_to_left = new THREE.Line(lo_geometry, lo_material);
+                    //////if (lo_intersect_to_right_object) {
 
-				lo_active_side_shape_generator.scene.add(lo_line_to_left);/////15072024
+                    //////	if (lo_prev_intersect_spline_right) {
+                    //////		if (lo_intersect_to_right_object.min_x < lo_prev_intersect_spline_right.min_x) {
+                    //////			lo_spline_result_right = lo_intersect_to_right_object.object;
+                    //////			lo_prev_intersect_spline_right = lo_intersect_to_right_object;
+                    //////		}
+                    //////	}
+                    //////	else {
+                    //////		lo_prev_intersect_spline_right = lo_intersect_to_right_object;
+                    //////		lo_spline_result_right = lo_intersect_to_right_object.object;
 
+                    //////	}
+                    //////}
 
 
-				lo_prev_spline_right = null;
-				lo_prev_spline_left = null;
+                    //////if (lo_intersect_to_left_object) {
 
+                    //////	if (lo_prev_intersect_spline_left) {
+                    //////		//if (lo_intersect_to_left_object.max_x > lo_prev_intersect_object_left.max_x) {
+                    //////		if (lo_intersect_to_left_object.min_x > lo_prev_intersect_spline_left.min_x) {
+                    //////			lo_spline_result_left = lo_intersect_to_left_object.object;
+                    //////			lo_prev_intersect_spline_left = lo_intersect_to_left_object;
+                    //////		}
+                    //////	}
+                    //////	else {
+                    //////		lo_prev_intersect_spline_left = lo_intersect_to_left_object;
+                    //////		lo_spline_result_left = lo_intersect_to_left_object.object;
 
-				for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                    //////	}
+                    //////}
 
-					let lv_line_index = this.ar_splines[lv_i].children.length - 1; //последний член массива - line
 
-					let lo_spl = this.ar_splines[lv_i].children[lv_line_index];
+                    if (lo_intersect_to_right_object) {
 
-					let lo_intersect_to_right_object = this.GetTwoShapeIntersect(lo_line_to_right, lo_spl);
-					let lo_intersect_to_left_object = this.GetTwoShapeIntersect(lo_line_to_left, lo_spl);
+                        if (lo_prev_spline_right) {
+                            if (lo_intersect_to_right_object.min_x < lo_prev_spline_right.min_x) {
+                                lo_prev_spline_right = lo_spline_result_right;
+                                lo_spline_result_right = lo_intersect_to_right_object;
+                            }
+                        }
+                        else {
+                            lo_prev_spline_right = lo_intersect_to_right_object;
+                            lo_spline_result_right = lo_intersect_to_right_object;
 
-					//////if (lo_intersect_to_right_object) {
+                        }
+                    }
 
-					//////	if (lo_prev_intersect_spline_right) {
-					//////		if (lo_intersect_to_right_object.min_x < lo_prev_intersect_spline_right.min_x) {
-					//////			lo_spline_result_right = lo_intersect_to_right_object.object;
-					//////			lo_prev_intersect_spline_right = lo_intersect_to_right_object;
-					//////		}
-					//////	}
-					//////	else {
-					//////		lo_prev_intersect_spline_right = lo_intersect_to_right_object;
-					//////		lo_spline_result_right = lo_intersect_to_right_object.object;
 
-					//////	}
-					//////}
+                    if (lo_intersect_to_left_object) {
 
+                        if (lo_prev_spline_left) {
+                            //if (lo_intersect_to_left_object.max_x > lo_prev_intersect_object_left.max_x) {
+                            if (lo_intersect_to_left_object.min_x > lo_prev_spline_left.min_x) {
+                                lo_prev_spline_left = lo_spline_result_left;
+                                lo_spline_result_left = lo_intersect_to_left_object;
+                            }
+                        }
+                        else {
+                            lo_prev_spline_left = lo_intersect_to_left_object;
+                            lo_spline_result_left = lo_intersect_to_left_object;
 
-					//////if (lo_intersect_to_left_object) {
+                        }
+                    }
 
-					//////	if (lo_prev_intersect_spline_left) {
-					//////		//if (lo_intersect_to_left_object.max_x > lo_prev_intersect_object_left.max_x) {
-					//////		if (lo_intersect_to_left_object.min_x > lo_prev_intersect_spline_left.min_x) {
-					//////			lo_spline_result_left = lo_intersect_to_left_object.object;
-					//////			lo_prev_intersect_spline_left = lo_intersect_to_left_object;
-					//////		}
-					//////	}
-					//////	else {
-					//////		lo_prev_intersect_spline_left = lo_intersect_to_left_object;
-					//////		lo_spline_result_left = lo_intersect_to_left_object.object;
+                }
 
-					//////	}
-					//////}
+                /*//}*/
 
+                //////catch (e) {
 
-					if (lo_intersect_to_right_object) {
+                //////	alert('error get_splines_and_segment_of_clicked_figure: ' + e);
 
-						if (lo_prev_spline_right) {
-							if (lo_intersect_to_right_object.min_x < lo_prev_spline_right.min_x) {
-								lo_prev_spline_right = lo_spline_result_right;
-								lo_spline_result_right = lo_intersect_to_right_object;
-							}
-						}
-						else {
-							lo_prev_spline_right = lo_intersect_to_right_object;
-							lo_spline_result_right = lo_intersect_to_right_object;
+                //////}
 
-						}
-					}
 
 
-					if (lo_intersect_to_left_object) {
+                // Поиск выбранного сегмента сплайна
 
-						if (lo_prev_spline_left) {
-							//if (lo_intersect_to_left_object.max_x > lo_prev_intersect_object_left.max_x) {
-							if (lo_intersect_to_left_object.min_x > lo_prev_spline_left.min_x) {
-								lo_prev_spline_left = lo_spline_result_left;
-								lo_spline_result_left = lo_intersect_to_left_object;
-							}
-						}
-						else {
-							lo_prev_spline_left = lo_intersect_to_left_object;
-							lo_spline_result_left = lo_intersect_to_left_object;
+                lo_prev_segment_left = null;
+                lo_prev_segment_right = null;
 
-						}
-					}
+                if (lo_spline_result_right) {
 
-				}
+                    ////for (let lv_i = 0; lv_i < lo_spline_result_right.parent.children.length - 1; lv_i++) {
 
-				/*//}*/
+                    ////	if (lo_spline_result_right.parent.children[lv_i].type == "Group") {
 
-				//////catch (e) {
+                    ////		let lv_line_index = lo_spline_result_right.parent.children[lv_i].children.length - 1;
 
-				//////	alert('error get_splines_and_segment_of_clicked_figure: ' + e);
+                    ////		let lo_segment_line = lo_spline_result_right.parent.children[lv_i].children[lv_line_index];
 
-				//////}
+                    ////		let lo_intersect_object = this.GetTwoShapeIntersect(lo_line_to_right, lo_segment_line)
 
+                    ////		if (lo_intersect_object) {
 
+                    ////			if (lo_prev_intersect_segment_right) {
+                    ////				if (lo_intersect_object.min_y < lo_prev_intersect_segment_right.min_y) {
+                    ////					//16082024 lo_segment_result_right = lo_intersect_object.nspline;
+                    ////					lo_segment_result_right = lo_intersect_object.object; //16082024
+                    ////					lo_prev_intersect_segment_right = lo_intersect_object;
+                    ////				}
+                    ////			}
+                    ////			else {
+                    ////				lo_prev_intersect_segment_right = lo_intersect_object;
+                    ////				//lv_result = lo_intersect_object.nspline;
+                    ////				lo_segment_result_right = lo_intersect_object.object;
 
-				// Поиск выбранного сегмента сплайна
+                    ////			}
+                    ////		}
+                    ////	}
+                    ////}
 
-				lo_prev_segment_left = null;
-				lo_prev_segment_right = null;
 
-				if (lo_spline_result_right) {
+                    for (let lv_i = 0; lv_i < lo_spline_result_right.object.parent.children.length - 1; lv_i++) {
 
-					////for (let lv_i = 0; lv_i < lo_spline_result_right.parent.children.length - 1; lv_i++) {
+                        if (lo_spline_result_right.object.parent.children[lv_i].type == "Group") {
 
-					////	if (lo_spline_result_right.parent.children[lv_i].type == "Group") {
+                            let lv_line_index = lo_spline_result_right.object.parent.children[lv_i].children.length - 1;
 
-					////		let lv_line_index = lo_spline_result_right.parent.children[lv_i].children.length - 1;
+                            let lo_segment_line = lo_spline_result_right.object.parent.children[lv_i].children[lv_line_index];
 
-					////		let lo_segment_line = lo_spline_result_right.parent.children[lv_i].children[lv_line_index];
+                            let lo_intersect_object = this.GetTwoShapeIntersect(lo_line_to_right, lo_segment_line)
 
-					////		let lo_intersect_object = this.GetTwoShapeIntersect(lo_line_to_right, lo_segment_line)
+                            if (lo_intersect_object) {
 
-					////		if (lo_intersect_object) {
+                                if (lo_prev_segment_right) {
+                                    if (lo_intersect_object.min_y < lo_prev_segment_right.min_y) {
+                                        //16082024 lo_segment_result_right = lo_intersect_object.nspline;
+                                        lo_segment_result_right = lo_intersect_object.object; //16082024
+                                        lo_prev_segment_right = lo_intersect_object;
+                                    }
+                                }
+                                else {
+                                    lo_prev_segment_right = lo_intersect_object;
+                                    //lv_result = lo_intersect_object.nspline;
+                                    lo_segment_result_right = lo_intersect_object.object;
 
-					////			if (lo_prev_intersect_segment_right) {
-					////				if (lo_intersect_object.min_y < lo_prev_intersect_segment_right.min_y) {
-					////					//16082024 lo_segment_result_right = lo_intersect_object.nspline;
-					////					lo_segment_result_right = lo_intersect_object.object; //16082024
-					////					lo_prev_intersect_segment_right = lo_intersect_object;
-					////				}
-					////			}
-					////			else {
-					////				lo_prev_intersect_segment_right = lo_intersect_object;
-					////				//lv_result = lo_intersect_object.nspline;
-					////				lo_segment_result_right = lo_intersect_object.object;
+                                }
+                            }
+                        }
+                    }
 
-					////			}
-					////		}
-					////	}
-					////}
 
+                }
 
-					for (let lv_i = 0; lv_i < lo_spline_result_right.object.parent.children.length - 1; lv_i++) {
 
-						if (lo_spline_result_right.object.parent.children[lv_i].type == "Group") {
 
-							let lv_line_index = lo_spline_result_right.object.parent.children[lv_i].children.length - 1;
+                ////if (lo_spline_result_left == lo_spline_result_right) {
 
-							let lo_segment_line = lo_spline_result_right.object.parent.children[lv_i].children[lv_line_index];
+                ////	if (lo_prev_intersect_spline_right) {
+                ////		lo_spline_result_right = lo_prev_intersect_spline_right.object;
+                ////	}
+                ////	else {
 
-							let lo_intersect_object = this.GetTwoShapeIntersect(lo_line_to_right, lo_segment_line)
+                ////		if (lo_prev_intersect_spline_left) {
+                ////			lo_spline_result_left = lo_prev_intersect_spline_left.object;
+                ////		}
 
-							if (lo_intersect_object) {
+                ////	}
 
-								if (lo_prev_segment_right) {
-									if (lo_intersect_object.min_y < lo_prev_segment_right.min_y) {
-										//16082024 lo_segment_result_right = lo_intersect_object.nspline;
-										lo_segment_result_right = lo_intersect_object.object; //16082024
-										lo_prev_segment_right = lo_intersect_object;
-									}
-								}
-								else {
-									lo_prev_segment_right = lo_intersect_object;
-									//lv_result = lo_intersect_object.nspline;
-									lo_segment_result_right = lo_intersect_object.object;
+                ////}
 
-								}
-							}
-						}
-					}
 
 
-				}
 
+                while (true) {
 
 
-				////if (lo_spline_result_left == lo_spline_result_right) {
+                    if (lo_spline_result_left && lo_spline_result_right) {
 
-				////	if (lo_prev_intersect_spline_right) {
-				////		lo_spline_result_right = lo_prev_intersect_spline_right.object;
-				////	}
-				////	else {
+                        if (lo_spline_result_left.object == lo_spline_result_right.object) {
 
-				////		if (lo_prev_intersect_spline_left) {
-				////			lo_spline_result_left = lo_prev_intersect_spline_left.object;
-				////		}
 
-				////	}
+                            if (lo_prev_spline_left && lo_prev_spline_right) {
 
-				////}
+                                if (lo_spline_result_left.object != lo_prev_spline_left.object) {
 
+                                    lo_spline_result_left = lo_prev_spline_left;
 
+                                    //lo_spline_result_right = null;//18072024
+                                }
+                                else {
 
 
-				while (true) {
+                                    if (lo_spline_result_right.object != lo_prev_spline_right.object) {
 
+                                        lo_spline_result_right = lo_prev_spline_right;
 
-					if (lo_spline_result_left && lo_spline_result_right) {
+                                        //lo_spline_result_left = lo_prev_spline_left;
+                                        //lo_spline_result_right = null;
+                                    }
+                                    else {
+                                        lo_spline_result_left = null;
+                                    }
 
-						if (lo_spline_result_left.object == lo_spline_result_right.object) {
+                                }
+                                break;
 
 
-							if (lo_prev_spline_left && lo_prev_spline_right) {
+                            }
+                            else {
 
-								if (lo_spline_result_left.object != lo_prev_spline_left.object) {
+                                if (lo_prev_spline_left && lo_prev_spline_right == null) {
 
-									lo_spline_result_left = lo_prev_spline_left;
+                                    if (lo_spline_result_left.object != lo_prev_spline_left.object) {
+                                        lo_spline_result_right = null;
+                                    }
+                                    else {
 
-									//lo_spline_result_right = null;//18072024
-								}
-								else {
+                                        lo_spline_result_left = lo_prev_spline_left;
+                                    }
 
+                                    break;
 
-									if (lo_spline_result_right.object != lo_prev_spline_right.object) {
+                                }
 
-										lo_spline_result_right = lo_prev_spline_right;
+                                else {
 
-										//lo_spline_result_left = lo_prev_spline_left;
-										//lo_spline_result_right = null;
-									}
-									else {
-										lo_spline_result_left = null;
-									}
+                                    if (lo_prev_spline_left == null && lo_prev_spline_right) {
 
-								}
-								break;
+                                        lo_spline_result_left = null;
 
+                                    }
 
-							}
-							else {
+                                    else {
 
-								if (lo_prev_spline_left && lo_prev_spline_right == null) {
+                                        if (lo_prev_spline_left == null && lo_prev_spline_right == null) {
 
-									if (lo_spline_result_left.object != lo_prev_spline_left.object) {
-										lo_spline_result_right = null;
-									}
-									else {
+                                        }
 
-										lo_spline_result_left = lo_prev_spline_left;
-									}
+                                    }
 
-									break;
 
-								}
+                                }
 
-								else {
+                            }
 
-									if (lo_prev_spline_left == null && lo_prev_spline_right) {
+                        }
 
-										lo_spline_result_left = null;
+                    }
 
-									}
 
-									else {
+                    break;
+                }
 
-										if (lo_prev_spline_left == null && lo_prev_spline_right == null) {
 
-										}
 
-									}
 
 
-								}
 
-							}
 
-						}
+                //if (lo_spline_result_left.object == lo_spline_result_right.object) {
 
-					}
+                //	if (lo_prev_intersect_spline_left) {
 
+                //		if (lo_spline_result_left.object != lo_prev_intersect_spline_left.object) {
+                //			lo_spline_result_left = lo_prev_intersect_spline_left;
+                //		}
+                //		else {
 
-					break;
-				}
+                //			lo_spline_result_left = null;
+                //			//if (lo_prev_intersect_spline_left) {
+                //			//	if (lo_spline_result_left.object != lo_prev_intersect_spline_left.object) {
+                //			//		lo_spline_result_left = lo_prev_intersect_spline_left;
+                //			//	}
 
+                //			//	lo_spline_result_left = lo_prev_intersect_spline_left;
+                //			//}
 
+                //		}
 
 
 
+                //	}
+                //	////else {
 
+                //	////	if (lo_prev_intersect_spline_left) {
+                //	////		lo_spline_result_left = lo_prev_intersect_spline_left;
+                //	////	}
 
-				//if (lo_spline_result_left.object == lo_spline_result_right.object) {
+                //	////}
 
-				//	if (lo_prev_intersect_spline_left) {
+                //}
 
-				//		if (lo_spline_result_left.object != lo_prev_intersect_spline_left.object) {
-				//			lo_spline_result_left = lo_prev_intersect_spline_left;
-				//		}
-				//		else {
 
-				//			lo_spline_result_left = null;
-				//			//if (lo_prev_intersect_spline_left) {
-				//			//	if (lo_spline_result_left.object != lo_prev_intersect_spline_left.object) {
-				//			//		lo_spline_result_left = lo_prev_intersect_spline_left;
-				//			//	}
 
-				//			//	lo_spline_result_left = lo_prev_intersect_spline_left;
-				//			//}
 
-				//		}
 
 
+                //	}
 
-				//	}
-				//	////else {
+                //}
 
-				//	////	if (lo_prev_intersect_spline_left) {
-				//	////		lo_spline_result_left = lo_prev_intersect_spline_left;
-				//	////	}
 
-				//	////}
 
-				//}
+                this.main.common_func.removeObjectsWithChildren(lo_line_to_left, true);
+                this.main.common_func.removeObjectsWithChildren(lo_line_to_right, true);
 
 
 
+            }
 
+            catch (e) {
 
+                alert('error get_splines_and_segment_of_clicked_figure: ' + /*e.message + "\n" +*/ e.stack);
 
-				//	}
+            }
 
-				//}
 
+            let lo_out_sline_left = null;
+            let lo_out_sline_right = null;
+            //let lo_out_segment_right = null;
 
 
-				this.main.common_func.removeObjectsWithChildren(lo_line_to_left, true);
-				this.main.common_func.removeObjectsWithChildren(lo_line_to_right, true);
+            if (lo_spline_result_left) {
+                lo_out_sline_left = lo_spline_result_left.object;
+            }
+            if (lo_spline_result_right) {
+                lo_out_sline_right = lo_spline_result_right.object;
+            }
 
 
+            return {
 
-			}
+                spline_left: lo_out_sline_left,
+                spline_right: lo_out_sline_right,
+                segment: lo_segment_result_right
+            }
+        }
 
-			catch (e) {
 
-				alert('error get_splines_and_segment_of_clicked_figure: ' + /*e.message + "\n" +*/ e.stack);
 
-			}
+        //------------------------------------------------------------------------
+        Shapes.prototype.draw_contour_and_shape = function (pv_color, po_spline_left, po_spline_right, pv_remember_contour, pv_remember_color, pv_draw_contour, pv_draw_shape) {
 
 
-			let lo_out_sline_left = null;
-			let lo_out_sline_right = null;
-			//let lo_out_segment_right = null;
+            try {
 
 
-			if (lo_spline_result_left) {
-				lo_out_sline_left = lo_spline_result_left.object;
-			}
-			if (lo_spline_result_right) {
-				lo_out_sline_right = lo_spline_result_right.object;
-			}
+                //this.clear_group_color_mesh();
 
 
-			return {
+                //document.removeEventListener('pointerdown', this.onPointerDown);
+                //window.removeEventListener('mousemove', this.onmousemove);
 
-				spline_left: lo_out_sline_left,
-				spline_right: lo_out_sline_right,
-				segment: lo_segment_result_right
-			}
-		}
 
+                // 30072024 {
+                ////if (pv_is_clear_group_before) {
 
+                ////	// Очистка группы от предыдущих объектов
+                ////	for (let lv_i = 0; lv_i < this.main.group_contours.children.length; lv_i++) {
+                ////		this.main.common_func.removeObjectsWithChildren(this.main.group_contours.children[lv_i], true);
+                ////	}
+                // 30072024 }
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.draw_contour_and_shape = function (pv_color, po_spline_left, po_spline_right, pv_remember_contour, pv_remember_color, pv_draw_contour, pv_draw_shape) {
+                ////}
 
 
-			try {
+                if (!po_spline_left && !po_spline_right) {
+                    return;
+                }
 
 
-				//this.clear_group_color_mesh();
+                let lar_positions = [];
 
+                let lar_shape_positions = [];
 
-				//document.removeEventListener('pointerdown', this.onPointerDown);
-				//window.removeEventListener('mousemove', this.onmousemove);
+                let lar_left_points = null;
+                let lar_right_points = null;
 
 
-				// 30072024 {
-				////if (pv_is_clear_group_before) {
 
-				////	// Очистка группы от предыдущих объектов
-				////	for (let lv_i = 0; lv_i < this.main.group_contours.children.length; lv_i++) {
-				////		this.main.common_func.removeObjectsWithChildren(this.main.group_contours.children[lv_i], true);
-				////	}
-				// 30072024 }
 
-				////}
+                let lo_geometry = new LineGeometry();
+                let clrs = [];
 
+                let lo_resolution = new THREE.Vector2();
+                this.main.renderer.getSize(lo_resolution);
 
-				if (!po_spline_left && !po_spline_right) {
-					return;
-				}
 
+                let lo_material = new LineMaterial({
+                    //color: new THREE.Color("#f00").getHex(),
+                    vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
+                    linewidth: 2, //0.6,  // толщина линии
+                    resolution: lo_resolution
+                    //resolution: this.main.resolution //30072024
+                });
 
-				let lar_positions = [];
+                let lo_shape2 = null;
+                let lo_geometry2 = null;
+                let lo_mesh2 = null;
 
-				let lar_shape_positions = [];
 
-				let lar_left_points = null;
-				let lar_right_points = null;
 
 
+                let lo_rectangle_coordinates = this.main.get_rectangle_coordinates_by_name(this.main.rectangle.cv_rectangle_name);
 
 
-				let lo_geometry = new LineGeometry();
-				let clrs = [];
+                if (po_spline_left && po_spline_right) {
 
-				let lo_resolution = new THREE.Vector2();
-				this.main.renderer.getSize(lo_resolution);
+                    // Два сплайна
+                    lar_left_points = this.main.common_func.getLinePoints(po_spline_left);
+                    lar_right_points = this.main.common_func.getLinePoints(po_spline_right);
 
 
-				let lo_material = new LineMaterial({
-					//color: new THREE.Color("#f00").getHex(),
-					vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
-					linewidth: 2, //0.6,  // толщина линии
-					resolution: lo_resolution
-					//resolution: this.main.resolution //30072024
-				});
+                    lar_positions.push(lar_right_points[0].x, lar_right_points[0].y, 0);
+                    lar_shape_positions.push(new THREE.Vector2(lar_right_points[0].x, lar_right_points[0].y, 0));
 
-				let lo_shape2 = null;
-				let lo_geometry2 = null;
-				let lo_mesh2 = null;
+                    for (let lv_i = 0; lv_i < lar_left_points.length; lv_i++) {
+                        lar_positions.push(lar_left_points[lv_i].x, lar_left_points[lv_i].y, 0);
+                        lar_shape_positions.push(new THREE.Vector2(lar_left_points[lv_i].x, lar_left_points[lv_i].y, 0));
+                    }
 
+                    for (let lv_i = lar_right_points.length - 1; lv_i >= 0; lv_i--) {
+                        lar_positions.push(lar_right_points[lv_i].x, lar_right_points[lv_i].y, 0);
+                        lar_shape_positions.push(new THREE.Vector2(lar_right_points[lv_i].x, lar_right_points[lv_i].y, 0));
+                    }
 
 
 
-				let lo_rectangle_coordinates = this.main.get_rectangle_coordinates_by_name(this.main.rectangle.cv_rectangle_name);
+                }
+                if (po_spline_left && !po_spline_right) {
 
+                    // Сплайн слева
+                    lar_left_points = this.main.common_func.getLinePoints(po_spline_left);
 
-				if (po_spline_left && po_spline_right) {
+                    for (let lv_i = 0; lv_i < lar_left_points.length; lv_i++) {
+                        lar_positions.push(lar_left_points[lv_i].x, lar_left_points[lv_i].y, 0);
+                        lar_shape_positions.push(new THREE.Vector2(lar_left_points[lv_i].x, lar_left_points[lv_i].y, 0));
+                    }
 
-					// Два сплайна
-					lar_left_points = this.main.common_func.getLinePoints(po_spline_left);
-					lar_right_points = this.main.common_func.getLinePoints(po_spline_right);
+                    lar_positions.push(lo_rectangle_coordinates.max_x, lo_rectangle_coordinates.max_y, 0);
+                    lar_positions.push(lo_rectangle_coordinates.max_x, lo_rectangle_coordinates.min_y, 0);
+                    lar_positions.push(lar_left_points[0].x, lo_rectangle_coordinates.min_y, 0);
 
+                    lar_shape_positions.push(new THREE.Vector2(lo_rectangle_coordinates.max_x, lo_rectangle_coordinates.max_y, 0));
+                    lar_shape_positions.push(new THREE.Vector2(lo_rectangle_coordinates.max_x, lo_rectangle_coordinates.min_y, 0));
+                    lar_shape_positions.push(new THREE.Vector2(lar_left_points[0].x, lo_rectangle_coordinates.min_y, 0));
 
-					lar_positions.push(lar_right_points[0].x, lar_right_points[0].y, 0);
-					lar_shape_positions.push(new THREE.Vector2(lar_right_points[0].x, lar_right_points[0].y, 0));
+                }
 
-					for (let lv_i = 0; lv_i < lar_left_points.length; lv_i++) {
-						lar_positions.push(lar_left_points[lv_i].x, lar_left_points[lv_i].y, 0);
-						lar_shape_positions.push(new THREE.Vector2(lar_left_points[lv_i].x, lar_left_points[lv_i].y, 0));
-					}
+                if (!po_spline_left && po_spline_right) {
 
-					for (let lv_i = lar_right_points.length - 1; lv_i >= 0; lv_i--) {
-						lar_positions.push(lar_right_points[lv_i].x, lar_right_points[lv_i].y, 0);
-						lar_shape_positions.push(new THREE.Vector2(lar_right_points[lv_i].x, lar_right_points[lv_i].y, 0));
-					}
+                    // Сплайн справа
+                    lar_right_points = this.main.common_func.getLinePoints(po_spline_right);
 
+                    for (let lv_i = 0; lv_i < lar_right_points.length; lv_i++) {
+                        lar_positions.push(lar_right_points[lv_i].x, lar_right_points[lv_i].y, 0);
+                        lar_shape_positions.push(new THREE.Vector2(lar_right_points[lv_i].x, lar_right_points[lv_i].y, 0));
+                    }
 
+                    lar_positions.push(lo_rectangle_coordinates.min_x, lo_rectangle_coordinates.max_y, 0);
+                    lar_positions.push(lo_rectangle_coordinates.min_x, lo_rectangle_coordinates.min_y, 0);
+                    lar_positions.push(lar_right_points[0].x, lo_rectangle_coordinates.min_y, 0);
 
-				}
-				if (po_spline_left && !po_spline_right) {
+                    lar_shape_positions.push(new THREE.Vector2(lo_rectangle_coordinates.min_x, lo_rectangle_coordinates.max_y, 0));
+                    lar_shape_positions.push(new THREE.Vector2(lo_rectangle_coordinates.min_x, lo_rectangle_coordinates.min_y, 0));
+                    lar_shape_positions.push(new THREE.Vector2(lar_right_points[0].x, lo_rectangle_coordinates.min_y, 0));
 
-					// Сплайн слева
-					lar_left_points = this.main.common_func.getLinePoints(po_spline_left);
+                }
 
-					for (let lv_i = 0; lv_i < lar_left_points.length; lv_i++) {
-						lar_positions.push(lar_left_points[lv_i].x, lar_left_points[lv_i].y, 0);
-						lar_shape_positions.push(new THREE.Vector2(lar_left_points[lv_i].x, lar_left_points[lv_i].y, 0));
-					}
 
-					lar_positions.push(lo_rectangle_coordinates.max_x, lo_rectangle_coordinates.max_y, 0);
-					lar_positions.push(lo_rectangle_coordinates.max_x, lo_rectangle_coordinates.min_y, 0);
-					lar_positions.push(lar_left_points[0].x, lo_rectangle_coordinates.min_y, 0);
+                //try {
 
-					lar_shape_positions.push(new THREE.Vector2(lo_rectangle_coordinates.max_x, lo_rectangle_coordinates.max_y, 0));
-					lar_shape_positions.push(new THREE.Vector2(lo_rectangle_coordinates.max_x, lo_rectangle_coordinates.min_y, 0));
-					lar_shape_positions.push(new THREE.Vector2(lar_left_points[0].x, lo_rectangle_coordinates.min_y, 0));
 
-				}
+                // Определение номеров выделенных сплайнов слева направо
+                let lar_splines_order = [];
+                lar_splines_order = this.SortSplinesOrderFromLeftToRight();//28072024
 
-				if (!po_spline_left && po_spline_right) {
+                let lv_num_spline_left = this.main.common_func.getNumberBySpline(lar_splines_order, po_spline_left);
+                let lv_num_spline_right = this.main.common_func.getNumberBySpline(lar_splines_order, po_spline_right);
 
-					// Сплайн справа
-					lar_right_points = this.main.common_func.getLinePoints(po_spline_right);
 
-					for (let lv_i = 0; lv_i < lar_right_points.length; lv_i++) {
-						lar_positions.push(lar_right_points[lv_i].x, lar_right_points[lv_i].y, 0);
-						lar_shape_positions.push(new THREE.Vector2(lar_right_points[lv_i].x, lar_right_points[lv_i].y, 0));
-					}
+                let lo_userData = {
+                    spline_left: po_spline_left,
+                    spline_right: po_spline_right,
+                    num_spline_left: lv_num_spline_left,
+                    num_spline_right: lv_num_spline_right
 
-					lar_positions.push(lo_rectangle_coordinates.min_x, lo_rectangle_coordinates.max_y, 0);
-					lar_positions.push(lo_rectangle_coordinates.min_x, lo_rectangle_coordinates.min_y, 0);
-					lar_positions.push(lar_right_points[0].x, lo_rectangle_coordinates.min_y, 0);
+                };
 
-					lar_shape_positions.push(new THREE.Vector2(lo_rectangle_coordinates.min_x, lo_rectangle_coordinates.max_y, 0));
-					lar_shape_positions.push(new THREE.Vector2(lo_rectangle_coordinates.min_x, lo_rectangle_coordinates.min_y, 0));
-					lar_shape_positions.push(new THREE.Vector2(lar_right_points[0].x, lo_rectangle_coordinates.min_y, 0));
+                if (pv_remember_contour) {
 
-				}
+                    ////let lo_userData = {
+                    ////	spline_left: po_spline_left,
+                    ////	spline_right: po_spline_right,
+                    ////	num_spline_left: lv_num_spline_left,
+                    ////	num_spline_right: lv_num_spline_right
 
+                    ////};
 
-				//try {
 
+                    this.main.group_contours.userData = lo_userData;
 
-				// Определение номеров выделенных сплайнов слева направо
-				let lar_splines_order = [];
-				lar_splines_order = this.SortSplinesOrderFromLeftToRight();//28072024
+                }
 
-				let lv_num_spline_left = this.main.common_func.getNumberBySpline(lar_splines_order, po_spline_left);
-				let lv_num_spline_right = this.main.common_func.getNumberBySpline(lar_splines_order, po_spline_right);
 
 
-				let lo_userData = {
-					spline_left: po_spline_left,
-					spline_right: po_spline_right,
-					num_spline_left: lv_num_spline_left,
-					num_spline_right: lv_num_spline_right
+                let lo_countour_line = null;
 
-				};
+                if (pv_draw_contour) {
 
-				if (pv_remember_contour) {
+                    lar_positions.forEach(() => {
+                        clrs.push(0, 0, 255);//!! цвет линии
+                    });
 
-					////let lo_userData = {
-					////	spline_left: po_spline_left,
-					////	spline_right: po_spline_right,
-					////	num_spline_left: lv_num_spline_left,
-					////	num_spline_right: lv_num_spline_right
+                    lo_geometry.setPositions(lar_positions);
+                    lo_geometry.setColors(clrs);
 
-					////};
 
+                    lo_countour_line = new Line2(lo_geometry, lo_material);
 
-					this.main.group_contours.userData = lo_userData;
+                    lo_countour_line.renderOrder = 2;
+                    this.main.group_contours.add(lo_countour_line);
 
-				}
+                }
 
 
 
-				let lo_countour_line = null;
+                if (pv_draw_shape) {
 
-				if (pv_draw_contour) {
 
-					lar_positions.forEach(() => {
-						clrs.push(0, 0, 255);//!! цвет линии
-					});
+                    lo_shape2 = new THREE.Shape(lar_shape_positions);
+                    lo_geometry2 = new THREE.ShapeGeometry(lo_shape2);
+                    //lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshPhongMaterial({ color: 0xff00ff, side: THREE.DoubleSide }));
+                    //lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshPhongMaterial({ color: pv_color, side: THREE.DoubleSide }));
+                    lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshBasicMaterial({ color: pv_color/*, side: THREE.DoubleSide*/ }));
 
-					lo_geometry.setPositions(lar_positions);
-					lo_geometry.setColors(clrs);
 
+                    if (pv_remember_color) {
 
-					lo_countour_line = new Line2(lo_geometry, lo_material);
+                        // Запоминание в массиве цвета фигуры
+                        let lo_mesh_color_data = new typ_mesh_colors();
 
-					lo_countour_line.renderOrder = 2;
-					this.main.group_contours.add(lo_countour_line);
+                        lo_mesh_color_data.num_spline_left = lv_num_spline_left;
+                        lo_mesh_color_data.num_spline_right = lv_num_spline_right;
+                        lo_mesh_color_data.color = pv_color;
 
-				}
+                        // Определение индекса в массиве для сохранения
+                        let lv_ar_shapes_colors_idx;
 
+                        //if (lo_mesh_color_data.num_spline_left == null && lo_mesh_color_data.num_spline_right >= 0) {
+                        if (lo_mesh_color_data.num_spline_left == null && lo_mesh_color_data.num_spline_right !== null) {
+                            // крайняя левая фигура
+                            lv_ar_shapes_colors_idx = 0;
+                        }
 
+                        //					if (lo_mesh_color_data.num_spline_left >= 0 && lo_mesh_color_data.num_spline_right >= 0) {
+                        if (lo_mesh_color_data.num_spline_left !== null && lo_mesh_color_data.num_spline_right !== null) {
+                            //средняя фигура
+                            lv_ar_shapes_colors_idx = lo_mesh_color_data.num_spline_left + 1;
+                        }
 
-				if (pv_draw_shape) {
+                        //if (lo_mesh_color_data.num_spline_left >= 0 && lo_mesh_color_data.num_spline_right == null) {
+                        if (lo_mesh_color_data.num_spline_left !== null && lo_mesh_color_data.num_spline_right == null) {
+                            // крайняя правая фигура
+                            lv_ar_shapes_colors_idx = lo_mesh_color_data.num_spline_left + 2;
+                        }
 
 
-					lo_shape2 = new THREE.Shape(lar_shape_positions);
-					lo_geometry2 = new THREE.ShapeGeometry(lo_shape2);
-					//lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshPhongMaterial({ color: 0xff00ff, side: THREE.DoubleSide }));
-					//lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshPhongMaterial({ color: pv_color, side: THREE.DoubleSide }));
-					lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshBasicMaterial({ color: pv_color/*, side: THREE.DoubleSide*/ }));
+                        this.ar_shapes_colors[lv_ar_shapes_colors_idx] = lo_mesh_color_data;
+                    }
 
+                    lo_mesh2.renderOrder = 1;
+                    this.main.group_color_mesh.add(lo_mesh2);
 
-					if (pv_remember_color) {
+                }
 
-						// Запоминание в массиве цвета фигуры
-						let lo_mesh_color_data = new typ_mesh_colors();
 
-						lo_mesh_color_data.num_spline_left = lv_num_spline_left;
-						lo_mesh_color_data.num_spline_right = lv_num_spline_right;
-						lo_mesh_color_data.color = pv_color;
+                //document.removeEventListener('pointerdown', this.onPointerDown);
 
-						// Определение индекса в массиве для сохранения
-						let lv_ar_shapes_colors_idx;
 
-						//if (lo_mesh_color_data.num_spline_left == null && lo_mesh_color_data.num_spline_right >= 0) {
-						if (lo_mesh_color_data.num_spline_left == null && lo_mesh_color_data.num_spline_right !== null) {
-							// крайняя левая фигура
-							lv_ar_shapes_colors_idx = 0;
-						}
 
-						//					if (lo_mesh_color_data.num_spline_left >= 0 && lo_mesh_color_data.num_spline_right >= 0) {
-						if (lo_mesh_color_data.num_spline_left !== null && lo_mesh_color_data.num_spline_right !== null) {
-							//средняя фигура
-							lv_ar_shapes_colors_idx = lo_mesh_color_data.num_spline_left + 1;
-						}
 
-						//if (lo_mesh_color_data.num_spline_left >= 0 && lo_mesh_color_data.num_spline_right == null) {
-						if (lo_mesh_color_data.num_spline_left !== null && lo_mesh_color_data.num_spline_right == null) {
-							// крайняя правая фигура
-							lv_ar_shapes_colors_idx = lo_mesh_color_data.num_spline_left + 2;
-						}
 
 
-						this.ar_shapes_colors[lv_ar_shapes_colors_idx] = lo_mesh_color_data;
-					}
+                //30072024 leaks {
+                //==========================================
 
-					lo_mesh2.renderOrder = 1;
-					this.main.group_color_mesh.add(lo_mesh2);
+                lar_positions = null;
+                lar_left_points = null;
+                lar_right_points = null;
+                lo_geometry = null;
+                clrs = null;
+                lo_material = null;
+                lo_rectangle_coordinates = null;
+                lo_userData = null;
+                lo_countour_line = null;
+                lar_splines_order = null;
+                lar_splines_order = null;
+                lv_num_spline_left = null;
+                lv_num_spline_right = null;
 
-				}
+                lar_shape_positions = null;
+                lo_shape2 = null;
+                lo_mesh2 = null;
+                lo_geometry2 = null;
 
+                //==========================================
+                //30072024 leaks }
 
-				//document.removeEventListener('pointerdown', this.onPointerDown);
+            }
 
+            catch (e) {
 
+                alert('error draw_contour_and_shape: ' + e.stack);
 
+            }
 
+        }
 
+        //-----------------------------------------------------------------
+        Shapes.prototype.get_left_and_right_splines_of_clicked_figure = function (po_event) {
 
-				//30072024 leaks {
-				//==========================================
+            let lo_spline_result = null;
+            let lo_segment_result = null;
+            let lo_prev_intersect_object = null;
 
-				lar_positions = null;
-				lar_left_points = null;
-				lar_right_points = null;
-				lo_geometry = null;
-				clrs = null;
-				lo_material = null;
-				lo_rectangle_coordinates = null;
-				lo_userData = null;
-				lo_countour_line = null;
-				lar_splines_order = null;
-				lar_splines_order = null;
-				lv_num_spline_left = null;
-				lv_num_spline_right = null;
+            let lo_line;
 
-				lar_shape_positions = null;
-				lo_shape2 = null;
-				lo_mesh2 = null;
-				lo_geometry2 = null;
+            try {
 
-				//==========================================
-				//30072024 leaks }
+                let lo_container = $('#' + po_event.currentTarget.id)[0];
 
-			}
+                //06052024 let lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, this.main.container, po_event.clientX, po_event.clientY);
+                let lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
 
-			catch (e) {
+                const lc_endline_x = 500;
 
-				alert('error draw_contour_and_shape: ' + e.stack);
 
-			}
+                let lo_active_side_shape_generator = get_active_side_shape_generator();
 
-		}
+                lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
+                let lo_pos_plane = new THREE.Vector2(lo_pos.x, lo_pos.y);
 
-		//-----------------------------------------------------------------
-		Shapes.prototype.get_left_and_right_splines_of_clicked_figure = function (po_event) {
+                const lo_material = new THREE.LineBasicMaterial({ color: 0x0000ff });
 
-			let lo_spline_result = null;
-			let lo_segment_result = null;
-			let lo_prev_intersect_object = null;
+                const lar_points = [];
+                lar_points.push(new THREE.Vector2(lo_pos_plane.x, lo_pos_plane.y));
+                lar_points.push(new THREE.Vector2(lc_endline_x, lo_pos.y));
+                const lo_geometry = new THREE.BufferGeometry().setFromPoints(lar_points);
+                lo_line = new THREE.Line(lo_geometry, lo_material);
 
-			let lo_line;
+                lo_prev_intersect_object = null;
 
-			try {
 
-				let lo_container = $('#' + po_event.currentTarget.id)[0];
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                    //let lv_spline_name = this.get_spline_name_by_number(lv_i);
+                    //let lo_spl = po_scene.getObjectByName(lv_spline_name);
 
-				//06052024 let lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, this.main.container, po_event.clientX, po_event.clientY);
-				let lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
+                    let lv_line_index = this.ar_splines[lv_i].children.length - 1; //последний член массива - line
 
-				const lc_endline_x = 500;
+                    let lo_spl = this.ar_splines[lv_i].children[lv_line_index];
 
+                    let lo_intersect_object = this.GetTwoShapeIntersect(lo_line, lo_spl)
+                    if (lo_intersect_object) {
 
-				let lo_active_side_shape_generator = get_active_side_shape_generator();
+                        if (lo_prev_intersect_object) {
+                            if (lo_intersect_object.min_x < lo_prev_intersect_object.min_x) {
+                                lo_spline_result = lo_intersect_object.object;
+                                lo_prev_intersect_object = lo_intersect_object;
+                            }
+                        }
+                        else {
+                            lo_prev_intersect_object = lo_intersect_object;
+                            lo_spline_result = lo_intersect_object.object;
 
-				lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
-				let lo_pos_plane = new THREE.Vector2(lo_pos.x, lo_pos.y);
+                        }
 
-				const lo_material = new THREE.LineBasicMaterial({ color: 0x0000ff });
 
-				const lar_points = [];
-				lar_points.push(new THREE.Vector2(lo_pos_plane.x, lo_pos_plane.y));
-				lar_points.push(new THREE.Vector2(lc_endline_x, lo_pos.y));
-				const lo_geometry = new THREE.BufferGeometry().setFromPoints(lar_points);
-				lo_line = new THREE.Line(lo_geometry, lo_material);
+                    }
+                }
 
-				lo_prev_intersect_object = null;
+            }
 
+            catch (e) {
 
-				for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
-					//let lv_spline_name = this.get_spline_name_by_number(lv_i);
-					//let lo_spl = po_scene.getObjectByName(lv_spline_name);
+                alert('error get_splines_and_segment_of_clicked_figure: ' + e.stack);
 
-					let lv_line_index = this.ar_splines[lv_i].children.length - 1; //последний член массива - line
+            }
 
-					let lo_spl = this.ar_splines[lv_i].children[lv_line_index];
 
-					let lo_intersect_object = this.GetTwoShapeIntersect(lo_line, lo_spl)
-					if (lo_intersect_object) {
+            // Поиск выбранного сегмента сплайна
+            lo_prev_intersect_object = null;
 
-						if (lo_prev_intersect_object) {
-							if (lo_intersect_object.min_x < lo_prev_intersect_object.min_x) {
-								lo_spline_result = lo_intersect_object.object;
-								lo_prev_intersect_object = lo_intersect_object;
-							}
-						}
-						else {
-							lo_prev_intersect_object = lo_intersect_object;
-							lo_spline_result = lo_intersect_object.object;
+            if (lo_spline_result) {
 
-						}
+                for (let lv_i = 0; lv_i < lo_spline_result.parent.children.length - 1; lv_i++) {
 
+                    if (lo_spline_result.parent.children[lv_i].type == "Group") {
 
-					}
-				}
+                        let lv_line_index = lo_spline_result.parent.children[lv_i].children.length - 1;
 
-			}
+                        let lo_segment_line = lo_spline_result.parent.children[lv_i].children[lv_line_index];
 
-			catch (e) {
+                        let lo_intersect_object = this.GetTwoShapeIntersect(lo_line, lo_segment_line)
 
-				alert('error get_splines_and_segment_of_clicked_figure: ' + e.stack);
+                        if (lo_intersect_object) {
 
-			}
+                            if (lo_prev_intersect_object) {
+                                if (lo_intersect_object.min_y < lo_prev_intersect_object.min_y) {
+                                    lo_segment_result = lo_intersect_object.nspline;
+                                    lo_prev_intersect_object = lo_intersect_object;
+                                }
+                            }
+                            else {
+                                lo_prev_intersect_object = lo_intersect_object;
+                                //lv_result = lo_intersect_object.nspline;
+                                lo_segment_result = lo_intersect_object.object;
 
+                            }
+                        }
+                    }
+                }
 
-			// Поиск выбранного сегмента сплайна
-			lo_prev_intersect_object = null;
+            }
 
-			if (lo_spline_result) {
+            return {
+                //spline: lo_spline_result,
+                segment: lo_segment_result
+            }
+        }
 
-				for (let lv_i = 0; lv_i < lo_spline_result.parent.children.length - 1; lv_i++) {
 
-					if (lo_spline_result.parent.children[lv_i].type == "Group") {
 
-						let lv_line_index = lo_spline_result.parent.children[lv_i].children.length - 1;
 
-						let lo_segment_line = lo_spline_result.parent.children[lv_i].children[lv_line_index];
+        ////------------------------------------------------------------------------
+        //Shapes.prototype.draw_spline_contour = function (po_spline_left, po_spline_right) {
 
-						let lo_intersect_object = this.GetTwoShapeIntersect(lo_line, lo_segment_line)
+        //}
 
-						if (lo_intersect_object) {
 
-							if (lo_prev_intersect_object) {
-								if (lo_intersect_object.min_y < lo_prev_intersect_object.min_y) {
-									lo_segment_result = lo_intersect_object.nspline;
-									lo_prev_intersect_object = lo_intersect_object;
-								}
-							}
-							else {
-								lo_prev_intersect_object = lo_intersect_object;
-								//lv_result = lo_intersect_object.nspline;
-								lo_segment_result = lo_intersect_object.object;
 
-							}
-						}
-					}
-				}
 
-			}
+        //------------------------------------------------------------------------
+        Shapes.prototype.get_spline_name_by_number = function (pv_spline_number) {
+            return "spline_" + pv_spline_number;
+        }
 
-			return {
-				//spline: lo_spline_result,
-				segment: lo_segment_result
-			}
-		}
+        //------------------------------------------------------------------------
+        Shapes.prototype.delete_splines = function () {
 
+            if (this.ar_selected_segments.length == 0) {
+                return;
+            }
 
 
+            let lv_question;
+            if (this.ar_selected_segments.length == 1) {
+                lv_question = "Delete curve?";
+            }
+            else {
 
-		////------------------------------------------------------------------------
-		//Shapes.prototype.draw_spline_contour = function (po_spline_left, po_spline_right) {
+                lv_question = "Delete curves?";
 
-		//}
+            }
 
 
+            this.main.common_func.show_question(lv_question,
+                function () {
 
+                    let lo_active_side_shape_generator = get_active_side_shape_generator();
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.get_spline_name_by_number = function (pv_spline_number) {
-			return "spline_" + pv_spline_number;
-		}
+                    lo_active_side_shape_generator.shapes.do_delete_splines();
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.delete_splines = function () {
+                    $(this).dialog("close");
+                },
+                function () { $(this).dialog("close"); }, null);
 
-			if (this.ar_selected_segments.length == 0) {
-				return;
-			}
+        }
 
 
-			let lv_question;
-			if (this.ar_selected_segments.length == 1) {
-				lv_question = "Delete curve?";
-			}
-			else {
+        //------------------------------------------------------------------------
+        Shapes.prototype.do_delete_splines = function () {
 
-				lv_question = "Delete curves?";
+            let lo_parent;
+            let lo_parent_parent;
 
-			}
+            for (let lv_i = this.ar_selected_segments.length - 1; lv_i >= 0; lv_i--) {
 
+                if (this.ar_selected_segments[lv_i].parent) {
 
-			this.main.common_func.show_question(lv_question,
-				function () {
+                    if (this.ar_selected_segments[lv_i].parent.parent) {
 
-					let lo_active_side_shape_generator = get_active_side_shape_generator();
 
-					lo_active_side_shape_generator.shapes.do_delete_splines();
+                        let lo_parent = this.ar_selected_segments[lv_i].parent;
+                        let lo_parent_parent = this.ar_selected_segments[lv_i].parent.parent;
 
-					$(this).dialog("close");
-				},
-				function () { $(this).dialog("close"); }, null);
 
-		}
+                        this.do_delete_spline(lo_parent_parent);
 
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.do_delete_splines = function () {
+                        // Удаление сплайна из списка
+                        for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-			let lo_parent;
-			let lo_parent_parent;
+                            if (this.ar_splines[lv_i] == lo_parent_parent) {
 
-			for (let lv_i = this.ar_selected_segments.length - 1; lv_i >= 0; lv_i--) {
+                                this.ar_splines.splice(lv_i, 1);
+                            }
 
-				if (this.ar_selected_segments[lv_i].parent) {
+                        }
 
-					if (this.ar_selected_segments[lv_i].parent.parent) {
-						 
 
-						let lo_parent = this.ar_selected_segments[lv_i].parent;
-						let lo_parent_parent = this.ar_selected_segments[lv_i].parent.parent;
+                        // удаление удалённых узлов из списка
+                        for (let lv_i = this.ar_splines_nodes.length - 1; lv_i >= 0; lv_i--) {
 
+                            //////if (this.ar_splines_nodes[lv_i].parent == lo_parent) {
+                            ////if (this.ar_splines_nodes[lv_i].parent.parent == lo_parent_parent) {
+                            ////	this.ar_splines_nodes.splice(lv_i, 1);
+                            ////}
 
-						this.do_delete_spline(lo_parent_parent);
 
+                            if (this.ar_splines_nodes[lv_i].parent == null) {
+                                this.ar_splines_nodes.splice(lv_i, 1);
+                            }
+                        }
 
-						// Удаление сплайна из списка
-						for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-							if (this.ar_splines[lv_i] == lo_parent_parent) {
+                        lo_parent_parent.removeFromParent();
 
-								this.ar_splines.splice(lv_i, 1);
-							}
 
-						}
+                    }
+                }
 
+            }
 
-						// удаление удалённых узлов из списка
-						for (let lv_i = this.ar_splines_nodes.length - 1; lv_i >= 0; lv_i--) {
 
-							//////if (this.ar_splines_nodes[lv_i].parent == lo_parent) {
-							////if (this.ar_splines_nodes[lv_i].parent.parent == lo_parent_parent) {
-							////	this.ar_splines_nodes.splice(lv_i, 1);
-							////}
+            // очистка списка выделенных сегментов
+            this.ar_selected_segments = [];
 
 
-							if (this.ar_splines_nodes[lv_i].parent == null) {
-								this.ar_splines_nodes.splice(lv_i, 1);
-							}
-						}
+            this.main.render();
 
+            let lo_active_side = get_active_side_shape_generator();
+            lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
-						lo_parent_parent.removeFromParent();
+        }
+        //------------------------------------------------------------------------
+        Shapes.prototype.do_delete_spline = function (po_spline_group) {
 
+            for (let lv_i = po_spline_group.children.length - 1; lv_i >= 0; lv_i--) {
 
-					}
-				}
+                let lo_object = po_spline_group.children[lv_i];
 
-			}
+                this.main.common_func.removeObjectsWithChildren(lo_object, true);
 
+            }
 
-			// очистка списка выделенных сегментов
-			this.ar_selected_segments = [];
+        }
 
+        //------------------------------------------------------------------------
+        Shapes.prototype.add_spline = function () {
 
-			this.main.render();
+            let lv_spline_distance = this.segment_transform_data.distance_bt_x;
+            let lv_spline_offset_x;
+            lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
+                + lv_spline_distance * this.ar_splines.length;
 
-			let lo_active_side = get_active_side_shape_generator();
-			lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
-		}
-		//------------------------------------------------------------------------
-		Shapes.prototype.do_delete_spline = function (po_spline_group) {
 
-			for (let lv_i = po_spline_group.children.length - 1; lv_i >= 0; lv_i--) {
+            ////let lo_spline_group = new THREE.Group();
+            //////lo_group_shape.name = this.main.common_func.get_object_name(this.shape_name_group_prefix, lo_group_shape);
+            ////lo_spline_group.name = this.main.common_func.get_object_name(cv_spline_group_name_prefix, lo_spline_group);
+            // группа всех кривых
 
-				let lo_object = po_spline_group.children[lv_i];
+            let lo_main_curves_group = this.main.scene.getObjectByName(this.main_curves_group_prefix);
+            if (!lo_main_curves_group) {
+                return;
+            }
 
-				this.main.common_func.removeObjectsWithChildren(lo_object, true);
+            this.height_koef_previous
 
-			}
+            this.main.splines.create_spline(lo_main_curves_group, lv_spline_offset_x, /*this.height_koef_previous,*/ this.segment_transform_data);//30042024
 
-		}
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.add_spline = function () {
 
-			let lv_spline_distance = this.segment_transform_data.distance_bt_x;
-			let lv_spline_offset_x;
-			lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
-				+ lv_spline_distance * this.ar_splines.length;
+            this.ar_splines = this.get_splines();
+            this.ar_splines_nodes = this.get_splines_points();
 
+            this.main.render();
 
 
-			////let lo_spline_group = new THREE.Group();
-			//////lo_group_shape.name = this.main.common_func.get_object_name(this.shape_name_group_prefix, lo_group_shape);
-			////lo_spline_group.name = this.main.common_func.get_object_name(cv_spline_group_name_prefix, lo_spline_group);
-			// группа всех кривых
+            if (this.params.is_space_adjust) {
 
-			let lo_main_curves_group = this.main.scene.getObjectByName(this.main_curves_group_prefix);
-			if (!lo_main_curves_group) {
-				return;
-			}
+                //this.adjust_space_bt_splines_by_shape();
+                this.adjust_splines_by_external_shape();
+            }
 
-			this.height_koef_previous
+        }
 
-			this.main.splines.create_spline(lo_main_curves_group, lv_spline_offset_x, /*this.height_koef_previous,*/ this.segment_transform_data);//30042024
+        //------------------------------------------------------------------------
+        Shapes.prototype.adjust_splines_by_external_shape = function () {
 
 
+            this.clear_group_contours();//27072024 
+            this.clear_group_color_mesh();//27072024 
 
-			this.ar_splines = this.get_splines();
-			this.ar_splines_nodes = this.get_splines_points();
 
-			this.main.render();
+            let lv_height_koef;
 
+            lv_height_koef = this.params.shape_height / (this.main.params.shape_height_beg);
 
-			if (this.params.is_space_adjust) {
 
-				//this.adjust_space_bt_splines_by_shape();
-				this.adjust_splines_by_external_shape();
-			}
+            let lv_height_koef_relative;
 
-		}
+            if (this.height_koef_previous != 0) {
+                lv_height_koef_relative = lv_height_koef / this.height_koef_previous;
+            }
+            else {
+                lv_height_koef_relative = 1;
+            }
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.adjust_splines_by_external_shape = function () {
 
+            let lv_spline_distance = this.params.shape_width / this.ar_splines.length;
 
-			this.clear_group_contours();//27072024 
-			this.clear_group_color_mesh();//27072024 
 
 
-			let lv_height_koef;
+            for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-			lv_height_koef = this.params.shape_height / (this.main.params.shape_height_beg);
+                let lv_spline_offset_x;
 
+                lv_spline_offset_x = lv_spline_distance * (0.5 + lv_i);
 
-			let lv_height_koef_relative;
+                this.adjust_segments_nodes_by_external_shape(this.ar_splines[lv_i], lv_spline_offset_x, lv_height_koef_relative);
 
-			if (this.height_koef_previous != 0) {
-				lv_height_koef_relative = lv_height_koef / this.height_koef_previous;
-			}
-			else {
-				lv_height_koef_relative = 1;
-			}
 
+                // чтение модифицированных позиций узлов
+                let lar_spline_points = this.main.shapes.get_spline_points(this.ar_splines[lv_i]);
 
-			let lv_spline_distance = this.params.shape_width / this.ar_splines.length;
+                // Удаление предыдущих линий
+                let lar_lines = this.main.shapes.get_lines_in_group(this.ar_splines[lv_i]);
+                for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
+                    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
+                }
 
+                // Перерисовка сегментов
+                ///@@@@@ 08062024 this.main.shapes.redraw_segments(this.ar_splines[lv_i]);
 
+                // создание новой линии
+                this.main.splines.draw_curve(this.ar_splines[lv_i], lar_spline_points, this.main.splines.name_prefix, true);
 
-			for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-				let lv_spline_offset_x;
+                //	 Запоминание новой кривой
+                //	this.set_spline_points(this.ar_splines[lv_i], lar_spline_points);//13062024
+            }
 
-				lv_spline_offset_x = lv_spline_distance * (0.5 + lv_i);
 
-				this.adjust_segments_nodes_by_external_shape(this.ar_splines[lv_i], lv_spline_offset_x, lv_height_koef_relative);
 
+            this.height_koef_previous = lv_height_koef;
 
-				// чтение модифицированных позиций узлов
-				let lar_spline_points = this.main.shapes.get_spline_points(this.ar_splines[lv_i]);
+            //298072024 {
+            //////27072024 {
+            ////if (this.main.prev_selected_splines.spline_left !== null
+            ////	|| this.main.prev_selected_splines.spline_left !== null
+            ////) {
+            ////	this.select_shape_contour(this.main.prev_selected_splines);
+            ////}
+            //////27072024 }
 
-				// Удаление предыдущих линий
-				let lar_lines = this.main.shapes.get_lines_in_group(this.ar_splines[lv_i]);
-				for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
-					this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
-				}
 
-				// Перерисовка сегментов
-				///@@@@@ 08062024 this.main.shapes.redraw_segments(this.ar_splines[lv_i]);
+            // Восстановление выделенного контура
+            let lar_splines_order = []; //03082024 
 
-				// создание новой линии
-				this.main.splines.draw_curve(this.ar_splines[lv_i], lar_spline_points, this.main.splines.name_prefix, true);
+            if (this.main.group_contours.userData) {
 
+                if (this.main.group_contours.userData.num_spline_left != null || this.main.group_contours.userData.num_spline_right != null) {
 
-				//	 Запоминание новой кривой
-				//	this.set_spline_points(this.ar_splines[lv_i], lar_spline_points);//13062024
-			}
+                    lar_splines_order = this.SortSplinesOrderFromLeftToRight();
 
+                    let lv_num_spline_left = this.main.group_contours.userData.num_spline_left;
+                    let lv_num_spline_right = this.main.group_contours.userData.num_spline_right;
 
 
-			this.height_koef_previous = lv_height_koef;
+                    let lo_spline_left = this.main.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
+                    let lo_spline_right = this.main.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
 
-			//298072024 {
-			//////27072024 {
-			////if (this.main.prev_selected_splines.spline_left !== null
-			////	|| this.main.prev_selected_splines.spline_left !== null
-			////) {
-			////	this.select_shape_contour(this.main.prev_selected_splines);
-			////}
-			//////27072024 }
+                    this.draw_contour_and_shape(0x0f0, lo_spline_left, lo_spline_right, true, false, true, false/*, true*/);
+                }
+            }
+            //298072024 }
 
 
-			// Восстановление выделенного контура
-			let lar_splines_order = []; //03082024 
+            //03082024 {
+            // Восстановление цвета фигур
+            ////////////this.clear_group_color_mesh();//03082024
+            ////////////this.main.render();
 
-			if (this.main.group_contours.userData) {
+            //////////for (let lv_i = 0; lv_i < this.ar_shapes_colors.length; lv_i++) {
 
-				if (this.main.group_contours.userData.num_spline_left != null || this.main.group_contours.userData.num_spline_right != null) {
+            //////////	if (this.ar_shapes_colors[lv_i] == null || !this.ar_shapes_colors[lv_i]) {
+            //////////		continue;
+            //////////	}
+            //////////	let lo_spline_left = this.main.common_func.getSplineByNumber(lar_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
+            //////////	let lo_spline_right = this.main.common_func.getSplineByNumber(lar_splines_order, this.ar_shapes_colors[lv_i].num_spline_right);
+            //////////	this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, true);
+            //////////}
 
-					lar_splines_order = this.SortSplinesOrderFromLeftToRight();
+            this.redraw_meshes_color(lar_splines_order);
 
-					let lv_num_spline_left = this.main.group_contours.userData.num_spline_left;
-					let lv_num_spline_right = this.main.group_contours.userData.num_spline_right;
+            //03082024 }
 
 
-					let lo_spline_left = this.main.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
-					let lo_spline_right = this.main.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
+            this.main.render();
 
-					this.draw_contour_and_shape(0x0f0, lo_spline_left, lo_spline_right, true, false, true, false/*, true*/);
-				}
-			}
-			//298072024 }
+        }
+        //-----------------------------------------------------------------
+        // Восстановление цвета фигур
+        Shapes.prototype.redraw_meshes_color = function (par_splines_order) {
 
+            try {
 
-			//03082024 {
-			// Восстановление цвета фигур
-			////////////this.clear_group_color_mesh();//03082024
-			////////////this.main.render();
+                this.clear_group_color_mesh();//03082024
+                //this.main.render();
 
-			//////////for (let lv_i = 0; lv_i < this.ar_shapes_colors.length; lv_i++) {
+                for (let lv_i = 0; lv_i < this.ar_shapes_colors.length; lv_i++) {
 
-			//////////	if (this.ar_shapes_colors[lv_i] == null || !this.ar_shapes_colors[lv_i]) {
-			//////////		continue;
-			//////////	}
-			//////////	let lo_spline_left = this.main.common_func.getSplineByNumber(lar_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
-			//////////	let lo_spline_right = this.main.common_func.getSplineByNumber(lar_splines_order, this.ar_shapes_colors[lv_i].num_spline_right);
-			//////////	this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, true);
-			//////////}
+                    if (this.ar_shapes_colors[lv_i] == null || !this.ar_shapes_colors[lv_i]) {
+                        continue;
+                    }
+                    let lo_spline_left = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
+                    let lo_spline_right = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_right);
+                    this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, false, false, true);
+                    //this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, false, true, true);//05082024
+                }
 
-			this.redraw_meshes_color(lar_splines_order);
 
-			//03082024 }
+            }
 
+            catch (e) {
 
-			this.main.render();
+                alert('error redraw_meshes_color: ' + e.stack);
 
-		}
-		//-----------------------------------------------------------------
-		// Восстановление цвета фигур
-		Shapes.prototype.redraw_meshes_color = function (par_splines_order) {
+            }
+        }
+        //-----------------------------------------------------------------
+        Shapes.prototype.move_curve_along_x = function (po_moved_node, pv_delta_x) {
 
-			try {
+            try {
 
-				this.clear_group_color_mesh();//03082024
-				//this.main.render();
 
-				for (let lv_i = 0; lv_i < this.ar_shapes_colors.length; lv_i++) {
+                let lo_spline_group = po_moved_node.parent.parent;
 
-					if (this.ar_shapes_colors[lv_i] == null || !this.ar_shapes_colors[lv_i]) {
-						continue;
-					}
-					let lo_spline_left = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
-					let lo_spline_right = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_right);
-					this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, false, false, true);
-					//this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, false, true, true);//05082024
-				}
+                let lar_spline_points = this.get_spline_points(lo_spline_group);
 
+                // Сдвиг узлов по оси x
+                for (let lv_i = 0; lv_i < lar_spline_points.length; lv_i++) {
+                    lar_spline_points.x = lar_spline_points.x + pv_delta_x;
+                }
 
-			}
 
-			catch (e) {
+                this.main.splines.draw_curve(lo_spline_group, lar_spline_points, cv_spline_name_prefix, true);
 
-				alert('error redraw_meshes_color: ' + e.stack);
 
-			}
-		}
-		//-----------------------------------------------------------------
-		Shapes.prototype.move_curve_along_x = function (po_moved_node, pv_delta_x) {
+            }
 
-			try {
+            catch (e) {
 
+                alert('error move_curve_along_x: ' + e.stack);
 
-				let lo_spline_group = po_moved_node.parent.parent;
+            }
 
-				let lar_spline_points = this.get_spline_points(lo_spline_group);
 
-				// Сдвиг узлов по оси x
-				for (let lv_i = 0; lv_i < lar_spline_points.length; lv_i++) {
-					lar_spline_points.x = lar_spline_points.x + pv_delta_x;
-				}
+        }
 
+        //-----------------------------------------------------------------
 
-				this.main.splines.draw_curve(lo_spline_group, lar_spline_points, cv_spline_name_prefix, true);
+        Shapes.prototype.set_shape_color = function (po_spline_left, po_spline_right, pv_color) {
 
+            try {
 
-			}
+                let lar_left_points = this.main.common_func.getLinePoints(po_spline_left);
+                let lar_right_points = this.main.common_func.getLinePoints(po_spline_right);
+                let lar_left_points_reversed = lar_left_points.reverse();
 
-			catch (e) {
 
-				alert('error move_curve_along_x: ' + e.stack);
 
-			}
+                let lo_shape = new THREE.Shape()
+                    .splineThru(lar_right_points)
+                    .splineThru(lar_left_points_reversed);
 
+                ///////////////////////////////////////////////this.addShape(lo_shape, 0x0000ff);
 
-		}
 
-		//-----------------------------------------------------------------
-
-		Shapes.prototype.set_shape_color = function (po_spline_left, po_spline_right, pv_color) {
-
-			try {
-
-				let lar_left_points = this.main.common_func.getLinePoints(po_spline_left);
-				let lar_right_points = this.main.common_func.getLinePoints(po_spline_right);
-				let lar_left_points_reversed = lar_left_points.reverse();
-
-
-
-				let lo_shape = new THREE.Shape()
-					.splineThru(lar_right_points)
-					.splineThru(lar_left_points_reversed);
-
-				///////////////////////////////////////////////this.addShape(lo_shape, 0x0000ff);
-
-
-				lo_shape = new THREE.Shape()
-					.moveTo(0, lar_left_points[0].y)
-					.splineThru(lar_left_points)
-					.lineTo(0, lar_left_points[lar_left_points.length - 1].y)
-					.lineTo(0, lar_left_points[0].y);
+                lo_shape = new THREE.Shape()
+                    .moveTo(0, lar_left_points[0].y)
+                    .splineThru(lar_left_points)
+                    .lineTo(0, lar_left_points[lar_left_points.length - 1].y)
+                    .lineTo(0, lar_left_points[0].y);
 
 				//lo_shape.autoClose = true;
 
@@ -1648,875 +1648,875 @@ export function Shapes(po_main, po_scene, po_params)
 				/*let*/ lar_left_points = this.main.common_func.getLinePoints(po_spline_left);
 				/*let*/ lar_right_points = this.main.common_func.getLinePoints(po_spline_right);
 				/*let*/ lar_left_points_reversed = lar_left_points.reverse();
-				let lar_right_points_reversed = lar_right_points.reverse();
+                let lar_right_points_reversed = lar_right_points.reverse();
 
-				try {
+                try {
 
 
-					let lo_resolution = new THREE.Vector2();
-					let lo_renderer = new THREE.WebGLRenderer({});
-					lo_renderer.getSize(lo_resolution);
+                    let lo_resolution = new THREE.Vector2();
+                    let lo_renderer = new THREE.WebGLRenderer({});
+                    lo_renderer.getSize(lo_resolution);
 
-					let material = new LineMaterial({
-						//color: new Color("#fff").getHex(),
-						vertexColors: 0x00f, //VertexColors,
-						linewidth: 1, //0.5, //1, //2,
-						resolution: lo_resolutionm
-					});
+                    let material = new LineMaterial({
+                        //color: new Color("#fff").getHex(),
+                        vertexColors: 0x00f, //VertexColors,
+                        linewidth: 1, //0.5, //1, //2,
+                        resolution: lo_resolutionm
+                    });
 
 
 
-					let lar_positions = [];
+                    let lar_positions = [];
 
 
 
-					for (let lv_i = 0; lv_i < lar_left_points.length; lv_i++) {
-						lar_positions.push(lar_left_points[lv_i].x, lar_left_points[lv_i].y, 0);
-					}
+                    for (let lv_i = 0; lv_i < lar_left_points.length; lv_i++) {
+                        lar_positions.push(lar_left_points[lv_i].x, lar_left_points[lv_i].y, 0);
+                    }
 
-					for (let lv_i = 0; lv_i < lar_right_points_reversed.length; lv_i++) {
-						lar_positions.push(lar_right_points_reversed[lv_i].x, lar_right_points_reversed[lv_i].y, 0);
-					}
+                    for (let lv_i = 0; lv_i < lar_right_points_reversed.length; lv_i++) {
+                        lar_positions.push(lar_right_points_reversed[lv_i].x, lar_right_points_reversed[lv_i].y, 0);
+                    }
 
-					const clrs = [];
+                    const clrs = [];
 
-					lar_positions.forEach(() => {
-						clrs.push(255, 0, 255);//!! цвет линии
-					});
+                    lar_positions.forEach(() => {
+                        clrs.push(255, 0, 255);//!! цвет линии
+                    });
 
 
-					////////let lo_geometry = new LineGeometry();
+                    ////////let lo_geometry = new LineGeometry();
 
-					////////lo_geometry.setPositions(lar_positions);/////
+                    ////////lo_geometry.setPositions(lar_positions);/////
 
-					////////lo_geometry.setColors(clrs);
+                    ////////lo_geometry.setColors(clrs);
 
-					////////let lo_resolution = new THREE.Vector2();
+                    ////////let lo_resolution = new THREE.Vector2();
 
-					////////let lo_renderer = new THREE.WebGLRenderer({});
-					////////lo_renderer.getSize(lo_resolution);
+                    ////////let lo_renderer = new THREE.WebGLRenderer({});
+                    ////////lo_renderer.getSize(lo_resolution);
 
-					////////let lo_material = new LineMaterial({
-					////////	//color: new Color("#fff").getHex(),
-					////////	vertexColors: 0x00f, //VertexColors,
-					////////	linewidth: 0.1, //0.5, //1, //2,
-					////////	lo_resolution
-					////////});
+                    ////////let lo_material = new LineMaterial({
+                    ////////	//color: new Color("#fff").getHex(),
+                    ////////	vertexColors: 0x00f, //VertexColors,
+                    ////////	linewidth: 0.1, //0.5, //1, //2,
+                    ////////	lo_resolution
+                    ////////});
 
-					//////////material.needsUpdate = true;
+                    //////////material.needsUpdate = true;
 
-					////////let lo_line = new Line2(lo_geometry, lo_material);
-					//////////lo_line.computeLineDistances();
+                    ////////let lo_line = new Line2(lo_geometry, lo_material);
+                    //////////lo_line.computeLineDistances();
 
-					//////////lo_line.position.set(lv_x, lv_y);
+                    //////////lo_line.position.set(lv_x, lv_y);
 
-					////////this.scene.add(lo_line);
+                    ////////this.scene.add(lo_line);
 
 
 
-					let geometry = new LineGeometry();
+                    let geometry = new LineGeometry();
 
-					//geometry.setPositions(positions);/////
-					geometry.setPositions(lar_positions);/////
+                    //geometry.setPositions(positions);/////
+                    geometry.setPositions(lar_positions);/////
 
-					geometry.setColors(clrs);
+                    geometry.setColors(clrs);
 
-					////let resolution = new THREE.Vector2();
-					////let lo_renderer = new THREE.WebGLRenderer({});
-					////lo_renderer.getSize(resolution);
+                    ////let resolution = new THREE.Vector2();
+                    ////let lo_renderer = new THREE.WebGLRenderer({});
+                    ////lo_renderer.getSize(resolution);
 
-					////let material = new LineMaterial({
-					////	//color: new Color("#fff").getHex(),
-					////	vertexColors: 0x00f, //VertexColors,
-					////	linewidth: 1, //0.5, //1, //2,
-					////	resolution
-					////});
+                    ////let material = new LineMaterial({
+                    ////	//color: new Color("#fff").getHex(),
+                    ////	vertexColors: 0x00f, //VertexColors,
+                    ////	linewidth: 1, //0.5, //1, //2,
+                    ////	resolution
+                    ////});
 
-					//material.needsUpdate = true;
+                    //material.needsUpdate = true;
 
-					let lo_line = new Line2(geometry, material);
-					//lo_line.computeLineDistances();
+                    let lo_line = new Line2(geometry, material);
+                    //lo_line.computeLineDistances();
 
-					//lo_line.position.set(lv_x, lv_y);
+                    //lo_line.position.set(lv_x, lv_y);
 
-					this.scene.add(lo_line);
+                    this.scene.add(lo_line);
 
 
 
 
 
 
-				}
+                }
 
-				catch (e) {
+                catch (e) {
 
-					alert('error draw_contour_and_shape: ' + e.stack);
+                    alert('error draw_contour_and_shape: ' + e.stack);
 
-				}
+                }
 
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error set_shape_color: ' + e.stack);
+                alert('error set_shape_color: ' + e.stack);
 
-			}
-		}
+            }
+        }
 
-		//-----------------------------------------------------------------
+        //-----------------------------------------------------------------
 
-		Shapes.prototype.addShape = function (po_shape,/* extrudeSettings,*/ pv_color/*, x, y, z, rx, ry, rz, s*/) {
+        Shapes.prototype.addShape = function (po_shape,/* extrudeSettings,*/ pv_color/*, x, y, z, rx, ry, rz, s*/) {
 
-			// flat shape with texture
-			// note: default UVs generated by THREE.ShapeGeometry are simply the x- and y-coordinates of the vertices
+            // flat shape with texture
+            // note: default UVs generated by THREE.ShapeGeometry are simply the x- and y-coordinates of the vertices
 
-			let lo_geometry = new THREE.ShapeGeometry(po_shape);
+            let lo_geometry = new THREE.ShapeGeometry(po_shape);
 
-			////let mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ side: THREE.DoubleSide, map: texture }));
-			////mesh.position.set(x, y, z - 175);
-			////mesh.rotation.set(rx, ry, rz);
-			////mesh.scale.set(s, s, s);
-			////group.add(mesh);
+            ////let mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ side: THREE.DoubleSide, map: texture }));
+            ////mesh.position.set(x, y, z - 175);
+            ////mesh.rotation.set(rx, ry, rz);
+            ////mesh.scale.set(s, s, s);
+            ////group.add(mesh);
 
-			// flat shape
+            // flat shape
 
-			////geometry = new THREE.ShapeGeometry(shape);
+            ////geometry = new THREE.ShapeGeometry(shape);
 
-			let lo_mesh = new THREE.Mesh(lo_geometry, new THREE.MeshPhongMaterial({ color: pv_color/*, side: THREE.DoubleSide */ }));
-			////mesh.position.set(x, y, z - 125);
-			////mesh.rotation.set(rx, ry, rz);
-			////mesh.scale.set(s, s, s);
-			////group.add(mesh);
-			this.scene.add(lo_mesh);
+            let lo_mesh = new THREE.Mesh(lo_geometry, new THREE.MeshPhongMaterial({ color: pv_color/*, side: THREE.DoubleSide */ }));
+            ////mesh.position.set(x, y, z - 125);
+            ////mesh.rotation.set(rx, ry, rz);
+            ////mesh.scale.set(s, s, s);
+            ////group.add(mesh);
+            this.scene.add(lo_mesh);
 
 
-			// extruded shape
+            // extruded shape
 
-			////geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
+            ////geometry = new THREE.ExtrudeGeometry(shape, extrudeSettings);
 
-			////mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: color }));
-			////mesh.position.set(x, y, z - 75);
-			////mesh.rotation.set(rx, ry, rz);
-			////mesh.scale.set(s, s, s);
-			////group.add(mesh);
+            ////mesh = new THREE.Mesh(geometry, new THREE.MeshPhongMaterial({ color: color }));
+            ////mesh.position.set(x, y, z - 75);
+            ////mesh.rotation.set(rx, ry, rz);
+            ////mesh.scale.set(s, s, s);
+            ////group.add(mesh);
 
-			//////addLineShape(shape, color, x, y, z, rx, ry, rz, s);
+            //////addLineShape(shape, color, x, y, z, rx, ry, rz, s);
 
-		}
+        }
 
-		//-----------------------------------------------------------------
+        //-----------------------------------------------------------------
 
-		Shapes.prototype.select_shape_contour = function (po_clicked_splines) {
+        Shapes.prototype.select_shape_contour = function (po_clicked_splines) {
 
 
-			this.draw_contour_and_shape(0x0f0, po_clicked_splines.spline_left, po_clicked_splines.spline_right, true, true, true, false);
+            this.draw_contour_and_shape(0x0f0, po_clicked_splines.spline_left, po_clicked_splines.spline_right, true, true, true, false);
 
-			////this.main.camera.updateProjectionMatrix();
-			////this.main.render();
+            ////this.main.camera.updateProjectionMatrix();
+            ////this.main.render();
 
-		}
+        }
 
-		//------------------------------------------------------------------------
+        //------------------------------------------------------------------------
 
-		Shapes.prototype.switch_visible_nodes_by_segment = function (po_segment) {
+        Shapes.prototype.switch_visible_nodes_by_segment = function (po_segment) {
 
-			try {
+            try {
 
-				let lo_segment_point;
+                let lo_segment_point;
 
-				for (let lv_i = 0; lv_i < po_segment.parent.children.length - 1; lv_i++) {
+                for (let lv_i = 0; lv_i < po_segment.parent.children.length - 1; lv_i++) {
 
-					lo_segment_point = po_segment.parent.children[lv_i];
+                    lo_segment_point = po_segment.parent.children[lv_i];
 
-					//for (let lv_j = 0; lv_j < lo_segment.children.length - 1; lv_j++) {
+                    //for (let lv_j = 0; lv_j < lo_segment.children.length - 1; lv_j++) {
 
-					//let lo_segment_point = lo_segment.children[lv_j];
+                    //let lo_segment_point = lo_segment.children[lv_j];
 
-					if (lo_segment_point instanceof THREE.Mesh) {
+                    if (lo_segment_point instanceof THREE.Mesh) {
 
-						////if (lo_obj.userData) {
+                        ////if (lo_obj.userData) {
 
-						////	if (lo_obj.userData.nspline == po_spline) {
+                        ////	if (lo_obj.userData.nspline == po_spline) {
 
-						lo_segment_point.visible = !lo_segment_point.visible;
+                        lo_segment_point.visible = !lo_segment_point.visible;
 
-						// Занесение в или удаление из массива выделенных сегментов
+                        // Занесение в или удаление из массива выделенных сегментов
 
-						if (lv_i == 0) // выполняем только один раз 
-						{
+                        if (lv_i == 0) // выполняем только один раз 
+                        {
 
-							if (lo_segment_point.visible) {
-								this.ar_selected_segments.push(po_segment);
-							}
-							else {
-								//////// удаление элемента из массива
-								//////for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
+                            if (lo_segment_point.visible) {
+                                this.ar_selected_segments.push(po_segment);
+                            }
+                            else {
+                                //////// удаление элемента из массива
+                                //////for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
 
-								//////	if (this.ar_selected_segments[lv_i] == po_spline) {
+                                //////	if (this.ar_selected_segments[lv_i] == po_spline) {
 
-								//////		this.ar_selected_segments.splice(lv_i, 1);
-								//////	}
-								//////}
-								this.delete_from_selected_segments(po_segment);
+                                //////		this.ar_selected_segments.splice(lv_i, 1);
+                                //////	}
+                                //////}
+                                this.delete_from_selected_segments(po_segment);
 
-							}
+                            }
 
-						}
+                        }
 
 
-						////	}
+                        ////	}
 
-						////}
-					}
+                        ////}
+                    }
 
 
-					//}
+                    //}
 
-				}
+                }
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error switch_visible_nodes_by_segment: ' + e.stack);
+                alert('error switch_visible_nodes_by_segment: ' + e.stack);
 
-			}
+            }
 
-		}
+        }
 
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.delete_from_selected_segments = function (po_segment) {
+        //------------------------------------------------------------------------
+        Shapes.prototype.delete_from_selected_segments = function (po_segment) {
 
-			// удаление элемента из массива выбранных сегментов
-			for (let lv_i = this.ar_selected_segments.length - 1; lv_i >= 0; lv_i--) {
+            // удаление элемента из массива выбранных сегментов
+            for (let lv_i = this.ar_selected_segments.length - 1; lv_i >= 0; lv_i--) {
 
-				if (this.ar_selected_segments[lv_i] == po_segment) {
+                if (this.ar_selected_segments[lv_i] == po_segment) {
 
-					this.ar_selected_segments.splice(lv_i, 1);
-				}
+                    this.ar_selected_segments.splice(lv_i, 1);
+                }
 
-			}
+            }
 
-		}
+        }
 
 
-		//-----------------------------------------------------------------
-		// Сделать зеркальное отражение выделенных сегментов
-		Shapes.prototype.make_mirror_selected_segments = function () {
+        //-----------------------------------------------------------------
+        // Сделать зеркальное отражение выделенных сегментов
+        Shapes.prototype.make_mirror_selected_segments = function () {
 
-			let lar_selected_spline_groups = [];
+            let lar_selected_spline_groups = [];
 
 
-			let lo_segment;//23042024
+            let lo_segment;//23042024
 
-			try {
+            try {
 
 
-				for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
+                for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
 
-					let lo_selected_segment = this.ar_selected_segments[lv_i];
+                    let lo_selected_segment = this.ar_selected_segments[lv_i];
 
-					if (lo_selected_segment.parent) {
+                    if (lo_selected_segment.parent) {
 
-						let lo_parent_parent = lo_selected_segment.parent.parent;
+                        let lo_parent_parent = lo_selected_segment.parent.parent;
 
-						this.ar_selected_segments[lv_i] = this.make_mirror_segment(lo_selected_segment);//23042024
+                        this.ar_selected_segments[lv_i] = this.make_mirror_segment(lo_selected_segment);//23042024
 
-						lar_selected_spline_groups.push(lo_parent_parent);
-					}
-				}
+                        lar_selected_spline_groups.push(lo_parent_parent);
+                    }
+                }
 
 
-				for (let lv_i = 0; lv_i < lar_selected_spline_groups.length; lv_i++) {
+                for (let lv_i = 0; lv_i < lar_selected_spline_groups.length; lv_i++) {
 
-					let lar_spline_points = [];
+                    let lar_spline_points = [];
 
-					let lar_segments_groups = lar_selected_spline_groups[lv_i].children;
+                    let lar_segments_groups = lar_selected_spline_groups[lv_i].children;
 
-					for (let lv_j = 0; lv_j < lar_segments_groups.length; lv_j++) {
+                    for (let lv_j = 0; lv_j < lar_segments_groups.length; lv_j++) {
 
-						let lar_segments_nodes = lar_segments_groups[lv_j];
+                        let lar_segments_nodes = lar_segments_groups[lv_j];
 
-						if (lar_segments_nodes.type == "Group") {
+                        if (lar_segments_nodes.type == "Group") {
 
-							for (let lv_k = 0; lv_k < lar_segments_nodes.children.length; lv_k++) {
+                            for (let lv_k = 0; lv_k < lar_segments_nodes.children.length; lv_k++) {
 
-								if (lar_segments_nodes.children[lv_k].type == "Mesh") {
-									lar_spline_points.push(lar_segments_nodes.children[lv_k].position);
-								}
-							}
-						}
+                                if (lar_segments_nodes.children[lv_k].type == "Mesh") {
+                                    lar_spline_points.push(lar_segments_nodes.children[lv_k].position);
+                                }
+                            }
+                        }
 
-						if (lar_segments_nodes.type == "Line") {
+                        if (lar_segments_nodes.type == "Line") {
 
-							this.main.common_func.removeObjectsWithChildren(lar_segments_nodes, true);//22042024
+                            this.main.common_func.removeObjectsWithChildren(lar_segments_nodes, true);//22042024
 
-						}
+                        }
 
 
-					}
+                    }
 
-					lo_segment = this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//25042024
+                    lo_segment = this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//25042024
 
-				}
+                }
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error make_mirror_selected_segments: ' + e.stack);
+                alert('error make_mirror_selected_segments: ' + e.stack);
 
-			}
+            }
 
-			return lo_segment;
-		}
+            return lo_segment;
+        }
 
 
-		//-----------------------------------------------------------------
-		// Сделать зеркальное отражение выделенных сегментов
-		Shapes.prototype.make_mirror_segment = function (po_segment) {
+        //-----------------------------------------------------------------
+        // Сделать зеркальное отражение выделенных сегментов
+        Shapes.prototype.make_mirror_segment = function (po_segment) {
 
 
-			let lar_new_segment_points = [];
+            let lar_new_segment_points = [];
 
-			let lo_segment_point;
+            let lo_segment_point;
 
-			let lv_base_x = 0;
+            let lv_base_x = 0;
 
-			let lo_segment;//23042024
+            let lo_segment;//23042024
 
-			try {
+            try {
 
-				for (let lv_i = 0; lv_i < po_segment.parent.children.length - 1; lv_i++) {
+                for (let lv_i = 0; lv_i < po_segment.parent.children.length - 1; lv_i++) {
 
-					lo_segment_point = po_segment.parent.children[lv_i];
+                    lo_segment_point = po_segment.parent.children[lv_i];
 
-					if (lv_i == 0) {
-						lv_base_x = lo_segment_point.position.x;
-					}
+                    if (lv_i == 0) {
+                        lv_base_x = lo_segment_point.position.x;
+                    }
 
-					let lv_delta = lv_base_x - lo_segment_point.position.x;
+                    let lv_delta = lv_base_x - lo_segment_point.position.x;
 
-					lo_segment_point.position.x = lv_base_x + lv_delta;
+                    lo_segment_point.position.x = lv_base_x + lv_delta;
 
 
-					lar_new_segment_points.push(lo_segment_point.position);
+                    lar_new_segment_points.push(lo_segment_point.position);
 
-					//lo_segment_point.matrixWorldNeedsUpdate = true;
+                    //lo_segment_point.matrixWorldNeedsUpdate = true;
 
-				}
+                }
 
 
-				// Удаление предыдущих линий
-				let lo_parent = po_segment.parent;
-				let lar_lines = this.main.shapes.get_lines_in_group(po_segment.parent);
-				for (let lv_i = 0; lv_i < lar_lines.length; lv_i++) {
-					this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], true);
-				}
+                // Удаление предыдущих линий
+                let lo_parent = po_segment.parent;
+                let lar_lines = this.main.shapes.get_lines_in_group(po_segment.parent);
+                for (let lv_i = 0; lv_i < lar_lines.length; lv_i++) {
+                    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], true);
+                }
 
-				//05082024 lo_segment = this.main.splines.draw_curve(lo_parent, lar_new_segment_points, cv_spline_name_prefix, false);
-				lo_segment = this.main.splines.draw_curve(lo_parent, lar_new_segment_points, cv_segment_name_prefix, false);//05082024
+                //05082024 lo_segment = this.main.splines.draw_curve(lo_parent, lar_new_segment_points, cv_spline_name_prefix, false);
+                lo_segment = this.main.splines.draw_curve(lo_parent, lar_new_segment_points, cv_segment_name_prefix, false);//05082024
 
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error make_mirror_segment: ' + e.stack);
+                alert('error make_mirror_segment: ' + e.stack);
 
-			}
+            }
 
-			return lo_segment;
+            return lo_segment;
 
-		}
+        }
 
-		//-----------------------------------------------------------------
+        //-----------------------------------------------------------------
 
-		Shapes.prototype.get_lines_in_group = function (po_group) {
+        Shapes.prototype.get_lines_in_group = function (po_group) {
 
-			let lar_objects = [];
+            let lar_objects = [];
 
-			for (let lv_i = 0; lv_i < po_group.children.length; lv_i++) {
+            for (let lv_i = 0; lv_i < po_group.children.length; lv_i++) {
 
-				if (po_group.children[lv_i].type == "Line") {
-					lar_objects.push(po_group.children[lv_i]);
-				}
-			}
+                if (po_group.children[lv_i].type == "Line") {
+                    lar_objects.push(po_group.children[lv_i]);
+                }
+            }
 
 
-			return lar_objects;
+            return lar_objects;
 
-		}
+        }
 
-		//29062024 {
-		//////////-----------------------------------------------------------------
+        //29062024 {
+        //////////-----------------------------------------------------------------
 
-		////////Shapes.prototype.switch_visible_nodes_by_spline = function (po_spline) {
+        ////////Shapes.prototype.switch_visible_nodes_by_spline = function (po_spline) {
 
-		////////	//return;
+        ////////	//return;
 
-		////////	try {
+        ////////	try {
 
-		////////		let lo_segment_group;
+        ////////		let lo_segment_group;
 
-		////////		for (let lv_i = 0; lv_i < po_spline.parent.children.length - 1; lv_i++) {
-		////////			lo_segment_group = po_spline.parent.children[lv_i];
+        ////////		for (let lv_i = 0; lv_i < po_spline.parent.children.length - 1; lv_i++) {
+        ////////			lo_segment_group = po_spline.parent.children[lv_i];
 
-		////////			for (let lv_j = 0; lv_j < lo_segment_group.children.length - 1; lv_j++) {
+        ////////			for (let lv_j = 0; lv_j < lo_segment_group.children.length - 1; lv_j++) {
 
-		////////				let lo_segment_point = lo_segment_group.children[lv_j];
+        ////////				let lo_segment_point = lo_segment_group.children[lv_j];
 
-		////////				if (lo_segment_point instanceof THREE.Mesh) {
+        ////////				if (lo_segment_point instanceof THREE.Mesh) {
 
-		////////					////if (lo_obj.userData) {
+        ////////					////if (lo_obj.userData) {
 
-		////////					////	if (lo_obj.userData.nspline == po_spline) {
+        ////////					////	if (lo_obj.userData.nspline == po_spline) {
 
-		////////					lo_segment_point.visible = !lo_segment_point.visible;
+        ////////					lo_segment_point.visible = !lo_segment_point.visible;
 
-		////////					////	}
+        ////////					////	}
 
-		////////					////}
-		////////				}
+        ////////					////}
+        ////////				}
 
 
-		////////			}
+        ////////			}
 
-		////////		}
+        ////////		}
 
-		////////	}
+        ////////	}
 
-		////////	catch (e) {
+        ////////	catch (e) {
 
-		////////		alert('error switch_visible_nodes_by_spline: ' + e);
+        ////////		alert('error switch_visible_nodes_by_spline: ' + e);
 
-		////////	}
+        ////////	}
 
-		////////}
-		//29062024 }
+        ////////}
+        //29062024 }
 
 
-		//-----------------------------------------------------------------
+        //-----------------------------------------------------------------
 
-		Shapes.prototype.set_visible_nodes = function (pv_visible) {
+        Shapes.prototype.set_visible_nodes = function (pv_visible) {
 
-			try {
+            try {
 
-				let lo_spline_group;
+                let lo_spline_group;
 
-				for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-					lo_spline_group = this.ar_splines[lv_i];
+                    lo_spline_group = this.ar_splines[lv_i];
 
-					for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
+                    for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
 
-						let lo_segment_group = lo_spline_group.children[lv_j];
+                        let lo_segment_group = lo_spline_group.children[lv_j];
 
-						if (lo_segment_group instanceof THREE.Group) {
+                        if (lo_segment_group instanceof THREE.Group) {
 
-							for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
+                            for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
 
-								if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
+                                if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
 
-									lo_segment_group.children[lv_k].visible = pv_visible;
+                                    lo_segment_group.children[lv_k].visible = pv_visible;
 
-								}
+                                }
 
-							}
-						}
+                            }
+                        }
 
-					}
+                    }
 
-				}
+                }
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error set_visible_nodes: ' + e.stack);
+                alert('error set_visible_nodes: ' + e.stack);
 
-			}
+            }
 
-		}
+        }
 
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.draw_rectangle = function (pv_distance_bt_curves) {
+        //------------------------------------------------------------------------
+        Shapes.prototype.draw_rectangle = function (pv_distance_bt_curves) {
 
 
-			const cv_rect_width = this.shape_width; // 100;// mm figure width
-			const cv_rect_height = this.shape_height; // 200; // mm figure height
+            const cv_rect_width = this.shape_width; // 100;// mm figure width
+            const cv_rect_height = this.shape_height; // 200; // mm figure height
 
-			try {
+            try {
 
-				let lo_group = new THREE.Group();
+                let lo_group = new THREE.Group();
 
 
-				const positions = [];
-				positions.push(0, 0, 0);
-				positions.push(0, cv_rect_height, 0);
-				positions.push(cv_rect_width, cv_rect_height, 0);
-				positions.push(cv_rect_width, 0, 0);
-				positions.push(0, 0, 0);
+                const positions = [];
+                positions.push(0, 0, 0);
+                positions.push(0, cv_rect_height, 0);
+                positions.push(cv_rect_width, cv_rect_height, 0);
+                positions.push(cv_rect_width, 0, 0);
+                positions.push(0, 0, 0);
 
 
-				let lv_color = 0x0040f0;
-				let lv_x = 0; //13032024  pv_distance_bt_curves/2;// / 2; // 0;
-				let lv_y = 0;
+                let lv_color = 0x0040f0;
+                let lv_x = 0; //13032024  pv_distance_bt_curves/2;// / 2; // 0;
+                let lv_y = 0;
 
-				const clrs = [];
+                const clrs = [];
 
-				positions.forEach(() => {
-					clrs.push(255, 0, 255);
-				});
+                positions.forEach(() => {
+                    clrs.push(255, 0, 255);
+                });
 
 
-				let geometry = new LineGeometry();
+                let geometry = new LineGeometry();
 
-				//let lo_points = rectangleShape.getPoints();
+                //let lo_points = rectangleShape.getPoints();
 
-				geometry.setPositions(positions);/////
-				geometry.setColors(clrs);
+                geometry.setPositions(positions);/////
+                geometry.setColors(clrs);
 
-				let resolution = new THREE.Vector2();
+                let resolution = new THREE.Vector2();
 
-				let renderer = new THREE.WebGLRenderer({ /*antialias: true*/ });
-				renderer.getSize(resolution);
+                let renderer = new THREE.WebGLRenderer({ /*antialias: true*/ });
+                renderer.getSize(resolution);
 
-				let material = new LineMaterial({
-					//color: new Color("#fff").getHex(),
-					vertexColors: 0xf0f, //VertexColors,
-					linewidth: 0.5, //1, //2,
-					resolution,
-					//dashed: false, //true,
-					//gapSize: 0.75,
-					//dashScale: 1.5,
-					//dashSize: 1
-				});
+                let material = new LineMaterial({
+                    //color: new Color("#fff").getHex(),
+                    vertexColors: 0xf0f, //VertexColors,
+                    linewidth: 0.5, //1, //2,
+                    resolution,
+                    //dashed: false, //true,
+                    //gapSize: 0.75,
+                    //dashScale: 1.5,
+                    //dashSize: 1
+                });
 
-				material.needsUpdate = true;
+                material.needsUpdate = true;
 
-				let lo_line = new Line2(geometry, material);
-				lo_line.computeLineDistances();
-				//lo_line.scale.set(1, 1, 1);
+                let lo_line = new Line2(geometry, material);
+                lo_line.computeLineDistances();
+                //lo_line.scale.set(1, 1, 1);
 
-				//lo_line.name = cv_rectangle_name;
+                //lo_line.name = cv_rectangle_name;
 
-				lo_line.position.set(lv_x, lv_y);//, 0 pv_z - 25);
+                lo_line.position.set(lv_x, lv_y);//, 0 pv_z - 25);
 
-				//lo_group.add(lo_line);
+                //lo_group.add(lo_line);
 
 
-				lo_group.renderOrder = 3;
-				this.group_rect = lo_group;
+                lo_group.renderOrder = 3;
+                this.group_rect = lo_group;
 
-				this.scene.add(lo_group);
+                this.scene.add(lo_group);
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error draw_rectangle: ' + e.stack);
+                alert('error draw_rectangle: ' + e.stack);
 
-			}
+            }
 
-		}
+        }
 
 
 
-		//-----------------------------------------------------------------
+        //-----------------------------------------------------------------
 
 
 
-		Shapes.prototype.GetTwoShapeIntersect = function (object1, object2) {
-			// (example from https://stackoverflow.com/questions/49417007/how-to-find-intersection-of-objects-in-three-js)
-			/**
-			 * This function check if two object3d intersect or not
-			 * @param {THREE.Object3D} object1
-			 * @param {THREE.Object3D} object2
-			 * @returns {Boolean} 
-			*/
+        Shapes.prototype.GetTwoShapeIntersect = function (object1, object2) {
+            // (example from https://stackoverflow.com/questions/49417007/how-to-find-intersection-of-objects-in-three-js)
+            /**
+             * This function check if two object3d intersect or not
+             * @param {THREE.Object3D} object1
+             * @param {THREE.Object3D} object2
+             * @returns {Boolean} 
+            */
 
-			let lv_result = null;
+            let lv_result = null;
 
 
-			try {
+            try {
 
-				// Check for intersection using bounding box intersection test
-				let bBox1 = new THREE.Box3().setFromObject(object1);
-				bBox1.max.z = 0;
-				bBox1.min.z = 0;
+                // Check for intersection using bounding box intersection test
+                let bBox1 = new THREE.Box3().setFromObject(object1);
+                bBox1.max.z = 0;
+                bBox1.min.z = 0;
 
-				object2.geometry.computeBoundingBox();
+                object2.geometry.computeBoundingBox();
 
-				let bBox2 = new THREE.Box3().setFromObject(object2);
-				bBox2.max.z = 0;
-				bBox2.min.z = 0;
+                let bBox2 = new THREE.Box3().setFromObject(object2);
+                bBox2.max.z = 0;
+                bBox2.min.z = 0;
 
-				const intersection = bBox1.intersectsBox(bBox2);
-				// const intersection = mesh1.geometry.boundingBox.intersectsBox(mesh2.geometry.boundingBox);
+                const intersection = bBox1.intersectsBox(bBox2);
+                // const intersection = mesh1.geometry.boundingBox.intersectsBox(mesh2.geometry.boundingBox);
 
-				if (intersection) { // The shape geometries intersect.
+                if (intersection) { // The shape geometries intersect.
 
-					//let lv_nspline = this.get_nspline_by_name(object2.name);
+                    //let lv_nspline = this.get_nspline_by_name(object2.name);
 
-					lv_result = {
-						min_x: bBox2.min.x,
-						min_y: bBox2.min.y,
-						max_x: bBox2.max.x,
-						max_y: bBox2.max.y,
-						object: object2
-						//nspline: lv_nspline
-					};
-				}
-				//else
-				//{ // The shape geometries do not intersect.
-				//	return false
-				//}
+                    lv_result = {
+                        min_x: bBox2.min.x,
+                        min_y: bBox2.min.y,
+                        max_x: bBox2.max.x,
+                        max_y: bBox2.max.y,
+                        object: object2
+                        //nspline: lv_nspline
+                    };
+                }
+                //else
+                //{ // The shape geometries do not intersect.
+                //	return false
+                //}
 
 
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error GetTwoShapeIntersect: ' + e.stack);
+                alert('error GetTwoShapeIntersect: ' + e.stack);
 
-			}
+            }
 
 
 
-			return lv_result;
+            return lv_result;
 
-		}
+        }
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.get_distance_bt_curves = function () {
+        //------------------------------------------------------------------------
+        Shapes.prototype.get_distance_bt_curves = function () {
 
-			////let lv_distance = this.shape_width * this.distance_between_curves_in_percent_of_width / 100;
-			////return lv_distance;
+            ////let lv_distance = this.shape_width * this.distance_between_curves_in_percent_of_width / 100;
+            ////return lv_distance;
 
-			return this.distance_between_curves;
-		}
+            return this.distance_between_curves;
+        }
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.get_nspline_by_name = function (pv_name) {
+        //------------------------------------------------------------------------
+        Shapes.prototype.get_nspline_by_name = function (pv_name) {
 
-			const lc_spline_name = "spline_";
+            const lc_spline_name = "spline_";
 
-			let lv_result = -1;
+            let lv_result = -1;
 
-			try {
+            try {
 
-				let lv_index = pv_name.indexOf(lc_spline_name);
+                let lv_index = pv_name.indexOf(lc_spline_name);
 
-				if (lv_index < 0) {
-					return lv_result;
-				}
-				lv_index = lv_index + pv_name.length - 1;
-				lv_result = pv_name.substr(lv_index);
+                if (lv_index < 0) {
+                    return lv_result;
+                }
+                lv_index = lv_index + pv_name.length - 1;
+                lv_result = pv_name.substr(lv_index);
 
 
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error get_nspline_by_name: ' + e.stack);
+                alert('error get_nspline_by_name: ' + e.stack);
 
-			}
+            }
 
-			return lv_result;
+            return lv_result;
 
-		}
+        }
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.get_splines_points = function () {
+        //------------------------------------------------------------------------
+        Shapes.prototype.get_splines_points = function () {
 
-			let lar_points = [];
+            let lar_points = [];
 
-			try {
+            try {
 
-				let lo_spline_group;
+                let lo_spline_group;
 
-				for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-					lo_spline_group = this.ar_splines[lv_i];
+                    lo_spline_group = this.ar_splines[lv_i];
 
-					for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
+                    for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
 
-						let lo_segment_group = lo_spline_group.children[lv_j];
+                        let lo_segment_group = lo_spline_group.children[lv_j];
 
-						if (lo_segment_group instanceof THREE.Group) {
+                        if (lo_segment_group instanceof THREE.Group) {
 
-							for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
+                            for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
 
-								if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
+                                if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
 
-									lar_points.push(lo_segment_group.children[lv_k]);
+                                    lar_points.push(lo_segment_group.children[lv_k]);
 
-								}
+                                }
 
-							}
-						}
+                            }
+                        }
 
-					}
+                    }
 
-				}
+                }
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error get_splines_points: ' + e.stack);
+                alert('error get_splines_points: ' + e.stack);
 
-			}
+            }
 
 
 
-			return lar_points;
+            return lar_points;
 
-		}
+        }
 
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.get_segments_points = function (po_spline_group) {
+        //------------------------------------------------------------------------
+        Shapes.prototype.get_segments_points = function (po_spline_group) {
 
-			let lar_segments_points = [];
+            let lar_segments_points = [];
 
-			try {
+            try {
 
-				let lo_segment_group;
+                let lo_segment_group;
 
-				for (let lv_i = 0; lv_i < po_spline_group.children.length; lv_i++) {
+                for (let lv_i = 0; lv_i < po_spline_group.children.length; lv_i++) {
 
-					let lo_segment_points = po_spline_group.children[lv_i];
+                    let lo_segment_points = po_spline_group.children[lv_i];
 
-					if (lo_segment_points instanceof THREE.Group) {
+                    if (lo_segment_points instanceof THREE.Group) {
 
-						let lar_segment_points = [];
+                        let lar_segment_points = [];
 
-						for (let lv_k = 0; lv_k < lo_segment_points.children.length; lv_k++) {
+                        for (let lv_k = 0; lv_k < lo_segment_points.children.length; lv_k++) {
 
-							if (lo_segment_points.children[lv_k] instanceof THREE.Mesh) {
+                            if (lo_segment_points.children[lv_k] instanceof THREE.Mesh) {
 
-								lar_segment_points.push(lo_segment_points.children[lv_k].position);
-							}
-						}
+                                lar_segment_points.push(lo_segment_points.children[lv_k].position);
+                            }
+                        }
 
-						lar_segments_points.push({
-							points: lar_segment_points,
-							parent: lo_segment_points
-						});
+                        lar_segments_points.push({
+                            points: lar_segment_points,
+                            parent: lo_segment_points
+                        });
 
 
-					}
-					else {
+                    }
+                    else {
 
-						continue;
-					}
+                        continue;
+                    }
 
-				}
+                }
 
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error get_segments_points: ' + e.stack);
+                alert('error get_segments_points: ' + e.stack);
 
-			}
+            }
 
-			return lar_segments_points;
+            return lar_segments_points;
 
-		}
+        }
 
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.adjust_segments_nodes_by_external_shape = function (po_spline_group, pv_spline_offset_x/*pv_delta_x*/, pv_height_koef_relative) {
+        //------------------------------------------------------------------------
+        Shapes.prototype.adjust_segments_nodes_by_external_shape = function (po_spline_group, pv_spline_offset_x/*pv_delta_x*/, pv_height_koef_relative) {
 
-			let lar_segments_points = [];//
+            let lar_segments_points = [];//
 
-			try {
+            try {
 
-				let lo_segment_group;
-				let lv_delta_x;
+                let lo_segment_group;
+                let lv_delta_x;
 
-				for (let lv_i = 0; lv_i < po_spline_group.children.length; lv_i++) {
+                for (let lv_i = 0; lv_i < po_spline_group.children.length; lv_i++) {
 
-					if (po_spline_group.children[lv_i] instanceof THREE.Group) {
+                    if (po_spline_group.children[lv_i] instanceof THREE.Group) {
 
-						let lo_segment_points = po_spline_group.children[lv_i];
+                        let lo_segment_points = po_spline_group.children[lv_i];
 
-						if (lo_segment_points instanceof THREE.Group) {
+                        if (lo_segment_points instanceof THREE.Group) {
 
-							let lar_segment_points = [];//
+                            let lar_segment_points = [];//
 
-							for (let lv_k = 0; lv_k < lo_segment_points.children.length; lv_k++) {
+                            for (let lv_k = 0; lv_k < lo_segment_points.children.length; lv_k++) {
 
-								if (lo_segment_points.children[lv_k] instanceof THREE.Mesh) {
+                                if (lo_segment_points.children[lv_k] instanceof THREE.Mesh) {
 
-									if (lv_k == 0) {
-										lv_delta_x = pv_spline_offset_x - lo_segment_points.children[lv_k].position.x;
-									}
+                                    if (lv_k == 0) {
+                                        lv_delta_x = pv_spline_offset_x - lo_segment_points.children[lv_k].position.x;
+                                    }
 
 
-									//lar_segment_points.push(lo_segment_points_group.children[lv_k].position);
+                                    //lar_segment_points.push(lo_segment_points_group.children[lv_k].position);
 
-									// двигаем всю кривую (сплайн)
-									lo_segment_points.children[lv_k].position.x = lo_segment_points.children[lv_k].position.x + lv_delta_x;
+                                    // двигаем всю кривую (сплайн)
+                                    lo_segment_points.children[lv_k].position.x = lo_segment_points.children[lv_k].position.x + lv_delta_x;
 
-									// растягиваем кривые по высоте
-									lo_segment_points.children[lv_k].position.y = lo_segment_points.children[lv_k].position.y * pv_height_koef_relative;
+                                    // растягиваем кривые по высоте
+                                    lo_segment_points.children[lv_k].position.y = lo_segment_points.children[lv_k].position.y * pv_height_koef_relative;
 
-									lar_segment_points.push(lo_segment_points.children[lv_k].position);
+                                    lar_segment_points.push(lo_segment_points.children[lv_k].position);
 
-								}
-							}
+                                }
+                            }
 
 
-							// Удаление предыдущих линий сегментов
-							let lar_lines = this.main.shapes.get_lines_in_group(lo_segment_points);//16062024
+                            // Удаление предыдущих линий сегментов
+                            let lar_lines = this.main.shapes.get_lines_in_group(lo_segment_points);//16062024
 
-							for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
-								this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
+                            for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
+                                this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
 
-								// Создание нового сегмента
-								//06082024 this.main.splines.draw_curve(lo_segment_points, lar_segment_points, cv_segment_name_prefix, false);
-								let lo_segment = this.main.splines.draw_curve(lo_segment_points, lar_segment_points, cv_segment_name_prefix, false);
+                                // Создание нового сегмента
+                                //06082024 this.main.splines.draw_curve(lo_segment_points, lar_segment_points, cv_segment_name_prefix, false);
+                                let lo_segment = this.main.splines.draw_curve(lo_segment_points, lar_segment_points, cv_segment_name_prefix, false);
 
-								if (this.clear_selected_segments_with_null_parents()) {
-									this.ar_selected_segments.push(lo_segment);
-								}
-							}
+                                if (this.clear_selected_segments_with_null_parents()) {
+                                    this.ar_selected_segments.push(lo_segment);
+                                }
+                            }
 
-							//lar_segments_points.push({
-							//	points: lar_segment_points,
-							//	parent: lo_segment_points
-							//});
+                            //lar_segments_points.push({
+                            //	points: lar_segment_points,
+                            //	parent: lo_segment_points
+                            //});
 
 
-						}
-						else {
+                        }
+                        else {
 
-							continue;
-						}
-					}
-				}
+                            continue;
+                        }
+                    }
+                }
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error get_segments_points: ' + e.stack);
+                alert('error get_segments_points: ' + e.stack);
 
-			}
+            }
 
-			//return lar_segments_points;
+            //return lar_segments_points;
 
-		}
+        }
 
 
 
@@ -2529,357 +2529,357 @@ export function Shapes(po_main, po_scene, po_params)
 
 
 
-		//15062024 }
+        //15062024 }
 
 
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.clear_selected_segments_with_null_parents = function () {
+        //------------------------------------------------------------------------
+        Shapes.prototype.clear_selected_segments_with_null_parents = function () {
 
-			let lv_result = false;
-			try {
+            let lv_result = false;
+            try {
 
-				for (let lv_i = this.ar_selected_segments.length - 1; lv_i >= 0; lv_i--) {
+                for (let lv_i = this.ar_selected_segments.length - 1; lv_i >= 0; lv_i--) {
 
-					if (this.ar_selected_segments[lv_i].parent === null) {
-						this.ar_selected_segments.splice(lv_i, 1);
-						lv_result = true;
-					}
-				}
+                    if (this.ar_selected_segments[lv_i].parent === null) {
+                        this.ar_selected_segments.splice(lv_i, 1);
+                        lv_result = true;
+                    }
+                }
 
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error clear_selected_segments_with_null_parents: ' + e.stack);
+                alert('error clear_selected_segments_with_null_parents: ' + e.stack);
 
-			}
+            }
 
-			return lv_result;
-		}
+            return lv_result;
+        }
 
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.redraw_segments = function (po_spline_group) {
+        //------------------------------------------------------------------------
+        Shapes.prototype.redraw_segments = function (po_spline_group) {
 
-			try {
+            try {
 
-				let lo_spline_group;
+                let lo_spline_group;
 
-				for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-					lo_spline_group = this.ar_splines[lv_i];
+                    lo_spline_group = this.ar_splines[lv_i];
 
-					// Если po_spline_group не задан, перерисовываем все сплайны
-					if (po_spline_group) {
-						if (lo_spline_group != po_spline_group) {
-							continue;
-						}
-					}
+                    // Если po_spline_group не задан, перерисовываем все сплайны
+                    if (po_spline_group) {
+                        if (lo_spline_group != po_spline_group) {
+                            continue;
+                        }
+                    }
 
 
-					let lar_segment_parents = [];
+                    let lar_segment_parents = [];
 
-					for (let lv_i = this.ar_selected_segments.length - 1; lv_i >= 0; lv_i--) {
+                    for (let lv_i = this.ar_selected_segments.length - 1; lv_i >= 0; lv_i--) {
 
-						if (this.ar_selected_segments[lv_i].parent) { 
+                        if (this.ar_selected_segments[lv_i].parent) {
 
-							if (this.ar_selected_segments[lv_i].parent.parent) { 
+                            if (this.ar_selected_segments[lv_i].parent.parent) {
 
-								if (this.ar_selected_segments[lv_i].parent.parent == lo_spline_group) {
+                                if (this.ar_selected_segments[lv_i].parent.parent == lo_spline_group) {
 
-									let lv_exist = false;
-									// Запоминание родительских групп удаляемых сегментов
-									for (let lv_j = 0; lv_j < lar_segment_parents.length; lv_j++) {
-										if (lar_segment_parents[lv_j] == this.ar_selected_segments[lv_i].parent) {
-											lv_exist = true;
-											break;
-										}
-									}
-									if (!lv_exist) {
-										// если ещё нет в массиве - вставляем
-										lar_segment_parents.push(this.ar_selected_segments[lv_i].parent);
-									}
+                                    let lv_exist = false;
+                                    // Запоминание родительских групп удаляемых сегментов
+                                    for (let lv_j = 0; lv_j < lar_segment_parents.length; lv_j++) {
+                                        if (lar_segment_parents[lv_j] == this.ar_selected_segments[lv_i].parent) {
+                                            lv_exist = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!lv_exist) {
+                                        // если ещё нет в массиве - вставляем
+                                        lar_segment_parents.push(this.ar_selected_segments[lv_i].parent);
+                                    }
 
-									this.ar_selected_segments.splice(lv_i, 1);
-								}
+                                    this.ar_selected_segments.splice(lv_i, 1);
+                                }
 
-							} //01072024
-							else // this.ar_selected_segments[lv_i].parent == null
-							{
-								this.main.common_func.removeObjectsWithChildren(this.ar_selected_segments[lv_i], true);   
-								this.ar_selected_segments.splice(lv_i, 1);
-							}
+                            } //01072024
+                            else // this.ar_selected_segments[lv_i].parent == null
+                            {
+                                this.main.common_func.removeObjectsWithChildren(this.ar_selected_segments[lv_i], true);
+                                this.ar_selected_segments.splice(lv_i, 1);
+                            }
 
 
-						} //01072024
-						else // this.ar_selected_segments[lv_i].parent == null
-						{
-							this.main.common_func.removeObjectsWithChildren(this.ar_selected_segments[lv_i], true);   
-							this.ar_selected_segments.splice(lv_i, 1);
-						}
+                        } //01072024
+                        else // this.ar_selected_segments[lv_i].parent == null
+                        {
+                            this.main.common_func.removeObjectsWithChildren(this.ar_selected_segments[lv_i], true);
+                            this.ar_selected_segments.splice(lv_i, 1);
+                        }
 
-					}
+                    }
 
 
-					// список узлов сегментов сплайна
-					let lar_segment_points = this.get_segments_points(lo_spline_group);
+                    // список узлов сегментов сплайна
+                    let lar_segment_points = this.get_segments_points(lo_spline_group);
 
-					for (let lv_j = 0; lv_j < lar_segment_points.length; lv_j++) {
+                    for (let lv_j = 0; lv_j < lar_segment_points.length; lv_j++) {
 
-						// Удаление предыдущих линий
-						let lar_lines = this.main.shapes.get_lines_in_group(lar_segment_points[lv_j].parent);
-						for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
-							this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
-						}
+                        // Удаление предыдущих линий
+                        let lar_lines = this.main.shapes.get_lines_in_group(lar_segment_points[lv_j].parent);
+                        for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
+                            this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
+                        }
 
-						// рисование новых линий
-						let lo_new_segment = this.main.splines.draw_curve(lar_segment_points[lv_j].parent, lar_segment_points[lv_j].points, cv_segment_name_prefix, false);//////////////
+                        // рисование новых линий
+                        let lo_new_segment = this.main.splines.draw_curve(lar_segment_points[lv_j].parent, lar_segment_points[lv_j].points, cv_segment_name_prefix, false);//////////////
 
-						// Если родительская группа совпадает, вставка сегмента в список выделенных
-						for (let lv_k = 0; lv_k < lar_segment_parents.length; lv_k++) {
-							if (lar_segment_parents[lv_k] == lar_segment_points[lv_j].parent) {
-								this.ar_selected_segments.push(lo_new_segment);
-							}
+                        // Если родительская группа совпадает, вставка сегмента в список выделенных
+                        for (let lv_k = 0; lv_k < lar_segment_parents.length; lv_k++) {
+                            if (lar_segment_parents[lv_k] == lar_segment_points[lv_j].parent) {
+                                this.ar_selected_segments.push(lo_new_segment);
+                            }
 
-						}
+                        }
 
-					}
+                    }
 
 
-					lar_segment_points = null;//30072024 leaks
-					lar_segment_parents = null;//30072024 leaks
-				}
+                    lar_segment_points = null;//30072024 leaks
+                    lar_segment_parents = null;//30072024 leaks
+                }
 
 
-				//30072024 {
-				lo_spline_group = null; //leaks
+                //30072024 {
+                lo_spline_group = null; //leaks
 
-				//30072024 }
+                //30072024 }
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error redraw_segments: ' + e.stack);
+                alert('error redraw_segments: ' + e.stack);
 
-			}
+            }
 
-		}
-		//------------------------------------------------------------------------
-		Shapes.prototype.get_spline_points = function (po_spline_group) {
+        }
+        //------------------------------------------------------------------------
+        Shapes.prototype.get_spline_points = function (po_spline_group) {
 
-			let lar_points = [];
+            let lar_points = [];
 
-			try {
+            try {
 
-				let lo_spline_group;
+                let lo_spline_group;
 
-				for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-					lo_spline_group = this.ar_splines[lv_i];
+                    lo_spline_group = this.ar_splines[lv_i];
 
-					if (lo_spline_group != po_spline_group) {
+                    if (lo_spline_group != po_spline_group) {
 
-						continue;
-					}
+                        continue;
+                    }
 
 
-					for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
+                    for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
 
-						let lo_segment_group = lo_spline_group.children[lv_j];
+                        let lo_segment_group = lo_spline_group.children[lv_j];
 
-						if (lo_segment_group instanceof THREE.Group) {
+                        if (lo_segment_group instanceof THREE.Group) {
 
-							for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
+                            for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
 
-								if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
+                                if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
 
-									//lo_segment_group.children[lv_k].visible = pv_visible;
+                                    //lo_segment_group.children[lv_k].visible = pv_visible;
 
-									lar_points.push(lo_segment_group.children[lv_k].position);
+                                    lar_points.push(lo_segment_group.children[lv_k].position);
 
-								}
+                                }
 
-							}
-						}
+                            }
+                        }
 
-					}
+                    }
 
-				}
+                }
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error get_spline_points: ' + e.stack);
+                alert('error get_spline_points: ' + e.stack);
 
-			}
+            }
 
-			return lar_points;
+            return lar_points;
 
-		}
+        }
 
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.set_spline_points = function (po_spline_group, par_points) {
+        //------------------------------------------------------------------------
+        Shapes.prototype.set_spline_points = function (po_spline_group, par_points) {
 
-			try {
+            try {
 
-				let lo_spline_group;
-				let lv_ipoint = 0;
+                let lo_spline_group;
+                let lv_ipoint = 0;
 
-				for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-					lo_spline_group = this.ar_splines[lv_i];
+                    lo_spline_group = this.ar_splines[lv_i];
 
-					if (lo_spline_group != po_spline_group) {
+                    if (lo_spline_group != po_spline_group) {
 
-						continue;
-					}
+                        continue;
+                    }
 
 
-					for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
+                    for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
 
-						let lo_segment_group = lo_spline_group.children[lv_j];
+                        let lo_segment_group = lo_spline_group.children[lv_j];
 
-						if (lo_segment_group instanceof THREE.Group) {
+                        if (lo_segment_group instanceof THREE.Group) {
 
-							for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
+                            for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
 
-								if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
+                                if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
 
-									lo_segment_group.children[lv_k].position.x = par_points[lv_ipoint].x;
-									lo_segment_group.children[lv_k].position.y = par_points[lv_ipoint].y;
-									lv_ipoint++;
-								}
+                                    lo_segment_group.children[lv_k].position.x = par_points[lv_ipoint].x;
+                                    lo_segment_group.children[lv_k].position.y = par_points[lv_ipoint].y;
+                                    lv_ipoint++;
+                                }
 
-							}
-						}
+                            }
+                        }
 
-					}
+                    }
 
-				}
+                }
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error get_spline_points: ' + e.stack);
+                alert('error get_spline_points: ' + e.stack);
 
-			}
+            }
 
-			return par_points;
+            return par_points;
 
-		}
+        }
 
-		//------------------------------------------------------------------------
-		Shapes.prototype.get_splines_points_for_model = function () {
+        //------------------------------------------------------------------------
+        Shapes.prototype.get_splines_points_for_model = function () {
 
-			let lar_splines_points = [];
+            let lar_splines_points = [];
 
-			try {
+            try {
 
-				let lo_spline_group;
+                let lo_spline_group;
 
-				let lar_spline_points = [];
+                let lar_spline_points = [];
 
-				for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-					lo_spline_group = this.ar_splines[lv_i];
+                    lo_spline_group = this.ar_splines[lv_i];
 
-					//3007204 let lar_spline_points = new Array();
-					let lar_spline_points = [];// 30072024
+                    //3007204 let lar_spline_points = new Array();
+                    let lar_spline_points = [];// 30072024
 
-					for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
+                    for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
 
-						let lo_segment_group = lo_spline_group.children[lv_j];
+                        let lo_segment_group = lo_spline_group.children[lv_j];
 
-						//lar_spline_points.length = 0;//052024
+                        //lar_spline_points.length = 0;//052024
 
-						if (lo_segment_group instanceof THREE.Group) {
+                        if (lo_segment_group instanceof THREE.Group) {
 
-							for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
+                            for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
 
-								if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
+                                if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
 
-									lar_spline_points.push(
-										[lo_segment_group.children[lv_k].position.x, lo_segment_group.children[lv_k].position.y]);
+                                    lar_spline_points.push(
+                                        [lo_segment_group.children[lv_k].position.x, lo_segment_group.children[lv_k].position.y]);
 
-								}
+                                }
 
-							}
-						}
+                            }
+                        }
 
-						//lar_splines_points.push(lar_spline_points);//23052024
+                        //lar_splines_points.push(lar_spline_points);//23052024
 
-					}
+                    }
 
-					lar_splines_points.push(lar_spline_points);
+                    lar_splines_points.push(lar_spline_points);
 
-				}
+                }
 
-			}
+            }
 
-			catch (e) {
+            catch (e) {
 
-				alert('error get_spline_points: ' + e.stack);
+                alert('error get_spline_points: ' + e.stack);
 
-			}
+            }
 
 
 
-			return lar_splines_points;
+            return lar_splines_points;
 
-		}
+        }
 
 
-		//-----------------------------------------------------------------------------------
-		// Упорядочивание сплайнов слева направо
-		Shapes.prototype.SortSplinesOrderFromLeftToRight = function () {
+        //-----------------------------------------------------------------------------------
+        // Упорядочивание сплайнов слева направо
+        Shapes.prototype.SortSplinesOrderFromLeftToRight = function () {
 
-			let lar_sorted = [];
+            let lar_sorted = [];
 
-			try {
-				let boundingBox;
-				let lar_for_sort = [];
+            try {
+                let boundingBox;
+                let lar_for_sort = [];
 
-				//let lo_sort_obj = {}
+                //let lo_sort_obj = {}
 
-				for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-					boundingBox = new THREE.Box3().setFromObject(this.ar_splines[lv_i]);
+                    boundingBox = new THREE.Box3().setFromObject(this.ar_splines[lv_i]);
 
-					// сплайн - последний дочерний член группы this.ar_splines[lv_i]
-					let lv_index = this.ar_splines[lv_i].children.length - 1;
+                    // сплайн - последний дочерний член группы this.ar_splines[lv_i]
+                    let lv_index = this.ar_splines[lv_i].children.length - 1;
 
-					let lo_spline = this.ar_splines[lv_i].children[lv_index];
+                    let lo_spline = this.ar_splines[lv_i].children[lv_index];
 
 
-					lar_for_sort.push({ x: boundingBox.min.x, spline: lo_spline }); 
+                    lar_for_sort.push({ x: boundingBox.min.x, spline: lo_spline });
 
-				}
+                }
 
-				lar_sorted = this.main.common_func.sortByProperty(lar_for_sort, "x");
-			}
+                lar_sorted = this.main.common_func.sortByProperty(lar_for_sort, "x");
+            }
 
-			catch (e) {
-				alert('error SortSplinesOrderFromLeftToRight: ' + e.stack);
-			}
+            catch (e) {
+                alert('error SortSplinesOrderFromLeftToRight: ' + e.stack);
+            }
 
-			return lar_sorted;
-		}
-		//-----------------------------------------------------------------------------------
+            return lar_sorted;
+        }
+        //-----------------------------------------------------------------------------------
 
 
 
 
 
-	//====================================================================
-	}  // if (typeof this.redraw_shapes !== "function")
+        //====================================================================
+    }  // if (typeof this.redraw_shapes !== "function")
 
-	//====================================================================
+    //====================================================================
 
 
 }
