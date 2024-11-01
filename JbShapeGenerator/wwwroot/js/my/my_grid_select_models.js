@@ -156,7 +156,7 @@ export function GridSelectModels(pv_prefix) {
 
 
                 this.$div_grid.dialog({
-                    title: '                                  List of models', 
+                    title: '                                  List of models',
                     autoOpen: false,
                     modal: true,
                     resizable: false,
@@ -320,11 +320,21 @@ export function GridSelectModels(pv_prefix) {
 
 
             let lv_return = pv_cellvalue;
-            let lv_str = po_rowObject[1];
-            lv_str = lv_str.replace("wwwroot/", "");
 
-            // дату добавляем для исключения кеширования
-            lv_return = '<div class="wrapper_img for_cell"> <img  src="' + lv_str + Constants.file_model_graph + '?date=' + new Date() + '" /></div>'; //class="cell_img"
+            try {
+                let lv_str = po_rowObject[1];
+                lv_str = lv_str.replace("wwwroot/", "");
+
+                // дату добавляем для исключения кеширования
+                lv_return = '<div class="wrapper_img for_cell"> <img  src="' + lv_str + Constants.file_model_graph + '?date=' + new Date() + '" /></div>'; //class="cell_img"
+
+            }
+
+            catch (e) {
+
+                alert('error imageformatter: ' + e.stack);
+
+            }
 
             return lv_return;
 
@@ -336,19 +346,28 @@ export function GridSelectModels(pv_prefix) {
         GridSelectModels.prototype.is_shared_file_formatter = function (pv_cellvalue, ps_options, po_rowObject) {
 
             let lv_return = pv_cellvalue;
+            try {
+                if (pv_cellvalue == "") {
 
-            if (pv_cellvalue == "") {
+                    return "";
+                }
 
-                return "";
+                if (pv_cellvalue == Wide_model_types.common) {
+                    lv_return = '<i class= "bi-share" title = "Shared model" />';
+                };
+
+                if (pv_cellvalue == Wide_model_types.user) {
+                    lv_return = '<i class="bi-person-fill" title="Private model" />';
+                };
+
+
             }
 
-            if (pv_cellvalue == Wide_model_types.common) {
-                lv_return = '<i class= "bi-share" title = "Shared model" />';
-            };
+            catch (e) {
 
-            if (pv_cellvalue == Wide_model_types.user) {
-                lv_return = '<i class="bi-person-fill" title="Private model" />';
-            };
+                alert('error is_shared_file_formatter: ' + e.stack);
+
+            }
 
             return lv_return;
 
@@ -358,38 +377,57 @@ export function GridSelectModels(pv_prefix) {
 
             //var grid = $("#id_GridSelectBlockSettings");
 
-            let rowKey = go_grid.jqGrid('getGridParam', "selrow");
+            try {
 
-            if (rowKey) {
+                let rowKey = go_grid.jqGrid('getGridParam', "selrow");
 
-                go_this.do_row_choice(rowKey);
+                if (rowKey) {
+
+                    go_this.do_row_choice(rowKey);
+
+                }
+                else {
+                    return;
+                }
 
             }
-            else {
-                //alert("No rows are selected");
-                return;
+
+            catch (e) {
+
+                alert('error OndblClickRow: ' + e.stack);
+
             }
+
         }
 
         //------------------------------------------------------------------------------------------
         GridSelectModels.prototype.do_row_choice = function (pv_rowid) {
 
             let lv_ar;
-            lv_ar = this.$grid.getRowData(pv_rowid);
+
+            try {
+
+                lv_ar = this.$grid.getRowData(pv_rowid);
 
 
-            let lv_pathFile = lv_ar["path_file_wo_ext"];
+                let lv_pathFile = lv_ar["path_file_wo_ext"];
 
-            if (typeof (lv_pathFile) == "undefined" || lv_pathFile == "" || lv_pathFile == null) {
-                return;
+                if (typeof (lv_pathFile) == "undefined" || lv_pathFile == "" || lv_pathFile == null) {
+                    return;
+                }
+
+
+                //29102024 lv_pathFile = lv_pathFile + Constants.file_model_prev;
+                this.read_model_from_server(lv_pathFile);
+
+                this.$div_grid.dialog("close");
             }
 
+            catch (e) {
 
-            //29102024 lv_pathFile = lv_pathFile + Constants.file_model_prev;
-            this.read_model_from_server(lv_pathFile);
+                alert('error do_row_choice: ' + e.stack);
 
-            this.$div_grid.dialog("close");
-
+            }
         }
 
         //------------------------------------------------------------------------------------------
@@ -415,7 +453,7 @@ export function GridSelectModels(pv_prefix) {
 
                 catch (e) {
 
-                    alert('error get_read model_from_server: ' + e.stack);
+                    alert('error get_read_model_from_server: ' + e.stack);
 
                 }
 
@@ -464,14 +502,13 @@ export function GridSelectModels(pv_prefix) {
 
 
                 const loader = new STLLoader();
-                //const lo_geometry = loader.parse(po_data);
                 const lo_geometry = loader.parse(lo_data.prev_model);
 
                 // Задержка после парсинга ?
                 setTimeout(function () {
 
                     let lo_active_side = get_active_side_shape_generator();
-                    lo_active_side.on_load_model(lo_geometry);  
+                    lo_active_side.on_load_model(lo_geometry);
                     lo_active_side.render_mod();
                     lo_active_side.draw_shape_by_sides_data(lo_data.sides_data);
 

@@ -45,8 +45,20 @@ namespace jb_api_shg.AppCode
     }
 
 
+    public class typ_parameters
+    {
+        public bool is_space_adjust { get; set; }
+        public bool is_curve_width_adjust { get; set; }
+        public decimal distance_bt_curves { get; set; }
+        public decimal distance_bt_curves_in_percent { get; set; }
+        public decimal shape_height { get; set; }
+        public decimal shape_width { get; set; }
+    }
+
     public class typ_side_data
     {
+        public typ_parameters parameters { get; set; }
+
         public int numCurves { get; set; }
 
         public int idMaterial { get; set; }

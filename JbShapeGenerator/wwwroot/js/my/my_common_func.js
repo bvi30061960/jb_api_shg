@@ -295,44 +295,53 @@ export function CommonFunc() {
         //------------------------------------------------------------------------
         CommonFunc.prototype.save_model = function (po_sides_data, po_scene_mod) {
 
-            let lo_active_side = get_active_side_shape_generator();
 
-            ///////////////////23102024 let lv_url = "/Index?handler=SaveModel";
+            try {
 
-            let lo_exporter = new STLExporter();
-            let lv_str_scene_mod_data = lo_exporter.parse(po_scene_mod);
+                let lo_active_side = get_active_side_shape_generator();
 
+                ///////////////////23102024 let lv_url = "/Index?handler=SaveModel";
 
-            ////lv_str_scene_mod_data = lv_str_scene_mod_data.replace(/\n/g, '')  // удаление переноса строк
-            ////lv_str_scene_mod_data = lv_str_scene_mod_data.replace(/\t/g, '')  // удаление переноса строк
-
-            ////////////this.saveString(lv_str_scene_mod_data, 'my_model.stl');
-
-            let lv_str_sides_data = JSON.stringify(po_sides_data);
-            //this.send(lv_url, lv_str_sides_data);
+                let lo_exporter = new STLExporter();
+                let lv_str_scene_mod_data = lo_exporter.parse(po_scene_mod);
 
 
-            let lo_united_model_data = new typ_united_model_data();
+                ////lv_str_scene_mod_data = lv_str_scene_mod_data.replace(/\n/g, '')  // удаление переноса строк
+                ////lv_str_scene_mod_data = lv_str_scene_mod_data.replace(/\t/g, '')  // удаление переноса строк
 
-            lo_united_model_data.model_name = $("#id_model_name")[0].value;
-            lo_united_model_data.sides_data = lv_str_sides_data;
-            lo_united_model_data.prev_model = lv_str_scene_mod_data;
+                ////////////this.saveString(lv_str_scene_mod_data, 'my_model.stl');
 
-            //let lo_element = $(lo_active_side.id_prefix + "id_div_visual_model")[0];
-
-            let lo_element1 = document.querySelector(lo_active_side.id_prefix + "id_div_visual_model");
-            //let lo_element = $(lo_active_side.id_prefix + "id_div_visual_model");//24102024
-
-            let lo_element2 = lo_element1.children[2];
-            //lo_united_model_data.screenshot = this.screenshot(lo_element);
-            ////this.screenshot(lo_element, lo_united_model_data);
-            this.screenshot(lo_element2, lo_united_model_data);
+                let lv_str_sides_data = JSON.stringify(po_sides_data);
+                //this.send(lv_url, lv_str_sides_data);
 
 
-            //let lv_str_united_model_data = JSON.stringify(lo_united_model_data);
-            //this.send(lv_url, lv_str_united_model_data);
+                let lo_united_model_data = new typ_united_model_data();
+
+                lo_united_model_data.model_name = $("#id_model_name")[0].value;
+                lo_united_model_data.sides_data = lv_str_sides_data;
+                lo_united_model_data.prev_model = lv_str_scene_mod_data;
+
+                //let lo_element = $(lo_active_side.id_prefix + "id_div_visual_model")[0];
+
+                let lo_element1 = document.querySelector(lo_active_side.id_prefix + "id_div_visual_model");
+                //let lo_element = $(lo_active_side.id_prefix + "id_div_visual_model");//24102024
+
+                let lo_element2 = lo_element1.children[2];
+                //lo_united_model_data.screenshot = this.screenshot(lo_element);
+                ////this.screenshot(lo_element, lo_united_model_data);
+                this.screenshot(lo_element2, lo_united_model_data);
 
 
+                //let lv_str_united_model_data = JSON.stringify(lo_united_model_data);
+                //this.send(lv_url, lv_str_united_model_data);
+
+            }
+
+            catch (e) {
+
+                alert('error save_model: ' + e.stack);
+
+            }
         }
 
 

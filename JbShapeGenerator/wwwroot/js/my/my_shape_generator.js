@@ -21,7 +21,8 @@ import {
     typ_side_data,
     typ_mesh_colors,
     type_rotate_mode,
-    typ_sides_data //29102024
+    typ_sides_data,
+    typ_parameters
 
 } from "./my_common_types.js";
 
@@ -3337,13 +3338,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.read_side_model_data = function () {
 
-
             let ls_parameters = this.read_side_parameters();
-
 
             let lar_side_model_data = this.shapes.get_splines_points_for_model();
 
             return {
+                parameters: ls_parameters,
                 numCurves: lar_side_model_data.length,
                 idMaterial: 0,
                 idSize: 0,
@@ -3370,9 +3370,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             ls_parameters.is_space_adjust = $(this.id_prefix + "id_chb_space_adjust")[0].checked;
             ls_parameters.is_curve_width_adjust = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked;
 
-            //this.distance_bt_curves = 0;
-            //this.shape_height = 0;
-            //this.shape_width = 0;
+            ls_parameters.distance_bt_curves = this.params.distance_bt_curves;
+            ls_parameters.distance_bt_curves_in_percent = this.params.distance_between_curves_in_percent_of_width;
+            ls_parameters.shape_height = this.params.shape_height;
+            ls_parameters.shape_width = this.params.shape_width;
 
 
             return ls_parameters;

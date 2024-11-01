@@ -55,8 +55,8 @@ export function typ_color_data() {
 export function typ_parameters() {
     this.is_space_adjust = false;
     this.is_curve_width_adjust = false;
-
     this.distance_bt_curves = 0;
+    this.distance_bt_curves_in_percent = 0;
     this.shape_height = 0;
     this.shape_width = 0;
 }

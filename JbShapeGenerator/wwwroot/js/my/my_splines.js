@@ -21,7 +21,7 @@ import { CommonFunc } from './my_common_func.js';
 
 // Class Segment
 
-//11062024 const ARC_SEGMENTS = 400;
+const gc_ARC_SEGMENTS = 400;//31102024 
 
 //const parent.nsegments = 3;
 
@@ -80,15 +80,15 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 
 		//----------------------------------------------------------
 
-		Splines.prototype.create_spline = function (po_parent, pv_spline_offset_x, ps_segment_transform_data/*, pv_height_koef*/)
+		Splines.prototype.create_spline = function (po_parent, pv_spline_offset_x, ps_segment_transform_data /*, pv_height_koef*/ )
 		{
 
-			var ARC_SEGMENTS = 400;//11062024
+			//31102024 var ARC_SEGMENTS = 400;//11062024
 
 			try {
 				const lo_spline_geometry = new THREE.BufferGeometry();
 				lo_spline_geometry.setAttribute('position',
-					new THREE.BufferAttribute(new Float32Array(ARC_SEGMENTS * 2), 2));
+					new THREE.BufferAttribute(new Float32Array(gc_ARC_SEGMENTS * 2), 2));
 
 				let lo_segment_beg_point = new THREE.Vector2(pv_spline_offset_x, 0);
 
@@ -235,6 +235,89 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 
 
 		}
+
+
+		//----------------------------------------------------------
+
+		Splines.prototype.create_spline_by_data = function (po_parent, pv_curr_spline_number, /*, pv_spline_offset_x, ps_segment_transform_data */ /*pv_is_use_data,*/ po_side_data) {
+
+			//31102024 var ARC_SEGMENTS = 400;
+
+			try {
+				const lo_spline_geometry = new THREE.BufferGeometry();
+				lo_spline_geometry.setAttribute('position',
+					new THREE.BufferAttribute(new Float32Array(gc_ARC_SEGMENTS * 2), 2));
+
+				let lo_segment_beg_point = new THREE.Vector2(pv_spline_offset_x, 0);
+
+				let lo_spline_group = new THREE.Group();
+				lo_spline_group.name = this.main.common_func.get_object_name(cv_spline_group_name_prefix, lo_spline_group);
+
+				let lo_segment_data;
+				let lar_spline_points = [];
+				for (let lv_i = 0; lv_i < this.main.params.spline_amount_segments; lv_i++) {
+
+					let lo_segment_group = new THREE.Group();
+					lo_segment_group.name = this.main.common_func.get_object_name(cv_segment_group_name_prefix, lo_segment_group);
+
+					let lv_segment_id = this.main.common_func.get_guid();
+
+					let lv_is_firs_segment;
+					if (lv_i == 0) {
+						lv_is_firs_segment = true;
+					}
+					else {
+						lv_is_firs_segment = false;
+					}
+
+					let lv_is_last_segment;
+					if (lv_i == this.main.params.spline_amount_segments - 1) {
+						lv_is_last_segment = true;
+					}
+					else {
+						lv_is_last_segment = false;
+					}
+
+
+					lo_segment_data = this.main.segments.create_segment(
+						lo_segment_group,
+						this.main.segment_transform_data,
+						lv_segment_id,// номер сегмента
+						lo_segment_beg_point,
+						lv_is_firs_segment, // признак первого сегмента
+						lv_is_last_segment  // признак последнего сегмента
+						/*pv_height_koef*/
+					);
+
+					lo_segment_beg_point = lo_segment_data.segment_beg_point;
+
+
+
+					this.draw_curve(lo_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);//25042022
+
+
+					lar_spline_points.push(...lo_segment_data.points);
+					lo_spline_group.add(lo_segment_group);
+					//po_parent.add(lo_segment_group);//30042024
+
+				}
+
+				this.draw_curve(lo_spline_group, lar_spline_points, cv_spline_name_prefix, true);
+
+				po_parent.add(lo_spline_group);
+
+
+			}
+
+			catch (e) {
+
+				alert('error create_spline_by_data: ' + e.stack);
+
+			}
+
+
+		}
+
 		//------------------------------------------------------------------------
 		Splines.prototype.draw_curve = function (po_parent_group, par_points,pv_curve_name_prefix, pv_visible) {
 
@@ -259,7 +342,7 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 			//11062024 {
 			//const ARC_SEGMENTS = 400;
 			//const point = new THREE.Vector2();
-			var ARC_SEGMENTS = 400;
+			//31102024 var ARC_SEGMENTS = 400;
 			var point = new THREE.Vector2();
 			//11062024 }
 
@@ -276,9 +359,9 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 
 				let lv_j = 0;
 
-				for (let i = 0; i < ARC_SEGMENTS; i++) {
+				for (let i = 0; i < gc_ARC_SEGMENTS; i++) {
 
-					const t = i / (ARC_SEGMENTS - 1);
+					const t = i / (gc_ARC_SEGMENTS - 1);
 					po_spline.getPoint(t, point);
 					//po_spline.catmullrom.getPoint(t, point);
 					//spline.QuadraticBezier.getPoint(t, point);//08022024
@@ -294,7 +377,7 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 
 
 				// Заполнеие последних элементов массива значением последней точки
-				for (let i = lv_j; i < ARC_SEGMENTS; i++) {
+				for (let i = lv_j; i < gc_ARC_SEGMENTS; i++) {
 					position.setXYZ(i, point.x, point.y, 0);
 				}
 
@@ -320,7 +403,7 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 			//11062024 {
 			//const ARC_SEGMENTS = 400;
 			//const point = new THREE.Vector2();
-			var ARC_SEGMENTS = 400;
+			//31102024 var ARC_SEGMENTS = 400;
 			var point = new THREE.Vector2();
 			//11062024 }
 
@@ -334,9 +417,9 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 
 				let lv_j = 0;
 
-				for (let i = 0; i < ARC_SEGMENTS; i++) {
+				for (let i = 0; i < gc_ARC_SEGMENTS; i++) {
 
-					const t = i / (ARC_SEGMENTS - 1);
+					const t = i / (gc_ARC_SEGMENTS - 1);
 					po_object.getPoint(t, point);
 					//po_spline.catmullrom.getPoint(t, point);
 					//spline.QuadraticBezier.getPoint(t, point);//08022024
@@ -352,7 +435,7 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 
 
 				// Заполнеие последних элементов массива значением последней точки
-				for (let i = lv_j; i < ARC_SEGMENTS; i++) {
+				for (let i = lv_j; i < gc_ARC_SEGMENTS; i++) {
 					position.setXYZ(i, point.x, point.y, 0);
 				}
 

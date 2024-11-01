@@ -66,14 +66,17 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
     if (pv_is_use_data) {
 
         po_params.shape_amount_curves = po_side_data.numCurves;
-        this.shape_amount_curves = po_params.shape_amount_curves;
+        //this.shape_amount_curves = po_params.shape_amount_curves;
 
         po_params.shape_width = po_side_data.M_Width;
-        this.shape_width = po_params.shape_width;
+        //this.shape_width = po_params.shape_width;
 
         po_params.shape_height = po_side_data.M_Height;
-        this.shape_height = po_params.shape_height;
+        //this.shape_height = po_params.shape_height;
 
+        po_params.ajust_shape_by_curves = po_side_data.parameters.is_space_adjust;
+        po_params.distance_bt_curves = po_side_data.parameters.distance_bt_curves;
+        po_params.distance_between_curves_in_percent_of_width = po_side_data.parameters.distance_bt_curves_in_percent;
     }
     else {
 
@@ -95,7 +98,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
     this.shape_amount_curves = po_params.shape_amount_curves;
-    this.spline_amount_segments = po_params.spline_amount_segments;
+    //this.spline_amount_segments = po_params.spline_amount_segments;
 
     this.shape_width = po_params.shape_width;
     this.shape_height = po_params.shape_height;
@@ -105,6 +108,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
     this.distance_between_curves_in_percent_of_width = po_params.distance_between_curves_in_percent_of_width;
     this.distance_between_curves = po_params.distance_bt_curves;
+
+
+
 
 
 
@@ -153,24 +159,36 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             try {
 
+                let lo_shape_splines_group = new THREE.Group();
+                lo_shape_splines_group.name = this.main_curves_group_prefix;
+
+
                 if (!pv_is_use_data) {
                     this.segment_gabarits = this.main.segment_gabarits;
                     this.segment_transform_data = this.main.segment_transform_data;
                     lv_spline_distance = this.segment_transform_data.distance_bt_x;
                 }
 
-                let lo_shape_splines_group = new THREE.Group();
-                lo_shape_splines_group.name = this.main_curves_group_prefix;
+                //let lo_shape_splines_group = new THREE.Group();
+                //lo_shape_splines_group.name = this.main_curves_group_prefix;
 
 
                 for (let lv_i = 0; lv_i < this.shape_amount_curves; lv_i++) {
 
-                    let lv_spline_offset_x;
+                    if (pv_is_use_data) {
 
-                    lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
-                        + lv_spline_distance * lv_i;
+                        this.main.splines.create_spline_by_data(lo_shape_splines_group, lv_i, /*lv_spline_offset_x, this.segment_transform_data,*/ /*pv_is_use_data, */ po_side_data);
 
-                    this.main.splines.create_spline(lo_shape_splines_group, lv_spline_offset_x, this.segment_transform_data);
+                    }
+                    else {
+                        let lv_spline_offset_x;
+
+                        lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
+                            + lv_spline_distance * lv_i;
+
+                        this.main.splines.create_spline(lo_shape_splines_group, lv_spline_offset_x, this.segment_transform_data);
+
+                    }
 
                 }
 
