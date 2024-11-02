@@ -64,7 +64,6 @@ export function typ_parameters() {
 export function typ_side_data() {
 
     this.parameters = new typ_parameters();
-
     this.numCurves = 0;
     this.idMaterial = 0;
     this.idSize = 0;
@@ -76,8 +75,9 @@ export function typ_side_data() {
     this.M_Length = 0.0;
     this.M_Price_rub = 0.0;
     this.Part_gap = 0;
-    this.CurveColors = new Array();
-    this.PointsCurves = new Array();
+    this.CurveColors = []; //01112024  new Array();
+    this.Segments_beg_points_numbers = []; //01112024  new Array();
+    this.PointsCurves = []; // new Array();
 }
 
 //29102024v {

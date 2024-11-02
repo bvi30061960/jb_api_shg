@@ -3338,27 +3338,57 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.read_side_model_data = function () {
 
+            let lo_side_data = new typ_side_data();
+
+
             let ls_parameters = this.read_side_parameters();
 
-            let lar_side_model_data = this.shapes.get_splines_points_for_model();
+            let lo_splines_points_data = this.shapes.get_splines_points_for_model();
 
-            return {
-                parameters: ls_parameters,
-                numCurves: lar_side_model_data.length,
-                idMaterial: 0,
-                idSize: 0,
-                Lockedit: false,
-                Fl_manual_parameters: false,
-                M_Material: 0,
-                M_Width: this.params.shape_width,
-                M_Height: this.params.shape_width,
-                M_Length: this.params.shape_height,
-                M_Price_rub: 0.0,
-                Part_gap: 2,
-                CurveColors: [],
-                PointsCurves: lar_side_model_data
-            }
 
+            lo_side_data.parameters = ls_parameters;
+            lo_side_data.numCurves = lo_splines_points_data.PointsCurves.length;
+            lo_side_data.idMaterial = 0;
+            lo_side_data.idSize = 0;
+            lo_side_data.Lockedit = false;
+            lo_side_data.Fl_manual_parameters = false;
+            lo_side_data.M_Material = 0;
+            lo_side_data.M_Width = this.params.shape_width;
+            lo_side_data.M_Height = this.params.shape_width;
+            lo_side_data.M_Length = this.params.shape_height;
+            lo_side_data.M_Price_rub = 0.0;
+            lo_side_data.Part_gap = 2;
+            lo_side_data.CurveColors = []; 
+            lo_side_data.Segments_beg_points_numbers = lo_splines_points_data.Segments_beg_points_numbers;
+            lo_side_data.PointsCurves = lo_splines_points_data.PointsCurves;
+
+
+
+
+
+
+
+            //return {
+            //    parameters: ls_parameters,
+            //    numCurves: lar_splines_points.length,
+            //    idMaterial: 0,
+            //    idSize: 0,
+            //    Lockedit: false,
+            //    Fl_manual_parameters: false,
+            //    M_Material: 0,
+            //    M_Width: this.params.shape_width,
+            //    M_Height: this.params.shape_width,
+            //    M_Length: this.params.shape_height,
+            //    M_Price_rub: 0.0,
+            //    Part_gap: 2,
+            //    CurveColors: [],
+            //    Segments_beg_points_numbers: lo_splines_points_data.Segments_beg_points_numbers,
+            //    PointsCurves: lo_splines_points_data.PointsCurves,
+
+            //}
+
+
+            return lo_side_data;
         }
 
 
@@ -3415,13 +3445,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             go_up_side_shape_generator.render();
 
 
+            //////////////////////this.clear_shape_objects(go_lateral_side_shape_generator);
+            //////////////////////this.draw_side_shape_by_data(/*go_lateral_side_shape_generator,*/ sides_data.data2);
 
-
-
-            this.clear_shape_objects(go_lateral_side_shape_generator);
-            this.draw_side_shape_by_data(/*go_lateral_side_shape_generator,*/ sides_data.data2);
-
-            go_lateral_side_shape_generator.render();
+            //////////////////////go_lateral_side_shape_generator.render();
 
         }
 

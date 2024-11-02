@@ -162,11 +162,16 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 let lo_shape_splines_group = new THREE.Group();
                 lo_shape_splines_group.name = this.main_curves_group_prefix;
 
+                let lv_shape_amount_curves = 0;
 
-                if (!pv_is_use_data) {
+                if (pv_is_use_data) {
+                    lv_shape_amount_curves = po_side_data.numCurves;
+                }
+                else {
                     this.segment_gabarits = this.main.segment_gabarits;
                     this.segment_transform_data = this.main.segment_transform_data;
                     lv_spline_distance = this.segment_transform_data.distance_bt_x;
+                    lv_shape_amount_curves = this.shape_amount_curves;
                 }
 
                 //let lo_shape_splines_group = new THREE.Group();
@@ -2797,27 +2802,35 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             let lar_splines_points = [];
 
+
+            let lar_segments_beg_points_numbers;//01112024
+            let lar_segment_beg_points_number;//01112024 
+
+
             try {
 
                 let lo_spline_group;
 
                 let lar_spline_points = [];
 
+                lar_segments_beg_points_numbers = [];//01112024
+
                 for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
                     lo_spline_group = this.ar_splines[lv_i];
 
-                    //3007204 let lar_spline_points = new Array();
-                    let lar_spline_points = [];// 30072024
+                    let lar_spline_points = [];
+                    //lar_segments_beg_points_numbers = [];//01112024
+
+                    lar_segment_beg_points_number = [];//01112024 
 
                     for (let lv_j = 0; lv_j < lo_spline_group.children.length; lv_j++) {
 
                         let lo_segment_group = lo_spline_group.children[lv_j];
 
-                        //lar_spline_points.length = 0;//052024
-
                         if (lo_segment_group instanceof THREE.Group) {
 
+                            //lar_segment_beg_points_number = [];//01112024 
                             for (let lv_k = 0; lv_k < lo_segment_group.children.length; lv_k++) {
 
                                 if (lo_segment_group.children[lv_k] instanceof THREE.Mesh) {
@@ -2825,14 +2838,22 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                     lar_spline_points.push(
                                         [lo_segment_group.children[lv_k].position.x, lo_segment_group.children[lv_k].position.y]);
 
+                                    if (lv_k == 0) // первый узел сегмента
+                                    {
+                                        lar_segment_beg_points_number.push(lar_spline_points.length - 1);
+
+                                    }
+
                                 }
 
                             }
+
+                            //lar_segments_beg_points_numbers.push(lar_segment_beg_points_number);
                         }
 
-                        //lar_splines_points.push(lar_spline_points);//23052024
-
                     }
+
+                    lar_segments_beg_points_numbers.push(lar_segment_beg_points_number);
 
                     lar_splines_points.push(lar_spline_points);
 
@@ -2848,8 +2869,17 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
-            return lar_splines_points;
+            //01112024 {
 
+            //return lar_splines_points;
+
+            return {
+                Segments_beg_points_numbers: lar_segments_beg_points_numbers,
+                PointsCurves: lar_splines_points
+
+            }
+
+            //01112024 }
         }
 
 

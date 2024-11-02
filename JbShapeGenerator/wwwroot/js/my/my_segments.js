@@ -235,6 +235,105 @@ export function Segments(
 
 
 
+		//----------------------------------------------------------
+		Segments.prototype.create_segment_by_data = function (
+			po_parent,
+			po_side_data,
+			pv_curr_spline_number,
+			/*po_transform_data,*/
+			pv_segment_id,
+			po_beg_point,
+			pv_is_first_segment, // признак первого сегмента
+			pv_is_last_segment, // признак последнего сегмента
+			pv_beg_segment_node_numb,
+			pv_end_segment_node_numb
+
+		) {
+
+			let lo_segment_beg_point;
+			let lar_points = [];
+
+			try {
+
+				let lv_k_beg;
+
+				if (pv_is_first_segment) {
+					//lv_k_beg = 0;
+					lv_k_beg = pv_beg_segment_node_numb;
+
+				}
+				else {
+					//lv_k_beg = 1;
+					lv_k_beg = pv_beg_segment_node_numb + 1;
+				}
+
+				//01112024 let lv_k_end = this.ar_initial_segment_points.length;
+				let lv_k_end = pv_end_segment_node_numb;
+
+				for (let lv_k = lv_k_beg; lv_k < lv_k_end; lv_k++) { //22042024
+
+					let lo_node; // = new THREE.Vector2();
+
+					//01112024 if ((pv_is_first_segment == true && lv_k == 0) || (pv_is_last_segment == true && lv_k == this.ar_initial_segment_points.length - 1)) {
+					if ((pv_is_first_segment == true && lv_k == 0) || (pv_is_last_segment == true && lv_k == lv_k_end - 1)) {
+						lo_node = new THREE.Mesh(this.square_geometry, this.material);
+					}
+					else {
+						lo_node = new THREE.Mesh(this.circle_geometry, this.material);
+					}
+
+					//lo_node.position.x = this.ar_initial_segment_points[lv_k].x * po_transform_data.kx + po_beg_point.x;
+					//lo_node.position.y = this.ar_initial_segment_points[lv_k].y * po_transform_data.ky + po_beg_point.y;
+
+					lo_node.position.x = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][0] + po_beg_point.x;
+					lo_node.position.y = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][1] + po_beg_point.y;
+
+
+
+
+					lo_node.castShadow = true;
+					lo_node.receiveShadow = true;
+
+					lo_node.visible = false; // true;
+
+					lo_node.userData = {
+						nspline: po_parent.id, 
+						nsegment: pv_segment_id, 
+						npoint: lv_k
+					};
+
+
+
+					lo_segment_beg_point = new THREE.Vector2();
+					if (lv_k == lv_k_end - 1) {
+
+						lo_segment_beg_point.x = lo_node.position.x;
+						lo_segment_beg_point.y = lo_node.position.y;
+
+					}
+
+					lo_node.renderOrder = 3;
+
+					po_parent.add(lo_node);
+					lar_points.push(new THREE.Vector3(lo_node.position.x, lo_node.position.y, 0));
+				}// nodes
+
+
+			}
+
+			catch (e) {
+
+				alert('error create_segment: ' + e.stack);
+
+			}
+
+			return {
+				segment_beg_point: lo_segment_beg_point,
+				points: lar_points
+			}
+		}
+
+
 		//-----------------------------------------------------------------
 
 		//Segment.prototype.create_segment_nodes = function (po_spline) {

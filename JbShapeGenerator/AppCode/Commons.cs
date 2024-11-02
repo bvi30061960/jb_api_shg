@@ -278,13 +278,12 @@ namespace JbShapeGenerator.AppCode
     {
         public typ_parameters parameters { get; set; }
         public int numCurves { get; set; }
-
         public int idMaterial { get; set; }
         public int idSize { get; set; }
 
 
-        public string[] CurveColors { get; set; }
-        public decimal[][][] PointsCurves { get; set; }
+        ////public decimal[][][] PointsCurves { get; set; }
+        ////public string[] CurveColors { get; set; }
 
         public bool Lockedit { get; set; }
         public bool Fl_manual_parameters { get; set; }
@@ -293,6 +292,10 @@ namespace JbShapeGenerator.AppCode
         public decimal M_Height { get; set; }
         public decimal M_Length { get; set; }
         public decimal M_Price_rub { get; set; }
+        public decimal Part_gap { get; set; } //01112024
+        public string[] CurveColors { get; set; }
+        public int[][] Segments_beg_points_numbers { get; set; } //01112024
+        public decimal[][][] PointsCurves { get; set; }
 
     }
 
