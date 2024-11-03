@@ -69,9 +69,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         //this.shape_amount_curves = po_params.shape_amount_curves;
 
         po_params.shape_width = po_side_data.M_Width;
-        //this.shape_width = po_params.shape_width;
+        po_params.shape_width_beg = po_params.shape_width;//02112024
+       //this.shape_width = po_params.shape_width;
 
         po_params.shape_height = po_side_data.M_Height;
+        po_params.shape_height_beg = po_params.shape_height;//02112024
         //this.shape_height = po_params.shape_height;
 
         po_params.ajust_shape_by_curves = po_side_data.parameters.is_space_adjust;
@@ -168,11 +170,19 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     lv_shape_amount_curves = po_side_data.numCurves;
                 }
                 else {
-                    this.segment_gabarits = this.main.segment_gabarits;
-                    this.segment_transform_data = this.main.segment_transform_data;
-                    lv_spline_distance = this.segment_transform_data.distance_bt_x;
+                    ////this.segment_gabarits = this.main.segment_gabarits;
+                    ////this.segment_transform_data = this.main.segment_transform_data;
+                    ////lv_spline_distance = this.segment_transform_data.distance_bt_x;
                     lv_shape_amount_curves = this.shape_amount_curves;
                 }
+
+                this.segment_gabarits = this.main.segment_gabarits; //!!!!!!!!!!!!1111
+                this.segment_transform_data = this.main.segment_transform_data; //!!!!!!!!!!!!1111
+                lv_spline_distance = this.segment_transform_data.distance_bt_x; //!!!!!!!!!!!!1111
+
+
+
+
 
                 //let lo_shape_splines_group = new THREE.Group();
                 //lo_shape_splines_group.name = this.main_curves_group_prefix;

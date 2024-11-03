@@ -44,7 +44,7 @@ export function Rectangle(po_container, po_camera, po_scene,
 
 			catch (e) {
 
-				alert('error create_shapes: ' + e.stack);
+				alert('error create_rectangle: ' + e.stack);
 
 			}
 

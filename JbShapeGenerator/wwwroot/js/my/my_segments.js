@@ -4,6 +4,10 @@
 ////import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 ////import { TransformControls } from 'three/addons/controls/TransformControls.js';
 
+import {
+	get_active_side_shape_generator,
+	get_passive_side_shape_generator
+} from './my_shape_generator.js';
 
 import {
 	struc_gabarits,
@@ -270,7 +274,7 @@ export function Segments(
 				//01112024 let lv_k_end = this.ar_initial_segment_points.length;
 				let lv_k_end = pv_end_segment_node_numb;
 
-				for (let lv_k = lv_k_beg; lv_k < lv_k_end; lv_k++) { //22042024
+				for (let lv_k = lv_k_beg; lv_k <= lv_k_end; lv_k++) { //22042024
 
 					let lo_node; // = new THREE.Vector2();
 
@@ -439,7 +443,7 @@ export function Segments(
 
 
 		//----------------------------------------------------------
-		Segments.prototype.get_segment_size = function (/*lo_segment_size*/) {
+		Segments.prototype.get_segment_size = function () {
 
 
 			let lo_segment_size = new struc_gabarits();
@@ -481,21 +485,24 @@ export function Segments(
 		}
 
 		//------------------------------------------------------------------------
-		Segments.prototype.get_segment_transform_data = function (po_segment_size, pv_ajust_curves_by_shape) {
+		Segments.prototype.get_segment_transform_data = function (/*po_segment_size,*/ pv_ajust_curves_by_shape) {
 
 			let lo_segment_size;
 			let lo_segment;
 			let lo_segment_transform_data;
 
 			try {
-				if (typeof (po_segment_size) == "undefined") {
-					po_segment_size = new Segments(1, 1, 1, 0, [0, 0]);
-					lo_segment_size = lo_segment.get_segment_size();
-				}
-				else {
+				//02112024 {
+				//////if (typeof (po_segment_size) == "undefined") {
+				//////	po_segment_size = new Segments(1, 1, 1, 0, [0, 0]);
 
-					lo_segment_size = po_segment_size;
-				}
+				lo_segment_size = this.get_segment_size();
+				//////}
+				//////else {
+
+				//////	lo_segment_size = po_segment_size;
+				//////}
+				// 02112024 }
 
 				lo_segment_transform_data = new struc_segment_transform_data();
 

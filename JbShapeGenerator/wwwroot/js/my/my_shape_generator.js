@@ -309,22 +309,18 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         container_width: this.container.clientWidth, //0, // ;//, //go_container.clientWidth, //; 600,
         container_height: this.container.clientHeight, //; 0, // ;//, //go_container.clientHeight, //600,
-
         shape_width_beg: 50, // ;//,
         shape_width: 50, // ;//,
         shape_height_beg: 100, // ;//,
         shape_height: 100, // ;//,
-
         shape_amount_curves: 3, // ;//, //5
         spline_amount_segments: 3, // ;//,
         ajust_curves_by_shape: true, // ;//,
         ajust_shape_by_curves: false, // ;//,
         distance_between_curves_in_percent_of_width: 10, // ;//,
-
         distance_bt_curves: 30, // ;//,
         is_space_adjust: $(this.id_prefix + "id_chb_space_adjust")[0].checked, //false, // ;//,// $("id_chb_space_adjust")[0].checked,
         is_curve_width_adjust: $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked, // ;// // $("id_chb_curve_width_adjust")[0].checked
-
         color: '#0000ff'
 
     };
@@ -448,9 +444,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.init_containers_and_controls = function () {
 
             try {
-
-                $(this.id_prefix + "id_sp_numcurves").spinner();
-                $(this.id_prefix + "id_sp_numcurves").spinner("value", this.shape_amount_curves);
+                //02112024 {
+                ////$(this.id_prefix + "id_sp_numcurves").spinner();
+                ////$(this.id_prefix + "id_sp_numcurves").spinner("value", this.shape_amount_curves);
+                //02112024 }
 
 
                 $.fn.colorPicker.defaults.colors = ['fa0d00', 'fa6e00', 'faf100', '3dfa00', '00a7fa', '3b00fa', 'ffffff'];
@@ -459,8 +456,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $("#lateral_id_pos_color_picker").colorPicker({ showHexField: false/*, onColorChange: function (id, newValue) { alert("id=" + id + " value= " + newValue) }*/ });
 
 
-                //$(this.id_prefix + "id_shg_right").draggable();//22062024
-                //$(this.id_prefix + "id_shg_right").draggable("disable");//22062024
                 $(this.id_prefix + "id_shg_right_top").draggable();//22062024
                 $(this.id_prefix + "id_shg_right_top").draggable("disable");//22062024
 
@@ -526,7 +521,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 lo_cameraOrtho = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
 
 
-                const frustumSize = 500;
+                //02112024 const frustumSize = 500;
 
                 this.camera = lo_cameraOrtho;
 
@@ -577,15 +572,20 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //-------------------------------------------------------------------
 
 
-                let lv_ncurves = $(this.id_prefix + "id_sp_numcurves")[0].value;
+
+                // 02112024 {
+                ////////////////////let lv_ncurves = $(this.id_prefix + "id_sp_numcurves")[0].value;
 
 
-                const cv_width = this.params.container_width;
-                const cv_height = this.params.container_height;
-                const cv_shape_width = this.params.shape_width;
-                const cv_shape_height = this.params.shape_height;
-                const cv_curves_fit_to_figure = true;
-                this.nsegments = this.params.spline_amount_segments;
+                ////////////////////const cv_width = this.params.container_width;
+                ////////////////////const cv_height = this.params.container_height;
+                //////////////////// const cv_shape_width = this.params.shape_width;
+                //////////////////// const cv_shape_height = this.params.shape_height;
+                /*//const cv_curves_fit_to_figure = true;*/
+                ////////////////this.nsegments = this.params.spline_amount_segments;
+                //02112024 }
+
+
 
 
 
@@ -593,9 +593,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //======================================================================
 
                 this.lo_renderer_mod = null;
-
                 this.container_mod = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape_mod);//20062024
-
                 this.scene_mod = new THREE.Scene();
                 ///this.group_parts_mod = new THREE.Object3D(); //14102024 
                 //this.group_parts_mod.position.set(0, 0, 0);
@@ -823,7 +821,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     //this.gui.add(this.params, 'shape_width', 10, 200).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param);
                     this.gui.add(this.params, 'shape_width', 10, 100).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param);
 
-
                     //this.gui.addColor(this.params, 'color').name('Color');
 
                     this.gui.open();
@@ -929,10 +926,53 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
 
         }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.get_parameters_from_side_data = async function (po_side_data) {
+
+
+            let ls_parameters = new typ_parameters();
+
+            try {
+                ls_parameters.container_width = po_side_data.parameters.container_width;
+                ls_parameters.container_height = po_side_data.parameters.container_height;
+                ls_parameters.shape_width_beg = po_side_data.parameters.shape_width_beg;
+                ls_parameters.shape_width = po_side_data.parameters.shape_width;
+                ls_parameters.shape_height_beg = po_side_data.parameters.shape_height_beg;
+                ls_parameters.shape_height = po_side_data.parameters.shape_height;
+                ls_parameters.shape_amount_curves = po_side_data.parameters.shape_amount_curves;
+                ls_parameters.spline_amount_segments = po_side_data.parameters.spline_amount_segments;
+                ls_parameters.ajust_curves_by_shape = po_side_data.parameters.ajust_curves_by_shape;
+                ls_parameters.ajust_shape_by_curves = po_side_data.parameters.ajust_shape_by_curves;
+                ls_parameters.distance_between_curves_in_percent_of_width = po_side_data.parameters.distance_between_curves_in_percent_of_width;
+                ls_parameters.distance_bt_curves = po_side_data.parameters.distance_bt_curves;
+                ls_parameters.is_space_adjust = po_side_data.parameters.is_space_adjust;
+                ls_parameters.is_curve_width_adjust = po_side_data.parameters.is_curve_width_adjust;
+                ls_parameters.color = po_side_data.parameters.color;
+            }
+
+            catch (e) {
+
+                this.model_params_changed = false;
+
+                alert('error get_parameters_from_side_data: ' + e.stack);
+
+            }
+
+            return ls_parameters;
+        }
         //------------------------------------------------------------------------
         Shape_generator.prototype.make_shape = async function (pv_is_use_data, po_side_data) {
 
             try {
+
+
+                if (pv_is_use_data) {
+                    this.parameters = this.get_parameters_from_side_data(po_side_data);
+                }
+
+
+
 
                 this.shapes = new Shapes(
                     this,
@@ -952,29 +992,29 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     pv_is_use_data
                 );
 
-                if (!pv_is_use_data) {
-                    this.segment_gabarits = this.segments.get_segment_size();
-                    this.segment_transform_data = this.segments.get_segment_transform_data(this.segment_gabarits, this.params.ajust_curves_by_shape);
-                }
+                //02112024 if (!pv_is_use_data) {
+                this.segment_gabarits = this.segments.get_segment_size();
+                this.segment_transform_data = this.segments.get_segment_transform_data(/*this.segment_gabarits,*/ this.params.ajust_curves_by_shape);
+                //02112024 }
 
 
                 this.shapes.create_shapes(pv_is_use_data, po_side_data);
 
 
-                this.rectangle = new Rectangle(this.container, this.camera, this.scene, this.params);//16062024
+                this.rectangle = new Rectangle(this.container, this.camera, this.scene, this.params);
 
 
                 this.group_contours = new THREE.Group();
                 this.group_contours.name = cv_name_group_contours;
                 this.scene.add(this.group_contours);
 
-                this.group_color_mesh = new THREE.Group();//01082024
+                this.group_color_mesh = new THREE.Group();
                 this.group_color_mesh.name = cv_name_group_color_mesh;
                 this.scene.add(this.group_color_mesh);
 
 
 
-                this.shapes.adjust_splines_by_external_shape();//07092024
+                this.shapes.adjust_splines_by_external_shape();
 
 
                 this.grid_select_models = new GridSelectModels(this.id_prefix);
@@ -2302,7 +2342,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
             po_side.segment_transform_data = po_side.segments.get_segment_transform_data(
-                po_side.segment_gabarits,
+                /* po_side.segment_gabarits, 02112024 */
                 po_side.params.ajust_curves_by_shape);
 
 
@@ -3340,7 +3380,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             let lo_side_data = new typ_side_data();
 
-
             let ls_parameters = this.read_side_parameters();
 
             let lo_splines_points_data = this.shapes.get_splines_points_for_model();
@@ -3358,7 +3397,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             lo_side_data.M_Length = this.params.shape_height;
             lo_side_data.M_Price_rub = 0.0;
             lo_side_data.Part_gap = 2;
-            lo_side_data.CurveColors = []; 
+            lo_side_data.CurveColors = [];
             lo_side_data.Segments_beg_points_numbers = lo_splines_points_data.Segments_beg_points_numbers;
             lo_side_data.PointsCurves = lo_splines_points_data.PointsCurves;
 
@@ -3397,14 +3436,33 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             let ls_parameters = new typ_parameters();
 
-            ls_parameters.is_space_adjust = $(this.id_prefix + "id_chb_space_adjust")[0].checked;
-            ls_parameters.is_curve_width_adjust = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked;
+            //ls_parameters.is_space_adjust = $(this.id_prefix + "id_chb_space_adjust")[0].checked;
+            //ls_parameters.is_curve_width_adjust = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked;
 
-            ls_parameters.distance_bt_curves = this.params.distance_bt_curves;
-            ls_parameters.distance_bt_curves_in_percent = this.params.distance_between_curves_in_percent_of_width;
-            ls_parameters.shape_height = this.params.shape_height;
+            //ls_parameters.distance_bt_curves = this.params.distance_bt_curves;
+            //ls_parameters.distance_bt_curves_in_percent = this.params.distance_between_curves_in_percent_of_width;
+            //ls_parameters.shape_height = this.params.shape_height;
+            //ls_parameters.shape_width = this.params.shape_width;
+
+
+
+
+
+            ls_parameters.container_width = this.params.container_width;
+            ls_parameters.container_height = this.params.container_height;
+            ls_parameters.shape_width_beg = this.params.shape_width_beg;
             ls_parameters.shape_width = this.params.shape_width;
-
+            ls_parameters.shape_height_beg = this.params.shape_height_beg;
+            ls_parameters.shape_height = this.params.shape_height;
+            ls_parameters.shape_amount_curves = this.params.shape_amount_curves;
+            ls_parameters.spline_amount_segments = this.params.spline_amount_segments;
+            ls_parameters.ajust_curves_by_shape = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.ajust_curves_by_shape;  
+            ls_parameters.ajust_shape_by_curves = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.ajust_shape_by_curves;
+            ls_parameters.distance_between_curves_in_percent_of_width = this.params.distance_between_curves_in_percent_of_width;
+            ls_parameters.distance_bt_curves = this.params.distance_bt_curves;
+            ls_parameters.is_space_adjust = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.is_space_adjust;       
+            ls_parameters.is_curve_width_adjust = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.is_curve_width_adjust; 
+            ls_parameters.color = this.params.color;
 
             return ls_parameters;
         }

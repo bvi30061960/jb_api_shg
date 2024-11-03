@@ -53,13 +53,34 @@ export function typ_color_data() {
     this.ColorParts = new Array();
 }
 export function typ_parameters() {
+    //this.is_space_adjust = false;
+    //this.is_curve_width_adjust = false;
+    //this.distance_bt_curves = 0;
+    //this.distance_bt_curves_in_percent = 0;
+    //this.shape_height = 0;
+    //this.shape_width = 0;
+
+    this.container_width = 0;
+    this.container_height = 0;
+    this.shape_width_beg = 0;
+    this.shape_width = 0;
+    this.shape_height_beg = 0;
+    this.shape_height = 0;
+    this.shape_amount_curves = 0;
+    this.spline_amount_segments = 0;
+    this.ajust_curves_by_shape = false;
+    this.ajust_shape_by_curves = false;
+    this.distance_between_curves_in_percent_of_width = 0;
+    this.distance_bt_curves = 0;
     this.is_space_adjust = false;
     this.is_curve_width_adjust = false;
-    this.distance_bt_curves = 0;
-    this.distance_bt_curves_in_percent = 0;
-    this.shape_height = 0;
-    this.shape_width = 0;
+    this.color = '#0000ff';
+
 }
+
+
+
+
 
 export function typ_side_data() {
 

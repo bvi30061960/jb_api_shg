@@ -258,12 +258,30 @@ namespace JbShapeGenerator.AppCode
 
     public class typ_parameters
     {
+        //public bool is_space_adjust { get; set; }
+        //public bool is_curve_width_adjust { get; set; }
+        //public decimal distance_bt_curves { get; set; }
+        //public decimal distance_bt_curves_in_percent { get; set; }
+        //public decimal shape_height { get; set; }
+        //public decimal shape_width { get; set; }
+
+
+
+        public decimal container_width { get; set; }
+        public decimal container_height { get; set; }
+        public decimal shape_width_beg { get; set; }
+        public decimal shape_width { get; set; }
+        public decimal shape_height_beg { get; set; }
+        public decimal shape_height { get; set; }
+        public int shape_amount_curves { get; set; }
+        public int spline_amount_segments { get; set; }
+        public bool ajust_curves_by_shape { get; set; }
+        public bool ajust_shape_by_curves { get; set; }
+        public decimal distance_between_curves_in_percent_of_width { get; set; }
+        public decimal distance_bt_curves { get; set; }
         public bool is_space_adjust { get; set; }
         public bool is_curve_width_adjust { get; set; }
-        public decimal distance_bt_curves { get; set; }
-        public decimal distance_bt_curves_in_percent { get; set; }
-        public decimal shape_height { get; set; }
-        public decimal shape_width { get; set; }
+        public int color { get; set; }
     }
 
 
