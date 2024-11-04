@@ -234,8 +234,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.common_prev_width = $(lv_id_side_shape).width();
     this.common_prev_height = $(lv_id_side_shape).height();
 
-    this.prev_width_mod = $(lv_id_side_shape_mod).width();//25082024
-    this.prev_height_mod = $(lv_id_side_shape_mod).height();//25082024
+    this.prev_width_mod = $(lv_id_side_shape_mod).width();
+    this.prev_height_mod = $(lv_id_side_shape_mod).height();
 
 
     ////this.common_prev_width = $(lv_id_up_side_shape).width();
@@ -273,13 +273,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.prev_left_mod = this.offset_mod.left;//25082024
 
 
-    //26082024 {
     let offsetHeight = lv_$shape_mod[0].offsetHeight;
     let offsetLeft = lv_$shape_mod[0].offsetLeft;
     this.prev_offsetTop_mod = lv_$shape_mod[0].offsetTop;
     let offsetWidth = lv_$shape_mod[0].offsetWidth;
-    //26082024 }
-
 
     this.button_down = false;
     this.draggableObject = undefined;
@@ -372,7 +369,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     ////this.prev_left_mod = this.offset_mod.left;
 
 
-    this.refreshModelInterval = 2000; // 2 sec
+    this.refreshModelInterval = 1000; // 1 //2 sec
     this.model_params_changed = false;
     this.is_building_model = false;
 
@@ -385,7 +382,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
     //this.is_load_both_model_sides = false;
 
-
+    this.current_spline_max_y = 0; // текущая максимальная координата сплайнов
     //--------------------------------------------------------------------------------
 
 
@@ -2338,6 +2335,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             let lv_scale = pv_value / po_side.params.shape_height_beg;
             po_side.rectangle.shape.scale.y = lv_scale;
+
             po_side.render();
 
 
@@ -2347,7 +2345,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
             if (po_side.params.is_space_adjust) {
-                po_side.shapes.adjust_splines_by_external_shape();
+                po_side.shapes.adjust_splines_by_external_shape(pv_value);
             }
 
         }
@@ -3329,24 +3327,45 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.read_model_sides_data = function () {
 
-            let lo_model_data = new typ_sides_data();
+            let lo_sides_data = new typ_sides_data();
 
-            let lo_up_side_shape_generator = get_side_shape_generator_by_prefix(gc_id_prefix_up);
-            let lo_lateral_side_shape_generator = get_side_shape_generator_by_prefix(gc_id_prefix_lateral);
+            try {
+                let lo_model_data = new typ_sides_data();
 
-            ////lo_model_data.colorParts = this.read_color_parts();
-            ////lo_model_data.data1 = lo_up_side_shape_generator.read_side_model_data();
-            ////lo_model_data.data2 = lo_lateral_side_shape_generator.read_side_model_data();
+                let lo_up_side_shape_generator = get_side_shape_generator_by_prefix(gc_id_prefix_up);
+                let lo_lateral_side_shape_generator = get_side_shape_generator_by_prefix(gc_id_prefix_lateral);
 
-            let lar_colorParts = this.read_color_parts();
-            let lar_data1 = lo_up_side_shape_generator.read_side_model_data();
-            let lar_data2 = lo_lateral_side_shape_generator.read_side_model_data();
-            return {
-                ColorParts: lar_colorParts,
-                data1: lar_data1,
-                data2: lar_data2
+                ////lo_model_data.colorParts = this.read_color_parts();
+                ////lo_model_data.data1 = lo_up_side_shape_generator.read_side_model_data();
+                ////lo_model_data.data2 = lo_lateral_side_shape_generator.read_side_model_data();
+
+                let lar_colorParts = this.read_color_parts();
+                let lar_data1 = lo_up_side_shape_generator.read_side_model_data();
+                let lar_data2 = lo_lateral_side_shape_generator.read_side_model_data();
+
+
+
+
+                lo_sides_data.ColorParts = lar_colorParts;
+                lo_sides_data.data1 = lar_data1;
+                lo_sides_data.data2 = lar_data2;
+
+
+
+                ////return {
+                ////    ColorParts: lar_colorParts,
+                ////    data1: lar_data1,
+                ////    data2: lar_data2
+                ////}
+
             }
 
+            catch (e) {
+
+                alert('error read_model_sides_data: ' + e.stack);
+
+            }
+            return lo_sides_data;
 
         }
 
@@ -3380,51 +3399,62 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             let lo_side_data = new typ_side_data();
 
-            let ls_parameters = this.read_side_parameters();
 
-            let lo_splines_points_data = this.shapes.get_splines_points_for_model();
+            try {
+                let ls_parameters = this.read_side_parameters();
 
-
-            lo_side_data.parameters = ls_parameters;
-            lo_side_data.numCurves = lo_splines_points_data.PointsCurves.length;
-            lo_side_data.idMaterial = 0;
-            lo_side_data.idSize = 0;
-            lo_side_data.Lockedit = false;
-            lo_side_data.Fl_manual_parameters = false;
-            lo_side_data.M_Material = 0;
-            lo_side_data.M_Width = this.params.shape_width;
-            lo_side_data.M_Height = this.params.shape_width;
-            lo_side_data.M_Length = this.params.shape_height;
-            lo_side_data.M_Price_rub = 0.0;
-            lo_side_data.Part_gap = 2;
-            lo_side_data.CurveColors = [];
-            lo_side_data.Segments_beg_points_numbers = lo_splines_points_data.Segments_beg_points_numbers;
-            lo_side_data.PointsCurves = lo_splines_points_data.PointsCurves;
+                let lo_splines_points_data = this.shapes.get_splines_points_for_model();
 
 
-
-
+                lo_side_data.parameters = ls_parameters;
+                lo_side_data.numCurves = lo_splines_points_data.PointsCurves.length;
+                lo_side_data.idMaterial = 0;
+                lo_side_data.idSize = 0;
+                lo_side_data.Lockedit = false;
+                lo_side_data.Fl_manual_parameters = false;
+                lo_side_data.M_Material = 0;
+                lo_side_data.M_Width = this.params.shape_width;
+                lo_side_data.M_Height = this.params.shape_width;
+                lo_side_data.M_Length = this.params.shape_height;
+                lo_side_data.M_Price_rub = 0.0;
+                lo_side_data.Part_gap = 2;
+                lo_side_data.CurveColors = [];
+                lo_side_data.Segments_beg_points_numbers = lo_splines_points_data.Segments_beg_points_numbers;
+                lo_side_data.PointsCurves = lo_splines_points_data.PointsCurves;
 
 
 
-            //return {
-            //    parameters: ls_parameters,
-            //    numCurves: lar_splines_points.length,
-            //    idMaterial: 0,
-            //    idSize: 0,
-            //    Lockedit: false,
-            //    Fl_manual_parameters: false,
-            //    M_Material: 0,
-            //    M_Width: this.params.shape_width,
-            //    M_Height: this.params.shape_width,
-            //    M_Length: this.params.shape_height,
-            //    M_Price_rub: 0.0,
-            //    Part_gap: 2,
-            //    CurveColors: [],
-            //    Segments_beg_points_numbers: lo_splines_points_data.Segments_beg_points_numbers,
-            //    PointsCurves: lo_splines_points_data.PointsCurves,
 
-            //}
+
+
+
+                //return {
+                //    parameters: ls_parameters,
+                //    numCurves: lar_splines_points.length,
+                //    idMaterial: 0,
+                //    idSize: 0,
+                //    Lockedit: false,
+                //    Fl_manual_parameters: false,
+                //    M_Material: 0,
+                //    M_Width: this.params.shape_width,
+                //    M_Height: this.params.shape_width,
+                //    M_Length: this.params.shape_height,
+                //    M_Price_rub: 0.0,
+                //    Part_gap: 2,
+                //    CurveColors: [],
+                //    Segments_beg_points_numbers: lo_splines_points_data.Segments_beg_points_numbers,
+                //    PointsCurves: lo_splines_points_data.PointsCurves,
+
+                //}
+
+            }
+
+            catch (e) {
+
+                alert('error read_side_model_data: ' + e.stack);
+
+            }
+            //return lo_sides_data;
 
 
             return lo_side_data;
@@ -3445,25 +3475,33 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //ls_parameters.shape_width = this.params.shape_width;
 
 
+            try {
 
 
+                ls_parameters.container_width = this.params.container_width;
+                ls_parameters.container_height = this.params.container_height;
+                ls_parameters.shape_width_beg = this.params.shape_width_beg;
+                ls_parameters.shape_width = this.params.shape_width;
+                ls_parameters.shape_height_beg = this.params.shape_height_beg;
+                ls_parameters.shape_height = this.params.shape_height;
+                ls_parameters.shape_amount_curves = this.params.shape_amount_curves;
+                ls_parameters.spline_amount_segments = this.params.spline_amount_segments;
+                ls_parameters.ajust_curves_by_shape = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.ajust_curves_by_shape;  
+                ls_parameters.ajust_shape_by_curves = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.ajust_shape_by_curves;
+                ls_parameters.distance_between_curves_in_percent_of_width = this.params.distance_between_curves_in_percent_of_width;
+                ls_parameters.distance_bt_curves = this.params.distance_bt_curves;
+                ls_parameters.is_space_adjust = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.is_space_adjust;       
+                ls_parameters.is_curve_width_adjust = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.is_curve_width_adjust; 
+                ls_parameters.color = this.params.color;
 
-            ls_parameters.container_width = this.params.container_width;
-            ls_parameters.container_height = this.params.container_height;
-            ls_parameters.shape_width_beg = this.params.shape_width_beg;
-            ls_parameters.shape_width = this.params.shape_width;
-            ls_parameters.shape_height_beg = this.params.shape_height_beg;
-            ls_parameters.shape_height = this.params.shape_height;
-            ls_parameters.shape_amount_curves = this.params.shape_amount_curves;
-            ls_parameters.spline_amount_segments = this.params.spline_amount_segments;
-            ls_parameters.ajust_curves_by_shape = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.ajust_curves_by_shape;  
-            ls_parameters.ajust_shape_by_curves = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.ajust_shape_by_curves;
-            ls_parameters.distance_between_curves_in_percent_of_width = this.params.distance_between_curves_in_percent_of_width;
-            ls_parameters.distance_bt_curves = this.params.distance_bt_curves;
-            ls_parameters.is_space_adjust = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.is_space_adjust;       
-            ls_parameters.is_curve_width_adjust = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.is_curve_width_adjust; 
-            ls_parameters.color = this.params.color;
 
+            }
+
+            catch (e) {
+
+                alert('error read_side_parameters: ' + e.stack);
+
+            }
             return ls_parameters;
         }
         //const cv_width = this.params.container_width;
@@ -3476,59 +3514,73 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.draw_shape_by_sides_data = function (po_sides_data) {
 
-            let sides_data = JSON.parse(po_sides_data);
+            try {
+                let sides_data = JSON.parse(po_sides_data);
 
-            //ColorParts  = new typ_color_data();
-            //data1       = new typ_side_data();
-            //data2       = new typ_side_data();
+                //ColorParts  = new typ_color_data();
+                //data1       = new typ_side_data();
+                //data2       = new typ_side_data();
 
-            //numCurves               = 0;
-            //idMaterial              = 0;
-            //idSize                  = 0;
-            //Lockedit                = false;
-            //Fl_manual_parameters    = false;
-            //M_Material              = 0;
-            //M_Width                 = 0.0;
-            //M_Height                = 0.0;
-            //M_Length                = 0.0;
-            //M_Price_rub             = 0.0;
-            //Part_gap                = 0;
-            //CurveColors             = new Array();
-            //PointsCurves            = new Array();
-
-
-            this.clear_shape_objects(go_up_side_shape_generator);
-            this.draw_side_shape_by_data(/*go_up_side_shape_generator,*/ sides_data.data1);
-
-            go_up_side_shape_generator.render();
+                //numCurves               = 0;
+                //idMaterial              = 0;
+                //idSize                  = 0;
+                //Lockedit                = false;
+                //Fl_manual_parameters    = false;
+                //M_Material              = 0;
+                //M_Width                 = 0.0;
+                //M_Height                = 0.0;
+                //M_Length                = 0.0;
+                //M_Price_rub             = 0.0;
+                //Part_gap                = 0;
+                //CurveColors             = new Array();
+                //PointsCurves            = new Array();
 
 
-            //////////////////////this.clear_shape_objects(go_lateral_side_shape_generator);
-            //////////////////////this.draw_side_shape_by_data(/*go_lateral_side_shape_generator,*/ sides_data.data2);
+                this.clear_shape_objects(go_up_side_shape_generator);
+                this.draw_side_shape_by_data(/*go_up_side_shape_generator,*/ sides_data.data1);
 
-            //////////////////////go_lateral_side_shape_generator.render();
+                go_up_side_shape_generator.render();
 
+
+                //////////////////////this.clear_shape_objects(go_lateral_side_shape_generator);
+                //////////////////////this.draw_side_shape_by_data(/*go_lateral_side_shape_generator,*/ sides_data.data2);
+
+                //////////////////////go_lateral_side_shape_generator.render();
+            }
+
+            catch (e) {
+
+                alert('error draw_shape_by_sides_data: ' + e.stack);
+
+            }
         }
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.clear_shape_objects = function (po_side) {
 
+            try {
 
-            //this.common_func.clear_group_childrens(po_side.main_curves_group);
-            //this.common_func.clear_group_childrens(po_side.group_contours);
-            //this.common_func.clear_group_childrens(po_side.group_color_mesh);
-            //this.common_func.clear_group_childrens(po_side.group_rect);
+                //this.common_func.clear_group_childrens(po_side.main_curves_group);
+                //this.common_func.clear_group_childrens(po_side.group_contours);
+                //this.common_func.clear_group_childrens(po_side.group_color_mesh);
+                //this.common_func.clear_group_childrens(po_side.group_rect);
 
-            po_side.segment_transform_data = null;
-            po_side.segment_gabarits = null;
-            po_side.segments = null;
-            po_side.splines = null;
-            po_side.shapes = null;
+                po_side.segment_transform_data = null;
+                po_side.segment_gabarits = null;
+                po_side.segments = null;
+                po_side.splines = null;
+                po_side.shapes = null;
 
 
-            let lar_no_delete = ["AmbientLight", "SpotLight", "Mesh"];// /*, "Group"*/14102024
-            this.common_func.clearScene(po_side.scene, lar_no_delete);
+                let lar_no_delete = ["AmbientLight", "SpotLight", "Mesh"];// /*, "Group"*/14102024
+                this.common_func.clearScene(po_side.scene, lar_no_delete);
+            }
 
+            catch (e) {
+
+                alert('error clear_shape_objects: ' + e.stack);
+
+            }
         }
 
 

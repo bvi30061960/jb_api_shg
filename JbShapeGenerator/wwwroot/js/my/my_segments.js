@@ -257,6 +257,8 @@ export function Segments(
 			let lo_segment_beg_point;
 			let lar_points = [];
 
+			let lo_active_side = get_active_side_shape_generator();
+
 			try {
 
 				let lv_k_beg;
@@ -292,7 +294,13 @@ export function Segments(
 					lo_node.position.x = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][0] + po_beg_point.x;
 					lo_node.position.y = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][1] + po_beg_point.y;
 
+					//03112024 {
+					// Запись максимальной координаты y сплайнов (длина модели)
+					if (lo_node.position.y > lo_active_side.current_spline_max_y) {
 
+						lo_active_side.current_spline_max_y = lo_node.position.y;
+					}
+					//03112024 }
 
 
 					lo_node.castShadow = true;

@@ -68,7 +68,7 @@ namespace jb_api_shg.AppCode
         public decimal distance_bt_curves { get; set; }
         public bool is_space_adjust { get; set; }
         public bool is_curve_width_adjust { get; set; }
-        public int color { get; set; }
+        public /*int*/string  color { get; set; }
 
     }
 
