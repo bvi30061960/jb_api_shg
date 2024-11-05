@@ -816,7 +816,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.gui = new GUI({ container: document.getElementById(this.id_prefix_wo_sharp + 'id_gui') });
 
                     this.gui.add(this.params, 'distance_bt_curves', 0, 40).step(0.5).name('Distance  between curves').onChange(this.onChange_distance_bt_curves);
-                    this.gui.add(this.params, 'shape_height', 20, 300).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param);
+                    //this.gui.add(this.params, 'shape_height', 20, 300).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param);
+                    this.gui.add(this.params, 'shape_height', 20, 200).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param);
                     //this.gui.add(this.params, 'shape_width', 10, 200).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param);
                     this.gui.add(this.params, 'shape_width', 10, 100).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param);
 
@@ -3530,17 +3531,22 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             try {
                 let sides_data = JSON.parse(po_sides_data);
 
-                this.clear_shape_objects(go_up_side_shape_generator);
-                this.draw_side_shape_by_data(/*go_up_side_shape_generator,*/ sides_data.data1);
+                //04112024 this.clear_shape_objects(go_up_side_shape_generator);
+                go_up_side_shape_generator.clear_shape_objects(go_up_side_shape_generator);
 
 
+                //04112024 this.draw_side_shape_by_data(/*go_up_side_shape_generator,*/ sides_data.data1);
+                //04112024 this.make_shape(true, sides_data.data1); //04112024
+                go_up_side_shape_generator.make_shape(true, sides_data.data1); //04112024
+
+                //04112024 go_up_side_shape_generator.render();
                 go_up_side_shape_generator.render();
 
 
-                //////////////////////this.clear_shape_objects(go_lateral_side_shape_generator);
-                //////////////////////this.draw_side_shape_by_data(/*go_lateral_side_shape_generator,*/ sides_data.data2);
-
-                //////////////////////go_lateral_side_shape_generator.render();
+                go_lateral_side_shape_generator.clear_shape_objects(go_lateral_side_shape_generator);
+                //04112024 go_lateral_side_shape_generator.draw_side_shape_by_data(/*go_lateral_side_shape_generator,*/ sides_data.data2);
+                go_lateral_side_shape_generator.make_shape(true, sides_data.data2);
+                go_lateral_side_shape_generator.render();
             }
 
             catch (e) {
@@ -3615,17 +3621,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
 
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.draw_side_shape_by_data = function (/*po_side,*/ po_side_data) {
+        ////////------------------------------------------------------------------------
+        //////Shape_generator.prototype.draw_side_shape_by_data = function (/*po_side,*/ po_side_data) {
 
-            //for (let lv_i = 0; lv_i < po_side_data.numCurves; lv_i++) {
+        //////    //for (let lv_i = 0; lv_i < po_side_data.numCurves; lv_i++) {
 
 
-            //}
+        //////    //}
 
-            /*po_side*/this.make_shape(true, po_side_data);
+        //////    /*po_side*/this.make_shape(true, po_side_data);
 
-        }
+        //////}
 
         //=====================================================================
 
