@@ -96,6 +96,8 @@ namespace jb_api.Controllers
 
         async public Task<IResult> PostCalcJBModel()
         {
+            //return Results.StatusCode(500);
+
 
             string lv_app_path = Environment.CurrentDirectory; //Request.HttpContext.base;
 
@@ -148,7 +150,7 @@ namespace jb_api.Controllers
             }
             catch (Exception ex)
             {
-                return Results.StatusCode(500); ;
+                return Results.StatusCode(500);
 
             }
 

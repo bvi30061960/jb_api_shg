@@ -99,6 +99,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
     //////}
     //03112024 }
 
+
+
     this.shape_amount_curves = po_params.shape_amount_curves;
     //this.spline_amount_segments = po_params.spline_amount_segments;
 
@@ -110,10 +112,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
     this.distance_between_curves_in_percent_of_width = po_params.distance_between_curves_in_percent_of_width;
     this.distance_between_curves = po_params.distance_bt_curves;
-
-
-
-
 
 
     ////this.splines = [];
@@ -139,7 +137,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
     //this.previous_splines_count = 0;
 
 
-    this.height_koef_previous = 1;
+    ///this.height_koef_previous = 1;
 
     this.ar_shapes_colors = []; // список объектов со сплайнами и цветами фигур, упорядоченных слева направо
 
@@ -164,17 +162,21 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 let lo_shape_splines_group = new THREE.Group();
                 lo_shape_splines_group.name = this.main_curves_group_prefix;
 
-                let lv_shape_amount_curves = 0;
+                //let lv_shape_amount_curves = 0;
 
                 if (pv_is_use_data) {
-                    lv_shape_amount_curves = po_side_data.numCurves;
+                    //lv_shape_amount_curves = po_side_data.numCurves;
+                    this.shape_amount_curves = po_side_data.numCurves;
                 }
-                else {
-                    ////this.segment_gabarits = this.main.segment_gabarits;
-                    ////this.segment_transform_data = this.main.segment_transform_data;
-                    ////lv_spline_distance = this.segment_transform_data.distance_bt_x;
-                    lv_shape_amount_curves = this.shape_amount_curves;
-                }
+                //04112024 {
+                ////else {
+                ////    ////this.segment_gabarits = this.main.segment_gabarits;
+                ////    ////this.segment_transform_data = this.main.segment_transform_data;
+                ////    ////lv_spline_distance = this.segment_transform_data.distance_bt_x;
+                ////    //lv_shape_amount_curves = this.shape_amount_curves;
+                ////}
+                // 04112024 }
+
 
                 this.segment_gabarits = this.main.segment_gabarits; //!!!!!!!!!!!!1111
                 this.segment_transform_data = this.main.segment_transform_data; //!!!!!!!!!!!!1111
@@ -191,7 +193,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 // Сброс максимальной текущей координаты сплайнов y (длина модели)
                 //let lo_active_side = get_active_side_shape_generator();
 
-                this.main.current_spline_max_y = 0;
+                ////this.main.current_spline_max_y = 0;
 
 
                 for (let lv_i = 0; lv_i < this.shape_amount_curves; lv_i++) {
@@ -1217,7 +1219,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 return;
             }
 
-            this.height_koef_previous
+            ///04112024 this.height_koef_previous
 
             this.main.splines.create_spline(lo_main_curves_group, lv_spline_offset_x, /*this.height_koef_previous,*/ this.segment_transform_data);//30042024
 
@@ -1263,8 +1265,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             let lv_splines_height = this.get_current_splines_height();
 
             if (lv_splines_height !== 0) {
-                //lv_height_koef_relative = this.params.shape_height / lv_splines_height;
-                lv_height_koef_relative = this.params.shape_height / this.main.current_spline_max_y;
+                lv_height_koef_relative = this.params.shape_height / lv_splines_height;
+                //lv_height_koef_relative = this.params.shape_height / this.main.current_spline_max_y;
+                //lv_height_koef_relative = this.main.current_spline_max_y / this.params.shape_height;
 
                     
 ;
@@ -1310,7 +1313,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 //	this.set_spline_points(this.ar_splines[lv_i], lar_spline_points);//13062024
             }
 
-            this.height_koef_previous = lv_height_koef;
+            //04112024 this.height_koef_previous = lv_height_koef;
 
 
 
@@ -2559,12 +2562,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                                     //03112024 {
-                                    // Запись максимальной координаты y сплайнов (длина модели)
-                                    if (lo_segment_points.children[lv_k].position.y > this.main.current_spline_max_y) {
+                                    ////// Запись максимальной координаты y сплайнов (длина модели)
+                                    ////if (lo_segment_points.children[lv_k].position.y > this.main.current_spline_max_y) {
 
-                                        this.main.current_spline_max_y = lo_segment_points.children[lv_k].position.y;
-                                    }
-                                    //03112024 }
+                                    ////    this.main.current_spline_max_y = lo_segment_points.children[lv_k].position.y;
+                                    ////}
+                                    //////03112024 }
 
 
 

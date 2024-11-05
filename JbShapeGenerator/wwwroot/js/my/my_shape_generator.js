@@ -382,7 +382,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
     //this.is_load_both_model_sides = false;
 
-    this.current_spline_max_y = 0; // текущая максимальная координата сплайнов
+    //////this.current_spline_max_y = 0; // текущая максимальная координата сплайнов
+
+    ////this.current_splines_height = 0;
     //--------------------------------------------------------------------------------
 
 
@@ -963,13 +965,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-
                 if (pv_is_use_data) {
+
+                    this.gui.reset();
                     this.parameters = this.get_parameters_from_side_data(po_side_data);
+                    this.common_func.guiUpdateDisplay(this.gui);
+
                 }
-
-
-
 
                 this.shapes = new Shapes(
                     this,
@@ -994,11 +996,20 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.segment_transform_data = this.segments.get_segment_transform_data(/*this.segment_gabarits,*/ this.params.ajust_curves_by_shape);
                 //02112024 }
 
-
                 this.shapes.create_shapes(pv_is_use_data, po_side_data);
 
 
+                //04112024 {
+
                 this.rectangle = new Rectangle(this.container, this.camera, this.scene, this.params);
+
+                //if (pv_is_use_data) {
+                //    ///this.rectangle.shape.scale.y = po_side_data.rectangle_scale_y;
+                //}
+                //04112024 }
+
+
+
 
 
                 this.group_contours = new THREE.Group();
@@ -1015,6 +1026,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 this.grid_select_models = new GridSelectModels(this.id_prefix);
+
+
             }
 
             catch (e) {
@@ -3421,6 +3434,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 lo_side_data.CurveColors = [];
                 lo_side_data.Segments_beg_points_numbers = lo_splines_points_data.Segments_beg_points_numbers;
                 lo_side_data.PointsCurves = lo_splines_points_data.PointsCurves;
+                lo_side_data.rectangle_scale_y = this.rectangle.shape.scale.y;
 
 
 
@@ -3494,7 +3508,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 ls_parameters.is_curve_width_adjust = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.is_curve_width_adjust; 
                 ls_parameters.color = this.params.color;
 
-
             }
 
             catch (e) {
@@ -3517,27 +3530,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             try {
                 let sides_data = JSON.parse(po_sides_data);
 
-                //ColorParts  = new typ_color_data();
-                //data1       = new typ_side_data();
-                //data2       = new typ_side_data();
-
-                //numCurves               = 0;
-                //idMaterial              = 0;
-                //idSize                  = 0;
-                //Lockedit                = false;
-                //Fl_manual_parameters    = false;
-                //M_Material              = 0;
-                //M_Width                 = 0.0;
-                //M_Height                = 0.0;
-                //M_Length                = 0.0;
-                //M_Price_rub             = 0.0;
-                //Part_gap                = 0;
-                //CurveColors             = new Array();
-                //PointsCurves            = new Array();
-
-
                 this.clear_shape_objects(go_up_side_shape_generator);
                 this.draw_side_shape_by_data(/*go_up_side_shape_generator,*/ sides_data.data1);
+
 
                 go_up_side_shape_generator.render();
 
@@ -3565,6 +3560,39 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //this.common_func.clear_group_childrens(po_side.group_color_mesh);
                 //this.common_func.clear_group_childrens(po_side.group_rect);
 
+
+
+                this.shapes.shape_amount_curves = 0;// po_params.shape_amount_curves;
+                //this.spline_amount_segments = po_params.spline_amount_segments;
+
+                this.shapes.shape_width = 0;// po_params.shape_width;
+                this.shapes.shape_height = 0; // po_params.shape_height;
+
+                this.shapes.ajust_shape_by_curves = false;// po_params.ajust_shape_by_curves;
+                this.shapes.ajust_curves_by_shape = false;// po_params.ajust_curves_by_shape;
+
+                this.shapes.distance_between_curves_in_percent_of_width = 0;// po_params.distance_between_curves_in_percent_of_width;
+                this.shapes.distance_between_curves = 0;// po_params.distance_bt_curves;
+
+                this.shapes.group_rect = null;
+                this.shapes.segment_gabarits = null; // new struc_gabarits();
+                this.shapes.segment_transform_data = null; // new struc_segment_transform_data();
+                this.shapes.ar_splines = [];// Список group - сплайнов кривых в сцене
+                this.shapes.ar_splines_nodes = [];// Список узлов всех сплайнов
+                this.shapes.ar_selected_segments = []; // список выбранных сегментов 
+                //11042024 this.shapes.height_koef_previous = 0; // 1;
+                this.shapes.ar_shapes_colors = []; // список объектов со сплайнами и цветами фигур, упорядоченных слева направо
+
+
+
+
+
+
+
+
+
+
+
                 po_side.segment_transform_data = null;
                 po_side.segment_gabarits = null;
                 po_side.segments = null;
@@ -3574,6 +3602,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 let lar_no_delete = ["AmbientLight", "SpotLight", "Mesh"];// /*, "Group"*/14102024
                 this.common_func.clearScene(po_side.scene, lar_no_delete);
+
+
+                this.rectangle.shape.scale.y = 1;
             }
 
             catch (e) {

@@ -189,6 +189,16 @@ export function Segments(
 					lo_node.position.y = this.ar_initial_segment_points[lv_k].y * po_transform_data.ky + po_beg_point.y;
 					//lo_node.position.y = (this.ar_initial_segment_points[lv_k].y * po_transform_data.ky + po_beg_point.y) * pv_height_koef; //09062024
 
+					//////03112024 {
+					////// Запись максимальной координаты y сплайнов (длина модели)
+					////if (lo_node.position.y > this.main.current_spline_max_y) {
+
+					////	this.main.current_spline_max_y = lo_node.position.y;
+					////}
+					//////03112024 }
+
+
+
 					lo_node.castShadow = true;
 					lo_node.receiveShadow = true;
 
@@ -257,7 +267,7 @@ export function Segments(
 			let lo_segment_beg_point;
 			let lar_points = [];
 
-			let lo_active_side = get_active_side_shape_generator();
+			//let lo_active_side = get_active_side_shape_generator();
 
 			try {
 
@@ -280,8 +290,8 @@ export function Segments(
 
 					let lo_node; // = new THREE.Vector2();
 
-					//01112024 if ((pv_is_first_segment == true && lv_k == 0) || (pv_is_last_segment == true && lv_k == this.ar_initial_segment_points.length - 1)) {
-					if ((pv_is_first_segment == true && lv_k == 0) || (pv_is_last_segment == true && lv_k == lv_k_end - 1)) {
+					//04112024 if ((pv_is_first_segment == true && lv_k == 0) || (pv_is_last_segment == true && lv_k == lv_k_end - 1)) {
+					if ((pv_is_first_segment == true && lv_k == 0) || (pv_is_last_segment == true && lv_k == lv_k_end)) {  //04112024
 						lo_node = new THREE.Mesh(this.square_geometry, this.material);
 					}
 					else {
@@ -294,13 +304,13 @@ export function Segments(
 					lo_node.position.x = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][0] + po_beg_point.x;
 					lo_node.position.y = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][1] + po_beg_point.y;
 
-					//03112024 {
-					// Запись максимальной координаты y сплайнов (длина модели)
-					if (lo_node.position.y > lo_active_side.current_spline_max_y) {
+					//////03112024 {
+					////// Запись максимальной координаты y сплайнов (длина модели)
+					////if (lo_node.position.y > this.main.current_spline_max_y) {
 
-						lo_active_side.current_spline_max_y = lo_node.position.y;
-					}
-					//03112024 }
+					////	this.main.current_spline_max_y = lo_node.position.y;
+					////}
+					//////03112024 }
 
 
 					lo_node.castShadow = true;

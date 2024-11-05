@@ -12,6 +12,7 @@ using System.IO;
 
 
 using System.Collections;
+using System.Drawing;
 
 namespace jb_api_shg.AppCode
 {
@@ -69,6 +70,7 @@ namespace jb_api_shg.AppCode
         public bool is_space_adjust { get; set; }
         public bool is_curve_width_adjust { get; set; }
         public /*int*/string  color { get; set; }
+        public decimal rectangle_scale_y { get; set; }
 
     }
 

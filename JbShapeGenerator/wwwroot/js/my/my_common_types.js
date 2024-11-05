@@ -99,6 +99,7 @@ export function typ_side_data() {
     this.CurveColors = []; //01112024  new Array();
     this.Segments_beg_points_numbers = []; //01112024  new Array();
     this.PointsCurves = []; // new Array();
+    this.rectangle_scale_y = 0;
 }
 
 //29102024v {

@@ -192,17 +192,14 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
                 for (let lv_i = 0; lv_i < lv_nsegments; lv_i++) {
 
                     lv_beg_segment_node_numb = po_side_data.Segments_beg_points_numbers[pv_curr_spline_number][lv_i];
+                    if (lv_i > 0) {
+                        lv_beg_segment_node_numb = lv_beg_segment_node_numb - 1;
+                    }
 
-                    ////if (pv_curr_spline_number < po_side_data.numCurves - 1) {
-                    ////    lv_end_segment_node_numb = po_side_data.Segments_beg_points_numbers[pv_curr_spline_number][lv_i + 1];
-                    ////}
-                    ////else {
-                    ////    lv_end_segment_node_numb
-                    ////        = po_side_data.Segments_beg_points_numbers[pv_curr_spline_number].length;
-                    ////}
 
                     if (lv_i < lv_nsegments - 1) {
-                        lv_end_segment_node_numb = po_side_data.Segments_beg_points_numbers[pv_curr_spline_number][lv_i + 1];
+                        //014112024 lv_end_segment_node_numb = po_side_data.Segments_beg_points_numbers[pv_curr_spline_number][lv_i + 1];
+                        lv_end_segment_node_numb = po_side_data.Segments_beg_points_numbers[pv_curr_spline_number][lv_i + 1] - 1;
                     }
                     else {
                         lv_end_segment_node_numb

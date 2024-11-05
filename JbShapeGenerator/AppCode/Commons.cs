@@ -1,5 +1,6 @@
 ﻿//using JbShapeGenerator.AppData;
 
+using System.Drawing;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace JbShapeGenerator.AppCode
@@ -282,6 +283,7 @@ namespace JbShapeGenerator.AppCode
         public bool is_space_adjust { get; set; }
         public bool is_curve_width_adjust { get; set; }
         public int color { get; set; }
+        public decimal rectangle_scale_y { get; set; }
     }
 
 
