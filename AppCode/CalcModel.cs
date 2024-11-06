@@ -254,6 +254,7 @@ namespace jb_api_shg.AppCode
             }
             catch (Exception ex)
             {
+                msgCore.FreeKernel(false);
                 return ex.Message;
 
             }
@@ -404,6 +405,8 @@ namespace jb_api_shg.AppCode
             }
             catch (Exception ex)
             {
+
+                msgCore.FreeKernel(false);
 
                 typ_make_model_result_data lv_result_data = new typ_make_model_result_data();
                 lv_result_data.common_outfilename_part = "Making model error";

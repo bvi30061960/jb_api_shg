@@ -813,19 +813,24 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 // обработчики событий gui
                 if (!this.gui) {
 
-                    this.gui = new GUI({ container: document.getElementById(this.id_prefix_wo_sharp + 'id_gui') });
+                    //05112024 {
+                    ////////this.gui = new GUI({ container: document.getElementById(this.id_prefix_wo_sharp + 'id_gui') });
 
-                    this.gui.add(this.params, 'distance_bt_curves', 0, 40).step(0.5).name('Distance  between curves').onChange(this.onChange_distance_bt_curves);
-                    //this.gui.add(this.params, 'shape_height', 20, 300).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param);
-                    this.gui.add(this.params, 'shape_height', 20, 200).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param);
-                    //this.gui.add(this.params, 'shape_width', 10, 200).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param);
-                    this.gui.add(this.params, 'shape_width', 10, 100).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param);
+                    ////////this.gui.add(this.params, 'distance_bt_curves', 0, 40).step(0.5).name('Distance  between curves').onChange(this.onChange_distance_bt_curves).listen();//05112024
+                    //////////this.gui.add(this.params, 'shape_height', 20, 300).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param);
+                    ////////this.gui.add(this.params, 'shape_height', 20, 200).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param).listen();//05112024
+                    //////////this.gui.add(this.params, 'shape_width', 10, 200).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param);
+                    ////////this.gui.add(this.params, 'shape_width', 10, 100).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param).listen();//05112024
 
-                    //this.gui.addColor(this.params, 'color').name('Color');
+                    //////////this.gui.addColor(this.params, 'color').name('Color');
 
-                    this.gui.open();
+                    ////////this.gui.open();
 
 
+                    this.reset_gui_parameters();
+
+
+                    //05112024 }
                 }
 
 
@@ -928,7 +933,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.get_parameters_from_side_data = async function (po_side_data) {
+        Shape_generator.prototype.get_parameters_from_side_data = function (po_side_data) {
 
 
             let ls_parameters = new typ_parameters();
@@ -967,11 +972,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             try {
 
                 if (pv_is_use_data) {
-
                     this.gui.reset();
-                    this.parameters = this.get_parameters_from_side_data(po_side_data);
+                    //05112024 this.parameters = this.get_parameters_from_side_data(po_side_data);
+                    this.params = this.get_parameters_from_side_data(po_side_data); //05112024
                     this.common_func.guiUpdateDisplay(this.gui);
 
+                    this.reset_gui_parameters();
                 }
 
                 this.shapes = new Shapes(
@@ -1002,7 +1008,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 //04112024 {
 
-                this.rectangle = new Rectangle(this.container, this.camera, this.scene, this.params);
+                //05112024 this.rectangle = new Rectangle(this.container, this.camera, this.scene, this.params);
+
+                this.rectangle = new Rectangle(/*this.container, this.camera,*/ this.scene,
+                    this.params.shape_width, this.params.shape_height); //05112024
 
                 //if (pv_is_use_data) {
                 //    ///this.rectangle.shape.scale.y = po_side_data.rectangle_scale_y;
@@ -1041,8 +1050,41 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         }
         //------------------------------------------------------------------------
-        Shape_generator.prototype.refreshModel = async function () {
+        Shape_generator.prototype.reset_gui_parameters = function () {
 
+
+            try {
+
+                if (this.gui) {
+                    this.gui.close();
+                    this.gui.destroy();
+                }
+
+                this.gui = null;
+
+                this.gui = new GUI({ container: document.getElementById(this.id_prefix_wo_sharp + 'id_gui') });
+
+                this.gui.add(this.params, 'distance_bt_curves', 0, 40).step(0.5).name('Distance  between curves').onChange(this.onChange_distance_bt_curves).listen();//05112024
+                this.gui.add(this.params, 'shape_height', 20, 200).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param).listen();//05112024
+                this.gui.add(this.params, 'shape_width', 10, 100).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param).listen();//05112024
+
+                //this.gui.addColor(this.params, 'color').name('Color');
+
+                this.gui.open();
+
+            }
+
+            catch (e) {
+
+                alert('error reset_gui_parameters: ' + e.stack);
+
+            }
+
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.refreshModel = async function () {
             try {
 
 
@@ -2347,7 +2389,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             //po_side.params.shape_height = pv_value;
 
-            let lv_scale = pv_value / po_side.params.shape_height_beg;
+            //05112024 let lv_scale = pv_value / po_side.params.shape_height_beg;
+            //05112024 let lv_scale = pv_value / po_side.params.shape_height;//05112024
+
+            let lv_scale = pv_value / po_side.rectangle.shape_height;//05112024
+
+
             po_side.rectangle.shape.scale.y = lv_scale;
 
             po_side.render();
@@ -2441,7 +2488,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 return;
             }
 
-            let lv_scale = pv_value / lo_active_side.params.shape_width_beg;
+            //05112024 let lv_scale = pv_value / lo_active_side.params.shape_width_beg;
+            let lv_scale = pv_value / lo_active_side.rectangle.shape_width;
 
             if (lo_passive_side) {
                 if (typeof lo_passive_side.gui !== "undefined" && lo_passive_side.gui) {

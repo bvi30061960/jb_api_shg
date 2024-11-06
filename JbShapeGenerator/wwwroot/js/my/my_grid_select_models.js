@@ -534,7 +534,7 @@ export function GridSelectModels(pv_prefix) {
 
             catch (e) {
 
-                alert('error get_read oncomplete_read_model_from_server: ' + e.stack);
+                alert('error oncomplete_read_model_from_server: ' + e.stack);
 
             }
 

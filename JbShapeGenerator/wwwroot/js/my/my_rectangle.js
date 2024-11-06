@@ -5,18 +5,20 @@ import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 
 
 // Class Rectangle
-export function Rectangle(po_container, po_camera, po_scene,
-	po_params
+export function Rectangle(/*po_container, po_camera,*/ po_scene,
+	/*po_params*/ pv_shape_width, pv_shape_height
 
 ) {
 
 	// Свойства
-	this.container = po_container;
-	this.camera = po_camera;
+	//0511204 this.container = po_container;
+	//0511204 this.camera = po_camera;
 	this.scene = po_scene;
 
-	this.shape_width = po_params.shape_width;
-	this.shape_height = po_params.shape_height;
+	////this.shape_width = po_params.shape_width;
+	////this.shape_height = po_params.shape_height;
+	this.shape_width = pv_shape_width;
+	this.shape_height = pv_shape_height;
 
 	this.shape;
 
@@ -34,29 +36,30 @@ export function Rectangle(po_container, po_camera, po_scene,
 
 
 
-		Rectangle.prototype.create_rectangle = function () {
+		//////Rectangle.prototype.create_rectangle = function () {
 
 
-			try {
+		//////	try {
 
 
-			}
+		//////	}
 
-			catch (e) {
+		//////	catch (e) {
 
-				alert('error create_rectangle: ' + e.stack);
+		//////		alert('error create_rectangle: ' + e.stack);
 
-			}
+		//////	}
 
 
-		}
+		//////}
 
 
 		//------------------------------------------------------------------------
-		Rectangle.prototype.create_rectangle = function (pv_distance_bt_curves) {
+		Rectangle.prototype.create_rectangle = function (/*pv_distance_bt_curves*//*pv_shape_width, pv_shape_height*/
+		) {
 
-			const cv_rect_width = this.shape_width; 
-			const cv_rect_height = this.shape_height; 
+			////const cv_rect_width = this.shape_width; 
+			////const cv_rect_height = this.shape_height; 
 
 			try {
 
@@ -64,9 +67,16 @@ export function Rectangle(po_container, po_camera, po_scene,
 
 				const positions = [];
 				positions.push(0, 0, 0);
-				positions.push(0, cv_rect_height, 0);
-				positions.push(cv_rect_width, cv_rect_height, 0);
-				positions.push(cv_rect_width, 0, 0);
+				////positions.push(0, cv_rect_height, 0);
+				////positions.push(cv_rect_width, cv_rect_height, 0);
+				////positions.push(cv_rect_width, 0, 0);
+				////positions.push(pv_shape_width, pv_shape_height, 0);
+				////positions.push(pv_shape_width, 0, 0);
+
+				positions.push(0, this.shape_height, 0);
+				positions.push(this.shape_width, this.shape_height, 0);
+				positions.push(this.shape_width, 0, 0);
+
 				positions.push(0, 0, 0);
 
 
