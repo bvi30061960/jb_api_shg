@@ -434,7 +434,7 @@ namespace jb_api_shg.AppCode
             )
         {
 
-            const int SMOOTH = 130;// 135;// 150;//!!     120; //50;// 
+            const int SMOOTH = 200; // 130;// 135;// 150;//!!     120; //50;// 
 
             msg3DObject result = null;
 

@@ -286,7 +286,8 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 
             try {
                 lo_curve = new THREE.CatmullRomCurve3(par_points);
-                lo_curve_points = lo_curve.getPoints(200);
+                //07112024 lo_curve_points = lo_curve.getPoints(200);
+                lo_curve_points = lo_curve.getPoints(400);//07112024
                 lo_geometry = new THREE.BufferGeometry().setFromPoints(lo_curve_points);
                 lo_material = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 100 });
                 lo_result_curve = new THREE.Line(lo_geometry, lo_material);
