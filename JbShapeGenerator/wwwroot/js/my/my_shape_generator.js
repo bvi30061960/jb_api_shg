@@ -1147,10 +1147,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 // }
 
 
-
-                //let lv_url = "https://localhost:7093/MakeJBModel";
-
-
                 let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_make_model;//07102024
 
 
@@ -1337,7 +1333,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lo_active_side = get_active_side_shape_generator();
             let lo_passive_side = get_passive_side_shape_generator();
 
-            if (po_data == null || po_data == "") {
+            if (po_data == null || po_data == "" || po_data.number_outfiles == 0) {
 
                 ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
                 ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
@@ -1349,7 +1345,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 ////lo_passive_side.is_building_model = false;
 
                 let lv_is_before = false;
-                lo_active_side.do_before_after_model_request(lv_is_before, true);
+                lo_active_side.do_before_after_model_request(lv_is_before, false);
 
                 return;
             }

@@ -282,7 +282,8 @@ namespace JbShapeGenerator.AppCode
         public decimal distance_bt_curves { get; set; }
         public bool is_space_adjust { get; set; }
         public bool is_curve_width_adjust { get; set; }
-        public int color { get; set; }
+        //07112024 public int color { get; set; }
+        public string color { get; set; } //07112024 
         public decimal rectangle_scale_y { get; set; }
     }
 

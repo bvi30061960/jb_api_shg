@@ -5,6 +5,7 @@ using NuGet.Protocol.Plugins;
 using System.IO;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 
+using Newtonsoft.Json;
 
 namespace JbShapeGenerator.AppCode
 {
@@ -79,6 +80,43 @@ namespace JbShapeGenerator.AppCode
                 {
                     writer.Write(lv_base64EncodedBytes);
                 }
+
+
+
+
+                // сохранение фрагмента программы с описанием массива PointsCurves
+                string lv_filename_PointsCurves_array = lv_path_and_name_file_wo_extension + ".txt"; // png;
+
+                typ_sides_data lo_sides_data = JsonConvert.DeserializeObject<typ_sides_data>(united_model_data.sides_data);
+
+                using (StreamWriter sw = new StreamWriter(lv_filename_PointsCurves_array))
+                {
+
+                    string lv_describe_array = "decimal[][] lar_TestPoints = new decimal["
+                        + lo_sides_data.data1.PointsCurves[0].Length.ToString() + "][];";
+
+                    await sw.WriteLineAsync(lv_describe_array);
+
+                    int lv_num_item = 0;
+                    string lv_to_write = "";
+                    foreach (decimal[] lv_item in lo_sides_data.data1.PointsCurves[0])
+                    {
+                        lv_to_write = "lar_TestPoints[" + lv_num_item.ToString()
+                                                    + "] = new decimal[2] {"
+                                                    + Math.Round(lv_item[0], 2, MidpointRounding.AwayFromZero).ToString() + "M," 
+                                                    + Math.Round(lv_item[1], 2, MidpointRounding.AwayFromZero).ToString() + "M};";
+
+                        await sw.WriteLineAsync(lv_to_write);
+
+                        lv_num_item++;
+                    }
+
+
+                }
+
+
+
+
 
 
 
