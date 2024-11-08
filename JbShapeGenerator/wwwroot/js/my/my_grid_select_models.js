@@ -190,7 +190,7 @@ export function GridSelectModels(pv_prefix) {
 
                     //23092021 autowidth: true,
 
-                    hoverrows: false, // подсвечивание строк
+                    hoverrows: true, //false, // подсвечивание строк
 
                     //colNames: ['pathFile', 'Hash_name', '№ п/п', 'Имя настройки', 'Описание', 'Дата изм.', 'Время изм.', '<i class="bi-share"></i>', 'username_hash_with_postfix'],
                     //colModel: [
@@ -254,6 +254,8 @@ export function GridSelectModels(pv_prefix) {
 
                     datatype: 'local',
 
+
+                    onSelectRow: function (e1, e2, e3) { alert("onSelectRow e1=" + e1 + "  e2=" + e2 + "e3= " + e3) },
 
 
                     //deepempty: true,
@@ -320,6 +322,7 @@ export function GridSelectModels(pv_prefix) {
 
 
             let lv_return = pv_cellvalue;
+
 
             try {
                 let lv_str = po_rowObject[1];
@@ -501,16 +504,30 @@ export function GridSelectModels(pv_prefix) {
                 lo_active_side.render_mod();
 
 
-                const loader = new STLLoader();
-                const lo_geometry = loader.parse(lo_data.prev_model);
+
+                let loader = null;
+                let lo_geometry = null;
+
+                if (lo_data.prev_model.length > 100) {
+
+                    loader = new STLLoader();
+                    lo_geometry = loader.parse(lo_data.prev_model);
+
+                }
+
 
                 // Задержка после парсинга ?
                 setTimeout(function () {
 
                     let lo_active_side = get_active_side_shape_generator();
-                    lo_active_side.on_load_model(lo_geometry);
-                    lo_active_side.render_mod();
-                    lo_active_side.draw_shape_by_sides_data(lo_data.sides_data);
+
+                    if (lo_geometry) {
+                        lo_active_side.on_load_model(lo_geometry);
+                        lo_active_side.render_mod();
+                    }
+                    if (lo_data.sides_data) {
+                        lo_active_side.draw_shape_by_sides_data(lo_data.sides_data);
+                    }
 
                 }, 100);
 
