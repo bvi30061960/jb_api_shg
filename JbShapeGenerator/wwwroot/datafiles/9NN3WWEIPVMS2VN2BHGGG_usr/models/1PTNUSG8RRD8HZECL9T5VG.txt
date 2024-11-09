@@ -68,4 +68,4 @@ lar_TestPoints[65] = new decimal[2] {20.04M,185.52M};
 lar_TestPoints[66] = new decimal[2] {36.30M,187.72M};
 lar_TestPoints[67] = new decimal[2] {55.22M,189.55M};
 lar_TestPoints[68] = new decimal[2] {63.54M,196.01M};
-lar_TestPoints[69] = new decimal[2] {64.16M,200.00M};
+lar_TestPoints[69] = new decimal[2] {64.16M,200M};

@@ -215,6 +215,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     //21062024 this.container = document.getElementById(this.id_side_shape);//20062024
 
 
+    this.is_ask_about_save_file = false;
+    this.is_model_changed = false;
+
+
+
+
+
     this.camera;//  = go_camera;
     this.scene;//  = go_scene;
 
@@ -2835,9 +2842,42 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.oncomplete_check_file_exist_on_server = function (pv_is_file_exist) {
 
             try {
-                alert("pv_is_file_exist=" + pv_is_file_exist);
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                if (pv_is_file_exist == Constants.true) {
+
+                    if (lo_active_side.is_ask_about_save_file) {
+
+                        lo_active_side.do_save_model();
+
+                    }
+
+                    else {
+
+                        let lv_question = "File already exists. Replace it?";
+
+                        lo_active_side.common_func.show_question(lv_question,
+                            function () {
+
+                                lo_active_side.do_save_model();
+                                ////lo_active_side.is_ask_about_save_file = true;
+                                ////lo_active_side.is_model_changed = false;
+
+                                ////let lo_sides_data = lo_active_side.read_model_sides_data();
+                                ////let lo_scene_mod = lo_active_side.scene_mod;
+                                ////lo_active_side.common_func.save_model(lo_sides_data, lo_scene_mod);
+
+
+                                $(this).dialog("close");
+                            },
+                            function () { $(this).dialog("close"); }, null);
+
+                    }
+                }
 
             }
+
 
             catch (e) {
 
@@ -2845,6 +2885,21 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
         }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.do_save_model = function () {
+
+
+            this.is_ask_about_save_file = true;
+            this.is_model_changed = false;
+
+            let lo_sides_data = this.read_model_sides_data();
+            let lo_scene_mod = this.scene_mod;
+            this.common_func.save_model(lo_sides_data, lo_scene_mod);
+
+
+        }
+
 
 
         //------------------------------------------------------------------------

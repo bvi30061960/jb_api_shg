@@ -1,6 +1,8 @@
 ﻿
 export var Constants = {
 
+    true : "true",
+    false: "false",
     method_refresh_premodel: "refresh_premodel",
     method_make_model: "make_model",
     method_read_model_parts: "read_model_parts",

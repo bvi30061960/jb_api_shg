@@ -55,22 +55,25 @@ namespace JbShapeGenerator.Pages
         {
 
             string lv_result = "false";
-
-            string? lv_path_filename = "";
+            string? lv_filename = "";
 
 
             try
             {
-                lv_path_filename = Request.Query["filename"];
-                if (lv_path_filename != null && lv_path_filename != "")
+                lv_filename = Request.Query["filename"];
+                if (lv_filename != null && lv_filename != "")
                 {
-                    lv_result = await HandleModel.CheckFileExist(lv_path_filename);
+
+                    HandlePathsAndNames.Create_names_and_directories(PageContext);
+
+
+                    string lv_path_and_name_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename, UsingFileExtensions.dat);
+                    lv_result = await CommonMethods.CheckFileExist(lv_path_and_name_file);
                 }
 
             }
             catch (Exception ex)
             {
-                //return Results.Empty;
                 return new OkObjectResult("false");
             }
 

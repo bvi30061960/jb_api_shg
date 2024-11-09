@@ -159,18 +159,18 @@ namespace JbShapeGenerator.AppCode
 
         } // method 
 
-        //----------------------------------------------------------------------------------------------------------
-        internal static async Task<string> CheckFileExist(string lv_path_filename)
-        {
-            string lv_result = "false";
+        //////----------------------------------------------------------------------------------------------------------
+        ////internal static async Task<string> CheckFileExist(string lv_path_filename)
+        ////{
+        ////    string lv_result = "false";
 
-            if (File.Exists(lv_path_filename))
-            {
-                lv_result = "true";
-            }
+        ////    if (File.Exists(lv_path_filename))
+        ////    {
+        ////        lv_result = "true";
+        ////    }
 
-            return lv_result;
-        }
+        ////    return lv_result;
+        ////}
 
         //----------------------------------------------------------------------------------------------------------
         internal static async Task<string> ReadTextFile(string pv_path_filename)

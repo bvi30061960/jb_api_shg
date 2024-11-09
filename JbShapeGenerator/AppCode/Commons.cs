@@ -538,6 +538,42 @@ namespace JbShapeGenerator.AppCode
             }
         }
 
+
+
+
+        //----------------------------------------------------------------------------------------------------------
+        internal static async Task<string> CheckFileExist(string pv_file_path)
+        {
+            string lv_result = "false";
+
+            if (File.Exists(pv_file_path))
+            {
+                lv_result = "true";
+            }
+
+            return lv_result;
+        }
+
+
+
+        ////----------------------------------------------------------------------------------------------------------
+        //internal static async Task<string> CheckFilesExistByMask(string pv_path_dir, string pv_file_mask)
+        //{
+        //    string lv_result = "false";
+
+        //    if (File.Exists(lv_path_filename))
+        //    {
+        //        lv_result = "true";
+        //    }
+
+        //    return lv_result;
+        //}
+
+
+
+
+
+
         //============================================================================================
         public enum GridFieldsSet
         {

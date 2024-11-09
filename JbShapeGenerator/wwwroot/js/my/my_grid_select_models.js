@@ -492,6 +492,10 @@ export function GridSelectModels(pv_prefix) {
 
                 let lo_active_side = get_active_side_shape_generator();
 
+                lo_active_side.is_ask_about_save_file = false;
+                lo_active_side.is_model_changed = false;
+
+
 
 
 
