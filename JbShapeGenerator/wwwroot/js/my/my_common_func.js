@@ -7,6 +7,9 @@ import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
 import { STLExporter } from 'three/addons/exporters/STLExporter.js';
 
+
+import { Constants } from './my_common_const.js';
+
 import {
     get_active_side_shape_generator,
     get_passive_side_shape_generator
@@ -1066,6 +1069,73 @@ export function CommonFunc() {
             po_group.rotation.y += lv_delta_rotation;
 
         }
+        //------------------------------------------------------------------------
+        CommonFunc.prototype.check_file_exist_on_server = function (pv_filename, pf_callback) {
+
+            let lv_url = "/Index?handler=" + Constants.method_check_file_exist_on_server + "&filename=" + pv_filename;
+
+
+            get_check_file_exist_on_server(lv_url, pf_callback);
+            //--------------------------------------------------
+            async function get_check_file_exist_on_server(pv_url, pf_callback) {
+
+                try {
+
+                    //await $.get(pv_url, "", go_this.oncomplete_check_file_exist_on_server);
+                    await $.get(pv_url, "", pf_callback);
+
+                }
+
+                catch (e) {
+
+                    alert('error get_read_model_from_server: ' + e.stack);
+
+                }
+
+            }
+
+        }
+
+
+        //////------------------------------------------------------------------------------------------
+        ////GridSelectModels.prototype.oncomplete_check_file_exist_on_server = function (po_data) {
+
+        ////    try {
+
+        ////        let lo_active_side = get_active_side_shape_generator();
+
+
+        ////    }
+
+        ////    catch (e) {
+
+        ////        alert('error oncomplete_check_file_exist_on_server: ' + e.stack);
+
+        ////    }
+
+
+        ////}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //------------------------------------------------------------------------
         CommonFunc.prototype.get_delta_rotation = function (pv_rotate_status) {
 

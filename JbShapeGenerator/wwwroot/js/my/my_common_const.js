@@ -7,6 +7,7 @@ export var Constants = {
     method_delete_model_parts: "delete_model_parts",
     method_read_screenshot: "ReadScreenshot",
     method_read_model_from_server: "ReadModelFromServer",
+    method_check_file_exist_on_server: "CheckFileExistOnServer",
 
     file_model_ext: ".stl",
     file_model_screenshot: ".scr",

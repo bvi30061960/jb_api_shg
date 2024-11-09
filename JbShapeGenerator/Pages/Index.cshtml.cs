@@ -48,6 +48,39 @@ namespace JbShapeGenerator.Pages
         {
             //return StatusCode(200);
         }
+
+
+        //-----------------------------------------------------------------------------------------------------
+        public async Task<IActionResult> OnGetCheckFileExistOnServer()
+        {
+
+            string lv_result = "false";
+
+            string? lv_path_filename = "";
+
+
+            try
+            {
+                lv_path_filename = Request.Query["filename"];
+                if (lv_path_filename != null && lv_path_filename != "")
+                {
+                    lv_result = await HandleModel.CheckFileExist(lv_path_filename);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                //return Results.Empty;
+                return new OkObjectResult("false");
+            }
+
+            return new OkObjectResult(lv_result);
+
+        }
+
+
+
+
         //-----------------------------------------------------------------------------------------------------
 
         async public Task<IActionResult> OnPostSaveModel()

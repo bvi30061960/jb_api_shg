@@ -190,7 +190,27 @@ export function GridSelectModels(pv_prefix) {
 
                     //23092021 autowidth: true,
 
-                    hoverrows: true, //false, // подсвечивание строк
+                    hoverrows: true, //true, //false, // подсвечивание строк
+
+                    rowattr: function (rowData, currentObj, rowId) {
+                        /*if (rowData.SomeField == "SomeValue") {*/
+                        return {
+                            //"class": "ui-state-disabled",
+                            "style": "cursor:pointer"
+                        };
+                        /*}*/
+                    },
+
+
+                    onSelectRow: function (rowid, status) {
+                        $('#' + rowid).removeClass('ui-state-highlight');
+
+                        let lo_active_side = get_active_side_shape_generator();
+
+                        lo_active_side.grid_select_models.OndblClickRow(rowid);
+                    },
+
+
 
                     //colNames: ['pathFile', 'Hash_name', '№ п/п', 'Имя настройки', 'Описание', 'Дата изм.', 'Время изм.', '<i class="bi-share"></i>', 'username_hash_with_postfix'],
                     //colModel: [
@@ -250,12 +270,12 @@ export function GridSelectModels(pv_prefix) {
                     /////////////////////////////////editurl: "/Index?handler=GridListBlockSetings?delete=yes", //10092022
 
                     sortorder: 'asc',
-                    ondblClickRow: this.OndblClickRow,
+                    /////////////////// 08112024 ondblClickRow: this.OndblClickRow,
 
                     datatype: 'local',
 
 
-                    onSelectRow: function (e1, e2, e3) { alert("onSelectRow e1=" + e1 + "  e2=" + e2 + "e3= " + e3) },
+                    //////onSelectRow: function (e1, e2, e3) { alert("onSelectRow e1=" + e1 + "  e2=" + e2 + "e3= " + e3) },
 
 
                     //deepempty: true,
@@ -473,17 +493,6 @@ export function GridSelectModels(pv_prefix) {
                 let lo_active_side = get_active_side_shape_generator();
 
 
-                //export function typ_united_model_data() {
-                //    this.model_name = "";
-                //    this.sides_data = "";
-                //    this.prev_model = "";
-                //    this.screenshot = null;
-
-                //}
-
-
-
-
 
 
                 //////// тестовый пример загрузки изображения
@@ -520,6 +529,9 @@ export function GridSelectModels(pv_prefix) {
                 setTimeout(function () {
 
                     let lo_active_side = get_active_side_shape_generator();
+
+                    $("#id_model_name").val(lo_data.model_name);
+
 
                     if (lo_geometry) {
                         lo_active_side.on_load_model(lo_geometry);

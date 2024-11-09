@@ -678,7 +678,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 //this.renderer_mod.setClearColor(0x000fff);//, 1);// цвет фона
-                this.renderer_mod.setClearColor(0xf0f0f0);//, 1);// цвет фона
+                //08112024 this.renderer_mod.setClearColor(0xf0f0f0);//, 1);// цвет фона
+                this.renderer_mod.setClearColor(0xffffff);//, 1);// цвет фона //08112024 
 
 
 
@@ -2811,12 +2812,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-                let lo_active_side_shape_generator = get_active_side_shape_generator();
+                let lo_active_side = get_active_side_shape_generator();
 
-                let lo_sides_data = lo_active_side_shape_generator.read_model_sides_data();
-                let lo_scene_mod = lo_active_side_shape_generator.scene_mod;
+                let lv_filename = $("#id_model_name").val();
+                lo_active_side.common_func.check_file_exist_on_server(lv_filename, lo_active_side.oncomplete_check_file_exist_on_server);
 
-                lo_active_side_shape_generator.common_func.save_model(lo_sides_data, lo_scene_mod);
+
+                ////////////////////////////let lo_sides_data = lo_active_side.read_model_sides_data();
+                ////////////////////////////let lo_scene_mod = lo_active_side.scene_mod;
+                ////////////////////////////lo_active_side.common_func.save_model(lo_sides_data, lo_scene_mod);
+
+
             }
 
             catch (e) {
@@ -2825,6 +2831,21 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
         }
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.oncomplete_check_file_exist_on_server = function (pv_is_file_exist) {
+
+            try {
+                alert("pv_is_file_exist=" + pv_is_file_exist);
+
+            }
+
+            catch (e) {
+
+                alert('error oncomplete_check_file_exist_on_server: ' + e.stack);
+
+            }
+        }
+
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_make_model = function () {
