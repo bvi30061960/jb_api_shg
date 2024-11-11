@@ -33,6 +33,10 @@ export function CommonFunc() {
 
     this.$dialog_question = $("#id_div_dialog_question");
 
+    this.$dialog_message = $("#id_div_dialog_message");
+
+    this.message_timeout = 1500;
+
 
 
     const lo_link = document.createElement('a');
@@ -68,6 +72,24 @@ export function CommonFunc() {
         //-----------------------------------------------------------------------------
         CommonFunc.prototype.init = function () {
 
+            //-----------------------------------------------------------------------------
+
+            this.$dialog_message.dialog({
+                title: "Attention!",
+                autoOpen: false,
+                height: "auto", //100,
+                open: this.on_open_dialog_message, 
+                buttons: {
+                    "Close": function () {
+                        $(this).dialog("close");
+                    }
+                },
+                modal: true,
+                resizable: false,
+            });
+
+
+     
 
             this.$dialog_question.dialog({
                 title: "Attention!",
@@ -477,9 +499,10 @@ export function CommonFunc() {
 
                 //const message = await response.json();
                 const message = await response.text();
-                alert(message);
+                //10112024 alert(message);
+                let lo_active_side = get_active_side_shape_generator();
 
-
+                lo_active_side.common_func.Show_message("Model data saved"); //, 1500);
 
 
 
@@ -1039,7 +1062,8 @@ export function CommonFunc() {
 
             try {
 
-                for (var lv_i = 0; lv_i < po_group.children.length; lv_i++) {
+                //for (var lv_i = 0; lv_i < po_group.children.length; lv_i++) {
+                for (var lv_i = po_group.children.length - 1; lv_i >= 0; lv_i--) {
 
                     this.removeObjectsWithChildren(po_group.children[lv_i], true);
 
@@ -1392,6 +1416,59 @@ export function CommonFunc() {
 
 
         }
+
+
+
+
+        //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.Show_message = function (pv_message, pv_timeout) {
+
+            var lv_message_timeout;
+
+            if (typeof (pv_timeout) == "undefined") {
+
+                lv_message_timeout = Constants.timeout_dialog_message_ms;
+            }
+            else {
+                lv_message_timeout = pv_timeout;
+
+            }
+
+            this.set_message_timeout(lv_message_timeout);
+
+            Constants.div_dialog_message[0].innerText = pv_message;
+            Constants.div_dialog_message.dialog("open");
+
+        }
+        //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.set_message_timeout = function (pv_timeout) {
+            this.message_timeout = pv_timeout;
+        }
+
+        //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.get_message_timeout = function () {
+            return this.message_timeout;
+        }
+
+        //========================================================================================================
+
+        CommonFunc.prototype.on_open_dialog_message = function () {
+
+            let lo_active_side = get_active_side_shape_generator();
+
+            var lv_timeout = lo_active_side.common_func.get_message_timeout();///
+
+            setTimeout(
+                function () {
+                    ///setTimeout(function () {
+                       /// //lc_div_dialog_feedback.dialog("close");
+                        Constants.div_dialog_message.dialog("close");
+                    ///}, 1500)
+
+                }, lv_timeout)
+
+        }   
+
 
 
 

@@ -510,7 +510,8 @@ export function GridSelectModels(pv_prefix) {
 
                 let lo_data = JSON.parse(po_data); //29102024
 
-
+                ////// Очистка группы с превью
+                ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
 
                 // Очистка группы с деталями модели
                 lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);

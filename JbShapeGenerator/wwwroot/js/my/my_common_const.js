@@ -42,12 +42,12 @@ export var Constants = {
     //all_texts_filename: "all_texts.txt",
     //message_count_per_day: 5,
     //feedback_data_cooki_name: "feedback_data",
-    //div_dialog_message: $("#id_div_dialog_message"),
+    div_dialog_message: $("#id_div_dialog_message"),
     //div_dialog_question: $("#id_div_dialog_question"),
     //tooltip_delay_ms: 500,
     //grid_tooltip_delay_ms: 1500,
     //timeout_file_saved_dialog_ms: 1000,
-    //timeout_dialog_message_ms: 1500, //900
+    timeout_dialog_message_ms: 1500, //900
     //path_initial_playback_set: "wwwroot/datafiles/system_files/initial_playback_set.pbs", //06062023
     //is_debug_mode: false, //26112023 true,
     //lang_ru: "ru",

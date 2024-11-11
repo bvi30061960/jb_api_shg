@@ -11,6 +11,8 @@ import { Constants } from './my_common_const.js';
 
 import { CommonFunc } from './my_common_func.js';
 
+import { ProgressDialog } from './my_progress_dialog.js';
+
 import {
     struc_gabarits,
     struc_segment_transform_data,
@@ -847,6 +849,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.common_func = new CommonFunc();
 
+                this.progress_dialog = new ProgressDialog();
 
 
                 //30102024 {
@@ -2874,6 +2877,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                             function () { $(this).dialog("close"); }, null);
 
                     }
+                }
+                else {
+
+                    lo_active_side.do_save_model();
+
                 }
 
             }
