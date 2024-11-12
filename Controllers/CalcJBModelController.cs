@@ -23,6 +23,7 @@ using System;
 using Newtonsoft.Json.Serialization;
 
 using jb_api_shg.AppCode;
+using Windows.Foundation;
 
 namespace jb_api.Controllers
 {
@@ -38,7 +39,13 @@ namespace jb_api.Controllers
         {
             _logger = logger;
         }
+        //----------------------------------------------------------------------------------
 
+        ////[HttpGet(Name = "GetProgressValue")]
+        //////public IEnumerable<CalcModel> Get()
+        ////async public Task<IResult> Get()
+        ////{
+        ////}
         //----------------------------------------------------------------------------------
 
         [HttpGet(Name = "GetCalcJBModel")]
@@ -52,6 +59,14 @@ namespace jb_api.Controllers
 
             switch (Request.Query["method"])
             {
+                case CommonConstants.method_read_progress_value:
+
+                    //return await new OkObjectResult(ProgressStatus.ProgressValue.ToString());
+                    //return await new IResult(ProgressStatus.ProgressValue.ToString());
+
+                    return Results.Text(ProgressStatus.ProgressValue.ToString());
+
+                    break;
                 case CommonConstants.method_read_model_parts:
 
 

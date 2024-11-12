@@ -13,6 +13,7 @@ using System.IO;
 
 using System.Collections;
 using System.Drawing;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace jb_api_shg.AppCode
 {
@@ -69,7 +70,7 @@ namespace jb_api_shg.AppCode
         public decimal distance_bt_curves { get; set; }
         public bool is_space_adjust { get; set; }
         public bool is_curve_width_adjust { get; set; }
-        public /*int*/string  color { get; set; }
+        public /*int*/string color { get; set; }
         public decimal rectangle_scale_y { get; set; }
 
     }
@@ -118,7 +119,28 @@ namespace jb_api_shg.AppCode
 
 
     //******************************************************************************************************************
+    public static class ProgressStatus
+    {
+        public static decimal ProgressValue { get; set; }
 
+        internal static void SetPerc(decimal pv_Perc)
+        {
+            ProgressValue = pv_Perc;
+        }
+
+        internal static void AddToPerc(decimal pv_AddToPerc)
+        {
+            ProgressValue += pv_AddToPerc;
+        }
+
+        internal static void AddFractionWithin(decimal pvMaxPerc, decimal pv_FractionOfConstrain)
+        {
+            ProgressValue += pvMaxPerc * pv_FractionOfConstrain;
+        }
+
+
+    }
+    //******************************************************************************************************************
 
     public class CalcModel
     {
@@ -170,6 +192,7 @@ namespace jb_api_shg.AppCode
 
 
 
+                ProgressStatus.SetPerc(0);
 
 
                 msgCore.InitKernel();
@@ -192,6 +215,7 @@ namespace jb_api_shg.AppCode
                 lo_scene.AttachObject(bx1);
 
 
+                ProgressStatus.SetPerc(5);
 
 
                 const double cv_gap_width = 1;// ширина разделительных поверхностей (просвет между деталями)
@@ -202,8 +226,13 @@ namespace jb_api_shg.AppCode
 
                 // вертикальные разделители
                 msg3DObject lo_separator1 = null;
-                for (int lv_i = 0; lv_i < po_sides_data.data1.numCurves; lv_i++)
+                int lv_i_end1 = po_sides_data.data1.numCurves;
+
+                for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
                 {
+                    ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end1);
+
+
                     lv_side = enum_model_side.up_side;
                     lo_separator1 = GetSeparator(
                                         lo_scene,
@@ -224,8 +253,13 @@ namespace jb_api_shg.AppCode
 
                 // Боковые разделители
                 msg3DObject lo_separator2 = null;
-                for (int lv_i = 0; lv_i < po_sides_data.data2.numCurves; lv_i++)
+
+                int lv_i_end2 = po_sides_data.data2.numCurves;
+
+                for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
                 {
+                    ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end2);
+
                     lv_side = enum_model_side.lateral_side;
                     lo_separator2 = GetSeparator(
                                         lo_scene,
@@ -248,6 +282,9 @@ namespace jb_api_shg.AppCode
 
                 string lv_path_result_file = EndWork(lo_scene);
 
+                ProgressStatus.SetPerc(100);
+
+
                 return lv_path_result_file;
 
 
@@ -262,11 +299,12 @@ namespace jb_api_shg.AppCode
         }
 
         //--------------------------------------------------------------------------------------------------
-        //public static string MakeModel(typ_sides_data? po_sides_data)
         public static typ_make_model_result_data MakeModel(typ_sides_data? po_sides_data)
         {
             try
             {
+
+                ProgressStatus.SetPerc(0);
 
                 msgCore.InitKernel();
 
@@ -303,9 +341,13 @@ namespace jb_api_shg.AppCode
                 Stack<msg3DObject> lar_stack_separators = new Stack<msg3DObject>();
 
                 // вертикальные разделители
+                int lv_i_end1 = po_sides_data.data1.numCurves;
                 msg3DObject lo_separator1 = null;
-                for (int lv_i = 0; lv_i < po_sides_data.data1.numCurves; lv_i++)
+                for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
                 {
+
+                    ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end1);
+
                     //if (lv_i == 1)
                     //{
                     ////int lv_num_separator = lv_i + 1;
@@ -336,9 +378,12 @@ namespace jb_api_shg.AppCode
 
 
                 // Боковые разделители
+                int lv_i_end2 = po_sides_data.data2.numCurves;
                 msg3DObject lo_separator2 = null;
-                for (int lv_i = 0; lv_i < po_sides_data.data2.numCurves; lv_i++)
+                for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
                 {
+                    ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end2);
+
                     lv_side = enum_model_side.lateral_side;
                     ////int lv_num_separator = lv_i + 1;
 
@@ -372,6 +417,7 @@ namespace jb_api_shg.AppCode
 
 
                 // Разрезание
+                ProgressStatus.SetPerc(90);
 
                 Stack<msg3DObject>? lar_stack_result_details = null;
 
@@ -394,6 +440,7 @@ namespace jb_api_shg.AppCode
 
                 msgCore.FreeKernel(false);
 
+                ProgressStatus.SetPerc(100);
 
                 ////string lv_path_result_file = EndWork(lo_scene);
 
@@ -772,6 +819,13 @@ namespace jb_api_shg.AppCode
                 {
 
                     lo_group_result = msgBoolean.Sub(lo_curr_part, lo_curr_separator);
+
+
+                    //if (lo_group_result == null)
+                    //{
+                    //    string lv_null = "null";
+                    //}
+
 
                     if (lo_group_result.isNull())
                     {

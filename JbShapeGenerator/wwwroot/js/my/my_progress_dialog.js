@@ -5,7 +5,12 @@ var go_this = null;
 //================================================================================
 // Class ProgressDialog
 
-export function ProgressDialog() {
+export function ProgressDialog(pv_url, pv_read_method) {
+
+    this.url = pv_url;
+    this.read_method = pv_read_method;
+
+    this.progress_value = 0; // bvi
 
     this.progressTimer = null;
     this.progressbar = $("#id_progressbar");
@@ -15,6 +20,8 @@ export function ProgressDialog() {
     this.dialog = null;
     this.downloadButton = null;
     //this.progressbar = null;
+
+    this.monitoring_server_timer = null;
 
 
     //=====================================================================
@@ -44,6 +51,9 @@ export function ProgressDialog() {
                     open: function () {
                         //go_this.progressTimer = setTimeout(go_this.progress, 2000);
                         go_this.progressTimer = setTimeout(go_this.do_progress, 500);
+
+                        go_this.monitoring_server_timer = setTimeout(go_this.monitoring_server_progress, 1000);//bvi
+
                     },
                     beforeClose: function () {
                         go_this.downloadButton.button("option", {
@@ -104,13 +114,16 @@ export function ProgressDialog() {
         ProgressDialog.prototype.do_progress = function () {
 
             try {
-                //function progress() {
-                var val = go_this.progressbar.progressbar("value") || 0;
+                //bvi var val = go_this.progressbar.progressbar("value") || 0;
 
-                go_this.progressbar.progressbar("value", val + Math.floor(Math.random() * 3));
+                var lv_progress_value = go_this.get_progress_value();// bvi
 
-                if (val <= 99) {
-                    go_this.progressTimer = setTimeout(go_this.do_progress, 50);
+                //go_this.progressbar.progressbar("value", val + Math.floor(Math.random() * 3));
+                go_this.progressbar.progressbar("value", lv_progress_value);
+
+                if (lv_progress_value <= 99) {
+                    //bvi go_this.progressTimer = setTimeout(go_this.do_progress, 50);
+                    go_this.progressTimer = setTimeout(go_this.do_progress, 250); //bvi
                 }
 
             }
@@ -123,12 +136,67 @@ export function ProgressDialog() {
         }
 
         //-----------------------------------------------------------------------------------
+        ProgressDialog.prototype.monitoring_server_progress = function () {
+
+            try {
+
+                let lv_url = go_this.url + "?method=" + go_this.read_method;
+
+                get_monitoring_server_progress(lv_url);
+                //--------------------------------------------------
+                async function get_monitoring_server_progress(pv_url) { //, pf_callback) {
+
+                    try {
+                        await $.get(pv_url, "", go_this.oncomplete_monitoring_server_progress);
+                    }
+
+                    catch (e) {
+
+                        alert('error get_monitoring_server_progress: ' + e.stack);
+
+                    }
+
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error monitoring_server_progress: ' + e.stack);
+
+            }
+        }
+
+        //-----------------------------------------------------------------------------------
+        ProgressDialog.prototype.oncomplete_monitoring_server_progress = function (pv_progress_value) {
+
+            go_this.set_progress_value(pv_progress_value);
+            go_this.monitoring_server_timer = setTimeout(go_this.monitoring_server_progress, 1000);
+
+        }
+
+        //-----------------------------------------------------------------------------------
+        ProgressDialog.prototype.set_progress_value = function (pv_progress_value) {
+
+            this.progress_value = pv_progress_value;
+        }
+        //-----------------------------------------------------------------------------------
+        ProgressDialog.prototype.get_progress_value = function () {
+
+            return this.progress_value;
+        }
+
+        //-----------------------------------------------------------------------------------
         ProgressDialog.prototype.closeDownload = function () {
 
 
             try {
                 //function closeDownload() {
                 clearTimeout(go_this.progressTimer);
+
+                clearTimeout(go_this.monitoring_server_timer);// bvi
+
+
                 go_this.dialog
                     .dialog("option", "buttons", go_this.dialogButtons)
                     .dialog("close");

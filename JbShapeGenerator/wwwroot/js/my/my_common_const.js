@@ -10,6 +10,9 @@ export var Constants = {
     method_read_screenshot: "ReadScreenshot",
     method_read_model_from_server: "ReadModelFromServer",
     method_check_file_exist_on_server: "CheckFileExistOnServer",
+    method_read_progress_value: "read_progress_value",
+
+
 
     file_model_ext: ".stl",
     file_model_screenshot: ".scr",

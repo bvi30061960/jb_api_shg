@@ -394,6 +394,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     //////this.current_spline_max_y = 0; // текущая максимальная координата сплайнов
 
     ////this.current_splines_height = 0;
+
+
+    this.progress_dialog = null;
+
     //--------------------------------------------------------------------------------
 
 
@@ -849,7 +853,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.common_func = new CommonFunc();
 
-                this.progress_dialog = new ProgressDialog();
+                //this.progress_dialog = new ProgressDialog();
 
 
                 //30102024 {
@@ -1104,6 +1108,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 //let lv_method = "refresh";
                 let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_refresh_premodel;//07102024
+
+
+
+                this.progress_dialog = new ProgressDialog("https://localhost:7095/CalcJBModel",
+                                                                Constants.method_read_progress_value);
+                $("#id_downloadButton").click();
+
 
 
                 let lo_sides_data = this.read_model_sides_data();

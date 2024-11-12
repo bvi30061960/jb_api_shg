@@ -9,13 +9,45 @@ using Newtonsoft.Json;
 
 namespace JbShapeGenerator.AppCode
 {
-    public static class HandleModel
+
+    //******************************************************************************************************************
+    public static class ProgressStatus
+    {
+        public static decimal ProgressValue { get; set; }
+
+        //internal static void Clear()
+        //{
+        //    ProgressValue = 0;
+        //}
+        internal static void SetPerc(decimal pv_Perc)
+        {
+            ProgressValue = pv_Perc;
+        }
+
+        internal static void AddToPerc(decimal pv_AddToPerc)
+        {
+            ProgressValue += pv_AddToPerc;
+        }
+
+        internal static void AddFractionWithin(decimal pvMaxPerc, decimal pv_FractionOfConstrain)
+        {
+            ProgressValue += pvMaxPerc * pv_FractionOfConstrain;
+        }
+
+
+    }
+        //******************************************************************************************************************
+
+
+        public static class HandleModel
     {
         async public static Task<IActionResult> SaveModel(HttpRequest po_Request, PageContext po_PageContext)
         {
 
             try
             {
+                ProgressStatus.SetPerc(0);
+
 
                 HandlePathsAndNames.Clear_names_and_paths();
                 HandlePathsAndNames.Create_names_and_directories(po_PageContext);
@@ -48,17 +80,23 @@ namespace JbShapeGenerator.AppCode
                     await sw.WriteAsync(united_model_data.sides_data);
                 }
 
+                ProgressStatus.SetPerc(20);
+
+
+
                 // сохранение файла предварительной модели
                 using (StreamWriter sw = new StreamWriter(lv_filename_prev_model))
                 {
                     await sw.WriteAsync(united_model_data.prev_model);
                 }
+                ProgressStatus.SetPerc(30);
 
                 // сохранение файла копии экрана с изображением модели
                 using (StreamWriter sw = new StreamWriter(lv_filename_screen_model))
                 {
                     await sw.WriteAsync(united_model_data.screenshot);
                 }
+                ProgressStatus.SetPerc(40);
 
 
                 // Преобразование screenshot в формат графического файла
@@ -81,6 +119,7 @@ namespace JbShapeGenerator.AppCode
                     writer.Write(lv_base64EncodedBytes);
                 }
 
+                ProgressStatus.SetPerc(60);
 
 
 
@@ -116,6 +155,7 @@ namespace JbShapeGenerator.AppCode
 
 
 
+                ProgressStatus.SetPerc(85);
 
 
 
@@ -142,6 +182,9 @@ namespace JbShapeGenerator.AppCode
                             new PersistentDictionary<gs_ListFiles>(HandlePathsAndNames.av_path_unic_user_list_files);
 
                 lo_list_model_files.ModifyItem(lv_path_and_name_file_wo_extension, ls_data_file);
+
+
+                ProgressStatus.SetPerc(100);
 
 
             }

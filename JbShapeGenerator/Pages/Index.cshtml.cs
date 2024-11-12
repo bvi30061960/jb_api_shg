@@ -49,6 +49,12 @@ namespace JbShapeGenerator.Pages
             //return StatusCode(200);
         }
 
+        //-----------------------------------------------------------------------------------------------------
+        public async Task<IActionResult> OnGetProgressStatus()
+        {
+            return new OkObjectResult(ProgressStatus.ProgressValue );
+        }
+
 
         //-----------------------------------------------------------------------------------------------------
         public async Task<IActionResult> OnGetCheckFileExistOnServer()
