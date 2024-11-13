@@ -192,7 +192,7 @@ namespace jb_api_shg.AppCode
 
 
 
-                ProgressStatus.SetPerc(0);
+                ProgressStatus.SetPerc(1);
 
 
                 msgCore.InitKernel();
@@ -250,6 +250,7 @@ namespace jb_api_shg.AppCode
                     }
                 }
 
+                ProgressStatus.SetPerc(30);
 
                 // Боковые разделители
                 msg3DObject lo_separator2 = null;
@@ -282,7 +283,7 @@ namespace jb_api_shg.AppCode
 
                 string lv_path_result_file = EndWork(lo_scene);
 
-                ProgressStatus.SetPerc(100);
+                ProgressStatus.SetPerc(49);
 
 
                 return lv_path_result_file;
@@ -417,7 +418,7 @@ namespace jb_api_shg.AppCode
 
 
                 // Разрезание
-                ProgressStatus.SetPerc(90);
+                ProgressStatus.SetPerc(40);
 
                 Stack<msg3DObject>? lar_stack_result_details = null;
 
@@ -440,7 +441,7 @@ namespace jb_api_shg.AppCode
 
                 msgCore.FreeKernel(false);
 
-                ProgressStatus.SetPerc(100);
+                ProgressStatus.SetPerc(50);
 
                 ////string lv_path_result_file = EndWork(lo_scene);
 
