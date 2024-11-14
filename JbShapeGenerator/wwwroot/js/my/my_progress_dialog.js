@@ -13,8 +13,9 @@ export function ProgressDialog(pv_url, pv_read_method) {
     this.progress_value = 0; // bvi
 
     this.progressTimer = null;
-    this.progressbar = $("#id_progressbar");
+    this.progressbar = document.getElementById("id_progressbar"); // $("#id_progressbar");
     this.progressLabel = $(".progress-label");
+
 
     this.dialogButtons = null;
     this.dialog = null;
@@ -35,7 +36,7 @@ export function ProgressDialog(pv_url, pv_read_method) {
 
             try {
 
-                go_this = this;
+                //14112024 go_this = this;
 
 
                 this.dialogButtons = [{
@@ -93,7 +94,8 @@ export function ProgressDialog(pv_url, pv_read_method) {
 
                         //bvi go_this.progressLabel.text("Current Progress: " + go_this.progressbar.progressbar("value") + "%");
                         go_this.progressLabel.text("Current Progress: " + lv_value_progressbar + "%"); //bvi
-                        go_this.progressbar.progressbar("value", lv_value_progressbar);// bvi
+                        //14112024 go_this.progressbar.progressbar("value", lv_value_progressbar);// bvi
+                        go_this.progressbar.value = lv_value_progressbar;// 14112024 bvi
 
                     },
                     complete: function () {
@@ -126,7 +128,27 @@ export function ProgressDialog(pv_url, pv_read_method) {
                 var lv_progress_value = go_this.get_progress_value();// bvi
 
                 //go_this.progressbar.progressbar("value", val + Math.floor(Math.random() * 3));
-                go_this.progressbar.progressbar("value", lv_progress_value);
+                //14112024 go_this.progressbar.progressbar("value", lv_progress_value);
+                go_this.progressbar.value = lv_progress_value;//14112024
+
+
+                let lv_str1 = lv_progress_value.toString();
+                let lv_str2 = (100 - lv_progress_value).toString();
+
+
+                //let lo_table = "<table width=100%><tr><td>{2}%</td></tr>" +
+                //    "<tr><td bgcolor=blue width='{0}%'>&nbsp;</td>" +
+                //    "<td width='{1}%'></td></tr></table>";
+                //let lo_table_str = "<table width=100%><tr><td>" + lv_str1 + "%</td></tr>" +
+                //    "<tr><td bgcolor=blue width='" + lv_str1 + "%'>&nbsp;</td>" +
+                //    "<td width='" + lv_str2 + "%'></td></tr></table>";
+
+
+
+
+                //lo_table = String.format(lo_table, lv_progress_value, 100 - lv_progress_value, lv_progress_value);
+                //$get("id_span_progress_").innerHTML = lo_table_str;
+               /* $("#id_span_progress").innerHTML = lo_table_str;*/
 
                 if (lv_progress_value >= 100) {
 
@@ -196,7 +218,9 @@ export function ProgressDialog(pv_url, pv_read_method) {
 
 
             go_this.progress_value = pv_progress_value;
-            go_this.progressbar.progressbar("value", go_this.progress_value);
+            //14112024 go_this.progressbar.progressbar("value", go_this.progress_value);
+            go_this.progressbar.value = pv_progress_value;//14112024
+
             go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%"); 
 
             if (pv_progress_value < 50) {
@@ -219,7 +243,12 @@ export function ProgressDialog(pv_url, pv_read_method) {
         ProgressDialog.prototype.set_display_value = function (pv_progress_value) {
 
             go_this.progress_value = pv_progress_value;
-            go_this.progressbar.progressbar("value", go_this.progress_value);
+            //14112024 go_this.progressbar.progressbar("value", go_this.progress_value);
+            go_this.progressbar.value = pv_progress_value;//14112024
+
+            pv_progress_value
+
+
             go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%"); 
         }
 
@@ -253,7 +282,10 @@ export function ProgressDialog(pv_url, pv_read_method) {
                 go_this.dialog
                     .dialog("option", "buttons", go_this.dialogButtons)
                     .dialog("close");
-                go_this.progressbar.progressbar("value", false);
+                //14112024 go_this.progressbar.progressbar("value", false);
+                go_this.progressbar.value = false;//14112024
+
+
                 go_this.progressLabel
                     .text("Starting download...");
                 go_this.downloadButton.trigger("focus");
@@ -271,7 +303,12 @@ export function ProgressDialog(pv_url, pv_read_method) {
         }  // if (typeof this.redraw_shapes !== "function")
 
 
-        this.init_progress_dialog();
+        //14112024 ///////////////////////       this.init_progress_dialog();
+
+        go_this = this; //14112024
+
+
+
         //====================================================================
     }
 

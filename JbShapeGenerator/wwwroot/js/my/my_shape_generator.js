@@ -1110,10 +1110,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_refresh_premodel;//07102024
 
 
-
                 this.progress_dialog = new ProgressDialog("https://localhost:7095/CalcJBModel",
                                                                 Constants.method_read_progress_value);
-                $("#id_downloadButton").click();
+                //14112024 {
+                //////////$("#id_downloadButton").click();
+                //14112024 }
+
 
                 let lo_sides_data = this.read_model_sides_data();
 
@@ -1137,49 +1139,61 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.OnCompleteRefreshModel = function (po_data) {
+            try {
 
-            let lo_active_side = get_active_side_shape_generator();
-            let lo_passive_side = get_passive_side_shape_generator();
 
-            if (po_data == null || po_data == "") {
+                let lo_active_side = get_active_side_shape_generator();
+                let lo_passive_side = get_passive_side_shape_generator();
 
-                let lv_is_before = false;
-                lo_active_side.do_before_after_model_request(lv_is_before, false);
+                if (po_data == null || po_data == "") {
 
-                return;
+                    let lv_is_before = false;
+                    lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                    return;
+                }
+
+                //lo_active_side.progress_dialog.set_progress_value(55);
+                //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(55);
+                //lo_active_side.progress_dialog.progressbar.progressbar("value", 55);
+                //lo_active_side.progress_dialog.set_display_value(55);
+                //14112024 lo_active_side.progress_dialog.set_display_value(55);
+                lo_active_side.progress_dialog.progressbar.value = 55; //14112024
+
+                //setTimeout(function () { let a = b; }, 100);
+
+                //setTimeout(
+                //    function () {
+                //        //const loader = new STLLoader();
+                //        //const lo_geometry = loader.parse(po_data);
+
+                //        //// Очистка сцены
+                //        //let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
+                //        //lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+
+                //        //lo_active_side.on_load_model(lo_geometry);
+
+                //    },
+                //        10
+                //);
+
+                const loader = new STLLoader();
+                const lo_geometry = loader.parse(po_data);
+
+                // Очистка сцены
+                let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
+                lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+
+                lo_active_side.on_load_model(lo_geometry);
             }
 
-            //lo_active_side.progress_dialog.set_progress_value(55);
-            //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(55);
-            //lo_active_side.progress_dialog.progressbar.progressbar("value", 55);
-            //lo_active_side.progress_dialog.set_display_value(55);
-            lo_active_side.progress_dialog.set_display_value(55);
-            //setTimeout(function () { let a = b; }, 100);
+            catch (e) {
 
-            //setTimeout(
-            //    function () {
-            //        //const loader = new STLLoader();
-            //        //const lo_geometry = loader.parse(po_data);
+                this.model_params_changed = false; //29082024
 
-            //        //// Очистка сцены
-            //        //let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
-            //        //lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+                alert('error OnCompleteRefreshModel: ' + e.stack);
 
-            //        //lo_active_side.on_load_model(lo_geometry);
-
-            //    },
-            //        10
-            //);
-
-            const loader = new STLLoader();
-            const lo_geometry = loader.parse(po_data);
-
-            // Очистка сцены
-            let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
-            lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
-
-            lo_active_side.on_load_model(lo_geometry);
-
+            }
         }
         //------------------------------------------------------------------------
         Shape_generator.prototype.OnErrorRefreshModel = function () {
@@ -1214,7 +1228,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //lo_active_side.progress_dialog.set_progress_value(70);
             //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(70);
             //lo_active_side.progress_dialog.progressbar.progressbar("value", 70);
-            lo_active_side.progress_dialog.set_display_value(70);
+            //14112024 lo_active_side.progress_dialog.set_display_value(70);
+            //lo_active_side.progressbar.value = 70; //14112024
+            lo_active_side.progress_dialog.progressbar.value = 70; //14112024
 
             //setTimeout(function () { let a = b; }, 100);
 
@@ -1280,7 +1296,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //lo_active_side.progress_dialog.set_progress_value(90);
             //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(90);
             //lo_active_side.progress_dialog.progressbar.progressbar("value", 90);
-            lo_active_side.progress_dialog.set_display_value(90);
+            //14112024 lo_active_side.progress_dialog.set_display_value(90);
+            //lo_active_side.progressbar.value = 90; //14112024
+            lo_active_side.progress_dialog.progressbar.value = 90; //14112024
 
             //setTimeout( function () { }, 100 );
 
@@ -1297,7 +1315,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             //lo_active_side.progress_dialog.set_progress_value(100);
             //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(100);
-            lo_active_side.progress_dialog.set_display_value(100);
+            //14112024 lo_active_side.progress_dialog.set_display_value(100);
+            //lo_active_side.progressbar.value = 100; //14112024
+            lo_active_side.progress_dialog.progressbar.value = 100; //14112024
+
+
 
             ///setTimeout(function () { let a = b; }, 100);
 
@@ -1381,7 +1403,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lo_passive_side = get_passive_side_shape_generator(); //04102024
 
                 try {
-                    lo_active_side.progress_dialog.set_display_value(51);
+                    //14112024 lo_active_side.progress_dialog.set_display_value(51);
+                    //lo_active_side.progressbar.value = 51; //14112024
+                    lo_active_side.progress_dialog.progressbar.value = 51; //14112024
 
                     var lv_for_body = JSON.stringify(po_json_data);
                     const response = await fetch(pv_url, {
