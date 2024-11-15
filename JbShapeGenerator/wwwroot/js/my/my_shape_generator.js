@@ -11,7 +11,8 @@ import { Constants } from './my_common_const.js';
 
 import { CommonFunc } from './my_common_func.js';
 
-import { ProgressDialog } from './my_progress_dialog.js';
+//import { ProgressDialog } from './my_progress_dialog.js';
+import { ProgressBar } from './my_progress_bar.js';
 
 import {
     struc_gabarits,
@@ -396,7 +397,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     ////this.current_splines_height = 0;
 
 
-    this.progress_dialog = null;
+    //this.progress_dialog = null;
+    this.progress_bar = null;
 
     //--------------------------------------------------------------------------------
 
@@ -854,6 +856,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.common_func = new CommonFunc();
 
                 //this.progress_dialog = new ProgressDialog();
+                //this.progress_bar = new ProgressBar();
 
 
                 //30102024 {
@@ -1110,8 +1113,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_refresh_premodel;//07102024
 
 
-                this.progress_dialog = new ProgressDialog("https://localhost:7095/CalcJBModel",
-                                                                Constants.method_read_progress_value);
+                ////this.progress_dialog = new ProgressDialog("https://localhost:7095/CalcJBModel",
+                ////    Constants.method_read_progress_value);
+
+                this.progress_bar = new ProgressBar(this, "https://localhost:7095/CalcJBModel", Constants.method_read_progress_value);
+                this.progress_bar.start_progress();
+
                 //14112024 {
                 //////////$("#id_downloadButton").click();
                 //14112024 }
@@ -1119,7 +1126,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 let lo_sides_data = this.read_model_sides_data();
 
-                this.send_side_data(lv_url, lo_sides_data);
+                this.send_side_data_for_refresh_model(lv_url, lo_sides_data);
 
 
             }
@@ -1133,6 +1140,74 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
         }
 
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.send_side_data_for_refresh_model = function (pv_url, po_json_data) {
+
+
+            try {
+                let lv_is_before = true;
+                this.do_before_after_model_request(lv_is_before, true);
+
+                send_for_refresh_model(pv_url, po_json_data);
+
+
+
+                //-------------------------------------------------------------------
+                async function send_for_refresh_model(pv_url, po_json_data) {
+
+
+                    let lo_active_side = get_active_side_shape_generator(); //04102024
+                    let lo_passive_side = get_passive_side_shape_generator(); //04102024
+
+                    try {
+                        //14112024 lo_active_side.progress_dialog.set_display_value(51);
+                        //lo_active_side.progressbar.value = 51; //14112024
+                        //lo_active_side.progress_dialog.progressbar.value = 51; //14112024
+                        lo_active_side.progress_bar.progressbar.value = 51; //14112024
+
+                        var lv_for_body = JSON.stringify(po_json_data);
+                        const response = await fetch(pv_url, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: lv_for_body
+                        });
+
+                        ////const message = await response.json();
+                        const message = await response.text();
+
+                        lo_active_side.OnCompleteRefreshModel(message);
+
+                    }
+
+                    catch (e) {
+
+
+                        lo_active_side.model_params_changed = false; //04102024
+
+                        let lv_is_before = false;
+                        lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                        alert('error send_for_refresh_model: ' + e.stack);
+
+                    }
+
+                }
+
+
+            }
+
+            catch (e) {
+
+                this.model_params_changed = false; //29082024
+
+                alert('error send_side_data: ' + e.stack);
+
+            }
+        }
 
 
 
@@ -1158,7 +1233,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //lo_active_side.progress_dialog.progressbar.progressbar("value", 55);
                 //lo_active_side.progress_dialog.set_display_value(55);
                 //14112024 lo_active_side.progress_dialog.set_display_value(55);
-                lo_active_side.progress_dialog.progressbar.value = 55; //14112024
+                //lo_active_side.progress_dialog.progressbar.value = 55; //14112024
+                lo_active_side.progress_bar.progressbar.value = 55; //14112024
 
                 //setTimeout(function () { let a = b; }, 100);
 
@@ -1230,7 +1306,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //lo_active_side.progress_dialog.progressbar.progressbar("value", 70);
             //14112024 lo_active_side.progress_dialog.set_display_value(70);
             //lo_active_side.progressbar.value = 70; //14112024
-            lo_active_side.progress_dialog.progressbar.value = 70; //14112024
+            //lo_active_side.progress_dialog.progressbar.value = 70; //14112024
+            lo_active_side.progress_bar.progressbar.value = 70; //14112024
 
             //setTimeout(function () { let a = b; }, 100);
 
@@ -1298,7 +1375,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //lo_active_side.progress_dialog.progressbar.progressbar("value", 90);
             //14112024 lo_active_side.progress_dialog.set_display_value(90);
             //lo_active_side.progressbar.value = 90; //14112024
-            lo_active_side.progress_dialog.progressbar.value = 90; //14112024
+            //lo_active_side.progress_dialog.progressbar.value = 90; //14112024
+            lo_active_side.progress_bar.progressbar.value = 90; //14112024
 
             //setTimeout( function () { }, 100 );
 
@@ -1317,7 +1395,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(100);
             //14112024 lo_active_side.progress_dialog.set_display_value(100);
             //lo_active_side.progressbar.value = 100; //14112024
-            lo_active_side.progress_dialog.progressbar.value = 100; //14112024
+            //lo_active_side.progress_dialog.progressbar.value = 100; //14112024
+            lo_active_side.progress_bar.progressbar.value = 100; //14112024
+            lo_active_side.progress_bar.stop_progress();
 
 
 
@@ -1386,130 +1466,85 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.send_side_data = function (pv_url, po_json_data) {
-
-            let lv_is_before = true;
-            this.do_before_after_model_request(lv_is_before, true);
-
-            send(pv_url, po_json_data);
-
-
-
-            //-------------------------------------------------------------------
-            async function send(pv_url, po_json_data) {
-
-
-                let lo_active_side = get_active_side_shape_generator(); //04102024
-                let lo_passive_side = get_passive_side_shape_generator(); //04102024
-
-                try {
-                    //14112024 lo_active_side.progress_dialog.set_display_value(51);
-                    //lo_active_side.progressbar.value = 51; //14112024
-                    lo_active_side.progress_dialog.progressbar.value = 51; //14112024
-
-                    var lv_for_body = JSON.stringify(po_json_data);
-                    const response = await fetch(pv_url, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: lv_for_body
-                    });
-
-                    ////const message = await response.json();
-                    const message = await response.text();
-
-                    lo_active_side.OnCompleteRefreshModel(message);
-
-                }
-
-                catch (e) {
-
-                    lo_active_side.model_params_changed = false; //04102024
-
-                    let lv_is_before = false;
-                    lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-                }
-
-
-            }
-
-        }
-
-
-        //------------------------------------------------------------------------
         Shape_generator.prototype.send_side_data_make_model = function (pv_url, po_json_data) {
 
-            ////$('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
-            ////$('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
 
-            ////$('#up_id_loading_indicator').show();// индикация ожидания
-            ////$('#lateral_id_loading_indicator').show();// индикация ожидания
+            try {
+                ////$('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+                ////$('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
 
-            ////$('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
-            ////$('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
+                ////$('#up_id_loading_indicator').show();// индикация ожидания
+                ////$('#lateral_id_loading_indicator').show();// индикация ожидания
 
-            ////this.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+                ////$('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
+                ////$('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
 
-            let lv_is_before = true;
-            this.do_before_after_model_request(lv_is_before, true);
+                ////this.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
 
-
-
-            send(pv_url, po_json_data);
-
-            async function send(pv_url, po_json_data) {
+                let lv_is_before = true;
+                this.do_before_after_model_request(lv_is_before, true);
 
 
-                let lo_active_side = get_active_side_shape_generator(); //04102024
-                let lo_passive_side = get_passive_side_shape_generator(); //04102024
 
-                try {
+                send(pv_url, po_json_data);
 
-                    var lv_for_body = JSON.stringify(po_json_data);
-                    const response = await fetch(pv_url, {
-                        method: "POST",
-                        headers: {
-                            //"Accept": "application/json",
-                            "Content-Type": "application/json"
-                        },
-                        body: lv_for_body
-                    });
+                async function send(pv_url, po_json_data) {
 
-                    const message = await response.json();
-                    //const message = await response.text();
 
-                    lo_active_side.OnCompleteMakeModel(message);
+                    let lo_active_side = get_active_side_shape_generator(); //04102024
+                    let lo_passive_side = get_passive_side_shape_generator(); //04102024
+
+                    try {
+
+                        var lv_for_body = JSON.stringify(po_json_data);
+                        const response = await fetch(pv_url, {
+                            method: "POST",
+                            headers: {
+                                //"Accept": "application/json",
+                                "Content-Type": "application/json"
+                            },
+                            body: lv_for_body
+                        });
+
+                        const message = await response.json();
+                        //const message = await response.text();
+
+                        lo_active_side.OnCompleteMakeModel(message);
+
+                    }
+
+                    catch (e) {
+
+                        lo_active_side.model_params_changed = false; //04102024
+
+
+                        // 04102024 {
+                        ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                        ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                        ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                        ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
+
+                        ////lo_active_side.model_params_changed = false;
+                        ////lo_active_side.is_building_model = false;
+                        ////lo_passive_side.is_building_model = false;
+                        // 04102024 }
+                        let lv_is_before = false;
+                        lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+
+                        alert('error send: ' + e.stack);
+
+                    }
+
 
                 }
-
-                catch (e) {
-
-                    lo_active_side.model_params_changed = false; //04102024
-
-
-                    // 04102024 {
-                    ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                    ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-                    ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
-                    ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-
-                    ////lo_active_side.model_params_changed = false;
-                    ////lo_active_side.is_building_model = false;
-                    ////lo_passive_side.is_building_model = false;
-                    // 04102024 }
-                    let lv_is_before = false;
-                    lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-
-                    /////alert('error send: ' + e.stack);
-
-                }
-
-
             }
 
+            catch (e) {
+
+                alert('error send_side_data_make_model: ' + e.stack);
+
+            }
         }
 
         //------------------------------------------------------------------------

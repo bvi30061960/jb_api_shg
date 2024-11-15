@@ -8,8 +8,8 @@
 
 
 @* <div class="text-center"> *@
-    @* <h1 class="display-4">Welcome</h1> *@
-    @* <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
+@* <h1 class="display-4">Welcome</h1> *@
+@* <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p> *@
 @* </div> *@
 
 @* <div id="info">
@@ -32,12 +32,29 @@
 
 
 
-    <div id="id_progress_dialog" title="File Download">
-        <div class="progress-label">Starting download...</div>
-        <progress id="id_progressbar" value="0" max="100"></progress>
-    </div>
 
-    <button id="id_downloadButton">Start Download</button>
+
+
+    @*  <div id="id_progress_dialog" title="File Download"> *@
+    @* <div class="progress-label">Starting download...</div>
+        <progress id="id_progressbar" value="0" max="100"></progress> *@
+    @* </div> *@
+
+
+    @* <div class="progress-label">Starting download...</div> *@
+    @* <div> Uploading Document: *@ 
+
+
+     @* <div>
+        <label id="id_label_progress" ></label>
+        <progress id="id_progressbar" value="0" max="100" > </progress>
+    </div> *@
+
+
+    @* </div> *@
+    @* </label> *@
+
+    @* <button id="id_downloadButton">Start Download</button> *@
     @* <progress id="id_span_progress"></progress> *@
     @* <span id="id_span_progress"></span> *@
 
@@ -55,7 +72,7 @@
             <li><a href="#tab-2">Lateral side</a></li>
         </ul>
 
-        
+
 
         <div id="tab-1">
             <vc:side-shape-generator id_prefix="up" />
@@ -97,7 +114,7 @@
 </div>
 @*============================ grid select model files ===============================*@
 
-             
+
 
 
 
