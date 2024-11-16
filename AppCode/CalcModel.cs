@@ -33,8 +33,8 @@ namespace jb_api_shg.AppCode
 
     public class typ_sides_data
     {
+        public int taskId { set; get; }
         public typ_color_data ColorParts { set; get; }
-
         public typ_side_data data1 { set; get; }
         public typ_side_data data2 { set; get; }
 
@@ -110,7 +110,6 @@ namespace jb_api_shg.AppCode
 
     public class typ_make_model_result_data
     {
-
         public string common_outfilename_part { set; get; }
 
         public int number_outfiles { set; get; }
@@ -119,27 +118,27 @@ namespace jb_api_shg.AppCode
 
 
     //******************************************************************************************************************
-    public static class ProgressStatus
-    {
-        public static decimal ProgressValue { get; set; }
+    ////public static class ProgressStatus
+    ////{
+    ////    public static decimal ProgressValue { get; set; }
 
-        internal static void SetPerc(decimal pv_Perc)
-        {
-            ProgressValue = pv_Perc;
-        }
+    ////    internal static void SetPerc(decimal pv_Perc)
+    ////    {
+    ////        ProgressValue = pv_Perc;
+    ////    }
 
-        internal static void AddToPerc(decimal pv_AddToPerc)
-        {
-            ProgressValue += pv_AddToPerc;
-        }
+    ////    internal static void AddToPerc(decimal pv_AddToPerc)
+    ////    {
+    ////        ProgressValue += pv_AddToPerc;
+    ////    }
 
-        internal static void AddFractionWithin(decimal pvMaxPerc, decimal pv_FractionOfConstrain)
-        {
-            ProgressValue += pvMaxPerc * pv_FractionOfConstrain;
-        }
+    ////    internal static void AddFractionWithin(decimal pvMaxPerc, decimal pv_FractionOfConstrain)
+    ////    {
+    ////        ProgressValue += pvMaxPerc * pv_FractionOfConstrain;
+    ////    }
 
 
-    }
+    ////}
     //******************************************************************************************************************
 
     public class CalcModel
@@ -183,17 +182,17 @@ namespace jb_api_shg.AppCode
         }
 
         //--------------------------------------------------------------------------------------------------
-        public static string RefreshModel(typ_sides_data? po_sides_data)
+        public static string RefreshModel(ISession po_session,  typ_sides_data? po_sides_data)
         {
             try
             {
 
                 //return "";
 
+                ProgressMonitor lo_progressMonitor = new ProgressMonitor(po_session, po_sides_data.taskId);
 
-
-                ProgressStatus.SetPerc(1);
-
+                //ProgressStatus.SetPerc(1);
+                lo_progressMonitor.SetStatus(5);
 
                 msgCore.InitKernel();
 
@@ -215,7 +214,8 @@ namespace jb_api_shg.AppCode
                 lo_scene.AttachObject(bx1);
 
 
-                ProgressStatus.SetPerc(5);
+                //ProgressStatus.SetPerc(5);
+                lo_progressMonitor.SetStatus(10);
 
 
                 const double cv_gap_width = 1;// ширина разделительных поверхностей (просвет между деталями)
@@ -230,7 +230,7 @@ namespace jb_api_shg.AppCode
 
                 for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
                 {
-                    ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end1);
+                    //ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end1);
 
 
                     lv_side = enum_model_side.up_side;
@@ -250,7 +250,8 @@ namespace jb_api_shg.AppCode
                     }
                 }
 
-                ProgressStatus.SetPerc(30);
+                //ProgressStatus.SetPerc(30);
+                lo_progressMonitor.SetStatus(25);
 
                 // Боковые разделители
                 msg3DObject lo_separator2 = null;
@@ -259,7 +260,7 @@ namespace jb_api_shg.AppCode
 
                 for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
                 {
-                    ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end2);
+                    //ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end2);
 
                     lv_side = enum_model_side.lateral_side;
                     lo_separator2 = GetSeparator(
@@ -283,7 +284,8 @@ namespace jb_api_shg.AppCode
 
                 string lv_path_result_file = EndWork(lo_scene);
 
-                ProgressStatus.SetPerc(49);
+                //ProgressStatus.SetPerc(49);
+                lo_progressMonitor.SetStatus(50);
 
 
                 return lv_path_result_file;

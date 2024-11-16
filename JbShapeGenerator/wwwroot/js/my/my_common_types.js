@@ -115,6 +115,9 @@ export function typ_side_data() {
 
 export function typ_sides_data() {
     //this.parameters = new typ_parameters();
+
+    this.taskId = 0;
+
     this.colorParts = new typ_color_data();
     this.data1 = new typ_side_data();
     this.data2 = new typ_side_data();

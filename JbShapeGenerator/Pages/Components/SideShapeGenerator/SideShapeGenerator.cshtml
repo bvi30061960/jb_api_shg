@@ -81,7 +81,7 @@
 
             <div id=@id_shg_right>
 
-                <div id=@id_shg_right_top>
+                <div id=@id_shg_right_top >
 
 
 
@@ -153,19 +153,21 @@
 
 
 
+
                 <div id="@id_div_progressbar">
-                    @* style="visibility:hidden" *@
                     <label id="@id_label_progress"></label>
-                    <progress id="@id_progressbar" value="0" max="100"> </progress>
+                    <progress id="@id_progressbar" value="0" max="100" style="opacity:1;"> </progress>
                 </div>
 
 
-
                 <div id=@id_div_visual_model>
-                    @* style="z-index:1;" *@
 
-                    @* <img src="~/images/wait.gif" id="@id_loading_indicator" /> *@
-
+                @*
+                    <div id="@id_div_progressbar">
+                        <label id="@id_label_progress"></label>
+                        <progress id="@id_progressbar" value="0" max="100" style="opacity:1;"> </progress>
+                    </div>
+                *@
 
                     <div id=@id_dist_part_slider title="Set the distance between parts" style="visibility: hidden">
                         <button id="@id_but_rotate_mode" title="Rotation mode" class="ui-button ui-corner-all">

@@ -440,6 +440,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         ////19102024 po_this.is_building_model = true;
                         ////19102024 lo_passive_side.is_building_model = true;
 
+
                         po_this.refreshModel();
 
                     }
@@ -1103,21 +1104,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.refreshModel = async function () {
+
             try {
-
-
-                //let lv_url = "https://localhost:7093/CalcJBModel";
-                //07102024 let lv_url = "https://localhost:7095/CalcJBModel";
-
-                //let lv_method = "refresh";
-                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_refresh_premodel;//07102024
-
-
-                ////this.progress_dialog = new ProgressDialog("https://localhost:7095/CalcJBModel",
-                ////    Constants.method_read_progress_value);
 
                 this.progress_bar = new ProgressBar(this, "https://localhost:7095/CalcJBModel", Constants.method_read_progress_value);
                 this.progress_bar.start_progress();
+                this.progress_bar.set_display_value(3);
+
+                //let lv_method = "refresh";
+                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_refresh_premodel;
+
 
                 //14112024 {
                 //////////$("#id_downloadButton").click();
@@ -1165,7 +1161,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         //14112024 lo_active_side.progress_dialog.set_display_value(51);
                         //lo_active_side.progressbar.value = 51; //14112024
                         //lo_active_side.progress_dialog.progressbar.value = 51; //14112024
-                        lo_active_side.progress_bar.progressbar.value = 51; //14112024
+                        //lo_active_side.progress_bar.progressbar.value = 51; //14112024
+                        //lo_active_side.progress_bar.set_display_value(51);
+
+
 
                         var lv_for_body = JSON.stringify(po_json_data);
                         const response = await fetch(pv_url, {
@@ -1234,7 +1233,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //lo_active_side.progress_dialog.set_display_value(55);
                 //14112024 lo_active_side.progress_dialog.set_display_value(55);
                 //lo_active_side.progress_dialog.progressbar.value = 55; //14112024
-                lo_active_side.progress_bar.progressbar.value = 55; //14112024
+                //lo_active_side.progress_bar.progressbar.value = 55; //14112024
+                lo_active_side.progress_bar.set_display_value(55);
 
                 //setTimeout(function () { let a = b; }, 100);
 
@@ -1307,7 +1307,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //14112024 lo_active_side.progress_dialog.set_display_value(70);
             //lo_active_side.progressbar.value = 70; //14112024
             //lo_active_side.progress_dialog.progressbar.value = 70; //14112024
-            lo_active_side.progress_bar.progressbar.value = 70; //14112024
+            //lo_active_side.progress_bar.progressbar.value = 70; //14112024
+            lo_active_side.progress_bar.set_display_value(70);
+
+
 
             //setTimeout(function () { let a = b; }, 100);
 
@@ -1376,7 +1379,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //14112024 lo_active_side.progress_dialog.set_display_value(90);
             //lo_active_side.progressbar.value = 90; //14112024
             //lo_active_side.progress_dialog.progressbar.value = 90; //14112024
-            lo_active_side.progress_bar.progressbar.value = 90; //14112024
+            //lo_active_side.progress_bar.progressbar.value = 90; //14112024
+            lo_active_side.progress_bar.set_display_value(90);
 
             //setTimeout( function () { }, 100 );
 
@@ -1396,7 +1400,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //14112024 lo_active_side.progress_dialog.set_display_value(100);
             //lo_active_side.progressbar.value = 100; //14112024
             //lo_active_side.progress_dialog.progressbar.value = 100; //14112024
-            lo_active_side.progress_bar.progressbar.value = 100; //14112024
+            //lo_active_side.progress_bar.progressbar.value = 100; //14112024
+            lo_active_side.progress_bar.set_display_value(100);
             lo_active_side.progress_bar.stop_progress();
 
 

@@ -25,8 +25,45 @@ using Newtonsoft.Json.Serialization;
 using jb_api_shg.AppCode;
 using Windows.Foundation;
 
+
+using System.Threading;
+
 namespace jb_api.Controllers
 {
+
+
+
+    ////public struct gs_data_for_long_task_read_and_translate
+    ////{
+    ////    public string TaskID;
+
+    ////    public FileStream source_fs;
+    ////    public string file_name;
+    ////    public string path_user_directory;
+    ////    public string file_source_name;
+    ////    public string descript_file_source;
+    ////    //public System.Web.Caching.Cache Cache;
+    ////    public HttpContext Current;
+    ////    public bool IsFromClipboardContent;
+    ////    public string path_user_file_temp;
+    ////    ///public HttpSessionState CurrentSession;
+    ////    public ISession CurrentSession;
+
+    ////    public int divider; // Делитель для индикации процесса (количество исполняемых шагов)
+    ////    public bool Is_shared_file; //10032023
+    ////    public string text_theme; //07042023
+
+    ////}
+
+
+
+
+
+
+
+
+
+
     [ApiController]
     [Route("[controller]")]
 
@@ -127,7 +164,7 @@ namespace jb_api.Controllers
                 // получаем данные json
                 var lo_sides_data = await Request.ReadFromJsonAsync<typ_sides_data>();
 
-                if (lo_sides_data == null) // если данные сконвертированы в Person
+                if (lo_sides_data == null)
                 {
                     return Results.StatusCode(300);
                 }
@@ -137,8 +174,38 @@ namespace jb_api.Controllers
                 switch (Request.Query["method"])
                 {
                     case CommonConstants.method_refresh_premodel:
-                    // предварительный вид модели с разрезающими поверхностями
-                        lv_path_result_file = CalcModel.RefreshModel(lo_sides_data);
+
+                        // Создание процесса с длинной задачей
+
+                        ////gs_data_for_long_task_read_and_translate ls_data_for_long_task
+                        ////                    = new gs_data_for_long_task_read_and_translate();
+                        
+                        ////typ_sides_data ls_data_for_long_task = new typ_sides_data();
+
+                        object[] parameters = new object[] { lo_sides_data };
+
+                        ParameterizedThreadStart pts = null;
+                        Thread thr = null;
+
+                        pts = new ParameterizedThreadStart(Read_word_source_file); //10092022
+                        thr = new Thread(pts);
+                        thr.Priority = ThreadPriority.BelowNormal;
+                        thr.Start(parameters);
+                        break;
+
+
+
+
+
+                        // предварительный вид модели с разрезающими поверхностями
+                        lv_path_result_file = CalcModel.RefreshModel(Request.HttpContext.Session, lo_sides_data);
+
+
+
+
+
+
+
 
                         return Results.File(lv_path_result_file); //13102024
 
@@ -146,7 +213,7 @@ namespace jb_api.Controllers
 
 
                     case CommonConstants.method_make_model:
-                    // разрезание исходного тела на детали модели
+                        // разрезание исходного тела на детали модели
 
                         typ_make_model_result_data lv_data_outfiles = CalcModel.MakeModel(lo_sides_data);
 
