@@ -1108,18 +1108,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             try {
 
                 this.progress_bar = new ProgressBar(this, "https://localhost:7095/CalcJBModel", Constants.method_read_progress_value);
-                this.progress_bar.start_progress();
+                //16112024 this.progress_bar.start_progress();
                 this.progress_bar.set_display_value(3);
 
-                //let lv_method = "refresh";
-                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_refresh_premodel;
 
-
-                //14112024 {
-                //////////$("#id_downloadButton").click();
-                //14112024 }
-
-
+                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_start_refresh_premodel;
                 let lo_sides_data = this.read_model_sides_data();
 
                 this.send_side_data_for_refresh_model(lv_url, lo_sides_data);
@@ -1208,9 +1201,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
         }
 
-
-
-
         //------------------------------------------------------------------------
         Shape_generator.prototype.OnCompleteRefreshModel = function (po_data) {
             try {
@@ -1227,40 +1217,33 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     return;
                 }
 
-                //lo_active_side.progress_dialog.set_progress_value(55);
-                //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(55);
-                //lo_active_side.progress_dialog.progressbar.progressbar("value", 55);
-                //lo_active_side.progress_dialog.set_display_value(55);
-                //14112024 lo_active_side.progress_dialog.set_display_value(55);
-                //lo_active_side.progress_dialog.progressbar.value = 55; //14112024
-                //lo_active_side.progress_bar.progressbar.value = 55; //14112024
-                lo_active_side.progress_bar.set_display_value(55);
+                if (po_data.indexOf(Constants.word_taskId) < 0) {
 
-                //setTimeout(function () { let a = b; }, 100);
+                    return;
 
-                //setTimeout(
-                //    function () {
-                //        //const loader = new STLLoader();
-                //        //const lo_geometry = loader.parse(po_data);
+                }
 
-                //        //// Очистка сцены
-                //        //let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
-                //        //lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
 
-                //        //lo_active_side.on_load_model(lo_geometry);
+                lo_active_side.progress_bar.set_display_value(5);
 
-                //    },
-                //        10
-                //);
+                this.progress_bar.start_progress();
 
-                const loader = new STLLoader();
-                const lo_geometry = loader.parse(po_data);
 
-                // Очистка сцены
-                let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
-                lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
 
-                lo_active_side.on_load_model(lo_geometry);
+                /////////////this.refresh_model_data = 
+
+                //16112025 { in the load_refresh_model
+
+                //////const loader = new STLLoader();
+                //////const lo_geometry = loader.parse(po_data);
+
+                //////// Очистка сцены
+                //////let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
+                //////lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+                //////lo_active_side.on_load_model(lo_geometry);
+                //16112025 }
+
+
             }
 
             catch (e) {
@@ -1271,6 +1254,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
         }
+
         //------------------------------------------------------------------------
         Shape_generator.prototype.OnErrorRefreshModel = function () {
 
@@ -1292,7 +1276,20 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         }
 
+        //-------------------------------------------------------------------
+        Shape_generator.prototype.load_refresh_model = function (po_data) {
 
+            let lo_active_side = get_active_side_shape_generator();
+
+            const loader = new STLLoader();
+            const lo_geometry = loader.parse(po_data);
+
+            // Очистка сцены
+            let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
+            lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+
+            lo_active_side.on_load_model(lo_geometry);
+        }
         //-------------------------------------------------------------------
         Shape_generator.prototype.on_load_model = function (geometry_mod) {
 
@@ -1357,10 +1354,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //    },
             //    10
             //);
-
-
-
-
 
 
 

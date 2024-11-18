@@ -4,6 +4,7 @@ export var Constants = {
     true : "true",
     false: "false",
     method_refresh_premodel: "refresh_premodel",
+    method_start_refresh_premodel: "start_refresh_premodel",
     method_make_model: "make_model",
     method_read_model_parts: "read_model_parts",
     method_delete_model_parts: "delete_model_parts",
@@ -11,6 +12,8 @@ export var Constants = {
     method_read_model_from_server: "ReadModelFromServer",
     method_check_file_exist_on_server: "CheckFileExistOnServer",
     method_read_progress_value: "read_progress_value",
+
+    word_taskId: "taskId",
 
 
 

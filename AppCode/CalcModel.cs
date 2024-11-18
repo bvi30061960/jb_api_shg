@@ -25,96 +25,96 @@ namespace jb_api_shg.AppCode
 
     //****************************************************************************************************
 
-    public enum enum_model_side
-    {
-        up_side,
-        lateral_side
-    }
+    ////////public enum enum_model_side
+    ////////{
+    ////////    up_side,
+    ////////    lateral_side
+    ////////}
 
-    public class typ_sides_data
-    {
-        public int taskId { set; get; }
-        public typ_color_data ColorParts { set; get; }
-        public typ_side_data data1 { set; get; }
-        public typ_side_data data2 { set; get; }
+    ////////public class typ_sides_data
+    ////////{
+    ////////    public int taskId { set; get; }
+    ////////    public typ_color_data ColorParts { set; get; }
+    ////////    public typ_side_data data1 { set; get; }
+    ////////    public typ_side_data data2 { set; get; }
 
-    };
-
-
-    public class typ_color_data
-    {
-        public string[][] ColorParts { set; get; }
-    }
+    ////////};
 
 
-    public class typ_parameters
-    {
-        //public bool is_space_adjust { get; set; }
-        //public bool is_curve_width_adjust { get; set; }
-        //public decimal distance_bt_curves { get; set; }
-        //public decimal distance_bt_curves_in_percent { get; set; }
-        //public decimal shape_height { get; set; }
-        //public decimal shape_width { get; set; }
-
-        public decimal container_width { get; set; }
-        public decimal container_height { get; set; }
-        public decimal shape_width_beg { get; set; }
-        public decimal shape_width { get; set; }
-        public decimal shape_height_beg { get; set; }
-        public decimal shape_height { get; set; }
-        public int shape_amount_curves { get; set; }
-        public int spline_amount_segments { get; set; }
-        public bool ajust_curves_by_shape { get; set; }
-        public bool ajust_shape_by_curves { get; set; }
-        public decimal distance_between_curves_in_percent_of_width { get; set; }
-        public decimal distance_bt_curves { get; set; }
-        public bool is_space_adjust { get; set; }
-        public bool is_curve_width_adjust { get; set; }
-        public /*int*/string color { get; set; }
-        public decimal rectangle_scale_y { get; set; }
-
-    }
-
-    public class typ_side_data
-    {
-        public typ_parameters parameters { get; set; }
-        public int numCurves { get; set; }
-        public int idMaterial { get; set; }
-        public int idSize { get; set; }
+    ////////public class typ_color_data
+    ////////{
+    ////////    public string[][] ColorParts { set; get; }
+    ////////}
 
 
-        //public string[] CurveColors { get; set; }
-        //public decimal[][][] PointsCurves { get; set; }
-        //public int[][] Segments_beg_points_numbers { get; set; } //01112024
+    ////////public class typ_parameters
+    ////////{
+    ////////    //public bool is_space_adjust { get; set; }
+    ////////    //public bool is_curve_width_adjust { get; set; }
+    ////////    //public decimal distance_bt_curves { get; set; }
+    ////////    //public decimal distance_bt_curves_in_percent { get; set; }
+    ////////    //public decimal shape_height { get; set; }
+    ////////    //public decimal shape_width { get; set; }
 
-        public bool Lockedit { get; set; }
-        public bool Fl_manual_parameters { get; set; }
-        public decimal M_Material { get; set; }
-        public decimal M_Width { get; set; }
-        public decimal M_Height { get; set; }
-        public decimal M_Length { get; set; }
-        public decimal M_Price_rub { get; set; }
-        public decimal Part_gap { get; set; } //01112024
-        public string[] CurveColors { get; set; }
-        public int[][] Segments_beg_points_numbers { get; set; } //01112024
-        public decimal[][][] PointsCurves { get; set; }
+    ////////    public decimal container_width { get; set; }
+    ////////    public decimal container_height { get; set; }
+    ////////    public decimal shape_width_beg { get; set; }
+    ////////    public decimal shape_width { get; set; }
+    ////////    public decimal shape_height_beg { get; set; }
+    ////////    public decimal shape_height { get; set; }
+    ////////    public int shape_amount_curves { get; set; }
+    ////////    public int spline_amount_segments { get; set; }
+    ////////    public bool ajust_curves_by_shape { get; set; }
+    ////////    public bool ajust_shape_by_curves { get; set; }
+    ////////    public decimal distance_between_curves_in_percent_of_width { get; set; }
+    ////////    public decimal distance_bt_curves { get; set; }
+    ////////    public bool is_space_adjust { get; set; }
+    ////////    public bool is_curve_width_adjust { get; set; }
+    ////////    public /*int*/string color { get; set; }
+    ////////    public decimal rectangle_scale_y { get; set; }
 
-    }
+    ////////}
+
+    ////////public class typ_side_data
+    ////////{
+    ////////    public typ_parameters parameters { get; set; }
+    ////////    public int numCurves { get; set; }
+    ////////    public int idMaterial { get; set; }
+    ////////    public int idSize { get; set; }
 
 
-    public class typ_model_data
-    {
-        public string stl_model_data { set; get; }
-    };
+    ////////    //public string[] CurveColors { get; set; }
+    ////////    //public decimal[][][] PointsCurves { get; set; }
+    ////////    //public int[][] Segments_beg_points_numbers { get; set; } //01112024
+
+    ////////    public bool Lockedit { get; set; }
+    ////////    public bool Fl_manual_parameters { get; set; }
+    ////////    public decimal M_Material { get; set; }
+    ////////    public decimal M_Width { get; set; }
+    ////////    public decimal M_Height { get; set; }
+    ////////    public decimal M_Length { get; set; }
+    ////////    public decimal M_Price_rub { get; set; }
+    ////////    public decimal Part_gap { get; set; } //01112024
+    ////////    public string[] CurveColors { get; set; }
+    ////////    public int[][] Segments_beg_points_numbers { get; set; } //01112024
+    ////////    public decimal[][][] PointsCurves { get; set; }
+
+    ////////}
 
 
-    public class typ_make_model_result_data
-    {
-        public string common_outfilename_part { set; get; }
+    ////////public class typ_model_data
+    ////////{
+    ////////    public string stl_model_data { set; get; }
+    ////////};
 
-        public int number_outfiles { set; get; }
 
-    };
+    ////////public class typ_make_model_result_data
+    ////////{
+    ////////    public string common_outfilename_part { set; get; }
+
+    ////////    public int number_outfiles { set; get; }
+
+    ////////};
 
 
     //******************************************************************************************************************
@@ -182,17 +182,28 @@ namespace jb_api_shg.AppCode
         }
 
         //--------------------------------------------------------------------------------------------------
-        public static string RefreshModel(ISession po_session,  typ_sides_data? po_sides_data)
+        //16112024 public static string RefreshModel(ISession po_session,  typ_sides_data? po_sides_data)
+        public /*static string*/ void RefreshModel(object data)
         {
             try
             {
 
-                //return "";
+                object[] parameters = (object[])data;
+                typ_parameters_for_refresh ls_parameters = (typ_parameters_for_refresh)parameters[0];
+                string lv_taskid = ls_parameters.sides_data.taskId;
+                ISession lo_session = ls_parameters.session;
 
-                ProgressMonitor lo_progressMonitor = new ProgressMonitor(po_session, po_sides_data.taskId);
+                ProgressMonitor lo_progressMonitor = new ProgressMonitor(lo_session, lv_taskid);
 
-                //ProgressStatus.SetPerc(1);
-                lo_progressMonitor.SetStatus(5);
+                string lv_path_file_to_export = GetPathFileToExport();
+
+                typ_monitor_refresh_status ls_monitor_status = new typ_monitor_refresh_status();
+                ls_monitor_status.taskId = lv_taskid;
+                ls_monitor_status.path_result_file = lv_path_file_to_export;
+
+
+                ls_monitor_status.progress_indicator = 7;
+                lo_progressMonitor.SetStatus(ls_monitor_status);
 
                 msgCore.InitKernel();
 
@@ -200,10 +211,13 @@ namespace jb_api_shg.AppCode
                 lo_scene.Clear();
 
 
-                double lv_box_width = double.Parse(po_sides_data.data1.M_Width.ToString());
-                double lv_box_height = double.Parse(po_sides_data.data1.M_Height.ToString());
-                double lv_box_length = double.Parse(po_sides_data.data1.M_Length.ToString());
+                //double lv_box_width = double.Parse(po_sides_data.data1.M_Width.ToString());
+                //double lv_box_height = double.Parse(po_sides_data.data1.M_Height.ToString());
+                //double lv_box_length = double.Parse(po_sides_data.data1.M_Length.ToString());
 
+                double lv_box_width = double.Parse(ls_parameters.sides_data.data1.M_Width.ToString());
+                double lv_box_height = double.Parse(ls_parameters.sides_data.data1.M_Height.ToString());
+                double lv_box_length = double.Parse(ls_parameters.sides_data.data1.M_Length.ToString());
 
 
                 msgBox bx1 = msgBox.Create(lv_box_width, lv_box_length, lv_box_height); // - 10);
@@ -214,8 +228,9 @@ namespace jb_api_shg.AppCode
                 lo_scene.AttachObject(bx1);
 
 
-                //ProgressStatus.SetPerc(5);
-                lo_progressMonitor.SetStatus(10);
+                //lo_progressMonitor.SetStatus(10);
+                ls_monitor_status.progress_indicator = 10;
+                lo_progressMonitor.SetStatus(ls_monitor_status);
 
 
                 const double cv_gap_width = 1;// ширина разделительных поверхностей (просвет между деталями)
@@ -226,7 +241,7 @@ namespace jb_api_shg.AppCode
 
                 // вертикальные разделители
                 msg3DObject lo_separator1 = null;
-                int lv_i_end1 = po_sides_data.data1.numCurves;
+                int lv_i_end1 = ls_parameters.sides_data.data1.numCurves;
 
                 for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
                 {
@@ -238,7 +253,7 @@ namespace jb_api_shg.AppCode
                                         lo_scene,
                                         //lv_variant,
                                         lv_side,
-                                        po_sides_data.data1.PointsCurves[lv_i],
+                                        ls_parameters.sides_data.data1.PointsCurves[lv_i],
                                         lv_box_length,
                                         lv_box_width,
                                         cv_gap_width
@@ -250,13 +265,14 @@ namespace jb_api_shg.AppCode
                     }
                 }
 
-                //ProgressStatus.SetPerc(30);
-                lo_progressMonitor.SetStatus(25);
+                //lo_progressMonitor.SetStatus(25);
+                ls_monitor_status.progress_indicator = 25;
+                lo_progressMonitor.SetStatus(ls_monitor_status);
 
                 // Боковые разделители
                 msg3DObject lo_separator2 = null;
 
-                int lv_i_end2 = po_sides_data.data2.numCurves;
+                int lv_i_end2 = ls_parameters.sides_data.data2.numCurves;
 
                 for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
                 {
@@ -267,7 +283,7 @@ namespace jb_api_shg.AppCode
                                         lo_scene,
                                         //lv_variant,
                                         lv_side,
-                                        po_sides_data.data2.PointsCurves[lv_i],
+                                        ls_parameters.sides_data.data2.PointsCurves[lv_i],
                                         lv_box_length,
                                         lv_box_width,
                                         cv_gap_width
@@ -280,22 +296,25 @@ namespace jb_api_shg.AppCode
                 }
 
 
+                //string lv_path_result_file = EndWorkForRefresh(lo_scene);
 
 
-                string lv_path_result_file = EndWork(lo_scene);
-
-                //ProgressStatus.SetPerc(49);
-                lo_progressMonitor.SetStatus(50);
+                EndWorkForModelRefresh(lo_scene, lv_path_file_to_export);
 
 
-                return lv_path_result_file;
+                //lo_progressMonitor.SetStatus(50);
+                ls_monitor_status.progress_indicator = 50;
+                lo_progressMonitor.SetStatus(ls_monitor_status);
+
+
+                //16112024 return lv_path_result_file;
 
 
             }
             catch (Exception ex)
             {
                 msgCore.FreeKernel(false);
-                return ex.Message;
+                //16112024 return ex.Message;
 
             }
 
@@ -304,169 +323,179 @@ namespace jb_api_shg.AppCode
         //--------------------------------------------------------------------------------------------------
         public static typ_make_model_result_data MakeModel(typ_sides_data? po_sides_data)
         {
-            try
-            {
-
-                ProgressStatus.SetPerc(0);
-
-                msgCore.InitKernel();
-
-                msgScene lo_scene = msgScene.GetScene();
-                lo_scene.Clear();
 
 
-                double lv_box_width = double.Parse(po_sides_data.data1.M_Width.ToString());
-                double lv_box_height = double.Parse(po_sides_data.data1.M_Height.ToString());
-                double lv_box_length = double.Parse(po_sides_data.data1.M_Length.ToString());
+            //////////try
+            //////////{
+
+            //////////    ProgressStatus.SetPerc(0);
+
+            //////////    msgCore.InitKernel();
+
+            //////////    msgScene lo_scene = msgScene.GetScene();
+            //////////    lo_scene.Clear();
 
 
-
-                msgBox bx1 = msgBox.Create(lv_box_width, lv_box_length, lv_box_height); // - 10);
-
-                //////////msgVectorStruct trans_sp = new msgVectorStruct(-5, 2, 2);
-                //////////bx1.InitTempMatrix().Translate(trans_sp);
-                //////////bx1.ApplyTempMatrix();
-                //////////bx1.DestroyTempMatrix();
+            //////////    double lv_box_width = double.Parse(po_sides_data.data1.M_Width.ToString());
+            //////////    double lv_box_height = double.Parse(po_sides_data.data1.M_Height.ToString());
+            //////////    double lv_box_length = double.Parse(po_sides_data.data1.M_Length.ToString());
 
 
 
-                //////////////////////////////////////////////lo_scene.AttachObject(bx1);
+            //////////    msgBox bx1 = msgBox.Create(lv_box_width, lv_box_length, lv_box_height); // - 10);
+
+            //////////    //////////msgVectorStruct trans_sp = new msgVectorStruct(-5, 2, 2);
+            //////////    //////////bx1.InitTempMatrix().Translate(trans_sp);
+            //////////    //////////bx1.ApplyTempMatrix();
+            //////////    //////////bx1.DestroyTempMatrix();
+
+
+
+            //////////    //////////////////////////////////////////////lo_scene.AttachObject(bx1);
 
 
 
 
-                const double cv_gap_width = 1;// ширина разделительных поверхностей (просвет между деталями)
-                ///int lv_variant = 0;
+            //////////    const double cv_gap_width = 1;// ширина разделительных поверхностей (просвет между деталями)
+            //////////    ///int lv_variant = 0;
 
-                enum_model_side lv_side;
+            //////////    enum_model_side lv_side;
 
-                // стек разделителей
-                Stack<msg3DObject> lar_stack_separators = new Stack<msg3DObject>();
+            //////////    // стек разделителей
+            //////////    Stack<msg3DObject> lar_stack_separators = new Stack<msg3DObject>();
 
-                // вертикальные разделители
-                int lv_i_end1 = po_sides_data.data1.numCurves;
-                msg3DObject lo_separator1 = null;
-                for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
-                {
+            //////////    // вертикальные разделители
+            //////////    int lv_i_end1 = po_sides_data.data1.numCurves;
+            //////////    msg3DObject lo_separator1 = null;
+            //////////    for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
+            //////////    {
 
-                    ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end1);
+            //////////        ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end1);
 
-                    //if (lv_i == 1)
-                    //{
-                    ////int lv_num_separator = lv_i + 1;
-                    lv_side = enum_model_side.up_side;
-                    lo_separator1 = GetSeparator(
-                                        lo_scene,
-                                        //lv_variant,
-                                        lv_side,
-                                        ////lv_num_separator,
-                                        po_sides_data.data1.PointsCurves[lv_i],
-                                        lv_box_length,
-                                        lv_box_width,
-                                        cv_gap_width
-                                        );
+            //////////        //if (lv_i == 1)
+            //////////        //{
+            //////////        ////int lv_num_separator = lv_i + 1;
+            //////////        lv_side = enum_model_side.up_side;
+            //////////        lo_separator1 = GetSeparator(
+            //////////                            lo_scene,
+            //////////                            //lv_variant,
+            //////////                            lv_side,
+            //////////                            ////lv_num_separator,
+            //////////                            po_sides_data.data1.PointsCurves[lv_i],
+            //////////                            lv_box_length,
+            //////////                            lv_box_width,
+            //////////                            cv_gap_width
+            //////////                            );
 
-                    if (lo_separator1 != null)
-                    {
-                        ////////lo_scene.AttachObject(lo_separator1);
-                        ////// substraction
-                        ////do_sub(lo_scene, bx1, lo_separator1);
+            //////////        if (lo_separator1 != null)
+            //////////        {
+            //////////            ////////lo_scene.AttachObject(lo_separator1);
+            //////////            ////// substraction
+            //////////            ////do_sub(lo_scene, bx1, lo_separator1);
 
-                        lar_stack_separators.Push(lo_separator1);
+            //////////            lar_stack_separators.Push(lo_separator1);
 
-                    }
+            //////////        }
 
-                    //}
-                }
-
-
-                // Боковые разделители
-                int lv_i_end2 = po_sides_data.data2.numCurves;
-                msg3DObject lo_separator2 = null;
-                for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
-                {
-                    ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end2);
-
-                    lv_side = enum_model_side.lateral_side;
-                    ////int lv_num_separator = lv_i + 1;
-
-                    lo_separator2 = GetSeparator(
-                                        lo_scene,
-                                        //lv_variant,
-                                        lv_side,
-                                        ////lv_num_separator,
-                                        po_sides_data.data2.PointsCurves[lv_i],
-                                        lv_box_length,
-                                        lv_box_width,
-                                        cv_gap_width
-                                        );
-
-                    if (lo_separator2 != null)
-                    {
-                        //////lo_scene.AttachObject(lo_separator2);
-                        //// substraction
-                        //do_sub(lo_scene, bx1, lo_separator2);
-
-                        lar_stack_separators.Push(lo_separator2);
-
-                    }
+            //////////        //}
+            //////////    }
 
 
-                }
+            //////////    // Боковые разделители
+            //////////    int lv_i_end2 = po_sides_data.data2.numCurves;
+            //////////    msg3DObject lo_separator2 = null;
+            //////////    for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
+            //////////    {
+            //////////        ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end2);
+
+            //////////        lv_side = enum_model_side.lateral_side;
+            //////////        ////int lv_num_separator = lv_i + 1;
+
+            //////////        lo_separator2 = GetSeparator(
+            //////////                            lo_scene,
+            //////////                            //lv_variant,
+            //////////                            lv_side,
+            //////////                            ////lv_num_separator,
+            //////////                            po_sides_data.data2.PointsCurves[lv_i],
+            //////////                            lv_box_length,
+            //////////                            lv_box_width,
+            //////////                            cv_gap_width
+            //////////                            );
+
+            //////////        if (lo_separator2 != null)
+            //////////        {
+            //////////            //////lo_scene.AttachObject(lo_separator2);
+            //////////            //// substraction
+            //////////            //do_sub(lo_scene, bx1, lo_separator2);
+
+            //////////            lar_stack_separators.Push(lo_separator2);
+
+            //////////        }
 
 
-                //// substraction
-                //do_sub(lo_scene, bx1, lo_separator1);
+            //////////    }
 
 
-                // Разрезание
-                ProgressStatus.SetPerc(40);
-
-                Stack<msg3DObject>? lar_stack_result_details = null;
+            //////////    //// substraction
+            //////////    //do_sub(lo_scene, bx1, lo_separator1);
 
 
+            //////////    // Разрезание
+            //////////    ProgressStatus.SetPerc(40);
 
-                string lv_common_path_result_files = "";
-
-
-                /////lar_stack_result_details = do_cutting(lo_scene, bx1, lar_stack_separators);
-                //lv_common_path_result_files = do_cutting(lo_scene, bx1, lar_stack_separators);
+            //////////    Stack<msg3DObject>? lar_stack_result_details = null;
 
 
-                ////foreach (msg3DObject lo_curr_res_part in lar_stack_result_details)
-                ////{
-                ////    lo_scene.AttachObject(lo_curr_res_part);
-                ////}
+
+            //////////    string lv_common_path_result_files = "";
 
 
-                typ_make_model_result_data lv_result_data = do_cutting(lo_scene, bx1, lar_stack_separators);
-
-                msgCore.FreeKernel(false);
-
-                ProgressStatus.SetPerc(50);
-
-                ////string lv_path_result_file = EndWork(lo_scene);
-
-                ///return lv_path_result_file;
+            //////////    /////lar_stack_result_details = do_cutting(lo_scene, bx1, lar_stack_separators);
+            //////////    //lv_common_path_result_files = do_cutting(lo_scene, bx1, lar_stack_separators);
 
 
-                return lv_result_data;
+            //////////    ////foreach (msg3DObject lo_curr_res_part in lar_stack_result_details)
+            //////////    ////{
+            //////////    ////    lo_scene.AttachObject(lo_curr_res_part);
+            //////////    ////}
 
-            }
-            catch (Exception ex)
-            {
 
-                msgCore.FreeKernel(false);
+            //////////    typ_make_model_result_data lv_result_data = do_cutting(lo_scene, bx1, lar_stack_separators);
 
-                typ_make_model_result_data lv_result_data = new typ_make_model_result_data();
-                lv_result_data.common_outfilename_part = "Making model error";
-                lv_result_data.number_outfiles = 0;
+            //////////    msgCore.FreeKernel(false);
 
-                return lv_result_data;
+            //////////    ProgressStatus.SetPerc(50);
 
-                //return ex.Message;
+            //////////    ////string lv_path_result_file = EndWork(lo_scene);
 
-            }
+            //////////    ///return lv_path_result_file;
+
+
+
+            typ_make_model_result_data lv_result_data = null;/// 
+
+
+
+            return lv_result_data;
+
+
+
+
+            //////////}
+            //////////catch (Exception ex)
+            //////////{
+
+            //////////    msgCore.FreeKernel(false);
+
+            //////////    typ_make_model_result_data lv_result_data = new typ_make_model_result_data();
+            //////////    lv_result_data.common_outfilename_part = "Making model error";
+            //////////    lv_result_data.number_outfiles = 0;
+
+            //////////    return lv_result_data;
+
+            //////////    //return ex.Message;
+
+            //////////}
 
         }
 
@@ -1008,18 +1037,34 @@ namespace jb_api_shg.AppCode
             }
 
         }
+
         //--------------------------------------------------------------------------------------------------
 
-        static string EndWork(msgScene po_scene)
+        static string GetPathFileToExport()
         {
             string lv_flename = Path.GetFileName(Path.GetTempFileName());
+            string lv_path_fle_to_export = Path.Combine(Environment.CurrentDirectory, CommonConstants.path_temp_data + Path.DirectorySeparatorChar + lv_flename);
 
-            //string lv_path_to_export = Path.Combine(Environment.CurrentDirectory, @"test_data/testResult.stl");
-            string lv_path_to_export = Path.Combine(Environment.CurrentDirectory, @"test_data" + Path.DirectorySeparatorChar + lv_flename);
-            msgFileManager.ExportSTL(po_scene, lv_path_to_export);
+            return lv_path_fle_to_export;
+        }
+
+
+        //--------------------------------------------------------------------------------------------------
+
+        //static string EndWorkForRefresh(msgScene po_scene, string pv_path_fle_to_export)
+        static void EndWorkForModelRefresh(msgScene po_scene, string pv_path_fle_to_export)
+        {
+            ////string lv_flename = Path.GetFileName(Path.GetTempFileName());
+
+            //////string lv_path_to_export = Path.Combine(Environment.CurrentDirectory, @"test_data/testResult.stl");
+            //////16112024 string lv_path_to_export = Path.Combine(Environment.CurrentDirectory, @"test_data" + Path.DirectorySeparatorChar + lv_flename);
+            ////string lv_path_to_export = Path.Combine(Environment.CurrentDirectory, CommonConstants.path_temp_data + Path.DirectorySeparatorChar + lv_flename);
+
+
+            //msgFileManager.ExportSTL(po_scene, lv_path_to_export);
+            msgFileManager.ExportSTL(po_scene, pv_path_fle_to_export);
 
             msgCore.FreeKernel(false);
-
 
             //string lv_stl_text = "";
             //try
@@ -1035,7 +1080,7 @@ namespace jb_api_shg.AppCode
             //}
 
 
-            return lv_path_to_export;
+            ////return lv_path_to_export;
         }
 
     }

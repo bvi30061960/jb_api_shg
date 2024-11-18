@@ -77,6 +77,7 @@ namespace JbShapeGenerator.AppCode
         public const string Separator_between_excel_columns_when_read_file = "@##@";
         public const string Separator_lines_crlf = "\r\n";
         public const string session_username = "session_username";
+        public const string word_taskId = "taskId";
     }
     //******************************************************************************************
     public struct UsingFileExtensions

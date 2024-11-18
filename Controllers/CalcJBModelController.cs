@@ -101,7 +101,13 @@ namespace jb_api.Controllers
                     //return await new OkObjectResult(ProgressStatus.ProgressValue.ToString());
                     //return await new IResult(ProgressStatus.ProgressValue.ToString());
 
-                    return Results.Text(ProgressStatus.ProgressValue.ToString());
+
+                    string lv_taskid_str = Request.Query["taskid"];
+
+                    ProgressMonitor lo_progress_monitor = new ProgressMonitor(Request.HttpContext.Session, lv_taskid_str);
+
+
+                    return Results.Text(lo_progress_monitor.GetStatus() );
 
                     break;
                 case CommonConstants.method_read_model_parts:
@@ -173,43 +179,35 @@ namespace jb_api.Controllers
 
                 switch (Request.Query["method"])
                 {
-                    case CommonConstants.method_refresh_premodel:
+                    //case CommonConstants.method_refresh_premodel:
+                    case CommonConstants.method_start_refresh_premodel:
 
                         // Создание процесса с длинной задачей
 
-                        ////gs_data_for_long_task_read_and_translate ls_data_for_long_task
-                        ////                    = new gs_data_for_long_task_read_and_translate();
                         
-                        ////typ_sides_data ls_data_for_long_task = new typ_sides_data();
+                        typ_parameters_for_refresh parameters_for_refresh = new typ_parameters_for_refresh();
 
-                        object[] parameters = new object[] { lo_sides_data };
+                        parameters_for_refresh.session = Request.HttpContext.Session;
+                        parameters_for_refresh.sides_data = lo_sides_data;
 
+                        object[] parameters = new object[] { parameters_for_refresh };
                         ParameterizedThreadStart pts = null;
                         Thread thr = null;
 
-                        pts = new ParameterizedThreadStart(Read_word_source_file); //10092022
+                        CalcModel lo_calcmodel = new CalcModel();
+                        pts = new ParameterizedThreadStart(lo_calcmodel.RefreshModel); //10092022
                         thr = new Thread(pts);
                         thr.Priority = ThreadPriority.BelowNormal;
                         thr.Start(parameters);
+
+                        return Results.Text(CommonConstants.word_taskId + "=" + lo_sides_data.taskId.ToString());
                         break;
 
 
-
-
-
-                        // предварительный вид модели с разрезающими поверхностями
-                        lv_path_result_file = CalcModel.RefreshModel(Request.HttpContext.Session, lo_sides_data);
-
-
-
-
-
-
-
-
-                        return Results.File(lv_path_result_file); //13102024
-
-                        break;
+                        ////// предварительный вид модели с разрезающими поверхностями
+                        ////lv_path_result_file = CalcModel.RefreshModel(Request.HttpContext.Session, lo_sides_data);
+                        ////return Results.File(lv_path_result_file); //13102024
+                        ////break;
 
 
                     case CommonConstants.method_make_model:

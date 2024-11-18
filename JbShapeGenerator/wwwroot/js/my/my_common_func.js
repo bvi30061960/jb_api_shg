@@ -78,7 +78,7 @@ export function CommonFunc() {
                 title: "Attention!",
                 autoOpen: false,
                 height: "auto", //100,
-                open: this.on_open_dialog_message, 
+                open: this.on_open_dialog_message,
                 buttons: {
                     "Close": function () {
                         $(this).dialog("close");
@@ -89,7 +89,7 @@ export function CommonFunc() {
             });
 
 
-     
+
 
             this.$dialog_question.dialog({
                 title: "Attention!",
@@ -1461,15 +1461,23 @@ export function CommonFunc() {
             setTimeout(
                 function () {
                     ///setTimeout(function () {
-                       /// //lc_div_dialog_feedback.dialog("close");
-                        Constants.div_dialog_message.dialog("close");
+                    /// //lc_div_dialog_feedback.dialog("close");
+                    Constants.div_dialog_message.dialog("close");
                     ///}, 1500)
 
                 }, lv_timeout)
 
-        }   
+        }
 
 
+        //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.get_random_number_int = function (pv_min, pv_max) {
+
+            let lv_number_dec = (pv_max - pv_min + 1) * Math.random + pv_min;
+            let lv_number_int = Math.floor(lv_number_dec);
+
+            return lv_number_int;
+        }
 
 
         //======================================================================================
