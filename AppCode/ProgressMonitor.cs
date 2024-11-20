@@ -8,7 +8,7 @@ namespace jb_api_shg.AppCode
     public interface IProgressMonitor
     {
         //void SetStatus(/*int pv_taskId,*/ object pv_message);
-        void SetStatus(typ_monitor_refresh_status pv_message);
+        void SetStatus(typ_progress_status pv_message);
         string GetStatus(/*int pv_taskId*/);
     }
 
@@ -19,12 +19,13 @@ namespace jb_api_shg.AppCode
         //public PageContext ao_pageContext { set; get; }
         public ISession ao_session { set; get; }
 
+        //private ISession session => httpContext.Session;
 
         public string av_taskId { set; get; }
 
         //typ_monitor_refresh_answer
 
-
+        //public ISession ao_session { set; get; }
         public ProgressMonitor(/*PageContext po_PageContext,*/ISession po_session, string pv_taskId)
         {
             //ao_pageContext = po_PageContext;
@@ -35,12 +36,25 @@ namespace jb_api_shg.AppCode
 
         // Установка текущего статуса задачи
         //public void SetStatus(/*int pv_taskId, */object pv_message)
-        public void SetStatus(typ_monitor_refresh_status pv_message)
+        public void SetStatus(typ_progress_status pv_message)
         {
-            string lv_message_str = JsonConvert.SerializeObject(pv_message);
-            //ao_pageContext.HttpContext.Session.SetString(av_taskId.ToString(), pv_message.ToString());
-            //ao_session.SetString(av_taskId.ToString(), pv_message.ToString());
-            ao_session.SetString(av_taskId.ToString(), lv_message_str);
+            try
+            {
+                string lv_message_str = "123";// JsonConvert.SerializeObject(pv_message);
+                //ao_pageContext.HttpContext.Session.SetString(av_taskId.ToString(), pv_message.ToString());
+                //ao_session.SetString(av_taskId.ToString(), pv_message.ToString());
+
+
+                ao_session.SetString(av_taskId, lv_message_str);
+
+                //ao_session.SetString(av_taskId, lv_message_str);
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
 
         }
 

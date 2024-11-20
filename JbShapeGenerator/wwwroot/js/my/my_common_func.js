@@ -1473,12 +1473,25 @@ export function CommonFunc() {
         //---------------------------------------------------------------------------------------------
         CommonFunc.prototype.get_random_number_int = function (pv_min, pv_max) {
 
-            let lv_number_dec = (pv_max - pv_min + 1) * Math.random + pv_min;
+            let lv_number_dec = (pv_max - pv_min + 1) * Math.random() + pv_min;
             let lv_number_int = Math.floor(lv_number_dec);
 
             return lv_number_int;
         }
 
+
+
+        ////CommonFunc.prototype.getJSessionId = function () {
+
+        ////    var jsId = document.cookie.match(/JSESSIONID=[^;]+/);
+        ////    if (jsId != null) {
+        ////        if (jsId instanceof Array)
+        ////            jsId = jsId[0].substring(11);
+        ////        else
+        ////            jsId = jsId.substring(11);
+        ////    }
+        ////    return jsId;
+        ////}
 
         //======================================================================================
         //======================================================================================

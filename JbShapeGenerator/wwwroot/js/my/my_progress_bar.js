@@ -1,4 +1,5 @@
-﻿
+﻿//import { CommonFunc } from './my_common_func.js';
+
 
 var go_this = null;
 
@@ -7,6 +8,7 @@ var go_this = null;
 
 export function ProgressBar(po_side, pv_url, pv_read_method) {
 
+    this.shg_side = po_side;
     this.url = pv_url;
     this.read_method = pv_read_method;
 
@@ -31,97 +33,102 @@ export function ProgressBar(po_side, pv_url, pv_read_method) {
     //=====================================================================
 
     //if (typeof this.init_progress_bar != "function") {
-    if (typeof this.start_progress != "function") {
+    if (typeof this.init_progress_bar != "function") {
 
 
         //-----------------------------------------------------------------------------------
 
-        //////ProgressBar.prototype.init_progress_bar = function () {
+        ProgressBar.prototype.init_progress_bar = function () {
 
-        //////    try {
+            try {
 
-        //////        //go_this = this;
+                go_this = this; //14112024
 
-
-        //////        //this.dialogButtons = [{
-        //////        //    text: "Cancel Download",
-        //////        //    click: go_this.closeDownload
-        //////        //}];
-
-        //////        ////this.dialog = $("#id_progress_dialog").dialog({
-        //////        ////    autoOpen: false,
-        //////        ////    closeOnEscape: false,
-        //////        ////    resizable: false,
-        //////        ////    buttons: go_this.dialogButtons,
-        //////        ////    open: function () {
-        //////        ////        //go_this.progressTimer = setTimeout(go_this.progress, 2000);
-        //////        ////        go_this.progressTimer = setTimeout(go_this.do_progress, 100);
-
-        //////        ////        go_this.monitoring_server_timer = setTimeout(go_this.monitoring_server_progress, 1);//bvi
-
-        //////        ////    },
-        //////        ////    beforeClose: function () {
-        //////        ////        go_this.downloadButton.button("option", {
-        //////        ////            disabled: false,
-        //////        ////            label: "Start Download"
-        //////        ////        });
-        //////        ////    }
-        //////        ////});
-
-        //////        ////this.downloadButton = $("#id_downloadButton")
-        //////        ////    .button()
-        //////        ////    .on("click", function () {
-
-        //////        ////        try {
-        //////        ////            $(this).button("option", {
-        //////        ////                disabled: true,
-        //////        ////                label: "Downloading..."
-        //////        ////            });
-        //////        ////            go_this.dialog.dialog("open");
-
-        //////        ////        }
-
-        //////        ////        catch (e) {
-
-        //////        ////            alert('error on_click_downloadButton: ' + e.stack);
-
-        //////        ////        }
-
-        //////        ////    });
+                this.taskId = this.shg_side.common_func.get_random_number_int(1, 9999999999).toString();
 
 
-        //////        ////this.progressbar.progressbar({
-        //////        ////    value: false,
-        //////        ////    change: function () {
-        //////        ////        let lv_value_progressbar = go_this.get_progress_value(); // go_this.progressbar.progressbar("value");
+                //////        //go_this = this;
 
 
-        //////        ////        //bvi go_this.progressLabel.text("Current Progress: " + go_this.progressbar.progressbar("value") + "%");
-        //////        ////        go_this.progressLabel.text("Current Progress: " + lv_value_progressbar + "%"); //bvi
-        //////        ////        //14112024 go_this.progressbar.progressbar("value", lv_value_progressbar);// bvi
-        //////        ////        go_this.progressbar.value = lv_value_progressbar;// 14112024 bvi
+                //////        //this.dialogButtons = [{
+                //////        //    text: "Cancel Download",
+                //////        //    click: go_this.closeDownload
+                //////        //}];
 
-        //////        ////    },
-        //////        ////    complete: function () {
-        //////        ////        go_this.progressLabel.text("Complete!");
-        //////        ////        go_this.dialog.dialog("option", "buttons", [{
-        //////        ////            text: "Close",
-        //////        ////            click: go_this.closeDownload
-        //////        ////        }]);
-        //////        ////        $(".ui-dialog button").last().trigger("focus");
-        //////        ////        setTimeout(go_this.dialog.dialog("close"), 2000);//bvi
-        //////        ////    }
-        //////        ////});
+                //////        ////this.dialog = $("#id_progress_dialog").dialog({
+                //////        ////    autoOpen: false,
+                //////        ////    closeOnEscape: false,
+                //////        ////    resizable: false,
+                //////        ////    buttons: go_this.dialogButtons,
+                //////        ////    open: function () {
+                //////        ////        //go_this.progressTimer = setTimeout(go_this.progress, 2000);
+                //////        ////        go_this.progressTimer = setTimeout(go_this.do_progress, 100);
 
-        //////    }
+                //////        ////        go_this.monitoring_server_timer = setTimeout(go_this.monitoring_server_progress, 1);//bvi
 
-        //////    catch (e) {
+                //////        ////    },
+                //////        ////    beforeClose: function () {
+                //////        ////        go_this.downloadButton.button("option", {
+                //////        ////            disabled: false,
+                //////        ////            label: "Start Download"
+                //////        ////        });
+                //////        ////    }
+                //////        ////});
 
-        //////        alert('error init_progress_bar: ' + e.stack);
+                //////        ////this.downloadButton = $("#id_downloadButton")
+                //////        ////    .button()
+                //////        ////    .on("click", function () {
 
-        //////    }
+                //////        ////        try {
+                //////        ////            $(this).button("option", {
+                //////        ////                disabled: true,
+                //////        ////                label: "Downloading..."
+                //////        ////            });
+                //////        ////            go_this.dialog.dialog("open");
 
-        //////}
+                //////        ////        }
+
+                //////        ////        catch (e) {
+
+                //////        ////            alert('error on_click_downloadButton: ' + e.stack);
+
+                //////        ////        }
+
+                //////        ////    });
+
+
+                //////        ////this.progressbar.progressbar({
+                //////        ////    value: false,
+                //////        ////    change: function () {
+                //////        ////        let lv_value_progressbar = go_this.get_progress_value(); // go_this.progressbar.progressbar("value");
+
+
+                //////        ////        //bvi go_this.progressLabel.text("Current Progress: " + go_this.progressbar.progressbar("value") + "%");
+                //////        ////        go_this.progressLabel.text("Current Progress: " + lv_value_progressbar + "%"); //bvi
+                //////        ////        //14112024 go_this.progressbar.progressbar("value", lv_value_progressbar);// bvi
+                //////        ////        go_this.progressbar.value = lv_value_progressbar;// 14112024 bvi
+
+                //////        ////    },
+                //////        ////    complete: function () {
+                //////        ////        go_this.progressLabel.text("Complete!");
+                //////        ////        go_this.dialog.dialog("option", "buttons", [{
+                //////        ////            text: "Close",
+                //////        ////            click: go_this.closeDownload
+                //////        ////        }]);
+                //////        ////        $(".ui-dialog button").last().trigger("focus");
+                //////        ////        setTimeout(go_this.dialog.dialog("close"), 2000);//bvi
+                //////        ////    }
+                //////        ////});
+
+            }
+
+            catch (e) {
+
+                alert('error init_progress_bar: ' + e.stack);
+
+            }
+
+        }
 
 
         //-----------------------------------------------------------------------------------
@@ -136,7 +143,7 @@ export function ProgressBar(po_side, pv_url, pv_read_method) {
                 //go_this.div_progressbar.toggle("clip");
 
 
-                go_this.taskId = get_random_number_int(1, 9999999999).toString();
+                //go_this.taskId = get_random_number_int(1, 9999999999).toString();
                 go_this.monitoring_server_timer = setTimeout(go_this.monitoring_server_progress, 500);
             }
 
@@ -247,8 +254,8 @@ export function ProgressBar(po_side, pv_url, pv_read_method) {
 
             try {
 
-                let lv_url = go_this.url + "?method=" + go_this.read_method + 
-                    "?taskid=" + go_this.taskId;
+                let lv_url = go_this.url + "?method=" + go_this.read_method +
+                    "&taskid=" + go_this.taskId;
 
                 get_monitoring_server_progress(lv_url);
 
@@ -279,25 +286,36 @@ export function ProgressBar(po_side, pv_url, pv_read_method) {
         //-----------------------------------------------------------------------------------
         ProgressBar.prototype.oncomplete_monitoring_server_progress = function (pv_progress_value) {
 
-            go_this.set_progress_value(pv_progress_value);
-            go_this.progress_bar.set_display_value(pv_progress_value);
+            try {
+
+                go_this.set_progress_value(pv_progress_value);
+                go_this.progress_bar.set_display_value(pv_progress_value);
 
 
-            //go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%");
+                //go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%");
 
-            if (pv_progress_value <= 50) {
+                if (pv_progress_value <= 50) {
 
-                //go_this.progress_value = pv_progress_value;
-                //go_this.progressbar.progressbar("value", go_this.progress_value);
-                //go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%"); 
+                    //go_this.progress_value = pv_progress_value;
+                    //go_this.progressbar.progressbar("value", go_this.progress_value);
+                    //go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%"); 
 
 
-                go_this.monitoring_server_timer = setTimeout(go_this.monitoring_server_progress, 500);
+                    go_this.monitoring_server_timer = setTimeout(go_this.monitoring_server_progress, 500);
+                }
+                else {
+
+                    stop_monitoring();
+                }
+
             }
-            else {
 
-                stop_monitoring();
+            catch (e) {
+
+                alert('error oncomplete_monitoring_server_progress: ' + e.stack);
+
             }
+
         }
         //-----------------------------------------------------------------------------------
         ProgressBar.prototype.set_display_value = function (pv_progress_value) {
@@ -370,9 +388,9 @@ export function ProgressBar(po_side, pv_url, pv_read_method) {
         }  // if (typeof this.redraw_shapes !== "function")
 
 
-        //14112024 ///////////////////////       this.init_progress_dialog();
+        this.init_progress_bar();
 
-        go_this = this; //14112024
+        //go_this = this; //14112024
 
 
 

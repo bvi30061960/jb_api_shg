@@ -67,7 +67,7 @@ namespace jb_api.Controllers
     [ApiController]
     [Route("[controller]")]
 
-    public class CalcJBModelController : ControllerBase
+    public class CalcJBModelController : Controller //18112024 ControllerBase
     {
 
         private readonly ILogger<CalcJBModelController> _logger;
@@ -98,13 +98,26 @@ namespace jb_api.Controllers
             {
                 case CommonConstants.method_read_progress_value:
 
-                    //return await new OkObjectResult(ProgressStatus.ProgressValue.ToString());
-                    //return await new IResult(ProgressStatus.ProgressValue.ToString());
+                    // Открытие файла индикации процессов
+                    string lv_path_dict_progress = Path.Combine(Environment.CurrentDirectory,
+                        Path.Combine(CommonConstants.path_AppData,CommonConstants.filename_dict_progress));
+
+
+
+                    PersistentDictionary<typ_progress_status> lo_list_progress_status =
+                                new PersistentDictionary<typ_progress_status>(lv_path_dict_progress);
+
+                    //lo_list_model_files.ModifyItem(lv_path_and_name_file_wo_extension, ls_data_file);
+
+
+
+
 
 
                     string lv_taskid_str = Request.Query["taskid"];
 
-                    ProgressMonitor lo_progress_monitor = new ProgressMonitor(Request.HttpContext.Session, lv_taskid_str);
+                    //ProgressMonitor lo_progress_monitor = new ProgressMonitor(Request.HttpContext.Session, lv_taskid_str);
+                    ProgressMonitor lo_progress_monitor = new ProgressMonitor(HttpContext.Session, lv_taskid_str);
 
 
                     return Results.Text(lo_progress_monitor.GetStatus() );
@@ -187,7 +200,7 @@ namespace jb_api.Controllers
                         
                         typ_parameters_for_refresh parameters_for_refresh = new typ_parameters_for_refresh();
 
-                        parameters_for_refresh.session = Request.HttpContext.Session;
+                        parameters_for_refresh.session = HttpContext.Session;
                         parameters_for_refresh.sides_data = lo_sides_data;
 
                         object[] parameters = new object[] { parameters_for_refresh };

@@ -17,9 +17,28 @@ namespace jb_api_shg
                                         // 01092024 }
 
 
+
+
+
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+
+            //18112024 { Разрешение использование сессии
+
+            //////builder.Services.AddDistributedMemoryCache();
+
+            //////builder.Services.AddSession(options =>
+            //////{
+            //////    options.IdleTimeout = TimeSpan.FromSeconds(10);
+            //////    options.Cookie.HttpOnly = true;
+            //////    options.Cookie.IsEssential = true;
+            //////});
+
+            //18112024 }
+
+
 
             var app = builder.Build();
 
@@ -30,7 +49,7 @@ namespace jb_api_shg
                 app.UseSwaggerUI();
             }
 
-
+            ///////////app.UseSession();//18112024  Разрешение использование сессии
 
             //29082024 {
 
@@ -40,11 +59,6 @@ namespace jb_api_shg
             .AllowAnyOrigin()
             .AllowAnyMethod()
             .AllowAnyHeader());
-
-
-
-
-
 
 
             ////// Configure the HTTP request pipeline.

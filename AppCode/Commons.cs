@@ -14,6 +14,7 @@
 
         public const string path_AppData = "AppData";
         public const string path_temp_data = "temp_data";
+        public const string filename_dict_progress = "dict_progress.txt";
 
 
         //public const string cv_pattern_sentences = @"((?:(?-i)[А-ЯA-Z]).*(?<=(?:[а-яa-z]){2,})\.)";
@@ -144,11 +145,12 @@
 
     }
 
-    public class typ_monitor_refresh_status
+    public class typ_progress_status
     {
         public string taskId { set; get; }
         public string path_result_file { set; get; }
         public int progress_indicator { set; get; }
+        public DateTime date_time_changed { set; get; }
 
     };
 

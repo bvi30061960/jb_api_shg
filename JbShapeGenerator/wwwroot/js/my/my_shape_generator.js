@@ -197,6 +197,9 @@ function start_side_shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 // Class Shape_generator
 export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
+
+    this.session_id = null;
+
     this.id_common_shg_container = "id_shape";// "id_tab_sides";// "id_center";// "id_shg_common";// "id_shape"; //"id_shape_generator_container";//  "id_shape_generator_container";// ;
     //this.id_side_shape_container = "id_shape_generator_container";// "id_shape"; //"id_shape_generator_container";//  "id_shape_generator_container";// ;
     this.id_side_shape = "id_shape"; //"id_shape_generator_container";//  "id_shape_generator_container";// ;
@@ -940,6 +943,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 /////}
                 //==============================================================================
 
+                ////document.cookie = "my_cookie";
+                ////this.session_id = this.common_func.getJSessionId();
+
+            //    var storage = window.top.sessionStorage;
+                //    var sessionId = storage.getItem("UNEXPECTED_TERMINATION");
+
+                SessionStack.getSessionId();
 
             }
 
@@ -1115,6 +1125,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_start_refresh_premodel;
                 let lo_sides_data = this.read_model_sides_data();
 
+
+                lo_sides_data.taskId = this.progress_bar.taskId;
                 this.send_side_data_for_refresh_model(lv_url, lo_sides_data);
 
 

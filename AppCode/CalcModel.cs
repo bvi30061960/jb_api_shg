@@ -197,7 +197,7 @@ namespace jb_api_shg.AppCode
 
                 string lv_path_file_to_export = GetPathFileToExport();
 
-                typ_monitor_refresh_status ls_monitor_status = new typ_monitor_refresh_status();
+                typ_progress_status ls_monitor_status = new typ_progress_status();
                 ls_monitor_status.taskId = lv_taskid;
                 ls_monitor_status.path_result_file = lv_path_file_to_export;
 
