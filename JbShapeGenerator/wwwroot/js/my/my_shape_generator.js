@@ -198,7 +198,9 @@ function start_side_shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
-    this.session_id = null;
+    //this.session_id = null;
+    this.client_id = null;
+
 
     this.id_common_shg_container = "id_shape";// "id_tab_sides";// "id_center";// "id_shg_common";// "id_shape"; //"id_shape_generator_container";//  "id_shape_generator_container";// ;
     //this.id_side_shape_container = "id_shape_generator_container";// "id_shape"; //"id_shape_generator_container";//  "id_shape_generator_container";// ;
@@ -523,7 +525,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 ////const cv_name_group_contours = "group_contours";
                 ////const cv_name_group_color_mesh = "group_color_mesh";
                 //30102024 }
-
 
 
                 this.container = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape);//20062024);
@@ -862,8 +863,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //this.progress_dialog = new ProgressDialog();
                 //this.progress_bar = new ProgressBar();
 
+                this.client_id = this.common_func.get_random_number_int(1, 9999999999).toString();
 
-                //30102024 {
 
                 this.make_shape(false, null);
 
@@ -949,7 +950,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //    var storage = window.top.sessionStorage;
                 //    var sessionId = storage.getItem("UNEXPECTED_TERMINATION");
 
-                SessionStack.getSessionId();
+                //SessionStack.getSessionId();
 
             }
 
@@ -1117,7 +1118,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-                this.progress_bar = new ProgressBar(this, "https://localhost:7095/CalcJBModel", Constants.method_read_progress_value);
+                this.progress_bar = new ProgressBar(this, "https://localhost:7095/CalcJBModel", Constants.method_read_progress_value, this.client_id);
                 //16112024 this.progress_bar.start_progress();
                 this.progress_bar.set_display_value(3);
 
@@ -1126,7 +1127,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lo_sides_data = this.read_model_sides_data();
 
 
-                lo_sides_data.taskId = this.progress_bar.taskId;
+                lo_sides_data.task_id = this.progress_bar.task_id;
                 this.send_side_data_for_refresh_model(lv_url, lo_sides_data);
 
 
@@ -1229,7 +1230,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     return;
                 }
 
-                if (po_data.indexOf(Constants.word_taskId) < 0) {
+                if (po_data.indexOf(Constants.word_task_id) < 0) {
 
                     return;
 

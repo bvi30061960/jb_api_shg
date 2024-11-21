@@ -39,7 +39,7 @@
         //public const string Separator_between_excel_columns_when_read_file = "@##@";
         //public const string Separator_lines_crlf = "\r\n";
         ////02072023 public const decimal price_per_playbackset = 0.1M; // 0.1 $/playbackset
-        public const string word_taskId = "taskId";
+        public const string word_task_id = "task_id";
     }
 
 
@@ -140,19 +140,20 @@
 
     public struct typ_parameters_for_refresh
     {
-        public ISession session { set; get; }
+        //public ISession session { set; get; }
+        public IProgressMonitor ProgressMonitor { set; get; }
         public typ_sides_data sides_data { set; get; }
 
     }
 
-    public class typ_progress_status
-    {
-        public string taskId { set; get; }
-        public string path_result_file { set; get; }
-        public int progress_indicator { set; get; }
-        public DateTime date_time_changed { set; get; }
+    //public class typ_progress_status
+    //{
+    //    public string taskId { set; get; }
+    //    public string path_result_file { set; get; }
+    //    public int progress_indicator { set; get; }
+    //    public DateTime date_time_changed { set; get; }
 
-    };
+    //};
 
 
     //=============================================================================================

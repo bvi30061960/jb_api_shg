@@ -13,7 +13,8 @@ export var Constants = {
     method_check_file_exist_on_server: "CheckFileExistOnServer",
     method_read_progress_value: "read_progress_value",
 
-    word_taskId: "taskId",
+    word_client_id: "client_id",
+    word_task_id: "task_id",
 
 
 

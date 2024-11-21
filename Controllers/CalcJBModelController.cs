@@ -72,9 +72,19 @@ namespace jb_api.Controllers
 
         private readonly ILogger<CalcJBModelController> _logger;
 
-        public CalcJBModelController(ILogger<CalcJBModelController> logger)
+        private IProgressMonitor ao_ProgressMonitor;
+
+        public CalcJBModelController(ILogger<CalcJBModelController> logger, IProgressMonitor po_ProgressMonitor)
         {
             _logger = logger;
+
+            ao_ProgressMonitor = po_ProgressMonitor;//20112024
+
+            //ao_ProgressMonitor = Request.HttpContext.RequestServices.GetService<IProgressMonitor>();
+
+            //await context.Response.WriteAsync($"Time: {timeService?.GetTime()}");
+
+
         }
         //----------------------------------------------------------------------------------
 
@@ -100,12 +110,12 @@ namespace jb_api.Controllers
 
                     // Открытие файла индикации процессов
                     string lv_path_dict_progress = Path.Combine(Environment.CurrentDirectory,
-                        Path.Combine(CommonConstants.path_AppData,CommonConstants.filename_dict_progress));
+                        Path.Combine(CommonConstants.path_AppData, CommonConstants.filename_dict_progress));
 
 
 
-                    PersistentDictionary<typ_progress_status> lo_list_progress_status =
-                                new PersistentDictionary<typ_progress_status>(lv_path_dict_progress);
+                    //PersistentDictionary<typ_progress_status> lo_list_progress_status =
+                    //            new PersistentDictionary<typ_progress_status>(lv_path_dict_progress);
 
                     //lo_list_model_files.ModifyItem(lv_path_and_name_file_wo_extension, ls_data_file);
 
@@ -113,14 +123,39 @@ namespace jb_api.Controllers
 
 
 
-
-                    string lv_taskid_str = Request.Query["taskid"];
+                    string lv_client_id = Request.Query["client_id"];
+                    string lv_task_id = Request.Query["task_id"];
 
                     //ProgressMonitor lo_progress_monitor = new ProgressMonitor(Request.HttpContext.Session, lv_taskid_str);
-                    ProgressMonitor lo_progress_monitor = new ProgressMonitor(HttpContext.Session, lv_taskid_str);
+                    //ProgressMonitor lo_progress_monitor = new ProgressMonitor(HttpContext.Session, lv_taskid_str);
+
+                    typ_progress_status ls_status = new typ_progress_status();
+                    ls_status.client_id = lv_client_id;
+                    ls_status.task_id = lv_task_id;
+                    ls_status.progress_indicator = 2;
 
 
-                    return Results.Text(lo_progress_monitor.GetStatus() );
+                    string lv_answer = "";
+
+                    if (ao_ProgressMonitor.GetStatus(ProgressMonitor.GetKey(ls_status), ref ls_status))
+                    {
+                        //return Results.Text(ls_status.progress_indicator.ToString());
+                        //var lv_answer = get_progress_answer(ls_status.client_id, ls_status.task_id, ls_status.progress_indicator);
+
+                        lv_answer = JsonConvert.SerializeObject(ls_status);
+
+                    }
+
+
+                    return Results.Text(lv_answer);
+
+
+
+
+
+
+                    //return Results.Text(lo_progress_monitor.GetStatus() );
+                    //return Results.Text(ls_status.progress_indicator.ToString());
 
                     break;
                 case CommonConstants.method_read_model_parts:
@@ -176,6 +211,8 @@ namespace jb_api.Controllers
 
             string lv_path_result_file = "";
 
+            string lv_client_id = Request.Query["client_id"];
+            string lv_task_id = Request.Query["task_id"];
 
             try
             {
@@ -197,10 +234,11 @@ namespace jb_api.Controllers
 
                         // Создание процесса с длинной задачей
 
-                        
+
                         typ_parameters_for_refresh parameters_for_refresh = new typ_parameters_for_refresh();
 
-                        parameters_for_refresh.session = HttpContext.Session;
+                        //parameters_for_refresh.session = HttpContext.Session;
+                        parameters_for_refresh.ProgressMonitor = ao_ProgressMonitor; ;
                         parameters_for_refresh.sides_data = lo_sides_data;
 
                         object[] parameters = new object[] { parameters_for_refresh };
@@ -211,16 +249,42 @@ namespace jb_api.Controllers
                         pts = new ParameterizedThreadStart(lo_calcmodel.RefreshModel); //10092022
                         thr = new Thread(pts);
                         thr.Priority = ThreadPriority.BelowNormal;
-                        thr.Start(parameters);
 
-                        return Results.Text(CommonConstants.word_taskId + "=" + lo_sides_data.taskId.ToString());
+                        //------------------------------------------------------------
+                        thr.Start(parameters);
+                        //------------------------------------------------------------
+
+
+                        //return Results.Text(CommonConstants.word_taskId + "=" + lo_sides_data.taskId.ToString());
+
+                        typ_progress_status ls_status = new typ_progress_status();
+                        ls_status.client_id = lv_client_id;
+                        ls_status.task_id = lv_task_id;
+                        ls_status.progress_indicator = 5;
+                        ao_ProgressMonitor.SetStatus(ls_status);
+
+
+
+                        string lv_answer = "";
+
+                        ////if (ao_ProgressMonitor.GetStatus(ProgressMonitor.GetKey(ls_status), ref ls_status))
+                        ////{
+                        ////    lv_answer = JsonConvert.SerializeObject(ls_status);
+                        ////}
+
+
+                        //return Results.Text(lv_answer);
+
+
+                        return Results.Text(CommonConstants.word_task_id + "=" + lv_task_id);
+
                         break;
 
 
-                        ////// предварительный вид модели с разрезающими поверхностями
-                        ////lv_path_result_file = CalcModel.RefreshModel(Request.HttpContext.Session, lo_sides_data);
-                        ////return Results.File(lv_path_result_file); //13102024
-                        ////break;
+                    ////// предварительный вид модели с разрезающими поверхностями
+                    ////lv_path_result_file = CalcModel.RefreshModel(Request.HttpContext.Session, lo_sides_data);
+                    ////return Results.File(lv_path_result_file); //13102024
+                    ////break;
 
 
                     case CommonConstants.method_make_model:

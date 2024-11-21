@@ -6,8 +6,9 @@ var go_this = null;
 //================================================================================
 // Class ProgressBar
 
-export function ProgressBar(po_side, pv_url, pv_read_method) {
+export function ProgressBar(po_side, pv_url, pv_read_method, pv_client_id) {
 
+    this.client_id = pv_client_id;
     this.shg_side = po_side;
     this.url = pv_url;
     this.read_method = pv_read_method;
@@ -15,7 +16,7 @@ export function ProgressBar(po_side, pv_url, pv_read_method) {
     this.div_progressbar = $(po_side.id_prefix + "id_div_progressbar");
     this.progress_value = 0; // bvi
 
-    this.taskId = 0;
+    this.task_id = 0;
 
     this.progressTimer = null;
     this.progressbar = document.getElementById(po_side.id_prefix_wo_sharp + "id_progressbar"); // $("#id_progressbar");
@@ -44,7 +45,7 @@ export function ProgressBar(po_side, pv_url, pv_read_method) {
 
                 go_this = this; //14112024
 
-                this.taskId = this.shg_side.common_func.get_random_number_int(1, 9999999999).toString();
+                this.task_id = this.shg_side.common_func.get_random_number_int(1, 9999999999).toString();
 
 
                 //////        //go_this = this;
@@ -254,8 +255,9 @@ export function ProgressBar(po_side, pv_url, pv_read_method) {
 
             try {
 
-                let lv_url = go_this.url + "?method=" + go_this.read_method +
-                    "&taskid=" + go_this.taskId;
+                let lv_url = go_this.url + "?method=" + go_this.read_method
+                    + "&client_id=" + go_this.client_id
+                    + "&task_id=" + go_this.task_id;
 
                 get_monitoring_server_progress(lv_url);
 

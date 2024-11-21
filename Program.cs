@@ -1,4 +1,6 @@
 
+using jb_api_shg.AppCode;
+
 namespace jb_api_shg
 {
     public class Program
@@ -37,6 +39,13 @@ namespace jb_api_shg
             //////});
 
             //18112024 }
+
+
+
+
+            builder.Services.AddSingleton <IProgressMonitor, ProgressMonitor> ();//20112024
+            //builder.Services.AddTransient<IProgressMonitor, ProgressMonitor> ();//20112024
+            //builder.Services.AddSingleton <ProgressMonitor> ();//20112024
 
 
 
