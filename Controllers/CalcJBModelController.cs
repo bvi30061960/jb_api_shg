@@ -108,9 +108,9 @@ namespace jb_api.Controllers
             {
                 case CommonConstants.method_read_progress_value:
 
-                    // Открытие файла индикации процессов
-                    string lv_path_dict_progress = Path.Combine(Environment.CurrentDirectory,
-                        Path.Combine(CommonConstants.path_AppData, CommonConstants.filename_dict_progress));
+                    ////// Открытие файла индикации процессов
+                    ////string lv_path_dict_progress = Path.Combine(Environment.CurrentDirectory,
+                    ////    Path.Combine(CommonConstants.path_AppData, CommonConstants.filename_dict_progress));
 
 
 
@@ -120,16 +120,13 @@ namespace jb_api.Controllers
                     //lo_list_model_files.ModifyItem(lv_path_and_name_file_wo_extension, ls_data_file);
 
 
-
-
-
                     string lv_client_id = Request.Query["client_id"];
                     string lv_task_id = Request.Query["task_id"];
 
                     //ProgressMonitor lo_progress_monitor = new ProgressMonitor(Request.HttpContext.Session, lv_taskid_str);
                     //ProgressMonitor lo_progress_monitor = new ProgressMonitor(HttpContext.Session, lv_taskid_str);
 
-                    typ_progress_status ls_status = new typ_progress_status();
+                    typ_progress_data ls_status = new typ_progress_data();
                     ls_status.client_id = lv_client_id;
                     ls_status.task_id = lv_task_id;
                     ls_status.progress_indicator = 2;
@@ -156,6 +153,14 @@ namespace jb_api.Controllers
 
                     //return Results.Text(lo_progress_monitor.GetStatus() );
                     //return Results.Text(ls_status.progress_indicator.ToString());
+
+                    break;
+                case CommonConstants.method_read_result_refresh_premodel:
+
+
+
+
+
 
                     break;
                 case CommonConstants.method_read_model_parts:
@@ -247,6 +252,7 @@ namespace jb_api.Controllers
 
                         CalcModel lo_calcmodel = new CalcModel();
                         pts = new ParameterizedThreadStart(lo_calcmodel.RefreshModel); //10092022
+                        
                         thr = new Thread(pts);
                         thr.Priority = ThreadPriority.BelowNormal;
 
@@ -257,7 +263,7 @@ namespace jb_api.Controllers
 
                         //return Results.Text(CommonConstants.word_taskId + "=" + lo_sides_data.taskId.ToString());
 
-                        typ_progress_status ls_status = new typ_progress_status();
+                        typ_progress_data ls_status = new typ_progress_data();
                         ls_status.client_id = lv_client_id;
                         ls_status.task_id = lv_task_id;
                         ls_status.progress_indicator = 5;
@@ -269,14 +275,14 @@ namespace jb_api.Controllers
 
                         ////if (ao_ProgressMonitor.GetStatus(ProgressMonitor.GetKey(ls_status), ref ls_status))
                         ////{
-                        ////    lv_answer = JsonConvert.SerializeObject(ls_status);
+                        lv_answer = JsonConvert.SerializeObject(ls_status);
                         ////}
 
 
-                        //return Results.Text(lv_answer);
+                        return Results.Text(lv_answer);
 
 
-                        return Results.Text(CommonConstants.word_task_id + "=" + lv_task_id);
+                        //return Results.Text(CommonConstants.word_task_id + "=" + lv_task_id);
 
                         break;
 

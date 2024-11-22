@@ -5,6 +5,7 @@ export var Constants = {
     false: "false",
     method_refresh_premodel: "refresh_premodel",
     method_start_refresh_premodel: "start_refresh_premodel",
+    method_read_result_refresh_premodel: "read_result_refresh_premodel",
     method_make_model: "make_model",
     method_read_model_parts: "read_model_parts",
     method_delete_model_parts: "delete_model_parts",

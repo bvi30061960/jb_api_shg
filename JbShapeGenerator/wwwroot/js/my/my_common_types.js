@@ -168,3 +168,12 @@ export var type_rotate_mode = {
     counterclockwise: 3     // вращение по часовой стрелке
 
 };
+
+export function typ_progress_data() {
+    this.client_id = "";
+    this.task_id = "";
+    this.path_result_file = "";
+    this.progress_indicator = "";
+    this.date_time_changed = "";
+
+};

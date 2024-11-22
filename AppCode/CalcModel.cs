@@ -190,7 +190,11 @@ namespace jb_api_shg.AppCode
 
                 object[] parameters = (object[])data;
                 typ_parameters_for_refresh ls_parameters = (typ_parameters_for_refresh)parameters[0];
-                string lv_task_id = ls_parameters.sides_data.taskId;
+                string lv_client_id = ls_parameters.sides_data.client_id;
+                string lv_task_id = ls_parameters.sides_data.task_id;
+
+
+
                 //ISession lo_session = ls_parameters.session;
 
                 //ProgressMonitor lo_progressMonitor = new ProgressMonitor(lo_session, lv_taskid);
@@ -198,9 +202,10 @@ namespace jb_api_shg.AppCode
 
                 string lv_path_file_to_export = GetPathFileToExport();
 
-                typ_progress_status ls_monitor_status = new typ_progress_status();
+                typ_progress_data ls_monitor_status = new typ_progress_data();
+                ls_monitor_status.client_id = lv_client_id;
                 ls_monitor_status.task_id = lv_task_id;
-                ////ls_monitor_status.path_result_file = lv_path_file_to_export;
+                ls_monitor_status.path_result_file = lv_path_file_to_export;
 
 
                 ls_monitor_status.progress_indicator = 7;
@@ -231,7 +236,7 @@ namespace jb_api_shg.AppCode
 
                 //lo_progressMonitor.SetStatus(10);
                 ls_monitor_status.progress_indicator = 10;
-                //lo_progressMonitor.SetStatus(ls_monitor_status);
+                lo_progressMonitor.SetStatus(ls_monitor_status);
 
 
                 const double cv_gap_width = 1;// ширина разделительных поверхностей (просвет между деталями)
@@ -268,7 +273,7 @@ namespace jb_api_shg.AppCode
 
                 //lo_progressMonitor.SetStatus(25);
                 ls_monitor_status.progress_indicator = 25;
-                //lo_progressMonitor.SetStatus(ls_monitor_status);
+                lo_progressMonitor.SetStatus(ls_monitor_status);
 
                 // Боковые разделители
                 msg3DObject lo_separator2 = null;
@@ -305,7 +310,7 @@ namespace jb_api_shg.AppCode
 
                 //lo_progressMonitor.SetStatus(50);
                 ls_monitor_status.progress_indicator = 50;
-                //lo_progressMonitor.SetStatus(ls_monitor_status);
+                lo_progressMonitor.SetStatus(ls_monitor_status);
 
 
                 //16112024 return lv_path_result_file;

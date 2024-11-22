@@ -11,6 +11,7 @@
         public const string method_read_model_parts = "read_model_parts";
         public const string method_delete_model_parts = "delete_model_parts";
         public const string method_read_progress_value = "read_progress_value";
+        public const string method_read_result_refresh_premodel = "read_result_refresh_premodel";
 
         public const string path_AppData = "AppData";
         public const string path_temp_data = "temp_data";
@@ -53,7 +54,8 @@
 
     public class typ_sides_data
     {
-        public string taskId { set; get; }
+        public string client_id { set; get; }
+        public string task_id { set; get; }
         public typ_color_data ColorParts { set; get; }
         public typ_side_data data1 { set; get; }
         public typ_side_data data2 { set; get; }

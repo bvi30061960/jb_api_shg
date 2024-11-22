@@ -8,7 +8,7 @@ namespace jb_api_shg.AppCode
 {
 
 
-    public class typ_progress_status
+    public class typ_progress_data
     {
         public string client_id { set; get; }
         public string task_id { set; get; }
@@ -28,8 +28,8 @@ namespace jb_api_shg.AppCode
     //----------------------------------------------------------------------------------------------
     public interface IProgressMonitor
     {
-        void SetStatus(typ_progress_status ps_status);
-        bool GetStatus(string pv_key, ref typ_progress_status ps_status);
+        void SetStatus(typ_progress_data ps_status);
+        bool GetStatus(string pv_key, ref typ_progress_data ps_status);
     }
     ////public class ProgressMonitor : IProgressMonitor
     ////{
@@ -108,16 +108,16 @@ namespace jb_api_shg.AppCode
     public class ProgressMonitor : IProgressMonitor
     {
 
-        Dictionary<string, typ_progress_status> ao_status_list { set; get; }
+        Dictionary<string, typ_progress_data> ao_status_list { set; get; }
 
         //--------------------------------------------------------------------------
         public ProgressMonitor()
         {
-            ao_status_list = new Dictionary<string, typ_progress_status>();
+            ao_status_list = new Dictionary<string, typ_progress_data>();
         }
 
         //--------------------------------------------------------------------------
-        static public string GetKey(typ_progress_status pv_message)
+        static public string GetKey(typ_progress_data pv_message)
         {
             return pv_message.client_id + "_" + pv_message.task_id;
         }
@@ -126,7 +126,7 @@ namespace jb_api_shg.AppCode
 
         //--------------------------------------------------------------------------
         // Установка текущего статуса задачи
-        public void SetStatus(typ_progress_status ps_status)
+        public void SetStatus(typ_progress_data ps_status)
         {
             try
             {
@@ -147,7 +147,7 @@ namespace jb_api_shg.AppCode
 
         //---------------------------------------------------------------------------------------
         // Чтение текущего статуса задачи
-        public bool GetStatus(string pv_key, ref typ_progress_status ps_status)
+        public bool GetStatus(string pv_key, ref typ_progress_data ps_status)
         {
 
             bool lv_result = false;
