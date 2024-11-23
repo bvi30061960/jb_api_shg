@@ -157,8 +157,9 @@ namespace jb_api.Controllers
                     break;
                 case CommonConstants.method_read_result_refresh_premodel:
 
+                    string lv_path_result_file = Request.Query["path_result_file"];
 
-
+                    return Results.File(lv_path_result_file); //22112024
 
 
 
@@ -199,6 +200,9 @@ namespace jb_api.Controllers
             return Results.Empty;
 
         }
+
+//===========================================================================================================
+//===========================================================================================================
 
 
 

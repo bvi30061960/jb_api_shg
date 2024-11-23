@@ -16,7 +16,8 @@ export var Constants = {
 
     word_client_id: "client_id",
     word_task_id: "task_id",
-
+    word_task_id: "task_id",
+    path_result_file: "path_result_file",
 
 
     file_model_ext: ".stl",

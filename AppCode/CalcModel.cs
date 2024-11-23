@@ -1049,7 +1049,7 @@ namespace jb_api_shg.AppCode
         static string GetPathFileToExport()
         {
             string lv_flename = Path.GetFileName(Path.GetTempFileName());
-            string lv_path_fle_to_export = Path.Combine(Environment.CurrentDirectory, CommonConstants.path_temp_data + Path.DirectorySeparatorChar + lv_flename);
+            string lv_path_fle_to_export = Path.Combine(Environment.CurrentDirectory, Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data + Path.DirectorySeparatorChar + lv_flename));
 
             return lv_path_fle_to_export;
         }

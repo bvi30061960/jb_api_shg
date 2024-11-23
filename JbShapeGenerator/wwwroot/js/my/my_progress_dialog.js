@@ -5,10 +5,12 @@ var go_this = null;
 //================================================================================
 // Class ProgressDialog
 
-export function ProgressDialog(pv_url, pv_read_method) {
+export function ProgressDialog(pv_url, pv_read_method/*, pv_read_result_refresh_model*/) {
 
     this.url = pv_url;
     this.read_method = pv_read_method;
+    //this.method_read_result_refresh_model = pv_read_result_refresh_model;
+
 
     this.progress_value = 0; // bvi
 
@@ -211,34 +213,44 @@ export function ProgressDialog(pv_url, pv_read_method) {
             }
         }
 
-        //-----------------------------------------------------------------------------------
-        ProgressDialog.prototype.oncomplete_monitoring_server_progress = function (pv_progress_value) {
-
-            go_this.set_progress_value(pv_progress_value);
+        //////-----------------------------------------------------------------------------------
+        ////ProgressDialog.prototype.oncomplete_monitoring_server_progress = function (pv_progress_value) {
 
 
-            go_this.progress_value = pv_progress_value;
-            //14112024 go_this.progressbar.progressbar("value", go_this.progress_value);
-            go_this.progressbar.value = pv_progress_value;//14112024
-
-            go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%"); 
-
-            if (pv_progress_value < 50) {
-
-                //go_this.progress_value = pv_progress_value;
-                //go_this.progressbar.progressbar("value", go_this.progress_value);
-                //go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%"); 
 
 
-                go_this.monitoring_server_timer = setTimeout(go_this.monitoring_server_progress, 250);
-            }
-            else {
+        ////    go_this.set_progress_value(pv_progress_value);
 
-                clearTimeout(go_this.monitoring_server_timer);// bvi
 
-                go_this.monitoring_server_timer = setTimeout(go_this.do_progress, 250);
-            }
-        }
+        ////    go_this.progress_value = pv_progress_value;
+        ////    //14112024 go_this.progressbar.progressbar("value", go_this.progress_value);
+        ////    go_this.progressbar.value = pv_progress_value;//14112024
+
+        ////    go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%");
+
+        ////    if (pv_progress_value < 50) {
+
+        ////        //go_this.progress_value = pv_progress_value;
+        ////        //go_this.progressbar.progressbar("value", go_this.progress_value);
+        ////        //go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%");
+
+
+        ////        go_this.monitoring_server_timer = setTimeout(go_this.monitoring_server_progress, 250);
+        ////    }
+        ////    else {
+
+        ////        clearTimeout(go_this.monitoring_server_timer);// bvi
+
+        ////        //let ls_progress_data = JSON.parse(po_data);
+
+        ////        go_this.read_method_result_refresh_model();
+
+
+
+        ////        ////go_this.monitoring_server_timer = setTimeout(go_this.do_progress, 250);
+        ////    }
+        ////}
+
         //-----------------------------------------------------------------------------------
         ProgressDialog.prototype.set_display_value = function (pv_progress_value) {
 
