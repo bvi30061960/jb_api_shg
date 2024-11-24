@@ -271,7 +271,7 @@
 
             $.fn.colorPicker.hidePalette();
 
-            selectorOwner.data('onColorChange').call(selectorOwner, $(selectorOwner).prev("input").attr("id"), value);
+            //bvi 24112024 selectorOwner.data('onColorChange').call(selectorOwner, $(selectorOwner).prev("input").attr("id"), value);
         },
 
 

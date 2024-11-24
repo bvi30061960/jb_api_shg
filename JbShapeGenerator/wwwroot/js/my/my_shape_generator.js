@@ -1138,7 +1138,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     + "&"
                     + Constants.word_client_id + "=" + this.client_id
                     + "&"
-                    + Constants.word_task_id + "=" + this.progress_bar.task_id;
+                    + Constants.word_task_id + "=" + this.progress_bar.task_id
+                    + "&chdata=" + Math.random().toString(); // 23112024
 
 
                 let lo_sides_data = this.read_model_sides_data();
@@ -1358,7 +1359,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     + "&"
                     + Constants.word_task_id + "=" + po_data.task_id
                     + "&"
-                    + Constants.path_result_file + "=" + po_data.path_result_file;
+                    + Constants.path_result_file + "=" + po_data.path_result_file
+                    + "&chdata=" + Math.random().toString(); // 23112024
+
 
 
                 get_read_result_refresh_premodel(lv_url);
@@ -1558,7 +1561,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 // }
 
 
-                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_make_model;//07102024
+                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_make_model
+                    + "&chdata=" + Math.random().toString(); // 23112024
 
 
                 let lo_sides_data = this.read_model_sides_data();
@@ -1752,7 +1756,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             try {
 
                 let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts +
-                    "&filename=" + pv_filename;
+                    "&filename=" + pv_filename
+                    + "&chdata=" + Math.random().toString(); // 23112024
+;
 
 
                 let lv_is_before = true;
@@ -1942,7 +1948,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     // Посылка команды на удаление промежуточных файлов на сервере
 
                     let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
-                        "&filename=" + lo_active_side.model_prefix_filename;
+                        "&filename=" + lo_active_side.model_prefix_filename
+                        + "&chdata=" + Math.random().toString(); // 23112024
+;
 
                     get_delete_on_server_model_parts(lv_url)
                     async function get_delete_on_server_model_parts(pv_url) {

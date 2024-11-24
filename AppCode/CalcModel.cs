@@ -252,6 +252,8 @@ namespace jb_api_shg.AppCode
                 for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
                 {
                     //ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end1);
+                    ls_monitor_status.progress_indicator = (int)(10.0 + 15.0 * (lv_i / lv_i_end1));
+                    lo_progressMonitor.SetStatus(ls_monitor_status);
 
 
                     lv_side = enum_model_side.up_side;
@@ -282,7 +284,8 @@ namespace jb_api_shg.AppCode
 
                 for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
                 {
-                    //ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end2);
+                    ls_monitor_status.progress_indicator = (int)(25.0 + 14.0 * (lv_i / lv_i_end2));
+                    lo_progressMonitor.SetStatus(ls_monitor_status);
 
                     lv_side = enum_model_side.lateral_side;
                     lo_separator2 = GetSeparator(
@@ -308,7 +311,6 @@ namespace jb_api_shg.AppCode
                 EndWorkForModelRefresh(lo_scene, lv_path_file_to_export);
 
 
-                //lo_progressMonitor.SetStatus(50);
                 ls_monitor_status.progress_indicator = 50;
                 lo_progressMonitor.SetStatus(ls_monitor_status);
 

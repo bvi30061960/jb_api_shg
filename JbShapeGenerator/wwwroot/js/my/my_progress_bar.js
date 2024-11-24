@@ -9,6 +9,9 @@ var go_this = null;
 
 export function ProgressBar(po_side, pv_client_id, pv_url, pv_name_start_method, pv_read_result_method) {
 
+    go_this = this;//24112024
+
+
     this.client_id = pv_client_id;
     this.shg_side = po_side;
     this.url = pv_url;
@@ -45,7 +48,7 @@ export function ProgressBar(po_side, pv_client_id, pv_url, pv_name_start_method,
 
             try {
 
-                go_this = this; //14112024
+                //24112024 go_this = this; 
 
                 //22112024 this.task_id = this.shg_side.common_func.get_random_number_int(1, 9999999999).toString();
 
@@ -139,6 +142,8 @@ export function ProgressBar(po_side, pv_client_id, pv_url, pv_name_start_method,
 
             try {
 
+                //go_this = this;
+
                 //go_this.task_id = this.shg_side.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
 
                 //go_this.div_progressbar.show(1000);
@@ -225,7 +230,6 @@ export function ProgressBar(po_side, pv_client_id, pv_url, pv_name_start_method,
                     //go_this.progressbar.progressbar("value", go_this.progress_value);
                     //go_this.progressLabel.text("Current Progress: " + go_this.progress_value + "%"); 
 
-
                     go_this.monitoring_server_timer = setTimeout(go_this.monitoring_server_progress, 500);
                 }
                 else {
@@ -269,8 +273,9 @@ export function ProgressBar(po_side, pv_client_id, pv_url, pv_name_start_method,
         ProgressBar.prototype.stop_monitoring = function () {
             try {
 
-                go_this.clear_timers();
+                go_this.progress_value = 0;
 
+                go_this.clear_timers();
             }
 
             catch (e) {
@@ -411,7 +416,7 @@ export function ProgressBar(po_side, pv_client_id, pv_url, pv_name_start_method,
         }  // if (typeof this.redraw_shapes !== "function")
 
 
-        this.init_progress_bar();
+        //24112024 this.init_progress_bar();
 
         //go_this = this; //14112024
 

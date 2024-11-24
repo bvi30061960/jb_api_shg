@@ -110,10 +110,13 @@ namespace jb_api_shg.AppCode
 
         Dictionary<string, typ_progress_data> ao_status_list { set; get; }
 
+        //int av_indic_max = 100;
+
         //--------------------------------------------------------------------------
-        public ProgressMonitor()
+        public ProgressMonitor(/*int pv_indic_max*/)
         {
             ao_status_list = new Dictionary<string, typ_progress_data>();
+            //av_indic_max = 50;// pv_indic_max;
         }
 
         //--------------------------------------------------------------------------
@@ -154,6 +157,14 @@ namespace jb_api_shg.AppCode
             try
             {
                 lv_result = ao_status_list.TryGetValue(pv_key, out ps_status);
+
+                //// если индикатор достигает максимума - обнуляем
+                //if (ps_status.progress_indicator >= av_indic_max)
+                //{
+                //    ps_status.progress_indicator = 0;
+                //    SetStatus(ps_status);
+
+                //}
             }
             catch (Exception ex)
             {

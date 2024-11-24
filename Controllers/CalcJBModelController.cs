@@ -74,6 +74,8 @@ namespace jb_api.Controllers
 
         private IProgressMonitor ao_ProgressMonitor;
 
+        static private Thread ao_thr;
+
         public CalcJBModelController(ILogger<CalcJBModelController> logger, IProgressMonitor po_ProgressMonitor)
         {
             _logger = logger;
@@ -100,9 +102,14 @@ namespace jb_api.Controllers
         async public Task<IResult> Get()
         {
 
+            typ_progress_data ls_status = new typ_progress_data();
+            string lv_client_id = "";
+            string lv_task_id = "";
 
             string lv_path_model_part = "";
             string lv_filename = "";
+
+
 
             switch (Request.Query["method"])
             {
@@ -120,13 +127,14 @@ namespace jb_api.Controllers
                     //lo_list_model_files.ModifyItem(lv_path_and_name_file_wo_extension, ls_data_file);
 
 
-                    string lv_client_id = Request.Query["client_id"];
-                    string lv_task_id = Request.Query["task_id"];
+                    lv_client_id = Request.Query["client_id"];
+                    lv_task_id = Request.Query["task_id"];
 
                     //ProgressMonitor lo_progress_monitor = new ProgressMonitor(Request.HttpContext.Session, lv_taskid_str);
                     //ProgressMonitor lo_progress_monitor = new ProgressMonitor(HttpContext.Session, lv_taskid_str);
 
-                    typ_progress_data ls_status = new typ_progress_data();
+                    //typ_progress_data ls_status = new typ_progress_data();
+
                     ls_status.client_id = lv_client_id;
                     ls_status.task_id = lv_task_id;
                     ls_status.progress_indicator = 2;
@@ -156,6 +164,18 @@ namespace jb_api.Controllers
 
                     break;
                 case CommonConstants.method_read_result_refresh_premodel:
+
+
+                    //typ_progress_data ls_status = new typ_progress_data();
+
+
+                    // Обнуление индикатора ожидания
+                    ls_status.client_id = lv_client_id;
+                    ls_status.task_id = lv_task_id;
+                    ls_status.progress_indicator = 0;
+
+                    ao_ProgressMonitor.SetStatus(ls_status);
+
 
                     string lv_path_result_file = Request.Query["path_result_file"];
 
@@ -241,6 +261,15 @@ namespace jb_api.Controllers
                     //case CommonConstants.method_refresh_premodel:
                     case CommonConstants.method_start_refresh_premodel:
 
+
+
+                        typ_progress_data ls_status = new typ_progress_data();
+                        ls_status.client_id = lv_client_id;
+                        ls_status.task_id = lv_task_id;
+
+                        ls_status.progress_indicator = 5;
+                        ao_ProgressMonitor.SetStatus(ls_status);
+
                         // Создание процесса с длинной задачей
 
 
@@ -256,22 +285,39 @@ namespace jb_api.Controllers
 
                         CalcModel lo_calcmodel = new CalcModel();
                         pts = new ParameterizedThreadStart(lo_calcmodel.RefreshModel); //10092022
-                        
+
+
                         thr = new Thread(pts);
                         thr.Priority = ThreadPriority.BelowNormal;
 
+                        //if (ao_thr == null)
+                        //{
+                            ao_thr = new Thread(pts);
+                            ao_thr.Priority = ThreadPriority.BelowNormal;
+                        //}
+                        //else
+                        //{
+                        //    //ao_thr.Interrupt();
+
+                        //    // Create the token source.
+                        //    CancellationTokenSource cts = new CancellationTokenSource();
+
+                        //}
+
+
                         //------------------------------------------------------------
                         thr.Start(parameters);
+                        //ao_thr.Start(parameters);
                         //------------------------------------------------------------
 
 
                         //return Results.Text(CommonConstants.word_taskId + "=" + lo_sides_data.taskId.ToString());
 
-                        typ_progress_data ls_status = new typ_progress_data();
-                        ls_status.client_id = lv_client_id;
-                        ls_status.task_id = lv_task_id;
-                        ls_status.progress_indicator = 5;
-                        ao_ProgressMonitor.SetStatus(ls_status);
+                        ////typ_progress_data ls_status = new typ_progress_data();
+                        ////ls_status.client_id = lv_client_id;
+                        ////ls_status.task_id = lv_task_id;
+                        ////ls_status.progress_indicator = 5;
+                        ////ao_ProgressMonitor.SetStatus(ls_status);
 
 
 
