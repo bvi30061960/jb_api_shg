@@ -14,6 +14,7 @@ using System.IO;
 using System.Collections;
 using System.Drawing;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Net;
 
 namespace jb_api_shg.AppCode
 {
@@ -189,15 +190,12 @@ namespace jb_api_shg.AppCode
             {
 
                 object[] parameters = (object[])data;
-                typ_parameters_for_refresh ls_parameters = (typ_parameters_for_refresh)parameters[0];
+                typ_parameters_for_model_handle ls_parameters = (typ_parameters_for_model_handle)parameters[0];
                 string lv_client_id = ls_parameters.sides_data.client_id;
                 string lv_task_id = ls_parameters.sides_data.task_id;
 
 
 
-                //ISession lo_session = ls_parameters.session;
-
-                //ProgressMonitor lo_progressMonitor = new ProgressMonitor(lo_session, lv_taskid);
                 IProgressMonitor lo_progressMonitor = ls_parameters.ProgressMonitor;
 
                 string lv_path_file_to_export = GetPathFileToExport();
@@ -251,8 +249,9 @@ namespace jb_api_shg.AppCode
 
                 for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
                 {
-                    //ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end1);
-                    ls_monitor_status.progress_indicator = (int)(10.0 + 15.0 * (lv_i / lv_i_end1));
+
+                    ls_monitor_status.progress_indicator = (int)(10m + 15m * (decimal.Parse(lv_i.ToString()) / decimal.Parse(lv_i_end1.ToString())));
+
                     lo_progressMonitor.SetStatus(ls_monitor_status);
 
 
@@ -271,6 +270,7 @@ namespace jb_api_shg.AppCode
                     {
                         lo_scene.AttachObject(lo_separator1);
                     }
+
                 }
 
                 //lo_progressMonitor.SetStatus(25);
@@ -284,7 +284,9 @@ namespace jb_api_shg.AppCode
 
                 for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
                 {
-                    ls_monitor_status.progress_indicator = (int)(25.0 + 14.0 * (lv_i / lv_i_end2));
+                   
+                    ls_monitor_status.progress_indicator = (int)(25m + 14m * (decimal.Parse(lv_i.ToString()) / decimal.Parse(lv_i_end2.ToString())));
+
                     lo_progressMonitor.SetStatus(ls_monitor_status);
 
                     lv_side = enum_model_side.lateral_side;
@@ -302,6 +304,7 @@ namespace jb_api_shg.AppCode
                     {
                         lo_scene.AttachObject(lo_separator2);
                     }
+
                 }
 
 
@@ -329,181 +332,200 @@ namespace jb_api_shg.AppCode
         }
 
         //--------------------------------------------------------------------------------------------------
-        public static typ_make_model_result_data MakeModel(typ_sides_data? po_sides_data)
+        //public static typ_make_model_result_data MakeModel(typ_sides_data? po_sides_data)
+        public /*static typ_make_model_result_data*/ void MakeModel(object data)
         {
 
 
-            //////////try
-            //////////{
+            try
+            {
 
-            //////////    ProgressStatus.SetPerc(0);
+                object[] parameters = (object[])data;
+                typ_parameters_for_model_handle ls_parameters = (typ_parameters_for_model_handle)parameters[0];
+                string lv_client_id = ls_parameters.sides_data.client_id;
+                string lv_task_id = ls_parameters.sides_data.task_id;
 
-            //////////    msgCore.InitKernel();
+                IProgressMonitor lo_progressMonitor = ls_parameters.ProgressMonitor;
 
-            //////////    msgScene lo_scene = msgScene.GetScene();
-            //////////    lo_scene.Clear();
+                string lv_path_file_to_export = GetPathFileToExport();// !!
 
+                typ_progress_data ls_monitor_status = new typ_progress_data();
+                ls_monitor_status.client_id = lv_client_id;
+                ls_monitor_status.task_id = lv_task_id;
+                ls_monitor_status.path_result_file = lv_path_file_to_export;
 
-            //////////    double lv_box_width = double.Parse(po_sides_data.data1.M_Width.ToString());
-            //////////    double lv_box_height = double.Parse(po_sides_data.data1.M_Height.ToString());
-            //////////    double lv_box_length = double.Parse(po_sides_data.data1.M_Length.ToString());
 
+                ls_monitor_status.progress_indicator = 7;
+                lo_progressMonitor.SetStatus(ls_monitor_status);
 
 
-            //////////    msgBox bx1 = msgBox.Create(lv_box_width, lv_box_length, lv_box_height); // - 10);
 
-            //////////    //////////msgVectorStruct trans_sp = new msgVectorStruct(-5, 2, 2);
-            //////////    //////////bx1.InitTempMatrix().Translate(trans_sp);
-            //////////    //////////bx1.ApplyTempMatrix();
-            //////////    //////////bx1.DestroyTempMatrix();
+                msgCore.InitKernel();
 
+                msgScene lo_scene = msgScene.GetScene();
+                lo_scene.Clear();
 
 
-            //////////    //////////////////////////////////////////////lo_scene.AttachObject(bx1);
+                double lv_box_width = double.Parse(ls_parameters.sides_data.data1.M_Width.ToString());
+                double lv_box_height = double.Parse(ls_parameters.sides_data.data1.M_Height.ToString());
+                double lv_box_length = double.Parse(ls_parameters.sides_data.data1.M_Length.ToString());
 
 
 
+                msgBox bx1 = msgBox.Create(lv_box_width, lv_box_length, lv_box_height); // - 10);
 
-            //////////    const double cv_gap_width = 1;// ширина разделительных поверхностей (просвет между деталями)
-            //////////    ///int lv_variant = 0;
+                //////////msgVectorStruct trans_sp = new msgVectorStruct(-5, 2, 2);
+                //////////bx1.InitTempMatrix().Translate(trans_sp);
+                //////////bx1.ApplyTempMatrix();
+                //////////bx1.DestroyTempMatrix();
 
-            //////////    enum_model_side lv_side;
+                //////////////////////////////////////////////lo_scene.AttachObject(bx1);
 
-            //////////    // стек разделителей
-            //////////    Stack<msg3DObject> lar_stack_separators = new Stack<msg3DObject>();
 
-            //////////    // вертикальные разделители
-            //////////    int lv_i_end1 = po_sides_data.data1.numCurves;
-            //////////    msg3DObject lo_separator1 = null;
-            //////////    for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
-            //////////    {
 
-            //////////        ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end1);
 
-            //////////        //if (lv_i == 1)
-            //////////        //{
-            //////////        ////int lv_num_separator = lv_i + 1;
-            //////////        lv_side = enum_model_side.up_side;
-            //////////        lo_separator1 = GetSeparator(
-            //////////                            lo_scene,
-            //////////                            //lv_variant,
-            //////////                            lv_side,
-            //////////                            ////lv_num_separator,
-            //////////                            po_sides_data.data1.PointsCurves[lv_i],
-            //////////                            lv_box_length,
-            //////////                            lv_box_width,
-            //////////                            cv_gap_width
-            //////////                            );
+                const double cv_gap_width = 1;// ширина разделительных поверхностей (просвет между деталями)
+                ///int lv_variant = 0;
 
-            //////////        if (lo_separator1 != null)
-            //////////        {
-            //////////            ////////lo_scene.AttachObject(lo_separator1);
-            //////////            ////// substraction
-            //////////            ////do_sub(lo_scene, bx1, lo_separator1);
+                enum_model_side lv_side;
 
-            //////////            lar_stack_separators.Push(lo_separator1);
+                // стек разделителей
+                Stack<msg3DObject> lar_stack_separators = new Stack<msg3DObject>();
 
-            //////////        }
+                // вертикальные разделители
+                int lv_i_end1 = ls_parameters.sides_data.data1.numCurves;
+                msg3DObject lo_separator1 = null;
+                for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
+                {
 
-            //////////        //}
-            //////////    }
+                    ///ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end1);
 
+                    //if (lv_i == 1)
+                    //{
+                    ////int lv_num_separator = lv_i + 1;
+                    lv_side = enum_model_side.up_side;
+                    lo_separator1 = GetSeparator(
+                                        lo_scene,
+                                        //lv_variant,
+                                        lv_side,
+                                        ////lv_num_separator,
+                                        ls_parameters.sides_data.data1.PointsCurves[lv_i],
+                                        lv_box_length,
+                                        lv_box_width,
+                                        cv_gap_width
+                                        );
 
-            //////////    // Боковые разделители
-            //////////    int lv_i_end2 = po_sides_data.data2.numCurves;
-            //////////    msg3DObject lo_separator2 = null;
-            //////////    for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
-            //////////    {
-            //////////        ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end2);
+                    if (lo_separator1 != null)
+                    {
+                        ////////lo_scene.AttachObject(lo_separator1);
+                        ////// substraction
+                        ////do_sub(lo_scene, bx1, lo_separator1);
 
-            //////////        lv_side = enum_model_side.lateral_side;
-            //////////        ////int lv_num_separator = lv_i + 1;
+                        lar_stack_separators.Push(lo_separator1);
 
-            //////////        lo_separator2 = GetSeparator(
-            //////////                            lo_scene,
-            //////////                            //lv_variant,
-            //////////                            lv_side,
-            //////////                            ////lv_num_separator,
-            //////////                            po_sides_data.data2.PointsCurves[lv_i],
-            //////////                            lv_box_length,
-            //////////                            lv_box_width,
-            //////////                            cv_gap_width
-            //////////                            );
+                    }
 
-            //////////        if (lo_separator2 != null)
-            //////////        {
-            //////////            //////lo_scene.AttachObject(lo_separator2);
-            //////////            //// substraction
-            //////////            //do_sub(lo_scene, bx1, lo_separator2);
+                    //}
+                }
 
-            //////////            lar_stack_separators.Push(lo_separator2);
 
-            //////////        }
+                // Боковые разделители
+                int lv_i_end2 = ls_parameters.sides_data.data2.numCurves;
+                msg3DObject lo_separator2 = null;
+                for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
+                {
+                    ///ProgressStatus.AddFractionWithin(40, lv_i / lv_i_end2);
 
+                    lv_side = enum_model_side.lateral_side;
+                    ////int lv_num_separator = lv_i + 1;
 
-            //////////    }
+                    lo_separator2 = GetSeparator(
+                                        lo_scene,
+                                        //lv_variant,
+                                        lv_side,
+                                        ////lv_num_separator,
+                                        ls_parameters.sides_data.data2.PointsCurves[lv_i],
+                                        lv_box_length,
+                                        lv_box_width,
+                                        cv_gap_width
+                                        );
 
+                    if (lo_separator2 != null)
+                    {
+                        //////lo_scene.AttachObject(lo_separator2);
+                        //// substraction
+                        //do_sub(lo_scene, bx1, lo_separator2);
 
-            //////////    //// substraction
-            //////////    //do_sub(lo_scene, bx1, lo_separator1);
+                        lar_stack_separators.Push(lo_separator2);
 
+                    }
 
-            //////////    // Разрезание
-            //////////    ProgressStatus.SetPerc(40);
 
-            //////////    Stack<msg3DObject>? lar_stack_result_details = null;
+                }
 
 
+                //// substraction
+                //do_sub(lo_scene, bx1, lo_separator1);
 
-            //////////    string lv_common_path_result_files = "";
 
+                // Разрезание
+                ///ProgressStatus.SetPerc(40);
 
-            //////////    /////lar_stack_result_details = do_cutting(lo_scene, bx1, lar_stack_separators);
-            //////////    //lv_common_path_result_files = do_cutting(lo_scene, bx1, lar_stack_separators);
+                Stack<msg3DObject>? lar_stack_result_details = null;
 
 
-            //////////    ////foreach (msg3DObject lo_curr_res_part in lar_stack_result_details)
-            //////////    ////{
-            //////////    ////    lo_scene.AttachObject(lo_curr_res_part);
-            //////////    ////}
 
+                string lv_common_path_result_files = "";
 
-            //////////    typ_make_model_result_data lv_result_data = do_cutting(lo_scene, bx1, lar_stack_separators);
 
-            //////////    msgCore.FreeKernel(false);
+                /////lar_stack_result_details = do_cutting(lo_scene, bx1, lar_stack_separators);
+                //lv_common_path_result_files = do_cutting(lo_scene, bx1, lar_stack_separators);
 
-            //////////    ProgressStatus.SetPerc(50);
 
-            //////////    ////string lv_path_result_file = EndWork(lo_scene);
+                ////foreach (msg3DObject lo_curr_res_part in lar_stack_result_details)
+                ////{
+                ////    lo_scene.AttachObject(lo_curr_res_part);
+                ////}
 
-            //////////    ///return lv_path_result_file;
 
+                typ_make_model_result_data lv_result_data = do_cutting(lo_scene, bx1, lar_stack_separators);
 
+                msgCore.FreeKernel(false);
 
-            typ_make_model_result_data lv_result_data = null;/// 
+                //////////EndWorkForMakeModel(lo_scene, lv_path_file_to_export);
 
+                //ls_monitor_status.progress_indicator = 50;
+                //lo_progressMonitor.SetStatus(ls_monitor_status);
 
 
-            return lv_result_data;
 
 
+                ///ProgressStatus.SetPerc(50);
 
+                ////string lv_path_result_file = EndWork(lo_scene);
+                ///return lv_path_result_file;
 
-            //////////}
-            //////////catch (Exception ex)
-            //////////{
+                // typ_make_model_result_data lv_result_data = null;/// 
+                //return lv_result_data;
 
-            //////////    msgCore.FreeKernel(false);
 
-            //////////    typ_make_model_result_data lv_result_data = new typ_make_model_result_data();
-            //////////    lv_result_data.common_outfilename_part = "Making model error";
-            //////////    lv_result_data.number_outfiles = 0;
 
-            //////////    return lv_result_data;
 
-            //////////    //return ex.Message;
+            }
+            catch (Exception ex)
+            {
 
-            //////////}
+                msgCore.FreeKernel(false);
+
+                typ_make_model_result_data lv_result_data = new typ_make_model_result_data();
+                lv_result_data.common_outfilename_part = "Making model error";
+                lv_result_data.number_outfiles = 0;
+
+                ///return lv_result_data;
+
+                //return ex.Message;
+
+            }
 
         }
 

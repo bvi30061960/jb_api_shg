@@ -1330,27 +1330,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
             let lo_active_side = get_active_side_shape_generator(); //04102024
-            //let lo_passive_side = get_passive_side_shape_generator(); //04102024
+            let lo_passive_side = get_passive_side_shape_generator(); //04102024
 
             try {
 
                 lo_active_side.progress_bar.set_display_value(51);
 
-
-
-                //var lv_for_body = JSON.stringify(po_json_data);
-                //const response = await fetch(pv_url, {
-                //    method: "POST",
-                //    headers: {
-                //        "Content-Type": "application/json"
-                //    },
-                //    body: lv_for_body
-                //});
-
-                //////const message = await response.json();
-                //const message = await response.text();
-
-                //lo_active_side.OnCompleteRefreshModel(message);
 
                 let lv_url = "https://localhost:7095/CalcJBModel?method="
                     + Constants.method_read_result_refresh_premodel
@@ -1380,9 +1365,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 lo_active_side.model_params_changed = false; //04102024
+                lo_passive_side.model_params_changed = false; //04102024
 
                 let lv_is_before = false;
                 lo_active_side.do_before_after_model_request(lv_is_before, false);
+                lo_passive_side.do_before_after_model_request(lv_is_before, false);
 
                 alert('error read_result_refresh_premodel: ' + e.stack);
 
@@ -1398,6 +1385,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.oncomplete_read_result_refresh_premodel = function (po_data) {
 
             let lo_active_side = get_active_side_shape_generator();
+            let lo_passive_side = get_passive_side_shape_generator(); //04102024
 
             const loader = new STLLoader();
             const lo_geometry = loader.parse(po_data);
@@ -1405,8 +1393,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             // Очистка сцены
             let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
             lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+            lo_passive_side.common_func.clearScene(lo_passive_side.scene_mod, lar_no_delete); //24112024
 
             lo_active_side.on_load_model(lo_geometry);
+            lo_passive_side.on_load_model(lo_geometry);
+
         }
 
 
@@ -1481,10 +1472,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
             //-------------------------------------------------------------------
-            const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+            const mesh_mod1 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+            const mesh_mod2 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
 
 
-            lo_active_side.group_parts_mod.add(mesh_mod);
+            lo_active_side.group_parts_mod.add(mesh_mod1);
+            lo_passive_side.group_parts_mod.add(mesh_mod2);//24112024
 
             //lo_active_side.progress_dialog.set_progress_value(90);
             //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(90);
@@ -1835,6 +1828,15 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
                     lo_active_side.controls_mod.reset();
 
+
+                    //24112024 {
+                    lo_passive_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+                    lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                    $(lo_passive_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
+
+                    lo_passive_side.common_func.clear_group_childrens(lo_passive_side.group_parts_mod);
+                    lo_passive_side.controls_mod.reset();
+                    //24112024 }
                 }
 
                 else {
@@ -1866,6 +1868,22 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     }
 
                     lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
+
+                    //24112024 {
+
+                    if (pv_is_build_model) {
+                        lo_passive_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+                        lo_passive_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+                    }
+                    else {
+                        lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                        lo_passive_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
+                    }
+
+                    lo_passive_side.common_func.set_group_to_center(lo_passive_side.group_parts_mod);
+                    //24112024 }
+
+
 
                 }
             }

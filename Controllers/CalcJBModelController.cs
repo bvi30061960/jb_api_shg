@@ -221,8 +221,8 @@ namespace jb_api.Controllers
 
         }
 
-//===========================================================================================================
-//===========================================================================================================
+        //===========================================================================================================
+        //===========================================================================================================
 
 
 
@@ -237,11 +237,20 @@ namespace jb_api.Controllers
             string lv_app_path = Environment.CurrentDirectory; //Request.HttpContext.base;
 
             typ_model_data lo_model_data = new typ_model_data();
-
+            typ_progress_data ls_status = new typ_progress_data();
             string lv_path_result_file = "";
+
+            object[] parameters = null;
+            ParameterizedThreadStart pts = null;
+            Thread thr = null;
+
+            string lv_answer = "";
+
 
             string lv_client_id = Request.Query["client_id"];
             string lv_task_id = Request.Query["task_id"];
+
+            CalcModel lo_calcmodel = new CalcModel();
 
             try
             {
@@ -262,8 +271,9 @@ namespace jb_api.Controllers
                     case CommonConstants.method_start_refresh_premodel:
 
 
+                        // Параметры для передачи в процесс
+                        //ls_status = new typ_progress_data();
 
-                        typ_progress_data ls_status = new typ_progress_data();
                         ls_status.client_id = lv_client_id;
                         ls_status.task_id = lv_task_id;
 
@@ -271,43 +281,22 @@ namespace jb_api.Controllers
                         ao_ProgressMonitor.SetStatus(ls_status);
 
                         // Создание процесса с длинной задачей
-
-
-                        typ_parameters_for_refresh parameters_for_refresh = new typ_parameters_for_refresh();
-
-                        //parameters_for_refresh.session = HttpContext.Session;
+                        typ_parameters_for_model_handle parameters_for_refresh = new typ_parameters_for_model_handle();
                         parameters_for_refresh.ProgressMonitor = ao_ProgressMonitor; ;
                         parameters_for_refresh.sides_data = lo_sides_data;
 
-                        object[] parameters = new object[] { parameters_for_refresh };
-                        ParameterizedThreadStart pts = null;
-                        Thread thr = null;
-
-                        CalcModel lo_calcmodel = new CalcModel();
+                        parameters = new object[] { parameters_for_refresh };
+                        //ParameterizedThreadStart pts = null;
+                        //Thread thr = null;
+                        ///CalcModel lo_calcmodel = new CalcModel();
                         pts = new ParameterizedThreadStart(lo_calcmodel.RefreshModel); //10092022
-
-
                         thr = new Thread(pts);
                         thr.Priority = ThreadPriority.BelowNormal;
-
-                        //if (ao_thr == null)
-                        //{
-                            ao_thr = new Thread(pts);
-                            ao_thr.Priority = ThreadPriority.BelowNormal;
-                        //}
-                        //else
-                        //{
-                        //    //ao_thr.Interrupt();
-
-                        //    // Create the token source.
-                        //    CancellationTokenSource cts = new CancellationTokenSource();
-
-                        //}
-
+                        ao_thr = new Thread(pts);
+                        ao_thr.Priority = ThreadPriority.BelowNormal;
 
                         //------------------------------------------------------------
                         thr.Start(parameters);
-                        //ao_thr.Start(parameters);
                         //------------------------------------------------------------
 
 
@@ -321,16 +310,12 @@ namespace jb_api.Controllers
 
 
 
-                        string lv_answer = "";
+                        //string lv_answer = "";
 
-                        ////if (ao_ProgressMonitor.GetStatus(ProgressMonitor.GetKey(ls_status), ref ls_status))
-                        ////{
                         lv_answer = JsonConvert.SerializeObject(ls_status);
                         ////}
 
-
                         return Results.Text(lv_answer);
-
 
                         //return Results.Text(CommonConstants.word_task_id + "=" + lv_task_id);
 
@@ -343,16 +328,46 @@ namespace jb_api.Controllers
                     ////break;
 
 
-                    case CommonConstants.method_make_model:
+                    //case CommonConstants.method_make_model:
+                    case CommonConstants.method_start_make_model:
+
+                        // Параметры для передачи в процесс
+                        ls_status.client_id = lv_client_id;
+                        ls_status.task_id = lv_task_id;
+
+                        ls_status.progress_indicator = 5;
+                        ao_ProgressMonitor.SetStatus(ls_status);
+
+                        // Создание процесса с длинной задачей
+                        typ_parameters_for_model_handle parameters_for_make_model = new typ_parameters_for_model_handle();
+                        parameters_for_make_model.ProgressMonitor = ao_ProgressMonitor; ;
+                        parameters_for_make_model.sides_data = lo_sides_data;
+
+                        parameters = new object[] { parameters_for_make_model };
+                        //ParameterizedThreadStart pts = null;
+                        //Thread thr = null;
+                        ///CalcModel lo_calcmodel = new CalcModel();
+                        pts = new ParameterizedThreadStart(lo_calcmodel.MakeModel); //10092022
+                        thr = new Thread(pts);
+                        thr.Priority = ThreadPriority.BelowNormal;
+                        ao_thr = new Thread(pts);
+                        ao_thr.Priority = ThreadPriority.BelowNormal;
+
+                        //------------------------------------------------------------
+                        thr.Start(parameters);
+                        //------------------------------------------------------------
+
+
+
+
                         // разрезание исходного тела на детали модели
-
-                        typ_make_model_result_data lv_data_outfiles = CalcModel.MakeModel(lo_sides_data);
-
-
-                        string lv_str_result_data = JsonConvert.SerializeObject(lv_data_outfiles);
+                        //typ_make_model_result_data lv_data_outfiles = CalcModel.MakeModel(lo_sides_data);
+                        //string lv_str_result_data = JsonConvert.SerializeObject(lv_data_outfiles);
+                        //return Results.Text(lv_str_result_data);
 
 
-                        return Results.Text(lv_str_result_data);
+                        lv_answer = JsonConvert.SerializeObject(ls_status);
+                        return Results.Text(lv_answer);
 
                         break;
 

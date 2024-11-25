@@ -8,6 +8,8 @@
         public const string method_refresh_premodel = "refresh_premodel";
         public const string method_start_refresh_premodel = "start_refresh_premodel";
         public const string method_make_model = "make_model";
+        public const string method_start_make_model = "start_make_model";
+
         public const string method_read_model_parts = "read_model_parts";
         public const string method_delete_model_parts = "delete_model_parts";
         public const string method_read_progress_value = "read_progress_value";
@@ -133,29 +135,18 @@
     public class typ_make_model_result_data
     {
         public string common_outfilename_part { set; get; }
-
         public int number_outfiles { set; get; }
 
     };
 
 
 
-    public struct typ_parameters_for_refresh
+    public struct typ_parameters_for_model_handle
     {
-        //public ISession session { set; get; }
         public IProgressMonitor ProgressMonitor { set; get; }
         public typ_sides_data sides_data { set; get; }
-
     }
 
-    //public class typ_progress_status
-    //{
-    //    public string taskId { set; get; }
-    //    public string path_result_file { set; get; }
-    //    public int progress_indicator { set; get; }
-    //    public DateTime date_time_changed { set; get; }
-
-    //};
 
 
     //=============================================================================================
