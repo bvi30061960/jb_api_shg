@@ -8,15 +8,15 @@ namespace jb_api_shg.AppCode
 {
 
 
-    public class typ_progress_data
-    {
-        public string client_id { set; get; }
-        public string task_id { set; get; }
-        public string path_result_file { set; get; }
-        public int progress_indicator { set; get; }
-        public DateTime date_time_changed { set; get; }
+    ////public class typ_progress_data
+    ////{
+    ////    public string client_id { set; get; }
+    ////    public string task_id { set; get; }
+    ////    public string path_result_file { set; get; }
+    ////    public int progress_indicator { set; get; }
+    ////    public DateTime date_time_changed { set; get; }
 
-    };
+    ////};
 
     ////----------------------------------------------------------------------------------------------
     //public interface IProgressMonitor
@@ -25,12 +25,7 @@ namespace jb_api_shg.AppCode
     //    string GetStatus(/*int pv_taskId*/);
     //}
 
-    //----------------------------------------------------------------------------------------------
-    public interface IProgressMonitor
-    {
-        void SetStatus(typ_progress_data ps_status);
-        bool GetStatus(string pv_key, ref typ_progress_data ps_status);
-    }
+
     ////public class ProgressMonitor : IProgressMonitor
     ////{
 
@@ -101,10 +96,15 @@ namespace jb_api_shg.AppCode
     ////    }
     ////}
 
+
+    //----------------------------------------------------------------------------------------------
+    public interface IProgressMonitor
+    {
+        void SetStatus(typ_progress_data ps_status);
+        bool GetStatus(string pv_key, ref typ_progress_data ps_status);
+    }
+
     //===================================================================================
-
-
-
     public class ProgressMonitor : IProgressMonitor
     {
 

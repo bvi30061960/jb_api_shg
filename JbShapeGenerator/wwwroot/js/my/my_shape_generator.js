@@ -1123,13 +1123,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-
-                this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_refresh_premodel, this.read_result_refresh_premodel);
+                let lv_end_watching_progress_value = 50;
+                this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_refresh_premodel, this.read_result_refresh_premodel, lv_end_watching_progress_value);
                 this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
 
 
 
-                //16112024 this.progress_bar.start_progress();
                 this.progress_bar.set_display_value(3);
 
 
@@ -1143,8 +1142,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 let lo_sides_data = this.read_model_sides_data();
-
-
                 lo_sides_data.task_id = this.progress_bar.task_id;
 
                 this.send_side_data_for_refresh_model(lv_url, lo_sides_data);
@@ -1172,8 +1169,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.do_before_after_model_request(lv_is_before, true);
 
                 send_for_refresh_model(pv_url, po_json_data);
-
-
 
                 //-------------------------------------------------------------------
                 async function send_for_refresh_model(pv_url, po_json_data) {
@@ -1210,7 +1205,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     catch (e) {
 
 
-                        lo_active_side.model_params_changed = false; //04102024
+                        lo_active_side.model_params_changed = false;
 
                         let lv_is_before = false;
                         lo_active_side.do_before_after_model_request(lv_is_before, false);
@@ -1553,15 +1548,32 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //////////saveAs(lv_blob, "ForSgModel.txt");
                 // }
 
+                let lv_end_watching_progress_value = 50;
+                this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_make_model, this.load_model_parts, lv_end_watching_progress_value);
 
-                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_make_model
+                this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
+
+
+                this.progress_bar.set_display_value(3);
+
+                let lv_url = "https://localhost:7095/CalcJBModel?method="
+                    + Constants.method_start_make_model
+                    + "&"
+                    + Constants.word_client_id + "=" + this.client_id
+                    + "&"
+                    + Constants.word_task_id + "=" + this.progress_bar.task_id
                     + "&chdata=" + Math.random().toString(); // 23112024
 
+                //let lv_url = "https://localhost:7095/CalcJBModel?method="
+                //    + Constants.method_make_model
+                //    + "&chdata=" + Math.random().toString(); // 23112024
 
-                let lo_sides_data = this.read_model_sides_data();
+
+                let lo_sides_data = this.read_model_sides_data(); lo_sides_data.task_id = this.progress_bar.task_id;
+                lo_sides_data.task_id = this.progress_bar.task_id;
 
 
-                this.send_side_data_make_model(lv_url, lo_sides_data);
+                this.send_side_data_for_start_make_model(lv_url, lo_sides_data);
 
 
             }
@@ -1578,29 +1590,18 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.send_side_data_make_model = function (pv_url, po_json_data) {
+        Shape_generator.prototype.send_side_data_for_start_make_model = function (pv_url, po_json_data) {
 
 
             try {
-                ////$('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
-                ////$('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
-
-                ////$('#up_id_loading_indicator').show();// индикация ожидания
-                ////$('#lateral_id_loading_indicator').show();// индикация ожидания
-
-                ////$('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
-                ////$('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
-
-                ////this.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
 
                 let lv_is_before = true;
                 this.do_before_after_model_request(lv_is_before, true);
 
+                send_for_start_make_model(pv_url, po_json_data);
 
-
-                send(pv_url, po_json_data);
-
-                async function send(pv_url, po_json_data) {
+                //-------------------------------------------------------------------
+                async function send_for_start_make_model(pv_url, po_json_data) {
 
 
                     let lo_active_side = get_active_side_shape_generator(); //04102024
@@ -1621,30 +1622,19 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         const message = await response.json();
                         //const message = await response.text();
 
-                        lo_active_side.OnCompleteMakeModel(message);
+                        lo_active_side.OnCompleteStartMakeModel(message);
 
                     }
 
                     catch (e) {
 
-                        lo_active_side.model_params_changed = false; //04102024
+                        lo_active_side.model_params_changed = false;
 
-
-                        // 04102024 {
-                        ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                        ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-                        ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
-                        ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-
-                        ////lo_active_side.model_params_changed = false;
-                        ////lo_active_side.is_building_model = false;
-                        ////lo_passive_side.is_building_model = false;
-                        // 04102024 }
                         let lv_is_before = false;
                         lo_active_side.do_before_after_model_request(lv_is_before, false);
 
 
-                        alert('error send: ' + e.stack);
+                        alert('error send_for_start_make_model: ' + e.stack);
 
                     }
 
@@ -1660,79 +1650,115 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.OnCompleteMakeModel = function (po_data) {
+        Shape_generator.prototype.OnCompleteStartMakeModel = function (po_data) {
 
-            let lo_active_side = get_active_side_shape_generator();
-            let lo_passive_side = get_passive_side_shape_generator();
+            try {
+                let lo_active_side = get_active_side_shape_generator();
+                let lo_passive_side = get_passive_side_shape_generator();
 
-            if (po_data == null || po_data == "" || po_data.number_outfiles == 0) {
+                if (po_data == null || po_data == "" || typeof po_data == "undefined") {
 
-                ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-                ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
-                ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                    let lv_is_before = false;
+                    lo_active_side.do_before_after_model_request(lv_is_before, false);
 
-                ////lo_active_side.model_params_changed = false;
-                ////lo_active_side.is_building_model = false;
-                ////lo_passive_side.is_building_model = false;
+                    return;
+                }
 
-                let lv_is_before = false;
-                lo_active_side.do_before_after_model_request(lv_is_before, false);
 
-                return;
+                ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);//19102024
+
+                //let ls_progress_data = JSON.parse(po_data);
+
+
+                //if (ls_progress_data == null || typeof ls_progress_data == "undefined") {
+                //    return;
+                //}
+
+                if (po_data.client_id != lo_active_side.client_id
+                    || po_data.task_id != lo_active_side.progress_bar.task_id
+                ) {
+                    return;
+                }
+
+
+                this.progress_bar.start_progress();
+
+
+
+
+
+
+
+                //if (po_data == null || po_data == "" || po_data.number_outfiles == 0) {
+
+                //    let lv_is_before = false;
+                //    lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                //    return;
+                //}
+
+
+                //this.load_model_parts(po_data);////// перенести
+
+
             }
 
+            catch (e) {
 
-            ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);//19102024
+                alert('error OnCompleteStartMakeModel: ' + e.stack);
 
-
-            this.load_model_parts(po_data);
-
-
-
-            ////const loader = new STLLoader();
-            ////const lo_object = loader.parse(po_data);
-
-            ////// Очистка сцены
-            ////let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
-            ////lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
-
-            ////lo_active_side.on_load_model(lo_object);
-
+            }
         }
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.load_model_parts = function (po_data) {
 
+            try {
 
-            if (po_data == null || po_data.number_outfiles == null || po_data.number_outfiles <= 0) {
-                return;
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                if (po_data == null || po_data.number_outfiles == null || po_data.number_outfiles <= 0) {
+
+                    let lv_is_before = false;
+                    lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                    return;
+                }
+
+                // Очистка сцены new THREE.Group();
+                //14102024 let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
+                let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// 14102024
+                this.common_func.clearScene(this.scene_mod, lar_no_delete);
+
+
+                let lv_filename = "";
+
+                this.num_loaded_model_parts = 0;//16102024
+
+                // Очистка группы деталей
+                this.group_parts_mod.clear();
+
+
+                this.model_prefix_filename = po_data.common_outfilename_part; // префикс - общая часть имён файлов деталей
+                // Загрузка деталей модели
+                for (let lv_i = 1; lv_i <= po_data.number_outfiles; lv_i++) {
+
+                    lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString() + Constants.file_model_ext;
+
+                    this.model_numparts = po_data.number_outfiles;
+                    //this.model_curr_numpart = lv_i;
+
+                    this.load_model_part(lv_filename);
+
+                }
+
+
             }
 
-            // Очистка сцены new THREE.Group();
-            //14102024 let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
-            let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// 14102024
-            this.common_func.clearScene(this.scene_mod, lar_no_delete);
+            catch (e) {
 
-
-            let lv_filename = "";
-
-            this.num_loaded_model_parts = 0;//16102024
-
-            // Очистка группы деталей
-            this.group_parts_mod.clear();
-
-
-            this.model_prefix_filename = po_data.common_outfilename_part; // префикс - общая часть имён файлов деталей
-            // Загрузка деталей модели
-            for (let lv_i = 1; lv_i <= po_data.number_outfiles; lv_i++) {
-
-                lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString() + Constants.file_model_ext;
-
-                this.model_numparts = po_data.number_outfiles;
-                //this.model_curr_numpart = lv_i;
-
-                this.load_model_part(lv_filename);
+                alert('error load_model_parts: ' + e.stack);
 
             }
 
@@ -1751,7 +1777,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts +
                     "&filename=" + pv_filename
                     + "&chdata=" + Math.random().toString(); // 23112024
-;
+                ;
 
 
                 let lv_is_before = true;
@@ -1968,7 +1994,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
                         "&filename=" + lo_active_side.model_prefix_filename
                         + "&chdata=" + Math.random().toString(); // 23112024
-;
+                    ;
 
                     get_delete_on_server_model_parts(lv_url)
                     async function get_delete_on_server_model_parts(pv_url) {
