@@ -162,6 +162,8 @@ namespace JbShapeGenerator.AppCode
         //public const bool is_just_test_audioMaker = false; //true;
         //public const int ExpirationIntervalRelativeNowInHours = 48; // Интервал устаревания для временных папок в часах 
         //public const decimal max_price_audiofile = 0.5M; // Ограничение на максимальную стоимость выходного аудиофайла 
+        public const string path_unic_user_list_files = "wwwroot/datafiles\\initial_model\\models\\models_list.txt";
+
     }
 
     // //******************************************************************************************

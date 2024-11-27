@@ -455,9 +455,17 @@ export function GridSelectModels(pv_prefix) {
         }
 
         //------------------------------------------------------------------------------------------
-        GridSelectModels.prototype.read_model_from_server = function (pv_pathFile) {
+        GridSelectModels.prototype.read_model_from_server = function (pv_pathFile, pv_is_initial_load) {
 
-            let lv_url = "/Index?handler=" + Constants.method_read_model_from_server + "&pathmodel=" + pv_pathFile;
+            let lv_url = "";
+
+
+            lv_url = "/Index?handler=" + Constants.method_read_model_from_server + "&pathmodel=" + pv_pathFile;
+            if (pv_is_initial_load) {
+
+                lv_url = lv_url + "&" + Constants.initial_load + "=true";
+            }
+
 
             get_read_model_from_server(lv_url);
 
@@ -504,7 +512,7 @@ export function GridSelectModels(pv_prefix) {
 
 
                 let lo_data = JSON.parse(po_data); //29102024
-
+                
                 ////// Очистка группы с превью
                 ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
 
@@ -512,6 +520,10 @@ export function GridSelectModels(pv_prefix) {
                 lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
                 lo_active_side.render_mod();
 
+                //27112024 
+                if (!lo_data) {
+                    return;
+                }
 
 
                 let loader = null;

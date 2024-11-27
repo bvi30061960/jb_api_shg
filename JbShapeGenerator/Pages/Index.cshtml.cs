@@ -163,7 +163,20 @@ namespace JbShapeGenerator.Pages
 
 
                 string? lv_path_model = Request.Query["pathmodel"];
-                typ_united_model_data lo_united_model_data = await HandleModel.ReadUnitedModelData(lv_path_model);
+
+                bool lv_is_initial_load = false;
+                //try
+                //{
+                lv_is_initial_load = bool.TryParse(Request.Query["initial_load"], out lv_is_initial_load);
+                //}
+                //catch (Exception ex)
+                //{
+
+                //}
+
+
+
+                typ_united_model_data lo_united_model_data = await HandleModel.ReadUnitedModelData(lv_path_model, lv_is_initial_load);
 
 
                 lv_result = JsonConvert.SerializeObject(lo_united_model_data);

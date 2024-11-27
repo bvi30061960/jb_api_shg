@@ -242,7 +242,7 @@ namespace JbShapeGenerator.AppCode
         }
         //----------------------------------------------------------------------------------------------------------
 
-        async internal static Task<typ_united_model_data> ReadUnitedModelData(string? lv_path_model)
+        async internal static Task<typ_united_model_data> ReadUnitedModelData(string? lv_path_model, bool pv_is_initial_load)
         {
 
             typ_united_model_data lo_united_model_data = new typ_united_model_data();
@@ -356,8 +356,15 @@ namespace JbShapeGenerator.AppCode
 
                 // Чтение информации из файла списка файлов
 
+                string lv_path_unic_user_list_files = HandlePathsAndNames.av_path_unic_user_list_files;
+                if (pv_is_initial_load)
+                {
+                    lv_path_unic_user_list_files = AdminSets.path_unic_user_list_files;
+
+                }
+
                 PersistentDictionary<gs_ListFiles> lo_list_model_files =
-                            new PersistentDictionary<gs_ListFiles>(HandlePathsAndNames.av_path_unic_user_list_files);
+                            new PersistentDictionary<gs_ListFiles>(lv_path_unic_user_list_files);
 
                 gs_ListFiles ls_data_file = new gs_ListFiles();
                 if (lo_list_model_files.ReadItem(lv_path_model, ref ls_data_file))

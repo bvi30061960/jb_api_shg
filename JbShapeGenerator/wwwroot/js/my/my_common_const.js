@@ -63,7 +63,8 @@ export var Constants = {
     //lang_ru: "ru",
     //lang_en: "en",
     //initial_topic: "id_tt_choose_text_topic"
-    path_file_initial_premodel: "wwwroot/datafiles/9NN3WWEIPVMS2VN2BHGGG_usr" //.stl"
+    path_file_initial_premodel: "wwwroot/datafiles\\initial_model\\models\\initial_model",
+    initial_load: "initial_load" 
 };
 
 

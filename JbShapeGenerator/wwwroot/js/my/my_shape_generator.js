@@ -96,7 +96,7 @@ function start() {
         $("#id_tab_sides").tabs("option", "active", 0);// активация первой закладки
 
 
-        go_up_side_shape_generator.model_params_changed = true;
+       //26112024 начальное обновление модели (сейчас работает загрузка начальной модели) go_up_side_shape_generator.model_params_changed = true;
 
         //05092024 }
     }
@@ -432,15 +432,38 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             /////////////////////this.animate_mod();
 
 
-            // Загрузка начальной премодели
-            let lv_path_file_initial_premodel = Constants.path_file_initial_premodel;
-            this.grid_select_models.read_model_from_server(lv_path_file_initial_premodel);
+            // Загрузка данных начальной премодели
+            this.load_initial_model();
 
 
-            //setInterval(this.onPassInterval, this.refreshModelInterval, this);
+
+            setInterval(this.onPassInterval, this.refreshModelInterval, this);
 
 
         }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.load_initial_model = function () {
+
+            try {
+
+                let lv_end_watching_progress_value = 50;
+                this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_refresh_premodel, this.read_result_refresh_premodel, lv_end_watching_progress_value);
+                this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
+
+
+                let lv_path_file_initial_premodel = Constants.path_file_initial_premodel;
+                this.grid_select_models.read_model_from_server(lv_path_file_initial_premodel, true);
+
+            }
+
+            catch (e) {
+
+                alert('error load_initial_model: ' + e.stack);
+
+            }
+        }
+
         //------------------------------------------------------------------------
         Shape_generator.prototype.onPassInterval = function (po_this) {
 
@@ -1137,7 +1160,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lv_end_watching_progress_value = 50;
                 this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_refresh_premodel, this.read_result_refresh_premodel, lv_end_watching_progress_value);
                 this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
-
 
 
                 this.progress_bar.set_display_value(3);
