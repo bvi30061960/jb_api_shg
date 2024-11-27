@@ -431,7 +431,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             this.init_three_elements();
             /////////////////////this.animate_mod();
 
-            setInterval(this.onPassInterval, this.refreshModelInterval, this);
+
+            // Загрузка начальной премодели
+            let lv_path_file_initial_premodel = Constants.path_file_initial_premodel;
+            this.grid_select_models.read_model_from_server(lv_path_file_initial_premodel);
+
+
+            //setInterval(this.onPassInterval, this.refreshModelInterval, this);
 
 
         }
@@ -873,6 +879,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.make_shape(false, null);
 
+
+                this.grid_select_models = new GridSelectModels(this.id_prefix);
+
+
+
                 //////////this.shapes = new Shapes(
                 //////////    this,
                 //////////    this.scene,
@@ -1070,7 +1081,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.shapes.adjust_splines_by_external_shape();
 
 
-                this.grid_select_models = new GridSelectModels(this.id_prefix);
+                //27112024 this.grid_select_models = new GridSelectModels(this.id_prefix);
 
 
             }
@@ -1729,27 +1740,27 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 // Очистка сцены new THREE.Group();
                 //14102024 let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
                 let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// 14102024
-                this.common_func.clearScene(this.scene_mod, lar_no_delete);
+                lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
 
 
                 let lv_filename = "";
 
-                this.num_loaded_model_parts = 0;//16102024
+                lo_active_side.num_loaded_model_parts = 0;//16102024
 
                 // Очистка группы деталей
-                this.group_parts_mod.clear();
+                lo_active_side.group_parts_mod.clear();
 
 
-                this.model_prefix_filename = po_data.common_outfilename_part; // префикс - общая часть имён файлов деталей
+                lo_active_side.model_prefix_filename = po_data.common_outfilename_part; // префикс - общая часть имён файлов деталей
                 // Загрузка деталей модели
                 for (let lv_i = 1; lv_i <= po_data.number_outfiles; lv_i++) {
 
                     lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString() + Constants.file_model_ext;
 
-                    this.model_numparts = po_data.number_outfiles;
+                    lo_active_side.model_numparts = po_data.number_outfiles;
                     //this.model_curr_numpart = lv_i;
 
-                    this.load_model_part(lv_filename);
+                    lo_active_side.load_model_part(lv_filename);
 
                 }
 
@@ -1855,6 +1866,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     lo_active_side.controls_mod.reset();
 
 
+                    lo_active_side.progress_bar.div_progressbar.fadeIn();//26112024
+
+
+
                     //24112024 {
                     lo_passive_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
                     lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
@@ -1894,6 +1909,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     }
 
                     lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
+
+                    if (lo_active_side.progress_bar.div_progressbar) {
+                        lo_active_side.progress_bar.div_progressbar.fadeOut();//26112024
+                    }
 
                     //24112024 {
 

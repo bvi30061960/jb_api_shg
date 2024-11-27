@@ -263,13 +263,16 @@ export function GridSelectModels(pv_prefix) {
                     rowNum: 100, //10,
                     //rowList: [10, 50, 100],
                     pager: this.$gridPager,
-                    sortname: 'RowID',
+                    sortname: 'change_datetime', //'RowID',
 
                     ////viewrecords: false, //true,//////////////////////////
 
                     /////////////////////////////////editurl: "/Index?handler=GridListBlockSetings?delete=yes", //10092022
 
-                    sortorder: 'asc',
+                    sortorder: 'desc', //'asc',
+
+                    //firstsortorder: 'desc',
+
                     /////////////////// 08112024 ondblClickRow: this.OndblClickRow,
 
                     datatype: 'local',
@@ -439,8 +442,6 @@ export function GridSelectModels(pv_prefix) {
                     return;
                 }
 
-
-                //29102024 lv_pathFile = lv_pathFile + Constants.file_model_prev;
                 this.read_model_from_server(lv_pathFile);
 
                 this.$div_grid.dialog("close");
@@ -456,10 +457,7 @@ export function GridSelectModels(pv_prefix) {
         //------------------------------------------------------------------------------------------
         GridSelectModels.prototype.read_model_from_server = function (pv_pathFile) {
 
-
-            //29102024 let lv_url = "/Index?handler=" + Constants.method_read_model_from_server + "&pathfilename=" + pv_pathFile;
             let lv_url = "/Index?handler=" + Constants.method_read_model_from_server + "&pathmodel=" + pv_pathFile;
-
 
             get_read_model_from_server(lv_url);
 
@@ -494,9 +492,6 @@ export function GridSelectModels(pv_prefix) {
 
                 lo_active_side.is_ask_about_save_file = false;
                 lo_active_side.is_model_changed = false;
-
-
-
 
 
                 //////// тестовый пример загрузки изображения

@@ -123,17 +123,31 @@ namespace JbShapeGenerator.AppCode
                         }
 
                         break;
-                    //case "gnumber":
-                    //    if (pv_sortOrderBy == "asc")
-                    //    {
-                    //        lo_sorted_dict = lo_dict.OrderBy(x => long.Parse(x.Value.gnumber));
-                    //    }
-                    //    else
-                    //    {
-                    //        lo_sorted_dict = lo_dict.OrderByDescending(x => long.Parse(x.Value.gnumber));
-                    //    }
 
-                    //    break;
+
+                    case "price":
+                        if (pv_sortOrderBy == "asc")
+                        {
+                            lo_sorted_dict = lo_dict.OrderBy(x => x.Value.price);
+                        }
+                        else
+                        {
+                            lo_sorted_dict = lo_dict.OrderByDescending(x => x.Value.price);
+                        }
+
+                        break;
+
+                        //case "gnumber":
+                        //    if (pv_sortOrderBy == "asc")
+                        //    {
+                        //        lo_sorted_dict = lo_dict.OrderBy(x => long.Parse(x.Value.gnumber));
+                        //    }
+                        //    else
+                        //    {
+                        //        lo_sorted_dict = lo_dict.OrderByDescending(x => long.Parse(x.Value.gnumber));
+                        //    }
+
+                        //    break;
 
 
                 }

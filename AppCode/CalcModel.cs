@@ -332,6 +332,8 @@ namespace jb_api_shg.AppCode
         public /*static typ_make_model_result_data*/ void MakeModel(object data)
         {
 
+            typ_progress_data ls_monitor_status = new typ_progress_data();
+            IProgressMonitor lo_progressMonitor = null;
 
             try
             {
@@ -341,11 +343,13 @@ namespace jb_api_shg.AppCode
                 string lv_client_id = ls_parameters.sides_data.client_id;
                 string lv_task_id = ls_parameters.sides_data.task_id;
 
-                IProgressMonitor lo_progressMonitor = ls_parameters.ProgressMonitor;
+                lo_progressMonitor = ls_parameters.ProgressMonitor;
+
+
 
                 string lv_path_file_to_export = GetPathFileToExport();// !!
 
-                typ_progress_data ls_monitor_status = new typ_progress_data();
+                //typ_progress_data ls_monitor_status = new typ_progress_data();
                 ls_monitor_status.client_id = lv_client_id;
                 ls_monitor_status.task_id = lv_task_id;
                 ls_monitor_status.path_result_file = lv_path_file_to_export;
@@ -492,46 +496,50 @@ namespace jb_api_shg.AppCode
                 //25112024 typ_make_model_result_data lv_result_data = do_cutting(lo_scene, bx1, lar_stack_separators);
                 Stack<msg3DObject> lar_parts_stack = do_cutting(lo_scene, bx1, lar_stack_separators);
 
+
+
+
+                typ_progress_data ls_save_parts_data = save_parts_of_model(lo_scene, lar_parts_stack);
+
+
                 msgCore.FreeKernel(false);
 
-
-
-                typ_progress_data ls_result_data = save_parts_of_model(lo_scene, lar_parts_stack);
 
                 //ls_result_data.client_id                    
                 //ls_result_data.task_id                      
                 //ls_result_data.path_result_file             
-                //ls_result_data.common_outfilename_part      
-                //ls_result_data.number_outfiles
-                //ls_result_data.progress_indicator = 50;
-                //ls_result_data.date_time_changed = DateTime.Now;            
+                ls_monitor_status.common_outfilename_part = ls_save_parts_data.common_outfilename_part;
+                ls_monitor_status.number_outfiles = ls_save_parts_data.number_outfiles;
+                ls_monitor_status.progress_indicator = 50;
+                ls_monitor_status.date_time_changed = DateTime.Now;
 
-
-
-
-
-
-
-
-
-        ///EndWorkForMakeModel(lo_scene, lv_path_file_to_export);
-
-        //ls_monitor_status.progress_indicator = 50;
-        //lo_progressMonitor.SetStatus(ls_monitor_status);
-
-
-
-
-        ///ProgressStatus.SetPerc(50);
-
-        ////string lv_path_result_file = EndWork(lo_scene);
-        ///return lv_path_result_file;
-
-        // typ_make_model_result_data lv_result_data = null;/// 
-        //return lv_result_data;
-
-        ls_monitor_status.progress_indicator = 50;
                 lo_progressMonitor.SetStatus(ls_monitor_status);
+
+
+
+
+
+
+
+
+                ///EndWorkForMakeModel(lo_scene, lv_path_file_to_export);
+
+                //ls_monitor_status.progress_indicator = 50;
+                //lo_progressMonitor.SetStatus(ls_monitor_status);
+
+
+
+
+                ///ProgressStatus.SetPerc(50);
+
+                ////string lv_path_result_file = EndWork(lo_scene);
+                ///return lv_path_result_file;
+
+                // typ_make_model_result_data lv_result_data = null;/// 
+                //return lv_result_data;
+
+                //ls_monitor_status.progress_indicator = 50;
+                //lo_progressMonitor.SetStatus(ls_monitor_status);
 
 
 
@@ -542,9 +550,12 @@ namespace jb_api_shg.AppCode
                 msgCore.FreeKernel(false);
 
                 //25112024 typ_make_model_result_data lv_result_data = new typ_make_model_result_data();
-                typ_progress_data lv_result_data = new typ_progress_data();//25112024
-    lv_result_data.common_outfilename_part = "Making model error";
-                lv_result_data.number_outfiles = 0;
+                //typ_progress_data lv_result_data = new typ_progress_data();//25112024
+
+                ls_monitor_status.progress_indicator = 50;
+                ls_monitor_status.common_outfilename_part = "Making model error";
+                ls_monitor_status.number_outfiles = 0;
+                lo_progressMonitor.SetStatus(ls_monitor_status);
 
                 ///return lv_result_data;
 
