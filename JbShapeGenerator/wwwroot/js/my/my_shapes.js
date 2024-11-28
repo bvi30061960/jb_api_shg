@@ -1183,7 +1183,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             this.main.render();
 
             let lo_active_side = get_active_side_shape_generator();
-            lo_active_side.model_params_changed = true; // признак изменения параметров модели
+            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
         }
         //------------------------------------------------------------------------

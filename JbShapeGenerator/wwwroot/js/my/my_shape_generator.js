@@ -96,7 +96,7 @@ function start() {
         $("#id_tab_sides").tabs("option", "active", 0);// активация первой закладки
 
 
-       //26112024 начальное обновление модели (сейчас работает загрузка начальной модели) go_up_side_shape_generator.model_params_changed = true;
+        //26112024 начальное обновление модели (сейчас работает загрузка начальной модели) go_up_side_shape_generator.model_params_changed = true;
 
         //05092024 }
     }
@@ -824,27 +824,27 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
+                //28112024 {
+
+                this.add_lights_for_model(this.scene_mod);
+
+                ////////////////var gv_spotLight1 = new THREE.PointLight(0xf0f0f0);
+                ////////////////gv_spotLight1.position.set(50, 50, 0);
+                //////////////////gv_spotLight1.name = 'spotLight1';
+                ////////////////this.scene_mod.add(gv_spotLight1);
 
 
+                ////////////////var gv_spotLight2 = new THREE.PointLight(0xf0f0f0); //\\//
+                ////////////////gv_spotLight2.position.set(-50, -50, 0); //\\//
+                //////////////////gv_spotLight1.name = 'spotLight2';
+                ////////////////this.scene_mod.add(gv_spotLight2); //\\//
 
 
-                var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
-                gv_spotLight1.position.set(50, 50, 0); //\\//
-                //gv_spotLight1.name = 'spotLight1';
-                this.scene_mod.add(gv_spotLight1); //\\//
-
-
-                var gv_spotLight2 = new THREE.PointLight(0xf0f0f0); //\\//
-                gv_spotLight2.position.set(-50, -50, 0); //\\//
-                //gv_spotLight1.name = 'spotLight2';
-                this.scene_mod.add(gv_spotLight2); //\\//
-
-
-                var gv_spotLight3 = new THREE.PointLight(0xf0f0f0);
-                gv_spotLight3.position.set(50, 50, 50);
-                //gv_spotLight1.name = 'spotLight3';
-                this.scene_mod.add(gv_spotLight3);
-
+                ////////////////var gv_spotLight3 = new THREE.PointLight(0xf0f0f0);
+                ////////////////gv_spotLight3.position.set(50, 50, 50);
+                //////////////////gv_spotLight1.name = 'spotLight3';
+                ////////////////this.scene_mod.add(gv_spotLight3);
+                //28112024 }
 
                 //var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
                 //gv_spotLight1.position.set(50, 0, 0); //\\//
@@ -1000,6 +1000,119 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
 
         }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.add_lights_for_model = function (po_scene) {
+
+            try {
+                //var gv_spotLight1 = new THREE.PointLight(0xf0f0f0);
+                //gv_spotLight1.position.set(50, 50, 0);
+                //gv_spotLight1.name = 'spotLight1';
+                //po_scene.add(gv_spotLight1);
+
+
+                //var gv_spotLight2 = new THREE.PointLight(0xf0f0f0); 
+                //gv_spotLight2.position.set(-50, -50, 0);
+                //gv_spotLight1.name = 'spotLight2';
+                //po_scene.add(gv_spotLight2);
+
+
+                //var gv_spotLight3 = new THREE.PointLight(0xf0f0f0);
+                //gv_spotLight3.position.set(50, 50, 50);
+                //gv_spotLight1.name = 'spotLight3';
+                //po_scene.add(gv_spotLight3);
+
+                let lo_spotLight;
+
+                lo_spotLight = new THREE.PointLight(0xf0f0f0);
+                lo_spotLight.position.set(0, 0, 100);
+                lo_spotLight.name = 'spotLight1';
+                po_scene.add(lo_spotLight);
+
+
+                lo_spotLight = new THREE.PointLight(0xf0f0f0);
+                lo_spotLight.position.set(0, 0, -100);
+                lo_spotLight.name = 'spotLight2';
+                po_scene.add(lo_spotLight);
+
+
+                lo_spotLight = new THREE.PointLight(0xf0f0f0);
+                lo_spotLight.position.set(0, 0, 100);
+                lo_spotLight.name = 'spotLight1';
+                po_scene.add(lo_spotLight);
+
+
+                lo_spotLight = new THREE.PointLight(0xf0f0f0);
+                lo_spotLight.position.set(0, 0, -100);
+                lo_spotLight.name = 'spotLight2';
+                po_scene.add(lo_spotLight);
+
+
+                //var gv_spotLight3 = new THREE.PointLight(0xf0f0f0);
+                //gv_spotLight3.position.set(150, -150, 0);
+                //gv_spotLight1.name = 'spotLight3';
+                //po_scene.add(gv_spotLight3);
+
+                //var gv_spotLight4 = new THREE.PointLight(0xf0f0f0);
+                //gv_spotLight3.position.set(-150, 150, 0);
+                //gv_spotLight1.name = 'spotLight4';
+                //po_scene.add(gv_spotLight3);
+
+
+                let lo_center = new THREE.Vector3(50, 50, 0);
+
+                //var lo_sphere = THREE.Sphere(lo_center,10);
+                //po_scene.add(lo_sphere);
+
+
+                const geometry = new THREE.SphereGeometry(15);
+                const material = new THREE.MeshBasicMaterial({ color: 0xff000f });
+
+                let sphere = null;
+
+                sphere = new THREE.Mesh(geometry, material);
+                sphere.position.x = 0;
+                sphere.position.y = 0;
+                sphere.position.z = -100;
+                po_scene.add(sphere);
+
+                sphere = new THREE.Mesh(geometry, material);
+                sphere.position.x = 0;
+                sphere.position.y = 0;
+                sphere.position.z = 100;
+                po_scene.add(sphere);
+
+                sphere = new THREE.Mesh(geometry, material);
+                sphere.position.x = 100;
+                sphere.position.y = 0;
+                sphere.position.z = -100;
+                po_scene.add(sphere);
+
+                sphere = new THREE.Mesh(geometry, material);
+                sphere.position.x = -100;
+                sphere.position.y = 0;
+                sphere.position.z = 100;
+                po_scene.add(sphere);
+
+                //let sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 50;
+                //sphere.position.y = 50;
+                //sphere.position.z = 0;
+
+                //po_scene.add(sphere);
+
+
+            }
+
+            catch (e) {
+
+                alert('error add_lights_for_model: ' + e.stack);
+
+            }
+        }
+
+
+
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.get_parameters_from_side_data = function (po_side_data) {
@@ -2278,6 +2391,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 // очистка обработчиков событий
                 $(this.passive_id_prefix + "id_but_read_model").off("click");
 
+
+                $(this.passive_id_prefix + "id_but_refresh").off("click");
+
                 $(this.passive_id_prefix + "id_chb_space_adjust").off("click");
                 $(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
                 $(this.passive_id_prefix + "id_but_del_spline").off("click");
@@ -2302,6 +2418,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $(this.id_prefix + "id_but_set_color").off("click").click(this.onclick_id_but_set_color);
                 $(this.id_prefix + "id_but_rotate_mode").off("click").click(this.onclick_id_but_rotate_mode);
 
+                $(this.id_prefix + "id_but_refresh").off("click").click(this.onclick_refresh_model);
 
                 $(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(this.ondblclick_id_shape);//17062024
                 $(this.id_prefix + this.id_side_shape_mod).off("dblclick").dblclick(this.ondblclick_id_shape);//25082024
@@ -2600,7 +2717,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //lo_active_side_shape_generator.camera.updateProjectionMatrix();
             lo_active_side.render();
 
-            lo_active_side.model_params_changed = true; // признак изменения параметров модели
+            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
         }
 
@@ -2637,7 +2754,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //lo_active_side.camera.updateProjectionMatrix();
             lo_active_side.render();
 
-            lo_active_side.model_params_changed = true; // признак изменения параметров модели
+            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
         }
 
@@ -2729,7 +2846,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             lo_active_side.adjust_splines_by_shape_in_side(lo_active_side, pv_value);
             //}
 
-            lo_active_side.model_params_changed = true; // признак изменения параметров модели
+            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
         }
 
@@ -2789,7 +2906,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
 
 
-            lo_active_side.model_params_changed = true; // признак изменения данных модели
+            //27112024 lo_active_side.model_params_changed = true; // признак изменения данных модели
 
         }
 
@@ -3000,7 +3117,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             lo_active_side.params.is_space_adjust = $(lo_active_side.id_prefix + "id_chb_space_adjust")[0].checked;//08052024
             lo_active_side.shapes.adjust_splines_by_external_shape();
 
-            lo_active_side.model_params_changed = true; // признак изменения параметров модели
+            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
         }
         //------------------------------------------------------------------------
@@ -3008,7 +3125,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             let lo_active_side = get_active_side_shape_generator();
             lo_active_side.params.is_curve_width_adjust = $(lo_active_side.id_prefix + "id_chb_curve_width_adjust")[0].checked;
-            lo_active_side.model_params_changed = true; // признак изменения параметров модели
+            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
         }
 
@@ -3018,7 +3135,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lo_active_side = get_active_side_shape_generator();
             lo_active_side.shapes.add_spline();
 
-            lo_active_side.model_params_changed = true; // признак изменения параметров модели
+            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
         }
         //------------------------------------------------------------------------
@@ -3111,7 +3228,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     else {
 
-                        let lv_question = "File already exists. Replace it?";
+                        let lv_question = "File \"" + $("#id_model_name").val() + "\" already exists. Replace it?";
 
                         lo_active_side.common_func.show_question(lv_question,
                             function () {
@@ -3161,6 +3278,15 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         }
 
+
+        //27112024 {
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.onclick_refresh_model = function () {
+
+            let lo_active_side = get_active_side_shape_generator();
+            lo_active_side.model_params_changed = true;
+        }
+        //27112024 }
 
 
         //------------------------------------------------------------------------
