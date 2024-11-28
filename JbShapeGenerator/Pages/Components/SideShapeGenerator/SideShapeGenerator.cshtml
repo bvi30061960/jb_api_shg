@@ -20,20 +20,36 @@
     var @id_chb_space_adjust = @lv_id_prefix + "_" + "id_chb_space_adjust";
     var @id_chb_curve_width_adjust = @lv_id_prefix + "_" + "id_chb_curve_width_adjust";
     var @id_gui = @lv_id_prefix + "_" + "id_gui";
+
     var @id_my_gui_2 = @lv_id_prefix + "_" + "id_my_gui_2";
-    var @id_div_button_bar = @lv_id_prefix + "_" + "id_div_button_bar";
-    var @id_tab_button_bar = @lv_id_prefix + "_" + "id_tab_button_bar";
+    var @id_div_button_bar2 = @lv_id_prefix + "_" + "id_div_button_bar2";
+    var @id_tab_button_bar2 = @lv_id_prefix + "_" + "id_tab_button_bar2";
+
+
+    var @id_my_gui_3 = @lv_id_prefix + "_" + "id_my_gui_3";
+    var @id_div_button_bar3 = @lv_id_prefix + "_" + "id_div_button_bar3";
+    var @id_tab_button_bar3 = @lv_id_prefix + "_" + "id_tab_button_bar3";
+
+
+    var @id_but_refresh = @lv_id_prefix + "_" + "id_but_refresh";
+
     var @id_but_set_color = @lv_id_prefix + "_" + "id_but_set_color";
     var @id_but_del_spline = @lv_id_prefix + "_" + "id_but_del_spline";
 
     var @id_but_add_spline = @lv_id_prefix + "_" + "id_but_add_spline";
     var @id_but_mirror = @lv_id_prefix + "_" + "id_but_mirror";
     var @id_but_save_model = @lv_id_prefix + "_" + "id_but_save_model";
+
     var @id_shg_bottom = @lv_id_prefix + "_" + "id_shg_bottom";
     var @id_sp_numcurves = @lv_id_prefix + "_" + "id_sp_numcurves";
     var @id_td_colorpicker = @lv_id_prefix + "_" + "id_td_colorpicker";
     var @id_but_colorpicker = @lv_id_prefix + "_" + "id_but_colorpicker";
     var @id_but_random_curve = @lv_id_prefix + "_" + "id_but_random_curve";
+
+
+    
+
+
     var @id_div_3dmodel = @lv_id_prefix + "_" + "id_div_3dmodel";
     var @id_but_make_model = @lv_id_prefix + "_" + "id_but_make_model";
     var @id_for_colorpicker = @lv_id_prefix + "_" + "id_for_colorpicker";
@@ -98,20 +114,58 @@
                             <label for=@id_chb_curve_width_adjust><b>&nbsp;Adjusting curve width by the shape</b></label>
                         </div>
 
+
                     </div>
-
-
-                    <div id=@id_gui></div>
 
                     <div id=@id_my_gui_2>
 
-                        <div id=@id_div_button_bar>
+                        <div id=@id_div_button_bar2>
 
-                            <table id=@id_tab_button_bar>
+                            <table id=@id_tab_button_bar2>
                                 <tr>
                                     <td>
                                         <button id=@id_but_read_model class="btn" title="Open model list.."> <i class="bi-folder2-open"></i> </button>
                                     </td>
+
+                                    @*// <td>
+                                //     <button id=@id_but_set_color class="btn" title="Set color"> <i class="bi-palette"></i> </button>
+                                // </td>
+                                // <td>
+                                //     <button id=@id_but_del_spline class="btn" title="Delete selected"> <i class="bi-dash-square"></i> </button>
+                                // </td>
+
+                                // <td>
+                                //     <button id=@id_but_add_spline class="btn" title="Add curve"> <i class="bi-plus-square"></i> </button>
+                                // </td>*@
+                                 <td>
+                                        <button id=@id_but_refresh class="btn " title="Refresh model preview"> <i class=" bi-arrow-clockwise"></i> </button>
+                                 </td> 
+                                    <td>
+                                        <button id=@id_but_save_model class="btn" title="Save model"> <i class="bi-save2"></i> </button>
+                                    </td>
+                                    <td>
+                                        <button id=@id_but_make_model class="btn" title="Make model"> <i class="bi-box"></i> </button>
+                                    </td>
+                                </tr>
+                            </table>
+
+                        </div>
+
+                    </div>
+
+                    <div id=@id_gui></div>
+
+
+                    <div id=@id_my_gui_3>
+
+                        <div id=@id_div_button_bar3>
+
+                            <table id=@id_tab_button_bar3>
+                                <tr>
+                                    @*// <td>
+                                //     <button id=@id_but_read_model class="btn" title="Open model list.."> <i class="bi-folder2-open"></i> </button>
+                                // </td>
+                                *@
 
                                     <td>
                                         <button id=@id_but_set_color class="btn" title="Set color"> <i class="bi-palette"></i> </button>
@@ -126,19 +180,23 @@
                                     <td>
                                         <button id=@id_but_mirror class="btn " title="Mirroring segments"> <i class="bi-symmetry-vertical"></i> </button>
                                     </td>
-                                    <td>
-                                        @*// <button id=@id_but_save_model class="btn" title="Save model"> <i class="bi-file-earmark-arrow-down"></i> </button> *@
-                                        <button id=@id_but_save_model class="btn" title="Save model"> <i class="bi-save2"></i> </button>
-                                    </td>
-                                    <td>
-                                        <button id=@id_but_make_model class="btn" title="Make model"> <i class="bi-box"></i> </button>
-                                    </td>
+                                    @*
+                                // <td>
+                                //     <button id=@id_but_save_model class="btn" title="Save model"> <i class="bi-save2"></i> </button>
+                                // </td>
+                                // <td>
+                                //     <button id=@id_but_make_model class="btn" title="Make model"> <i class="bi-box"></i> </button>
+                                // </td>
+                                *@
+
                                 </tr>
                             </table>
 
                         </div>
 
                     </div>
+
+
 
                 </div>
 
@@ -162,13 +220,6 @@
 
                 <div id=@id_div_visual_model>
 
-                @*
-                    <div id="@id_div_progressbar">
-                        <label id="@id_label_progress"></label>
-                        <progress id="@id_progressbar" value="0" max="100" style="opacity:1;"> </progress>
-                    </div>
-                *@
-
                     <div id=@id_dist_part_slider title="Set the distance between parts" style="visibility: hidden">
                         <button id="@id_but_rotate_mode" title="Rotation mode" class="ui-button ui-corner-all">
                             <i class="bi-arrow-clockwise"></i>
@@ -179,6 +230,10 @@
                     <div id="@id_div_dblclk"> <label>Double click</label>&nbsp;<i class="bi-arrows-fullscreen"></i> </div>
 
                 </div>
+
+
+
+
 
             </div>
 
