@@ -757,101 +757,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                //////////////////////////var light_mod_mod = new THREE.PointLight(0xff00ff);
-                ////////////////////////////light_mod.position.set(0, 250, 0);
-                //////////////////////////this.scene_mod.add(light_mod_mod);
-
-                //////var geometry_mod = new THREE.SphereGeometry(100, 4, 3);
-                //////var material_mod = new THREE.MeshNormalMaterial();
-                //////var mesh_mod = new THREE.Mesh(geometry_mod, material_mod);
-                //////mesh_mod.position.set(0, 0, 0);
-                //////this.scene_mod.add(mesh_mod);
-
-
-
-
-                //////var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
-                //////gv_spotLight1.position.set(30, 30, 30); //\\//
-                //////gv_spotLight1.name = 'spotLight2';
-                //////this.scene_mod.add(gv_spotLight1); //\\//
-
-                //////var gv_spotLight2 = new THREE.PointLight(0xf0f0f0); //\\//
-                //////gv_spotLight2.position.set(30, 30, -30); //\\//
-                //////gv_spotLight2.name = 'spotLight2';
-                //////this.scene_mod.add(gv_spotLight2); //\\//
-
-
-                //////var gv_spotLight3 = new THREE.PointLight(0xf0f0f0); //\\//
-                //////gv_spotLight3.position.set(30, -30, 30); //\\//
-                //////gv_spotLight3.name = 'spotLight3';
-                //////this.scene_mod.add(gv_spotLight3); //\\//
-
-
-                //////var gv_spotLight4 = new THREE.PointLight(0xf0f0f0); //\\//
-                //////gv_spotLight4.position.set(-30, -30, -30); //\\//
-                //////gv_spotLight4.name = 'spotLight4';
-                //////this.scene_mod.add(gv_spotLight4); //\\//
-
-
-
-
-
-
-
-
-
-
-
-
-                //var light5 = new THREE.PointLight(0x00ffff);
-                //light5.position.set(-30, 30, 30);
-                //light5.name = 'Light5';
-                //this.scene_mod.add(light5);
-
-                //////    var light6 = new THREE.PointLight(0xffffff);
-                //////    light6.position.set(-30, 30, -30);
-                //////    gv_scene.add(light6);
-
-                //var light7 = new THREE.PointLight(0xff00ff);
-                //light7.position.set(-30, -30, 30);
-                //light7.name = 'Light7';
-                //this.scene_mod.add(light7);
-
-                //////var light8 = new THREE.PointLight(0xffffff);
-                //////light8.position.set(-30, -30, -30);
-                //////light8.name = 'Light8';
-                //////this.scene_mod.add(light8);
-
-
-
-                //28112024 {
-
                 this.add_lights_for_model(this.scene_mod);
-
-                ////////////////var gv_spotLight1 = new THREE.PointLight(0xf0f0f0);
-                ////////////////gv_spotLight1.position.set(50, 50, 0);
-                //////////////////gv_spotLight1.name = 'spotLight1';
-                ////////////////this.scene_mod.add(gv_spotLight1);
-
-
-                ////////////////var gv_spotLight2 = new THREE.PointLight(0xf0f0f0); //\\//
-                ////////////////gv_spotLight2.position.set(-50, -50, 0); //\\//
-                //////////////////gv_spotLight1.name = 'spotLight2';
-                ////////////////this.scene_mod.add(gv_spotLight2); //\\//
-
-
-                ////////////////var gv_spotLight3 = new THREE.PointLight(0xf0f0f0);
-                ////////////////gv_spotLight3.position.set(50, 50, 50);
-                //////////////////gv_spotLight1.name = 'spotLight3';
-                ////////////////this.scene_mod.add(gv_spotLight3);
-                //28112024 }
-
-                //var gv_spotLight1 = new THREE.PointLight(0xf0f0f0); //\\//
-                //gv_spotLight1.position.set(50, 0, 0); //\\//
-                ////gv_spotLight1.name = 'spotLight4';
-                //this.scene_mod.add(gv_spotLight1); //\\//
-
-
 
 
 
@@ -1005,102 +911,100 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.add_lights_for_model = function (po_scene) {
 
             try {
-                //var gv_spotLight1 = new THREE.PointLight(0xf0f0f0);
-                //gv_spotLight1.position.set(50, 50, 0);
-                //gv_spotLight1.name = 'spotLight1';
-                //po_scene.add(gv_spotLight1);
-
-
-                //var gv_spotLight2 = new THREE.PointLight(0xf0f0f0); 
-                //gv_spotLight2.position.set(-50, -50, 0);
-                //gv_spotLight1.name = 'spotLight2';
-                //po_scene.add(gv_spotLight2);
-
-
-                //var gv_spotLight3 = new THREE.PointLight(0xf0f0f0);
-                //gv_spotLight3.position.set(50, 50, 50);
-                //gv_spotLight1.name = 'spotLight3';
-                //po_scene.add(gv_spotLight3);
 
                 let lo_spotLight;
 
-                lo_spotLight = new THREE.PointLight(0xf0f0f0);
-                lo_spotLight.position.set(0, 0, 100);
-                lo_spotLight.name = 'spotLight1';
+
+                lo_spotLight = new THREE.SpotLight(0xffffff);
+                lo_spotLight.position.set(0, 100, 100);
+                po_scene.add(lo_spotLight);
+
+                //lo_spotLight = new THREE.SpotLight(0xffffff);
+                //lo_spotLight.position.set(100, 100, 0);
+                //po_scene.add(lo_spotLight);
+
+                //lo_spotLight = new THREE.SpotLight(0xffffff);
+                //lo_spotLight.position.set(0, 100, -100);
+                //po_scene.add(lo_spotLight);
+
+                lo_spotLight = new THREE.PointLight(0xffffff);
+                lo_spotLight.position.set(-100, 100, 0);
                 po_scene.add(lo_spotLight);
 
 
-                lo_spotLight = new THREE.PointLight(0xf0f0f0);
-                lo_spotLight.position.set(0, 0, -100);
-                lo_spotLight.name = 'spotLight2';
+
+                //lo_spotLight = new THREE.SpotLight(0xffffff);
+                //lo_spotLight.position.set(0, -100, 100);
+                //po_scene.add(lo_spotLight);
+
+                lo_spotLight = new THREE.SpotLight(0xffffff);
+                lo_spotLight.position.set(100, -100, 0);
                 po_scene.add(lo_spotLight);
 
-
-                lo_spotLight = new THREE.PointLight(0xf0f0f0);
-                lo_spotLight.position.set(0, 0, 100);
-                lo_spotLight.name = 'spotLight1';
+                lo_spotLight = new THREE.PointLight(0xffffff);
+                lo_spotLight.position.set(0, -100, -100);
                 po_scene.add(lo_spotLight);
 
-
-                lo_spotLight = new THREE.PointLight(0xf0f0f0);
-                lo_spotLight.position.set(0, 0, -100);
-                lo_spotLight.name = 'spotLight2';
-                po_scene.add(lo_spotLight);
+                //lo_spotLight = new THREE.SpotLight(0xffffff);
+                //lo_spotLight.position.set(-100, -100, 0);
+                //po_scene.add(lo_spotLight);
 
 
-                //var gv_spotLight3 = new THREE.PointLight(0xf0f0f0);
-                //gv_spotLight3.position.set(150, -150, 0);
-                //gv_spotLight1.name = 'spotLight3';
-                //po_scene.add(gv_spotLight3);
 
-                //var gv_spotLight4 = new THREE.PointLight(0xf0f0f0);
-                //gv_spotLight3.position.set(-150, 150, 0);
-                //gv_spotLight1.name = 'spotLight4';
-                //po_scene.add(gv_spotLight3);
+                //const geometry = new THREE.SphereGeometry(15);
+                //const material = new THREE.MeshBasicMaterial({ color: 0xff000f });
 
+                //let sphere = null;
 
-                let lo_center = new THREE.Vector3(50, 50, 0);
-
-                //var lo_sphere = THREE.Sphere(lo_center,10);
-                //po_scene.add(lo_sphere);
-
-
-                const geometry = new THREE.SphereGeometry(15);
-                const material = new THREE.MeshBasicMaterial({ color: 0xff000f });
-
-                let sphere = null;
-
-                sphere = new THREE.Mesh(geometry, material);
-                sphere.position.x = 0;
-                sphere.position.y = 0;
-                sphere.position.z = -100;
-                po_scene.add(sphere);
-
-                sphere = new THREE.Mesh(geometry, material);
-                sphere.position.x = 0;
-                sphere.position.y = 0;
-                sphere.position.z = 100;
-                po_scene.add(sphere);
-
-                sphere = new THREE.Mesh(geometry, material);
-                sphere.position.x = 100;
-                sphere.position.y = 0;
-                sphere.position.z = -100;
-                po_scene.add(sphere);
-
-                sphere = new THREE.Mesh(geometry, material);
-                sphere.position.x = -100;
-                sphere.position.y = 0;
-                sphere.position.z = 100;
-                po_scene.add(sphere);
-
-                //let sphere = new THREE.Mesh(geometry, material);
-                //sphere.position.x = 50;
-                //sphere.position.y = 50;
-                //sphere.position.z = 0;
-
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 0;
+                //sphere.position.y = 100;
+                //sphere.position.z = 100;
                 //po_scene.add(sphere);
 
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 100;
+                //sphere.position.y = 100;
+                //sphere.position.z = 0;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 0;
+                //sphere.position.y = 100;
+                //sphere.position.z = -100;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = -100;
+                //sphere.position.y = 100;
+                //sphere.position.z = 0;
+                //po_scene.add(sphere);
+
+
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 0;
+                //sphere.position.y = -80;
+                //sphere.position.z = 100;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 100;
+                //sphere.position.y = -80;
+                //sphere.position.z = 0;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 0;
+                //sphere.position.y = -80;
+                //sphere.position.z = -100;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = -100;
+                //sphere.position.y = -80;
+                //sphere.position.z = 0;
+                //po_scene.add(sphere);
 
             }
 
@@ -1532,7 +1436,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             const lo_geometry = loader.parse(po_data);
 
             // Очистка сцены
-            let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
+            let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "PerspectiveCamera", "Group"];// "Mesh", 
             lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
             lo_passive_side.common_func.clearScene(lo_passive_side.scene_mod, lar_no_delete); //24112024
 
@@ -1874,7 +1778,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 // Очистка сцены new THREE.Group();
                 //14102024 let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
-                let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// 14102024
+                let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "PerspectiveCamera", "Group"];// 14102024
                 lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
 
 
@@ -4121,7 +4025,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 po_side.shapes = null;
 
 
-                let lar_no_delete = ["AmbientLight", "SpotLight", "Mesh"];// /*, "Group"*/14102024
+                let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "Mesh"];// /*, "Group"*/14102024
                 this.common_func.clearScene(po_side.scene, lar_no_delete);
 
 
