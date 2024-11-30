@@ -36,7 +36,6 @@ import { Rectangle } from './my_rectangle.js';
 
 import { GridSelectModels } from './my_grid_select_models.js';
 
-
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';//20082024
 
 //============================================================================================

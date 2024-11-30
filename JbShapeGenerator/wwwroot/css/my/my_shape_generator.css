@@ -165,7 +165,8 @@
     position: relative;
     width: 25%; /*30%;*/
     float: left;
-    /*background-color:greenyellow;*/
+    /*background-color: greenyellow;*/
+    /*text-align: center;*/
     /*border-style: solid;
     border-width: 1px;
     border-color: black;*/
@@ -317,9 +318,22 @@ opacity: 1;
 
 
 /************************** gui *****************************************************/
-#up_id_gui, #lateral_id_gui {
-    padding: 1em;
+
+
+#up_id_shg_right_top, #lateral_id_shg_right_top {
+   /* background-color: red;*/
+    /*text-align: center;*/
 }
+
+#up_id_gui, #lateral_id_gui {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    width: 80%;
+    /*margin-left: auto;
+    margin-right: auto;*/
+    margin: auto;
+}
+
 
 
 #up_id_my_gui_1, #lateral_id_my_gui_1 {
