@@ -180,6 +180,11 @@ function get_side_shape_generator_by_prefix(pv_prefix) {
         case gc_id_prefix_lateral:
             lo_object = go_lateral_side_shape_generator;
             break;
+
+        case gc_id_prefix_end:
+            lo_object = go_end_side_shape_generator;
+            break;
+
     }
 
 
@@ -436,40 +441,30 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.init_containers_and_controls = function (pv_prefix) {
 
             try {
-                //02112024 {
-                ////$(this.id_prefix + "id_sp_numcurves").spinner();
-                ////$(this.id_prefix + "id_sp_numcurves").spinner("value", this.shape_amount_curves);
-                //02112024 }
-
 
                 $.fn.colorPicker.defaults.colors = ['fa0d00', 'fa6e00', 'faf100', '3dfa00', '00a7fa', '3b00fa', 'ffffff'];
 
 
-                //switch (pv_prefix) {
+                switch (pv_prefix) {
 
-                //    case gc_id_prefix_up:
-                //        lo_object = go_up_side_shape_generator;
-                //        break;
+                    case gc_id_prefix_up:
+                        $("#up_id_pos_color_picker").colorPicker({ showHexField: false/*, onColorChange: function (id, newValue) { alert("id=" + id + " value= " + newValue) }*/ });
+                        break;
 
-                //    case gc_id_prefix_lateral:
-                //        lo_object = go_lateral_side_sha
-                //        break;
+                    case gc_id_prefix_lateral:
+                        $("#lateral_id_pos_color_picker").colorPicker({ showHexField: false/*, onColorChange: function (id, newValue) { alert("id=" + id + " value= " + newValue) }*/ });
+                        break;
 
-                //    case gc_id_prefix_end:
-                //        lo_object = go_lateral_side_sha
-                //        break;
+                    case gc_id_prefix_end:
+                        break;
 
-                //}
+                }
 
-                $("#up_id_pos_color_picker").colorPicker({ showHexField: false/*, onColorChange: function (id, newValue) { alert("id=" + id + " value= " + newValue) }*/ });
-                $("#lateral_id_pos_color_picker").colorPicker({ showHexField: false/*, onColorChange: function (id, newValue) { alert("id=" + id + " value= " + newValue) }*/ });
+                $(this.id_prefix + "id_shg_right_top").draggable();
+                $(this.id_prefix + "id_shg_right_top").draggable("disable");
 
-
-                $(this.id_prefix + "id_shg_right_top").draggable();//22062024
-                $(this.id_prefix + "id_shg_right_top").draggable("disable");//22062024
-
-                $(this.id_prefix + this.id_side_shape_mod).draggable(); //26082024
-                $(this.id_prefix + this.id_side_shape_mod).draggable("disable");//26082024
+                $(this.id_prefix + this.id_side_shape_mod).draggable();
+                $(this.id_prefix + this.id_side_shape_mod).draggable("disable");
 
 
 
@@ -510,11 +505,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.init_three_elements = function (pv_prefix /*30112024*/ ) {
 
             try {
-                // 30102024 {
-                ////const cv_name_group_contours = "group_contours";
-                ////const cv_name_group_color_mesh = "group_color_mesh";
-                //30102024 }
-
 
                 this.container = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape);//20062024);
                 this.scene = new THREE.Scene();
@@ -578,23 +568,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.camera.position.set(0, 0, 1);//04082024
 
                 //-------------------------------------------------------------------
-
-
-
-                // 02112024 {
-                ////////////////////let lv_ncurves = $(this.id_prefix + "id_sp_numcurves")[0].value;
-
-
-                ////////////////////const cv_width = this.params.container_width;
-                ////////////////////const cv_height = this.params.container_height;
-                //////////////////// const cv_shape_width = this.params.shape_width;
-                //////////////////// const cv_shape_height = this.params.shape_height;
-                /*//const cv_curves_fit_to_figure = true;*/
-                ////////////////this.nsegments = this.params.spline_amount_segments;
-                //02112024 }
-
-
-
 
 
                 // установки для модели
@@ -755,102 +728,15 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.common_func = new CommonFunc();
 
-                //this.progress_dialog = new ProgressDialog();
-                //this.progress_bar = new ProgressBar();
-
                 this.client_id = this.common_func.get_random_number_int(1, 9999999999).toString();
 
-
                 this.make_shape(false, null);
-
 
                 this.grid_select_models = new GridSelectModels(this.id_prefix);
 
 
-
-                //////////this.shapes = new Shapes(
-                //////////    this,
-                //////////    this.scene,
-                //////////    this.params
-                //////////);
-
-                //////////this.splines = new Splines(
-                //////////    this
-                //////////);
-
-                //////////this.segments = new Segments(
-                //////////    this
-                //////////);
-
-
-                //////////this.segment_gabarits = this.segments.get_segment_size();
-                //////////this.segment_transform_data = this.segments.get_segment_transform_data(this.segment_gabarits, this.params.ajust_curves_by_shape);
-
-
-                //////////this.shapes.create_shapes();
-
-
-                //////////this.rectangle = new Rectangle(this.container, this.camera, this.scene, this.params);//16062024
-
-
-                //////////this.group_contours = new THREE.Group();
-                //////////this.group_contours.name = cv_name_group_contours;
-                //////////this.scene.add(this.group_contours);
-
-                //////////this.group_color_mesh = new THREE.Group();//01082024
-                //////////this.group_color_mesh.name = cv_name_group_color_mesh;
-                //////////this.scene.add(this.group_color_mesh);
-
-
-
-                //////////this.shapes.adjust_splines_by_external_shape();//07092024
-
-
-                //////////this.grid_select_models = new GridSelectModels(this.id_prefix);
-                // 30102024 }
-
-
-
-
                 //==============================================================================
                 //==============================================================================
-                // Загрузка STL модели
-
-                //////let lv_container_id = gc_id_prefix_lateral + "_" + this.id_side_shape;
-
-                // при активации боковой стороны загружаем модель в сцены обеих вкладок
-                /////if (this.container.id === lv_container_id) {
-
-                //this.is_load_both_model_sides = true;
-
-                //02092024 this.is_building_model = true;
-
-
-
-
-
-                ////////////////////////////////////////////const loader = new STLLoader();
-                ////////////////////////////////////////////loader.load('/test_data/testResult.stl',
-                ////////////////////////////////////////////    this.on_load_model,
-                ////////////////////////////////////////////    null, //function (geometry_mod) { /*alert('OnProgress')*/ },
-                ////////////////////////////////////////////    function (err) { alert('OnError ' + err) }
-                ////////////////////////////////////////////);
-
-
-
-
-                //this.is_load_both_model_sides = false;
-
-                /////}
-                //==============================================================================
-
-                ////document.cookie = "my_cookie";
-                ////this.session_id = this.common_func.getJSessionId();
-
-                //    var storage = window.top.sessionStorage;
-                //    var sessionId = storage.getItem("UNEXPECTED_TERMINATION");
-
-                //SessionStack.getSessionId();
 
             }
 
@@ -1189,13 +1075,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     let lo_passive_side = get_passive_side_shape_generator(); //04102024
 
                     try {
-                        //14112024 lo_active_side.progress_dialog.set_display_value(51);
-                        //lo_active_side.progressbar.value = 51; //14112024
-                        //lo_active_side.progress_dialog.progressbar.value = 51; //14112024
-                        //lo_active_side.progress_bar.progressbar.value = 51; //14112024
-                        //lo_active_side.progress_bar.set_display_value(51);
-
-
 
                         var lv_for_body = JSON.stringify(po_json_data);
                         const response = await fetch(pv_url, {
@@ -1310,12 +1189,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.OnErrorRefreshModel = function () {
 
-
-            ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-            ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-            ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
-            ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-
             let lo_active_side = get_active_side_shape_generator();
             let lv_is_before = false;
 
@@ -1330,7 +1203,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-        //22112024 
         //-------------------------------------------------------------------
         /*async*/ Shape_generator.prototype.read_result_refresh_premodel = function (po_data) {
 
@@ -1415,64 +1287,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             geometry_mod.center();// Объект - в центре вращения
 
-            //lo_active_side.progress_dialog.set_progress_value(70);
-            //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(70);
-            //lo_active_side.progress_dialog.progressbar.progressbar("value", 70);
-            //14112024 lo_active_side.progress_dialog.set_display_value(70);
-            //lo_active_side.progressbar.value = 70; //14112024
-            //lo_active_side.progress_dialog.progressbar.value = 70; //14112024
-            //lo_active_side.progress_bar.progressbar.value = 70; //14112024
             lo_active_side.progress_bar.set_display_value(70);
-
-
-
-            //setTimeout(function () { let a = b; }, 100);
-
-
-            //setTimeout(
-            //    function () {
-
-
-
-
-            //        //////-------------------------------------------------------------------
-            //        ////const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
-
-
-            //        ////lo_active_side.group_parts_mod.add(mesh_mod);
-
-            //        //////lo_active_side.progress_dialog.set_progress_value(90);
-            //        //////lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(90);
-            //        //////lo_active_side.progress_dialog.progressbar.progressbar("value", 90);
-            //        ////lo_active_side.progress_dialog.set_display_value(90);
-
-
-
-            //        ////////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-            //        ////////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-            //        ////////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
-            //        ////////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-
-
-            //        ////let lv_is_before = false;
-            //        ////lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-            //        //////lo_active_side.progress_dialog.set_progress_value(100);
-            //        //////lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(100);
-            //        ////lo_active_side.progress_dialog.set_display_value(100);
-
-            //        ////lo_active_side.animate_mod();
-
-            //        ////lo_active_side.is_building_model = false;
-            //        ////lo_passive_side.is_building_model = false;
-
-
-
-            //    },
-            //    10
-            //);
-
-
 
 
 
@@ -1485,56 +1300,20 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             lo_active_side.group_parts_mod.add(mesh_mod1);
             lo_passive_side.group_parts_mod.add(mesh_mod2);//24112024
 
-            //lo_active_side.progress_dialog.set_progress_value(90);
-            //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(90);
-            //lo_active_side.progress_dialog.progressbar.progressbar("value", 90);
-            //14112024 lo_active_side.progress_dialog.set_display_value(90);
-            //lo_active_side.progressbar.value = 90; //14112024
-            //lo_active_side.progress_dialog.progressbar.value = 90; //14112024
-            //lo_active_side.progress_bar.progressbar.value = 90; //14112024
             lo_active_side.progress_bar.set_display_value(90);
-
-            //setTimeout( function () { }, 100 );
-
-
-
-            ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-            ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-            ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
-            ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-
 
             let lv_is_before = false;
             lo_active_side.do_before_after_model_request(lv_is_before, false);
 
-            //lo_active_side.progress_dialog.set_progress_value(100);
-            //lo_active_side.progress_dialog.oncomplete_monitoring_server_progress(100);
-            //14112024 lo_active_side.progress_dialog.set_display_value(100);
-            //lo_active_side.progressbar.value = 100; //14112024
-            //lo_active_side.progress_dialog.progressbar.value = 100; //14112024
-            //lo_active_side.progress_bar.progressbar.value = 100; //14112024
             lo_active_side.progress_bar.set_display_value(100);
             lo_active_side.progress_bar.stop_progress();
-
-
-
-            ///setTimeout(function () { let a = b; }, 100);
-
 
             lo_active_side.animate_mod();
 
             lo_active_side.is_building_model = false;
             lo_passive_side.is_building_model = false;
 
-
-
         }
-
-
-
-
-
-
 
 
         //------------------------------------------------------------------------
@@ -1675,16 +1454,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     return;
                 }
 
-
-                ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);//19102024
-
-                //let ls_progress_data = JSON.parse(po_data);
-
-
-                //if (ls_progress_data == null || typeof ls_progress_data == "undefined") {
-                //    return;
-                //}
-
                 if (po_data.client_id != lo_active_side.client_id
                     || po_data.task_id != lo_active_side.progress_bar.task_id
                 ) {
@@ -1693,23 +1462,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 this.progress_bar.start_progress();
-
-
-
-
-
-
-
-                //if (po_data == null || po_data == "" || po_data.number_outfiles == 0) {
-
-                //    let lv_is_before = false;
-                //    lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-                //    return;
-                //}
-
-
-                //this.load_model_parts(po_data);////// перенести
 
 
             }
@@ -1794,15 +1546,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lv_is_before = true;
 
 
-
-                ////$('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
-                ////$('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
-
-                ////$('#up_id_loading_indicator').show();// индикация ожидани
-                ////$('#lateral_id_loading_indicator').show();// индикация ожидания
-                ////$('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
-                ////$('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
-
                 get_model_part(lv_url);
 
 
@@ -1815,17 +1558,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
             catch (e) {
-
-                ////lo_active_side.model_params_changed = false; //04102024
-
-                ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-                ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
-                ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-
-                ////lo_active_side.model_params_changed = false;
-                ////lo_active_side.is_building_model = false;
-                ////lo_passive_side.is_building_model = false;
 
                 let lv_is_before = false;
                 lo_active_side.do_before_after_model_request(lv_is_before, false);
@@ -3148,8 +2880,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_refresh_model = function () {
 
+            //30112024 {
+
             let lo_active_side = get_active_side_shape_generator();
-            lo_active_side.model_params_changed = true;
+            ////lo_active_side.model_params_changed = true;
+
+            lo_active_side.refreshModel();
+
+            //30112024 }
+
+
         }
         //27112024 }
 
