@@ -42,6 +42,7 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';//20082024
 
 const gc_id_prefix_up = "up";
 const gc_id_prefix_lateral = "lateral";
+const gc_id_prefix_end = "end";
 
 //30102024 {
 const cv_name_group_contours = "group_contours";
@@ -50,6 +51,7 @@ const cv_name_group_color_mesh = "group_color_mesh";
 
 var go_up_side_shape_generator = null;
 var go_lateral_side_shape_generator = null;
+var go_end_side_shape_generator = null;
 
 
 var go_active_side_shape_generator = null;
@@ -90,6 +92,9 @@ function start() {
         ////);
 
         //05092024 {
+
+        $("#id_tab_sides").tabs("option", "active", 2);//30112024  активация третьей закладки
+
         $("#id_tab_sides").tabs("option", "active", 1);// активация второй закладки (для срабатывания события activate
         // и формирования на второй закладке фигуры и данных)
         $("#id_tab_sides").tabs("option", "active", 0);// активация первой закладки
@@ -131,7 +136,20 @@ function on_tab_side_activate(event, ui) {
             go_active_side_shape_generator = go_lateral_side_shape_generator;
             go_passive_side_shape_generator = go_up_side_shape_generator;
             break;
+
+        case "tab-3":
+            if (!go_end_side_shape_generator) //12062024
+            {
+                go_end_side_shape_generator = start_side_shape_generator(gc_id_prefix_end, gc_id_prefix_up);//12062024
+            }
+
+            go_active_side_shape_generator = go_end_side_shape_generator;
+            go_passive_side_shape_generator = go_up_side_shape_generator;
+            break;
     }
+
+
+
 
     go_active_side_shape_generator.init_event_handlers();
 
@@ -202,18 +220,15 @@ function start_side_shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
-    //this.session_id = null;
     this.client_id = null;
 
 
     this.id_common_shg_container = "id_shape";// "id_tab_sides";// "id_center";// "id_shg_common";// "id_shape"; //"id_shape_generator_container";//  "id_shape_generator_container";// ;
-    //this.id_side_shape_container = "id_shape_generator_container";// "id_shape"; //"id_shape_generator_container";//  "id_shape_generator_container";// ;
     this.id_side_shape = "id_shape"; //"id_shape_generator_container";//  "id_shape_generator_container";// ;
     this.id_side_shape_mod = "id_div_visual_model"; //25082024
 
 
-    this.id_gui = "id_shg_right_top"; //25082024 "id_shg_right";
-
+    this.id_gui = "id_shg_right_top";
 
     // Свойства
     this.id_prefix = "#" + pv_active_id_prefix + "_";
@@ -222,10 +237,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.passive_id_prefix = "#" + pv_passive_id_prefix + "_";
     this.passive_id_prefix_wo_sharp = pv_passive_id_prefix + "_";
 
-
-    this.container = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape);//20062024
-    //21062024 this.container = document.getElementById(this.id_side_shape);//20062024
-
+    this.container = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape);
 
     this.is_ask_about_save_file = false;
     this.is_model_changed = false;
@@ -245,11 +257,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     let lv_id_side_shape = this.id_prefix + this.id_side_shape;
     let lv_id_side_shape_mod = this.id_prefix + this.id_side_shape_mod;
 
-    //03092024 {
-    ////let lv_id_up_side_shape = "#" + gc_id_prefix_up + "_" +  this.id_side_shape;
-    ////let lv_id_up_side_shape_mod = "#" + gc_id_prefix_up + "_" + this.id_side_shape_mod;
-
-
     this.common_prev_width = $(lv_id_side_shape).width();
     this.common_prev_height = $(lv_id_side_shape).height();
 
@@ -257,39 +264,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.prev_height_mod = $(lv_id_side_shape_mod).height();
 
 
-    ////this.common_prev_width = $(lv_id_up_side_shape).width();
-    ////this.common_prev_height = $(lv_id_up_side_shape).height();
-
-    ////this.prev_width_mod = $(lv_id_up_side_shape_mod).width();//25082024
-    ////this.prev_height_mod = $(lv_id_up_side_shape_mod).height();//25082024
-
-
-    //03092024 }
-
-
-    ////this.prev_height_mod = $(this.id_prefix + this.id_side_shape_mod)[0].innerHeight();
-    ////this.prev_height_mod = $(this.id_prefix + this.id_side_shape_mod)[0].outerHeight();
-    //19062024 this.common_prev_height = $(this.id_prefix + "id_shg_common").height();
-    //20062024 this.common_prev_height = $().height();
-    //22062024this.common_prev_height = $("#" +this.id_common_shg_container).height();
-    //19062024 this.offset = $(this.id_prefix + "id_shg_common").offset();
-    //20062024 this.offset = $(this.id_prefix + this.id_container).offset();
-    //22062024 this.offset = $("#" +this.id_common_shg_container).offset();
-
     this.offset = $(lv_id_side_shape).offset();
-    //this.offset = $(lv_id_up_side_shape).offset();
 
     this.prev_top = this.offset.top;
     this.prev_left = this.offset.left;
 
     let lv_$shape_mod = $(lv_id_side_shape_mod);
-    //let lv_$shape_mod = $(lv_id_up_side_shape_mod);//03092024 
 
-
-    //this.offset_mod = $(lv_id_shape_mod).offset();//25082024
-    this.offset_mod = $(lv_$shape_mod).offset();//25082024
-    this.prev_top_mod = this.offset_mod.top;//25082024
-    this.prev_left_mod = this.offset_mod.left;//25082024
+    this.offset_mod = $(lv_$shape_mod).offset();
+    this.prev_top_mod = this.offset_mod.top;
+    this.prev_left_mod = this.offset_mod.left;
 
 
     let offsetHeight = lv_$shape_mod[0].offsetHeight;
@@ -323,12 +307,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
     this.params = {
 
-        container_width: this.container.clientWidth, //0, // ;//, //go_container.clientWidth, //; 600,
-        container_height: this.container.clientHeight, //; 0, // ;//, //go_container.clientHeight, //600,
-        shape_width_beg: 50, // ;//,
-        shape_width: 50, // ;//,
-        shape_height_beg: 100, // ;//,
-        shape_height: 100, // ;//,
+        container_width: this.container.clientWidth,
+        container_height: this.container.clientHeight,
+        shape_width_beg: 50,
+        shape_width: 50,
+        shape_height_beg: 100,
+        shape_height: 100,
         shape_amount_curves: 3, // ;//, //5
         spline_amount_segments: 3, // ;//,
         ajust_curves_by_shape: true, // ;//,
@@ -343,50 +327,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
     this.is_big_window = false;
 
-    ////this.initGui_top = null;
-    ////this.initGui_left = null;
-
-    //30072024 {
-    ////////////this.prev_selected_splines = {
-    ////////////    spline_left: null,
-    ////////////    spline_right: null,
-    ////////////    num_spline_left: null,
-    ////////////    num_spline_right: null
-    ////////////};
-    //30072024 }
-
     this.resolution = null; //30072024
-
-
-    //2208204 {
-    //this.id_side_shape_mod = "id_div_visual_model"; 
 
     this.container_mod; //= document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape_mod);//20062024
     this.camera_mod;
     this.scene_mod;
 
-    //14102024 {
-    //////this.material_mod = new THREE.MeshLambertMaterial({
-    //////    //color: 0xffffff,
-    //////    color: 0xfff0f0,
-    //////    opacity: 0.5,
-    //////    //side: THREE.DoubleSide,
-    //////    ////////////////transparent: true
-    //////});
-
 
     this.material_mod = new THREE.MeshPhongMaterial({ color: 0xff5533, specular: 0x111111, shininess: 200 });
 
     this.group_parts_mod;
-
-    //14102024 }
-
-
-
-    ////this.offset_mod = $(this.id_prefix + this.id_side_shape_mod).offset();
-    ////this.prev_top_mod = this.offset_mod.top;
-    ////this.prev_left_mod = this.offset_mod.left;
-
 
     this.refreshModelInterval = 1000; // 1 //2 sec
     this.model_params_changed = false;
@@ -397,24 +347,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.num_loaded_model_parts = 0; //число загруженных деталей модели
     this.model_parts_positions = []; // new Array();
     this.rotate_status = 0; // режим вращения модели
-    //this.slider_value_prev = 0; // предыдущее значение слайдера расстояния между деталями
 
-    //this.is_load_both_model_sides = false;
-
-    //////this.current_spline_max_y = 0; // текущая максимальная координата сплайнов
-
-    ////this.current_splines_height = 0;
-
-
-    //this.progress_dialog = null;
     this.progress_bar = null;
 
     //--------------------------------------------------------------------------------
 
 
     if (typeof this.create_shape_generator != "function") {
-        //	return;
-        //}
 
         //----------------------------------------------------------
         // Методы
@@ -424,25 +363,25 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         //----------------------------------------------------------
 
-        Shape_generator.prototype.create_shape_generator = function () {
+        Shape_generator.prototype.create_shape_generator = function (pv_prefix /*30112024*/ ) {
 
-            this.init_containers_and_controls();
-            this.init_three_elements();
+            this.init_containers_and_controls(pv_prefix /*30112024*/);
+            this.init_three_elements(pv_prefix /*30112024*/);
             /////////////////////this.animate_mod();
 
 
             // Загрузка данных начальной премодели
-            this.load_initial_model();
+            this.load_initial_model(pv_prefix /*30112024*/);
 
 
 
-            setInterval(this.onPassInterval, this.refreshModelInterval, this);
+            /////// 30112024 setInterval(this.onPassInterval, this.refreshModelInterval, this);
 
 
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.load_initial_model = function () {
+        Shape_generator.prototype.load_initial_model = function (pv_prefix /*30112024*/) {
 
             try {
 
@@ -494,7 +433,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.init_containers_and_controls = function () {
+        Shape_generator.prototype.init_containers_and_controls = function (pv_prefix) {
 
             try {
                 //02112024 {
@@ -504,6 +443,23 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 $.fn.colorPicker.defaults.colors = ['fa0d00', 'fa6e00', 'faf100', '3dfa00', '00a7fa', '3b00fa', 'ffffff'];
+
+
+                //switch (pv_prefix) {
+
+                //    case gc_id_prefix_up:
+                //        lo_object = go_up_side_shape_generator;
+                //        break;
+
+                //    case gc_id_prefix_lateral:
+                //        lo_object = go_lateral_side_sha
+                //        break;
+
+                //    case gc_id_prefix_end:
+                //        lo_object = go_lateral_side_sha
+                //        break;
+
+                //}
 
                 $("#up_id_pos_color_picker").colorPicker({ showHexField: false/*, onColorChange: function (id, newValue) { alert("id=" + id + " value= " + newValue) }*/ });
                 $("#lateral_id_pos_color_picker").colorPicker({ showHexField: false/*, onColorChange: function (id, newValue) { alert("id=" + id + " value= " + newValue) }*/ });
@@ -551,7 +507,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.init_three_elements = function () {
+        Shape_generator.prototype.init_three_elements = function (pv_prefix /*30112024*/ ) {
 
             try {
                 // 30102024 {
@@ -913,9 +869,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 let lo_spotLight;
 
+                let lv_intensity = 0.7;
+
 
                 lo_spotLight = new THREE.SpotLight(0xffffff);
                 lo_spotLight.position.set(0, 100, 100);
+                lo_spotLight.intensity = lv_intensity;
                 po_scene.add(lo_spotLight);
 
                 //lo_spotLight = new THREE.SpotLight(0xffffff);
@@ -928,6 +887,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 lo_spotLight = new THREE.PointLight(0xffffff);
                 lo_spotLight.position.set(-100, 100, 0);
+                lo_spotLight.intensity = lv_intensity;
                 po_scene.add(lo_spotLight);
 
 
@@ -938,10 +898,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 lo_spotLight = new THREE.SpotLight(0xffffff);
                 lo_spotLight.position.set(100, -100, 0);
+                lo_spotLight.intensity = lv_intensity;
                 po_scene.add(lo_spotLight);
 
                 lo_spotLight = new THREE.PointLight(0xffffff);
                 lo_spotLight.position.set(0, -100, -100);
+                lo_spotLight.intensity = lv_intensity;
                 po_scene.add(lo_spotLight);
 
                 //lo_spotLight = new THREE.SpotLight(0xffffff);
@@ -4058,7 +4020,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
     //---------------------------------------------------------------------
 
-    this.create_shape_generator();
+    this.create_shape_generator(pv_active_id_prefix /*30112024*/);
+
     //06052024 this.render();//05052024
     //}
 
