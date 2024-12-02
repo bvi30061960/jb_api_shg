@@ -18,6 +18,7 @@ var gv_tab2_actived;// = null;
 
 var go_up_side_shape_generator = null;
 var go_lateral_side_shape_generator = null;
+var go_end_side_shape_generator = null;
 
 
 var go_active_side_shape_generator = 1;
@@ -184,6 +185,10 @@ export function get_side_shape_generator_by_prefix(pv_prefix) {
 
         case gc_id_prefix_lateral:
             lo_object = go_lateral_side_shape_generator;
+            break;
+
+        case gc_id_prefix_end:
+            lo_object = go_end_side_shape_generator;
           break;
     }
 

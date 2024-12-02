@@ -17,7 +17,12 @@ import {
 
 
 import { CommonFunc } from './my_common_func.js';
-import { get_active_side_shape_generator } from './my_shape_generator.js';
+import {
+     gc_id_prefix_up,     
+     gc_id_prefix_lateral,
+     gc_id_prefix_end,    
+     get_active_side_shape_generator
+} from './my_shape_generator.js';
 
 
 
@@ -153,6 +158,13 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
         Shapes.prototype.create_shapes = function (pv_is_use_data, po_side_data) {
+
+            if (this.main.my_prefix == gc_id_prefix_end) {
+
+                create_end_shape(pv_is_use_data, po_side_data);
+
+            }
+
 
 
             let lv_spline_distance = 0;

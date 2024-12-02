@@ -120,6 +120,7 @@ function on_tab_side_activate(event, ui) {
     let lv_name_tab = ui.newPanel[0].id;
 
     switch (lv_name_tab) {
+
         case "tab-1":
 
             go_active_side_shape_generator = go_up_side_shape_generator;
@@ -147,8 +148,6 @@ function on_tab_side_activate(event, ui) {
             go_passive_side_shape_generator = go_up_side_shape_generator;
             break;
     }
-
-
 
 
     go_active_side_shape_generator.init_event_handlers();
@@ -236,6 +235,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.id_gui = "id_shg_right_top";
 
     // Свойства
+    this.my_prefix = pv_active_id_prefix;
     this.id_prefix = "#" + pv_active_id_prefix + "_";
     this.id_prefix_wo_sharp = pv_active_id_prefix + "_";
 
@@ -368,15 +368,15 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         //----------------------------------------------------------
 
-        Shape_generator.prototype.create_shape_generator = function (pv_prefix /*30112024*/ ) {
+        Shape_generator.prototype.create_shape_generator = function (/*pv_prefix*/ /*30112024*/) {
 
-            this.init_containers_and_controls(pv_prefix /*30112024*/);
-            this.init_three_elements(pv_prefix /*30112024*/);
+            this.init_containers_and_controls(/*pv_prefix *//*30112024*/);
+            this.init_three_elements(/*pv_prefix *//*30112024*/);
             /////////////////////this.animate_mod();
 
 
             // Загрузка данных начальной премодели
-            this.load_initial_model(pv_prefix /*30112024*/);
+            this.load_initial_model(/*pv_prefix*/ /*30112024*/);
 
 
 
@@ -386,7 +386,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.load_initial_model = function (pv_prefix /*30112024*/) {
+        Shape_generator.prototype.load_initial_model = function (/*pv_prefix *//*30112024*/) {
 
             try {
 
@@ -438,14 +438,14 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.init_containers_and_controls = function (pv_prefix) {
+        Shape_generator.prototype.init_containers_and_controls = function (/*pv_prefix*/) {
 
             try {
 
                 $.fn.colorPicker.defaults.colors = ['fa0d00', 'fa6e00', 'faf100', '3dfa00', '00a7fa', '3b00fa', 'ffffff'];
 
 
-                switch (pv_prefix) {
+                switch (this.my_prefix) {
 
                     case gc_id_prefix_up:
                         $("#up_id_pos_color_picker").colorPicker({ showHexField: false/*, onColorChange: function (id, newValue) { alert("id=" + id + " value= " + newValue) }*/ });
@@ -502,7 +502,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.init_three_elements = function (pv_prefix /*30112024*/ ) {
+        Shape_generator.prototype.init_three_elements = function (/*pv_prefix*/) {
 
             try {
 
@@ -701,25 +701,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 // обработчики событий gui
                 if (!this.gui) {
-
-                    //05112024 {
-                    ////////this.gui = new GUI({ container: document.getElementById(this.id_prefix_wo_sharp + 'id_gui') });
-
-                    ////////this.gui.add(this.params, 'distance_bt_curves', 0, 40).step(0.5).name('Distance  between curves').onChange(this.onChange_distance_bt_curves).listen();//05112024
-                    //////////this.gui.add(this.params, 'shape_height', 20, 300).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param);
-                    ////////this.gui.add(this.params, 'shape_height', 20, 200).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param).listen();//05112024
-                    //////////this.gui.add(this.params, 'shape_width', 10, 200).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param);
-                    ////////this.gui.add(this.params, 'shape_width', 10, 100).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param).listen();//05112024
-
-                    //////////this.gui.addColor(this.params, 'color').name('Color');
-
-                    ////////this.gui.open();
-
-
                     this.reset_gui_parameters();
-
-
-                    //05112024 }
                 }
 
 
@@ -900,13 +882,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             return ls_parameters;
         }
         //------------------------------------------------------------------------
-        Shape_generator.prototype.make_shape = async function (pv_is_use_data, po_side_data) {
+        Shape_generator.prototype.make_shape = /*async*/ function (pv_is_use_data, po_side_data) {
 
             try {
 
                 if (pv_is_use_data) {
                     this.gui.reset();
-                    //05112024 this.parameters = this.get_parameters_from_side_data(po_side_data);
                     this.params = this.get_parameters_from_side_data(po_side_data); //05112024
                     this.common_func.guiUpdateDisplay(this.gui);
 
@@ -938,21 +919,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.shapes.create_shapes(pv_is_use_data, po_side_data);
 
-
-                //04112024 {
-
-                //05112024 this.rectangle = new Rectangle(this.container, this.camera, this.scene, this.params);
-
                 this.rectangle = new Rectangle(/*this.container, this.camera,*/ this.scene,
                     this.params.shape_width, this.params.shape_height); //05112024
-
-                //if (pv_is_use_data) {
-                //    ///this.rectangle.shape.scale.y = po_side_data.rectangle_scale_y;
-                //}
-                //04112024 }
-
-
-
 
 
                 this.group_contours = new THREE.Group();
@@ -964,11 +932,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.scene.add(this.group_color_mesh);
 
 
-
                 this.shapes.adjust_splines_by_external_shape();
-
-
-                //27112024 this.grid_select_models = new GridSelectModels(this.id_prefix);
 
 
             }
@@ -3651,20 +3615,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             try {
                 let sides_data = JSON.parse(po_sides_data);
 
-                //04112024 this.clear_shape_objects(go_up_side_shape_generator);
                 go_up_side_shape_generator.clear_shape_objects(go_up_side_shape_generator);
-
-
-                //04112024 this.draw_side_shape_by_data(/*go_up_side_shape_generator,*/ sides_data.data1);
-                //04112024 this.make_shape(true, sides_data.data1); //04112024
-                go_up_side_shape_generator.make_shape(true, sides_data.data1); //04112024
-
-                //04112024 go_up_side_shape_generator.render();
+                go_up_side_shape_generator.make_shape(true, sides_data.data1); 
                 go_up_side_shape_generator.render();
 
 
                 go_lateral_side_shape_generator.clear_shape_objects(go_lateral_side_shape_generator);
-                //04112024 go_lateral_side_shape_generator.draw_side_shape_by_data(/*go_lateral_side_shape_generator,*/ sides_data.data2);
                 go_lateral_side_shape_generator.make_shape(true, sides_data.data2);
                 go_lateral_side_shape_generator.render();
             }

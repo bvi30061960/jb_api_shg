@@ -133,14 +133,14 @@
     padding-bottom: 1vw;
 }
 
-#up_id_shape_generator_container, #lateral_id_shape_generator_container {
+#up_id_shape_generator_container, #lateral_id_shape_generator_container, #end_id_shape_generator_container {
     width: 100%;
     /*height: 100%;*/
     /*background-color:orangered;*/
 }
 
 
-#up_id_shg_common, #lateral_id_shg_common {
+#up_id_shg_common, #lateral_id_shg_common, #end_id_shg_common {
     margin-left: auto;
     margin-right: auto;
     height: 60vh; /*25em;*/
@@ -150,7 +150,7 @@
     /*background-color:gold;*/
 }
 
-#up_id_shg_left, #lateral_id_shg_left {
+#up_id_shg_left, #lateral_id_shg_left, #end_id_shg_left {
     position: relative;
     width: 75%; /*70%; */ /*72%;*/ /**/
     float: left;
@@ -161,7 +161,7 @@
     /* z-index: 5;*/
 }
 
-#up_id_shg_right, #lateral_id_shg_right {
+#up_id_shg_right, #lateral_id_shg_right, #end_id_shg_right {
     position: relative;
     width: 25%; /*30%;*/
     float: left;
@@ -174,20 +174,20 @@
 }
 
 
-#up_id_shape, #lateral_id_shape {
+#up_id_shape, #lateral_id_shape, #end_id_shape {
     width: 100%;
     height: 100%;
 }
 
 
 
-#up_id_div_visual_model, #lateral_id_div_visual_model {
+#up_id_div_visual_model, #lateral_id_div_visual_model, #end_id_div_visual_model {
     height: 23vh; /*26.8vh;*/
     /*width:80%;*/
 }
 
 
-#up_id_dist_part_slider, #lateral_id_dist_part_slider {
+#up_id_dist_part_slider, #lateral_id_dist_part_slider, #end_id_dist_part_slider {
     position: absolute;
     top: 15%; /*20vh;*/
     right: 6%; /*10vw;*/
@@ -196,7 +196,7 @@
     font-size: 0.75em; /*10px;*/
 }
 
-#up_id_div_shape_dblclk, #lateral_id_div_shape_dblclk {
+#up_id_div_shape_dblclk, #lateral_id_div_shape_dblclk, #end_id_div_shape_dblclk {
     position: absolute;
     bottom: 5%;
     left: 5%;
@@ -204,7 +204,7 @@
 }
 
 
-#up_id_div_dblclk, #lateral_id_div_dblclk {
+#up_id_div_dblclk, #lateral_id_div_dblclk, #end_id_div_dblclk {
     position: absolute;
     bottom: 5%;
     right: 5%;
@@ -212,7 +212,7 @@
 }
 
 
-#up_id_but_rotate_mode, #lateral_id_but_rotate_mode {
+#up_id_but_rotate_mode, #lateral_id_but_rotate_mode, #end_id_but_rotate_mode {
     position: absolute;
     bottom: -6vh;
     right: -0.8vw;
@@ -243,7 +243,7 @@
 
 
 
-#up_id_shg_bottom, #lateral_id_shg_bottom {
+#up_id_shg_bottom, #lateral_id_shg_bottom, #end_id_shg_bottom {
     width: 100%;
     height: 15%;
     display: flex;
@@ -252,12 +252,12 @@
 }
 
 
-    #up_id_shg_bottom table, #lateral_id_shg_bottom table {
+    #up_id_shg_bottom table, #lateral_id_shg_bottom table, #end_id_shg_bottom table {
         margin: auto;
         width: 50%;
     }
 
-        #up_id_shg_bottom table tr td, #lateral_id_shg_bottom table tr td {
+        #up_id_shg_bottom table tr td, #lateral_id_shg_bottom table tr td, #end_id_shg_bottom table tr td {
             text-align: center;
             /*border-style: solid;
     border-width: 1px;
@@ -265,13 +265,13 @@
         }
 
 
-#up_id_lb_sp_numcurves, #lateral_id_lb_sp_numcurves {
+#up_id_lb_sp_numcurves, #lateral_id_lb_sp_numcurves, #end_id_lb_sp_numcurves {
     width: 2em;
     font-size: 0.5em;
     margin-bottom: 3px;
 }
 
-#up_id_sp_numcurves, #lateral_id_sp_numcurves {
+#up_id_sp_numcurves, #lateral_id_sp_numcurves, #end_id_sp_numcurves {
     width: 2em;
     font-size: 0.7em;
     margin-bottom: 3px;
@@ -295,7 +295,7 @@
     display: none;
 }*/
 
-#up_id_div_progressbar, #lateral_id_div_progressbar {
+#up_id_div_progressbar, #lateral_id_div_progressbar, #end_id_div_progressbar {
     /*display: none;*/
     opacity: 1;
     position: absolute;
@@ -304,7 +304,7 @@
     width: 100%;
 }
 
-#up_id_progressbar, #lateral_id_progressbar {
+#up_id_progressbar, #lateral_id_progressbar, #end_id_progressbar {
     opacity: 1;
 }
 
@@ -320,12 +320,12 @@ opacity: 1;
 /************************** gui *****************************************************/
 
 
-#up_id_shg_right_top, #lateral_id_shg_right_top {
-   /* background-color: red;*/
+#up_id_shg_right_top, #lateral_id_shg_right_top, #end_id_shg_right_top {
+    /* background-color: red;*/
     /*text-align: center;*/
 }
 
-#up_id_gui, #lateral_id_gui {
+#up_id_gui, #lateral_id_gui, #end_id_gui {
     padding-top: 1em;
     padding-bottom: 1em;
     width: 80%;
@@ -336,7 +336,7 @@ opacity: 1;
 
 
 
-#up_id_my_gui_1, #lateral_id_my_gui_1 {
+#up_id_my_gui_1, #lateral_id_my_gui_1, #end_id_my_gui_1 {
     float: left;
     padding-top: 2vh;
     padding-bottom: 2vh;
@@ -347,21 +347,21 @@ opacity: 1;
 
 
 
-#up_id_my_gui_2, #lateral_id_my_gui_2 {
+#up_id_my_gui_2, #lateral_id_my_gui_2, #end_id_my_gui_2 {
     /*padding-top: 1em;*/
 }
 
 
 
-#up_id_div_button_bar2, #lateral_id_div_button_bar2,
-#up_id_div_button_bar3, #lateral_id_div_button_bar3 {
+#up_id_div_button_bar2, #lateral_id_div_button_bar2, #end_id_div_button_bar2,
+#up_id_div_button_bar3, #lateral_id_div_button_bar3, #end_id_div_button_bar3 {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
     text-align: center;
 }
 
-#up_id_tab_button_bar, #lateral_id_tab_button_bar {
+#up_id_tab_button_bar, #lateral_id_tab_button_bar, #end_id_tab_button_bar {
     /*border: 1px solid;*/
     margin-left: auto;
     margin-right: auto;
@@ -369,23 +369,23 @@ opacity: 1;
 }
 
 
-#up_id_for_colorpicker, #lateral_id_for_colorpicker {
+#up_id_for_colorpicker, #lateral_id_for_colorpicker, #end_id_for_colorpicker {
     height: 1vh;
 }
 
 
-#up_id_tab_button_bar td, #lateral_id_tab_button_bar td {
+#up_id_tab_button_bar td, #lateral_id_tab_button_bar td, #end_id_tab_button_bar td {
 }
 
 
-#up_id_div_3dmodel, #lateral_id_div_3dmodel {
+#up_id_div_3dmodel, #lateral_id_div_3dmodel, #end_id_div_3dmodel {
     /*position:initial;*/
     height: 70vh;
     /*background-color: aquamarine;*/
 }
 
 
-#up_id_loading_indicator, #lateral_id_loading_indicator {
+#up_id_loading_indicator, #lateral_id_loading_indicator, #end_id_loading_indicator {
     width: 40px;
     height: 40px;
     position: absolute;
