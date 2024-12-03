@@ -11,6 +11,15 @@ import { Constants } from './my_common_const.js';
 
 import { CommonFunc } from './my_common_func.js';
 
+//import {
+//    gc_id_prefix_up,
+//    gc_id_prefix_lateral,
+//    gc_id_prefix_end
+// } from './my_start.js';
+
+
+
+
 //import { ProgressDialog } from './my_progress_dialog.js';
 import { ProgressBar } from './my_progress_bar.js';
 
@@ -33,6 +42,7 @@ import { Shapes } from "./my_shapes.js";
 import { Splines } from "./my_splines.js";
 import { Segments } from "./my_segments.js";
 import { Rectangle } from './my_rectangle.js';
+import { EndShape } from './my_end_shape.js';
 
 import { GridSelectModels } from './my_grid_select_models.js';
 
@@ -40,13 +50,15 @@ import { STLLoader } from 'three/addons/loaders/STLLoader.js';//20082024
 
 //============================================================================================
 
-const gc_id_prefix_up = "up";
-const gc_id_prefix_lateral = "lateral";
-const gc_id_prefix_end = "end";
+export const gc_id_prefix_up = "up";
+export const gc_id_prefix_lateral = "lateral";
+export const gc_id_prefix_end = "end";
+
 
 //30102024 {
 const cv_name_group_contours = "group_contours";
 const cv_name_group_color_mesh = "group_color_mesh";
+const cv_name_group_end_shape = "group_end_shape";
 //30102024 }
 
 var go_up_side_shape_generator = null;
@@ -297,6 +309,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.shapes = null;
     this.splines = null;
     this.segments = null;
+    this.end_shape = null; // торцевая фигура
 
     this.segment_gabarits = null;
     this.segment_transform_data = null;
@@ -687,14 +700,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.add_lights_for_model(this.scene_mod);
 
-
-
                 this.model_parts_positions = []; // new Array();
-
-
-
-                //======================================================================
-
 
 
                 //=================================================================================================
@@ -712,7 +718,27 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.client_id = this.common_func.get_random_number_int(1, 9999999999).toString();
 
-                this.make_shape(false, null);
+
+                if (this.my_prefix == gc_id_prefix_end) {
+
+                    this.group_end_shape = new THREE.Group();
+                    this.group_end_shape.name = cv_name_group_end_shape;
+
+                    this.end_shape = new EndShape(this);
+
+                    this.scene.add(this.group_end_shape);
+
+                }
+                else {
+
+                    this.make_shape(false, null);
+
+                }
+
+
+
+
+
 
                 this.grid_select_models = new GridSelectModels(this.id_prefix);
 
@@ -3616,13 +3642,19 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let sides_data = JSON.parse(po_sides_data);
 
                 go_up_side_shape_generator.clear_shape_objects(go_up_side_shape_generator);
-                go_up_side_shape_generator.make_shape(true, sides_data.data1); 
+                go_up_side_shape_generator.make_shape(true, sides_data.data1);
                 go_up_side_shape_generator.render();
 
 
                 go_lateral_side_shape_generator.clear_shape_objects(go_lateral_side_shape_generator);
                 go_lateral_side_shape_generator.make_shape(true, sides_data.data2);
                 go_lateral_side_shape_generator.render();
+
+
+                //go_end_side_shape_generator.clear_shape_objects(go_end_side_shape_generator);
+                //go_end_side_shape_generator.create_end_shape(true, po_sides_data);
+                //go_end_side_shape_generator.render();
+
             }
 
             catch (e) {

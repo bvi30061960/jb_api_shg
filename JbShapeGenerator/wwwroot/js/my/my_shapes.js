@@ -18,10 +18,10 @@ import {
 
 import { CommonFunc } from './my_common_func.js';
 import {
-     gc_id_prefix_up,     
-     gc_id_prefix_lateral,
-     gc_id_prefix_end,    
-     get_active_side_shape_generator
+    gc_id_prefix_up,
+    gc_id_prefix_lateral,
+    gc_id_prefix_end,
+    get_active_side_shape_generator
 } from './my_shape_generator.js';
 
 
@@ -159,11 +159,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
         Shapes.prototype.create_shapes = function (pv_is_use_data, po_side_data) {
 
-            if (this.main.my_prefix == gc_id_prefix_end) {
-
-                create_end_shape(pv_is_use_data, po_side_data);
-
-            }
+            //if (this.main.my_prefix == gc_id_prefix_end) {
+            //    create_end_shape(pv_is_use_data, po_side_data);
+            //}
 
 
 
@@ -1281,8 +1279,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 //lv_height_koef_relative = this.params.shape_height / this.main.current_spline_max_y;
                 //lv_height_koef_relative = this.main.current_spline_max_y / this.params.shape_height;
 
-                    
-;
+
+                ;
             }
             else {
                 lv_height_koef_relative = 1;

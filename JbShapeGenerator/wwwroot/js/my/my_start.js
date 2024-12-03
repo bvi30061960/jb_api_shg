@@ -1,13 +1,13 @@
-﻿import {
-    gv_active_id_prefix,
-    start_side_shape_generator,
-    Shape_generator
-    //reset_event_handlers
-} from "./my_shape_generator.js";
+﻿//import {
+//    //02122024 gv_active_id_prefix,
+//    start_side_shape_generator,
+//    Shape_generator
+//} from "./my_shape_generator.js";
 
 
-export const gc_id_prefix_up = "up";
-export const gc_id_prefix_lateral = "lateral";
+////export const gc_id_prefix_up = "up";
+////export const gc_id_prefix_lateral = "lateral";
+////export const gc_id_prefix_end = "end";
 
 
 var gv_tab1_actived;// = null;
@@ -148,16 +148,7 @@ function start() {
             break;
     }
 
-    //go_active_side_shape_generator.reset_event_handlers();
-
-    //go_active_side_shape_generator.init_event_handlers(go_passive_side_shape_generator);
-
-    //go_active_side_shape_generator.render();
-
-    //go_passive_side_shape_generator.reset_event_handlers();
-    //if (go_passive_side_shape_generator) {
-    //    go_active_sgo_passive_side_shape_generator.reset_event_handlers();
-    //}
+    
 
 }
 
