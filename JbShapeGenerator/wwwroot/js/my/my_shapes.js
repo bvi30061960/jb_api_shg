@@ -274,15 +274,45 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         //-----------------------------------------------------------------
         Shapes.prototype.clear_group_contours = function () {
 
-            for (let lv_i = 0; lv_i < this.main.group_contours.children.length; lv_i++) {
-                this.main.common_func.removeObjectsWithChildren(this.main.group_contours.children[lv_i], true);
+            try {
+
+                if (this.main.group_contours) {
+                    if (this.main.group_contours.children) {
+                        //for (let lv_i = 0; lv_i < this.main.group_contours.children.length; lv_i++) {
+                        for (let lv_i = this.main.group_contours.children.length - 1; lv_i <= 0; lv_i--) {
+                            this.main.common_func.removeObjectsWithChildren(this.main.group_contours.children[lv_i], true);
+                        }
+                    }
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error clear_group_contours: ' + e.stack);
+
             }
         }
         //-----------------------------------------------------------------
         Shapes.prototype.clear_group_color_mesh = function () {
+            try {
 
-            for (let lv_i = 0; lv_i < this.main.group_color_mesh.children.length; lv_i++) {
-                this.main.common_func.removeObjectsWithChildren(this.main.group_color_mesh.children[lv_i], true);
+
+                if (this.main.group_color_mesh) { //03122024 
+                    if (this.main.group_color_mesh.children) { //03122024 
+
+                        //for (let lv_i = 0; lv_i < this.main.group_color_mesh.children.length; lv_i++) {
+                        for (let lv_i = this.main.group_color_mesh.children.length - 1; lv_i >= 0; lv_i--) {
+                            this.main.common_func.removeObjectsWithChildren(this.main.group_color_mesh.children[lv_i], true);
+                        }
+                    }
+                }
+            }
+
+            catch (e) {
+
+                alert('error clear_group_color_mesh: ' + e.stack);
+
             }
         }
 
@@ -1252,136 +1282,151 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         //------------------------------------------------------------------------
         Shapes.prototype.adjust_splines_by_external_shape = function (pv_height_new) {
 
-            //let lo_active_side = get_active_side_shape_generator();
+
+            try {
+
+                //let lo_active_side = get_active_side_shape_generator();
 
 
-            this.clear_group_contours();//27072024 
-            this.clear_group_color_mesh();//27072024 
+                this.clear_group_contours();//27072024 
+                this.clear_group_color_mesh();//27072024 
 
 
-            let lv_height_koef_relative;
-            let lv_height_koef;
+                let lv_height_koef_relative;
+                let lv_height_koef;
 
-            //03112024 {
+                //03112024 {
 
-            //////lv_height_koef = this.params.shape_height / (this.main.params.shape_height_beg);
-            //////if (this.height_koef_previous !== 0) {
-            //////    lv_height_koef_relative = lv_height_koef / this.height_koef_previous;
-            //////}
-            //////else {
-            //////    lv_height_koef_relative = 1;
-            //////}
+                //////lv_height_koef = this.params.shape_height / (this.main.params.shape_height_beg);
+                //////if (this.height_koef_previous !== 0) {
+                //////    lv_height_koef_relative = lv_height_koef / this.height_koef_previous;
+                //////}
+                //////else {
+                //////    lv_height_koef_relative = 1;
+                //////}
 
-            let lv_splines_height = this.get_current_splines_height();
+                let lv_splines_height = this.get_current_splines_height();
 
-            if (lv_splines_height !== 0) {
-                lv_height_koef_relative = this.params.shape_height / lv_splines_height;
-                //lv_height_koef_relative = this.params.shape_height / this.main.current_spline_max_y;
-                //lv_height_koef_relative = this.main.current_spline_max_y / this.params.shape_height;
-
-
-                ;
-            }
-            else {
-                lv_height_koef_relative = 1;
-
-            }
+                if (lv_splines_height !== 0) {
+                    lv_height_koef_relative = this.params.shape_height / lv_splines_height;
+                    //lv_height_koef_relative = this.params.shape_height / this.main.current_spline_max_y;
+                    //lv_height_koef_relative = this.main.current_spline_max_y / this.params.shape_height;
 
 
-            //03112024 }
+                    ;
+                }
+                else {
+                    lv_height_koef_relative = 1;
 
-            let lv_spline_distance = this.params.shape_width / this.ar_splines.length;
-
-
-
-            for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
-
-                let lv_spline_offset_x;
-
-                lv_spline_offset_x = lv_spline_distance * (0.5 + lv_i);
-
-                this.adjust_segments_nodes_by_external_shape(this.ar_splines[lv_i], lv_spline_offset_x, lv_height_koef_relative);
-
-
-                // чтение модифицированных позиций узлов
-                let lar_spline_points = this.main.shapes.get_spline_points(this.ar_splines[lv_i]);
-
-                // Удаление предыдущих линий
-                let lar_lines = this.main.shapes.get_lines_in_group(this.ar_splines[lv_i]);
-                for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
-                    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
                 }
 
-                // Перерисовка сегментов
-                ///@@@@@ 08062024 this.main.shapes.redraw_segments(this.ar_splines[lv_i]);
 
-                // создание новой линии
-                this.main.splines.draw_curve(this.ar_splines[lv_i], lar_spline_points, this.main.splines.name_prefix, true);
+                //03112024 }
 
-
-                //	 Запоминание новой кривой
-                //	this.set_spline_points(this.ar_splines[lv_i], lar_spline_points);//13062024
-            }
-
-            //04112024 this.height_koef_previous = lv_height_koef;
+                let lv_spline_distance = this.params.shape_width / this.ar_splines.length;
 
 
 
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+
+                    let lv_spline_offset_x;
+
+                    lv_spline_offset_x = lv_spline_distance * (0.5 + lv_i);
+
+                    this.adjust_segments_nodes_by_external_shape(this.ar_splines[lv_i], lv_spline_offset_x, lv_height_koef_relative);
 
 
-            //298072024 {
-            //////27072024 {
-            ////if (this.main.prev_selected_splines.spline_left !== null
-            ////	|| this.main.prev_selected_splines.spline_left !== null
-            ////) {
-            ////	this.select_shape_contour(this.main.prev_selected_splines);
-            ////}
-            //////27072024 }
+                    // чтение модифицированных позиций узлов
+                    let lar_spline_points = this.main.shapes.get_spline_points(this.ar_splines[lv_i]);
+
+                    // Удаление предыдущих линий
+                    let lar_lines = this.main.shapes.get_lines_in_group(this.ar_splines[lv_i]);
+                    //for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
+                    for (let lv_k = lar_lines.length - 1; lv_k >= 0; lv_k--) {
+                        this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
+                    }
+
+                    // Перерисовка сегментов
+                    ///@@@@@ 08062024 this.main.shapes.redraw_segments(this.ar_splines[lv_i]);
+
+                    // создание новой линии
+                    this.main.splines.draw_curve(this.ar_splines[lv_i], lar_spline_points, this.main.splines.name_prefix, true);
 
 
-            // Восстановление выделенного контура
-            let lar_splines_order = []; //03082024 
-
-            if (this.main.group_contours.userData) {
-
-                if (this.main.group_contours.userData.num_spline_left != null || this.main.group_contours.userData.num_spline_right != null) {
-
-                    lar_splines_order = this.SortSplinesOrderFromLeftToRight();
-
-                    let lv_num_spline_left = this.main.group_contours.userData.num_spline_left;
-                    let lv_num_spline_right = this.main.group_contours.userData.num_spline_right;
-
-
-                    let lo_spline_left = this.main.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
-                    let lo_spline_right = this.main.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
-
-                    this.draw_contour_and_shape(0x0f0, lo_spline_left, lo_spline_right, true, false, true, false/*, true*/);
+                    //	 Запоминание новой кривой
+                    //	this.set_spline_points(this.ar_splines[lv_i], lar_spline_points);//13062024
                 }
+
+                //04112024 this.height_koef_previous = lv_height_koef;
+
+
+
+
+
+                //298072024 {
+                //////27072024 {
+                ////if (this.main.prev_selected_splines.spline_left !== null
+                ////	|| this.main.prev_selected_splines.spline_left !== null
+                ////) {
+                ////	this.select_shape_contour(this.main.prev_selected_splines);
+                ////}
+                //////27072024 }
+
+
+                // Восстановление выделенного контура
+                let lar_splines_order = []; //03082024 
+
+                if (this.main.group_contours) {
+
+                    if (this.main.group_contours.userData) {
+
+                        if (this.main.group_contours.userData.num_spline_left != null || this.main.group_contours.userData.num_spline_right != null) {
+
+                            lar_splines_order = this.SortSplinesOrderFromLeftToRight();
+
+                            let lv_num_spline_left = this.main.group_contours.userData.num_spline_left;
+                            let lv_num_spline_right = this.main.group_contours.userData.num_spline_right;
+
+
+                            let lo_spline_left = this.main.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
+                            let lo_spline_right = this.main.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
+
+                            this.draw_contour_and_shape(0x0f0, lo_spline_left, lo_spline_right, true, false, true, false/*, true*/);
+                        }
+                    }
+                    //298072024 }
+                }
+
+                //03082024 {
+                // Восстановление цвета фигур
+                ////////////this.clear_group_color_mesh();//03082024
+                ////////////this.main.render();
+
+                //////////for (let lv_i = 0; lv_i < this.ar_shapes_colors.length; lv_i++) {
+
+                //////////	if (this.ar_shapes_colors[lv_i] == null || !this.ar_shapes_colors[lv_i]) {
+                //////////		continue;
+                //////////	}
+                //////////	let lo_spline_left = this.main.common_func.getSplineByNumber(lar_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
+                //////////	let lo_spline_right = this.main.common_func.getSplineByNumber(lar_splines_order, this.ar_shapes_colors[lv_i].num_spline_right);
+                //////////	this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, true);
+                //////////}
+
+                this.redraw_meshes_color(lar_splines_order);
+
+                //03082024 }
+
+
+                this.main.render();
+
             }
-            //298072024 }
 
+            catch (e) {
 
-            //03082024 {
-            // Восстановление цвета фигур
-            ////////////this.clear_group_color_mesh();//03082024
-            ////////////this.main.render();
+                alert('error adjust_splines_by_external_shape: ' + e.stack);
 
-            //////////for (let lv_i = 0; lv_i < this.ar_shapes_colors.length; lv_i++) {
+            }
 
-            //////////	if (this.ar_shapes_colors[lv_i] == null || !this.ar_shapes_colors[lv_i]) {
-            //////////		continue;
-            //////////	}
-            //////////	let lo_spline_left = this.main.common_func.getSplineByNumber(lar_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
-            //////////	let lo_spline_right = this.main.common_func.getSplineByNumber(lar_splines_order, this.ar_shapes_colors[lv_i].num_spline_right);
-            //////////	this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, true);
-            //////////}
-
-            this.redraw_meshes_color(lar_splines_order);
-
-            //03082024 }
-
-
-            this.main.render();
 
         }
 

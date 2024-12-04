@@ -908,7 +908,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             return ls_parameters;
         }
         //------------------------------------------------------------------------
-        Shape_generator.prototype.make_shape = /*async*/ function (pv_is_use_data, po_side_data) {
+        Shape_generator.prototype.make_shape = function (pv_is_use_data, po_side_data) {
 
             try {
 
@@ -949,16 +949,43 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.params.shape_width, this.params.shape_height); //05112024
 
 
-                this.group_contours = new THREE.Group();
-                this.group_contours.name = cv_name_group_contours;
-                this.scene.add(this.group_contours);
+                //if (this.my_prefix == gc_id_prefix_end) {
 
-                this.group_color_mesh = new THREE.Group();
-                this.group_color_mesh.name = cv_name_group_color_mesh;
-                this.scene.add(this.group_color_mesh);
+                //    if (!this.group_end_shape) {
+                //        this.group_end_shape = new THREE.Group();
+                //        this.group_end_shape.name = cv_name_group_end_shape;
+                //    }
+                //    if (!this.end_shape) {
+                //        this.end_shape = new EndShape(this);
+                //        this.scene.add(this.group_end_shape);
+                //    }
+                //}
+                //else {
+
+                //    this.make_shape(false, null);
+
+                //    this.group_contours = new THREE.Group();
+                //    this.group_contours.name = cv_name_group_contours;
+                //    this.scene.add(this.group_contours);
+
+                //    this.group_color_mesh = new THREE.Group();
+                //    this.group_color_mesh.name = cv_name_group_color_mesh;
+                //    this.scene.add(this.group_color_mesh);
 
 
-                this.shapes.adjust_splines_by_external_shape();
+                this.shapes.adjust_splines_by_external_shape();//04122024
+
+                //}
+
+
+
+
+
+
+
+
+
+
 
 
             }
@@ -3314,43 +3341,59 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         spline_right: lo_clicked_splines_and_segment.spline_right
                     };
 
-                    let lo_prev_clicked_splines = lo_active_side_shape.group_contours.userData;
+
+                    let lo_prev_clicked_splines = null; //04122024
+
+                    if (lo_active_side_shape.group_contours) { //04122024
+                        if (lo_active_side_shape.group_contours.userData) { //04122024
+
+                            lo_prev_clicked_splines = lo_active_side_shape.group_contours.userData;
+                        }
+
+                    }
+
 
                     lo_active_side_shape.shapes.clear_group_contours();
 
 
+                    if (lo_active_side_shape.group_contours) { //04122024
+
+                        if (lo_active_side_shape.group_contours.userData == null) {
+
+                            lo_active_side_shape.shapes.select_shape_contour(lo_clicked_splines_and_segment);
 
 
-                    if (lo_active_side_shape.group_contours.userData == null) {
+                            //lo_active_side_shape.prev_selected_splines = {
+                            //    spline_left: null,
+                            //    spline_right: null
+                            //};
 
-                        lo_active_side_shape.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+                            ////////    //30072024 {
+                            ////////    //28072024 {
+                            ////////    lo_active_side_shape.prev_selected_splines.spline_left = lo_active_side_shape.group_contours.userData.spline_left;//27072024
+                            ////////    lo_active_side_shape.prev_selected_splines.spline_right = lo_active_side_shape.group_contours.userData.spline_right;//27072024
 
-
-                        //lo_active_side_shape.prev_selected_splines = {
-                        //    spline_left: null,
-                        //    spline_right: null
-                        //};
-
-                        ////////    //30072024 {
-                        ////////    //28072024 {
-                        ////////    lo_active_side_shape.prev_selected_splines.spline_left = lo_active_side_shape.group_contours.userData.spline_left;//27072024
-                        ////////    lo_active_side_shape.prev_selected_splines.spline_right = lo_active_side_shape.group_contours.userData.spline_right;//27072024
-
-                        ////////    //28072024 }
-                        ////////    //30072024 }
-                    }
-                    else {
-
-                        if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
-                            && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right) {
-
-                            lo_active_side_shape.group_contours.userData = null;
+                            ////////    //28072024 }
+                            ////////    //30072024 }
                         }
                         else {
-                            lo_active_side_shape.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+
+
+                            if (lo_prev_clicked_splines) { //04122024
+
+                                if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
+                                    && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right) {
+
+                                    lo_active_side_shape.group_contours.userData = null;
+                                }
+                                else {
+                                    lo_active_side_shape.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+                                }
+                            }
                         }
 
-                    }
+
+                    }//04122024
 
                     lo_active_side_shape.render();
 
@@ -3674,51 +3717,50 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //this.common_func.clear_group_childrens(po_side.group_color_mesh);
                 //this.common_func.clear_group_childrens(po_side.group_rect);
 
+                if (this.shapes) {
 
+                    this.shapes.shape_amount_curves = 0;// po_params.shape_amount_curves;
+                    //this.spline_amount_segments = po_params.spline_amount_segments;
 
-                this.shapes.shape_amount_curves = 0;// po_params.shape_amount_curves;
-                //this.spline_amount_segments = po_params.spline_amount_segments;
+                    this.shapes.shape_width = 0;// po_params.shape_width;
+                    this.shapes.shape_height = 0; // po_params.shape_height;
 
-                this.shapes.shape_width = 0;// po_params.shape_width;
-                this.shapes.shape_height = 0; // po_params.shape_height;
+                    this.shapes.ajust_shape_by_curves = false;// po_params.ajust_shape_by_curves;
+                    this.shapes.ajust_curves_by_shape = false;// po_params.ajust_curves_by_shape;
 
-                this.shapes.ajust_shape_by_curves = false;// po_params.ajust_shape_by_curves;
-                this.shapes.ajust_curves_by_shape = false;// po_params.ajust_curves_by_shape;
+                    this.shapes.distance_between_curves_in_percent_of_width = 0;// po_params.distance_between_curves_in_percent_of_width;
+                    this.shapes.distance_between_curves = 0;// po_params.distance_bt_curves;
 
-                this.shapes.distance_between_curves_in_percent_of_width = 0;// po_params.distance_between_curves_in_percent_of_width;
-                this.shapes.distance_between_curves = 0;// po_params.distance_bt_curves;
+                    this.shapes.group_rect = null;
+                    this.shapes.segment_gabarits = null; // new struc_gabarits();
+                    this.shapes.segment_transform_data = null; // new struc_segment_transform_data();
+                    this.shapes.ar_splines = [];// Список group - сплайнов кривых в сцене
+                    this.shapes.ar_splines_nodes = [];// Список узлов всех сплайнов
+                    this.shapes.ar_selected_segments = []; // список выбранных сегментов 
+                    //11042024 this.shapes.height_koef_previous = 0; // 1;
+                    this.shapes.ar_shapes_colors = []; // список объектов со сплайнами и цветами фигур, упорядоченных слева направо
 
-                this.shapes.group_rect = null;
-                this.shapes.segment_gabarits = null; // new struc_gabarits();
-                this.shapes.segment_transform_data = null; // new struc_segment_transform_data();
-                this.shapes.ar_splines = [];// Список group - сплайнов кривых в сцене
-                this.shapes.ar_splines_nodes = [];// Список узлов всех сплайнов
-                this.shapes.ar_selected_segments = []; // список выбранных сегментов 
-                //11042024 this.shapes.height_koef_previous = 0; // 1;
-                this.shapes.ar_shapes_colors = []; // список объектов со сплайнами и цветами фигур, упорядоченных слева направо
-
-
-
-
-
+                }
 
 
 
 
 
+                if (po_side) {
 
-                po_side.segment_transform_data = null;
-                po_side.segment_gabarits = null;
-                po_side.segments = null;
-                po_side.splines = null;
-                po_side.shapes = null;
-
+                    po_side.segment_transform_data = null;
+                    po_side.segment_gabarits = null;
+                    po_side.segments = null;
+                    po_side.splines = null;
+                    po_side.shapes = null;
+                }
 
                 let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "Mesh"];// /*, "Group"*/14102024
                 this.common_func.clearScene(po_side.scene, lar_no_delete);
 
-
-                this.rectangle.shape.scale.y = 1;
+                if (this.rectangle) {
+                    this.rectangle.shape.scale.y = 1;
+                }
             }
 
             catch (e) {
