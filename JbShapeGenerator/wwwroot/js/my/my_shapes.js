@@ -278,9 +278,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 if (this.main.group_contours) {
                     if (this.main.group_contours.children) {
-                        //for (let lv_i = 0; lv_i < this.main.group_contours.children.length; lv_i++) {
-                        for (let lv_i = this.main.group_contours.children.length - 1; lv_i <= 0; lv_i--) {
-                            this.main.common_func.removeObjectsWithChildren(this.main.group_contours.children[lv_i], true);
+                        if (this.main.group_contours.children.length > 0) {
+                            //for (let lv_i = 0; lv_i < this.main.group_contours.children.length; lv_i++) {
+                            for (let lv_i = this.main.group_contours.children.length - 1; lv_i >= 0; lv_i--) {
+                                this.main.common_func.removeObjectsWithChildren(this.main.group_contours.children[lv_i], true);
+                            }
                         }
                     }
                 }
@@ -300,10 +302,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 if (this.main.group_color_mesh) { //03122024 
                     if (this.main.group_color_mesh.children) { //03122024 
-
-                        //for (let lv_i = 0; lv_i < this.main.group_color_mesh.children.length; lv_i++) {
-                        for (let lv_i = this.main.group_color_mesh.children.length - 1; lv_i >= 0; lv_i--) {
-                            this.main.common_func.removeObjectsWithChildren(this.main.group_color_mesh.children[lv_i], true);
+                        if (this.main.group_color_mesh.children.length > 0) { //03122024 
+                            //for (let lv_i = 0; lv_i < this.main.group_color_mesh.children.length; lv_i++) {
+                            for (let lv_i = this.main.group_color_mesh.children.length - 1; lv_i >= 0; lv_i--) {
+                                this.main.common_func.removeObjectsWithChildren(this.main.group_color_mesh.children[lv_i], true);
+                            }
                         }
                     }
                 }

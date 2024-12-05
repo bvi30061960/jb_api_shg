@@ -4,6 +4,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';//04122024
+
 //////import { Line2 } from 'three/addons/lines/Line2.js';
 //import { CubeGeometry } from 'three/addons/CubeGeometry.js';
 
@@ -385,11 +387,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             this.init_containers_and_controls(/*pv_prefix *//*30112024*/);
             this.init_three_elements(/*pv_prefix *//*30112024*/);
-            /////////////////////this.animate_mod();
+            ////////////////this.animate_mod();//04122024
 
 
             // Загрузка данных начальной премодели
-            this.load_initial_model(/*pv_prefix*/ /*30112024*/);
+            //04122024 this.load_initial_model(/*pv_prefix*/ /*30112024*/);
 
 
 
@@ -719,21 +721,36 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.client_id = this.common_func.get_random_number_int(1, 9999999999).toString();
 
 
-                if (this.my_prefix == gc_id_prefix_end) {
+                ////if (this.my_prefix == gc_id_prefix_end) {
 
-                    this.group_end_shape = new THREE.Group();
-                    this.group_end_shape.name = cv_name_group_end_shape;
 
-                    this.end_shape = new EndShape(this);
 
-                    this.scene.add(this.group_end_shape);
+                //this.group_end_shape = new THREE.Group();
+                //this.group_end_shape.name = cv_name_group_end_shape;
 
-                }
-                else {
+                //this.end_shape = new EndShape(this);
+                //this.group_end_shape.add(this.end_shape);
 
-                    this.make_shape(false, null);
+                //this.scene.add(this.group_end_shape);
 
-                }
+
+
+
+
+
+
+
+
+
+
+                ////this.render();
+
+                ////////}
+                ////////else {
+
+                this.make_shape(false, null);
+
+                ////}
 
 
 
@@ -920,71 +937,92 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.reset_gui_parameters();
                 }
 
-                this.shapes = new Shapes(
-                    this,
-                    this.scene,
-                    this.params,
-                    pv_is_use_data,
-                    po_side_data
-                );
 
-                this.splines = new Splines(
-                    this,
-                    pv_is_use_data
-                );
+                if (this.my_prefix != gc_id_prefix_end) {
 
-                this.segments = new Segments(
-                    this,
-                    pv_is_use_data
-                );
+                    this.shapes = new Shapes(
+                        this,
+                        this.scene,
+                        this.params,
+                        pv_is_use_data,
+                        po_side_data
+                    );
 
-                //02112024 if (!pv_is_use_data) {
-                this.segment_gabarits = this.segments.get_segment_size();
-                this.segment_transform_data = this.segments.get_segment_transform_data(/*this.segment_gabarits,*/ this.params.ajust_curves_by_shape);
-                //02112024 }
+                    this.splines = new Splines(
+                        this,
+                        pv_is_use_data
+                    );
 
-                this.shapes.create_shapes(pv_is_use_data, po_side_data);
+                    this.segments = new Segments(
+                        this,
+                        pv_is_use_data
+                    );
 
-                this.rectangle = new Rectangle(/*this.container, this.camera,*/ this.scene,
-                    this.params.shape_width, this.params.shape_height); //05112024
+                    //02112024 if (!pv_is_use_data) {
+                    this.segment_gabarits = this.segments.get_segment_size();
+                    this.segment_transform_data = this.segments.get_segment_transform_data(/*this.segment_gabarits,*/ this.params.ajust_curves_by_shape);
+                    //02112024 }
 
+                    this.shapes.create_shapes(pv_is_use_data, po_side_data);
 
-                //if (this.my_prefix == gc_id_prefix_end) {
-
-                //    if (!this.group_end_shape) {
-                //        this.group_end_shape = new THREE.Group();
-                //        this.group_end_shape.name = cv_name_group_end_shape;
-                //    }
-                //    if (!this.end_shape) {
-                //        this.end_shape = new EndShape(this);
-                //        this.scene.add(this.group_end_shape);
-                //    }
-                //}
-                //else {
-
-                //    this.make_shape(false, null);
-
-                //    this.group_contours = new THREE.Group();
-                //    this.group_contours.name = cv_name_group_contours;
-                //    this.scene.add(this.group_contours);
-
-                //    this.group_color_mesh = new THREE.Group();
-                //    this.group_color_mesh.name = cv_name_group_color_mesh;
-                //    this.scene.add(this.group_color_mesh);
-
-
-                this.shapes.adjust_splines_by_external_shape();//04122024
-
-                //}
+                    this.rectangle = new Rectangle(this.scene,
+                        this.params.shape_width, this.params.shape_height); //05112024
 
 
 
 
 
+                    //    this.make_shape(false, null);
+
+                    this.group_contours = new THREE.Group();
+                    this.group_contours.name = cv_name_group_contours;
+                    this.scene.add(this.group_contours);
+
+                    this.group_color_mesh = new THREE.Group();
+                    this.group_color_mesh.name = cv_name_group_color_mesh;
+                    this.scene.add(this.group_color_mesh);
+
+
+                    this.shapes.adjust_splines_by_external_shape();//04122024
+
+                }
+
+                else {
+
+                    //04122024 {
+
+                    if (!this.group_end_shape) {
+                        this.group_end_shape = new THREE.Group();
+                        this.group_end_shape.name = cv_name_group_end_shape;
+                    }
+
+                    if (!this.end_shape) {
+                        this.end_shape = new EndShape(this);
+                        //this.scene.add(this.group_end_shape); 
+
+                        ///////this.group_end_shape.add(this.end_shape.shape);
+                        this.scene.add(this.group_end_shape);
+
+                    }
+
+
+                    ////let geometry = new THREE.SphereGeometry(20);
+                    ////let material = new THREE.MeshPhongMaterial({ color: 0xff00ff, side: THREE.DoubleSide });
+
+                    ////let sphere = null;
+                    ////sphere = new THREE.Mesh(geometry, material);
+                    ////sphere.position.x = 50;
+                    ////sphere.position.y = 50;
+
+                    ////this.group_end_shape.add(sphere);
+                    ////this.scene.add(this.group_end_shape);
+
+                    //04122024 }
 
 
 
 
+                }
 
 
 
