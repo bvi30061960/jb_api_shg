@@ -64,7 +64,9 @@ export var Constants = {
     //lang_en: "en",
     //initial_topic: "id_tt_choose_text_topic"
     path_file_initial_premodel: "wwwroot/datafiles\\initial_model\\models\\initial_model",
-    initial_load: "initial_load" 
+    initial_load: "initial_load",
+    shape_countour_color: 0x0000ff, // цвет контура фигур
+    shape_line_color: 0xff00ff // цвет линий разрезв
 };
 
 

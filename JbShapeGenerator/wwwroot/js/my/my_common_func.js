@@ -1481,17 +1481,61 @@ export function CommonFunc() {
 
 
 
-        ////CommonFunc.prototype.getJSessionId = function () {
+        //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.get_drawing_rectangle = function (pv_height, pv_width, pv_color, po_material) {
 
-        ////    var jsId = document.cookie.match(/JSESSIONID=[^;]+/);
-        ////    if (jsId != null) {
-        ////        if (jsId instanceof Array)
-        ////            jsId = jsId[0].substring(11);
-        ////        else
-        ////            jsId = jsId.substring(11);
-        ////    }
-        ////    return jsId;
-        ////}
+            let lo_result = null;
+            let lo_renderer = null;
+            let lo_material = null;
+            let lv_color = null;
+
+            try {
+                if (pv_color) {
+                    lv_color = pv_color;
+                }
+                else {
+                    lv_color = Constants.shape_countour_color;
+                }
+
+
+                if (po_material) {
+                    lo_material = po_material;
+                }
+                else {
+
+                    lo_renderer = new THREE.WebGLRenderer({});
+                    let lo_resolution = new THREE.Vector2();
+                    lo_renderer.getSize(lo_resolution);
+
+                    lo_material = new LineMaterial({
+                        resolution: lo_resolution,
+                        linewidth: 0.7,
+                        color: lv_color
+                    });
+                }
+
+                let lo_geometry = new LineGeometry();
+                lo_geometry.setPositions([
+                    0, 0, 0,
+                    0, pv_width, 0,
+                    pv_width, pv_height, 0,
+                    pv_height, 0, 0,
+                    0, 0, 0
+                ]);
+
+                lo_result = new Line2(lo_geometry, lo_material);
+
+                return lo_result;
+
+            }
+
+            catch (e) {
+
+                alert('error get_drawing_rectangle: ' + e.stack);
+
+            }
+        }
+
 
         //======================================================================================
         //======================================================================================
