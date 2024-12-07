@@ -12,9 +12,19 @@ import { Constants } from './my_common_const.js';
 
 import {
     get_active_side_shape_generator,
-    get_passive_side_shape_generator
+    get_passive_side_shape_generator,
+
+    gc_id_prefix_up,
+    gc_id_prefix_lateral,
+    gc_id_prefix_end,
+
+    go_up_side_shape_generator,
+    go_lateral_side_shape_generator,
+    go_end_side_shape_generator,
+
     //Shape_generator
 } from './my_shape_generator.js';//27072024
+
 
 import { Shapes } from './my_shapes.js';//27072024
 //import { GetTwoShapeIntersect } from './my_shapes.js';//27072024 
@@ -1084,13 +1094,18 @@ export function CommonFunc() {
 
             let lo_active_side = get_active_side_shape_generator();
 
-            if (lo_active_side.rotate_status == type_rotate_mode.None) {
-                return;
+            if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
+
+
+                if (lo_active_side.rotate_status == type_rotate_mode.None) {
+                    return;
+                }
+
+                var lv_delta_rotation = this.get_delta_rotation(lo_active_side.rotate_status);
+
+                po_group.rotation.y += lv_delta_rotation;
+
             }
-
-            var lv_delta_rotation = this.get_delta_rotation(lo_active_side.rotate_status);
-
-            po_group.rotation.y += lv_delta_rotation;
 
         }
         //------------------------------------------------------------------------
@@ -1482,7 +1497,7 @@ export function CommonFunc() {
 
 
         //---------------------------------------------------------------------------------------------
-        CommonFunc.prototype.get_drawing_rectangle = function (pv_height, pv_width, pv_color, po_material) {
+        CommonFunc.prototype.get_drawing_rectangle = function (pv_width, pv_height,  pv_color, po_material) {
 
             let lo_result = null;
             let lo_renderer = null;
@@ -1518,7 +1533,7 @@ export function CommonFunc() {
                 lo_geometry.setPositions([
                     0, 0, 0,
                     0, pv_width, 0,
-                    pv_width, pv_height, 0,
+                    pv_height, pv_width,  0,
                     pv_height, 0, 0,
                     0, 0, 0
                 ]);

@@ -63,9 +63,9 @@ const cv_name_group_color_mesh = "group_color_mesh";
 const cv_name_group_end_shape = "group_end_shape";
 //30102024 }
 
-var go_up_side_shape_generator = null;
-var go_lateral_side_shape_generator = null;
-var go_end_side_shape_generator = null;
+export var go_up_side_shape_generator = null;
+export var go_lateral_side_shape_generator = null;
+export var go_end_side_shape_generator = null;
 
 
 var go_active_side_shape_generator = null;
@@ -105,12 +105,15 @@ function start() {
         ////    }
         ////);
 
-        //05092024 {
 
-        $("#id_tab_sides").tabs("option", "active", 2);//30112024  активация третьей закладки
+        //06122024 $("#id_tab_sides").tabs("option", "active", 2);//30112024  активация третьей закладки
 
         $("#id_tab_sides").tabs("option", "active", 1);// активация второй закладки (для срабатывания события activate
         // и формирования на второй закладке фигуры и данных)
+
+        $("#id_tab_sides").tabs("option", "active", 2);////06122024   активация третьей закладки
+
+
         $("#id_tab_sides").tabs("option", "active", 0);// активация первой закладки
 
 
@@ -538,6 +541,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.camera = lo_cameraOrtho;
 
+                if (this.my_prefix == gc_id_prefix_end) {
+
+                    this.camera = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
+                    //this.camera.position.x = 10;
+                    //this.camera.position.y = -20;
+                    //this.camera.position.z = 2;
+                }
+
+
+
                 //04082024 this.camera.position.set(0, 0, 1);
 
 
@@ -585,103 +598,89 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //-------------------------------------------------------------------
 
 
-                // установки для модели
-                //======================================================================
 
-                this.lo_renderer_mod = null;
-                this.container_mod = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape_mod);//20062024
-                this.scene_mod = new THREE.Scene();
-                ///this.group_parts_mod = new THREE.Object3D(); //14102024 
-                //this.group_parts_mod.position.set(0, 0, 0);
-                this.group_parts_mod = new THREE.Group(); //14102024 
-                this.scene_mod.add(this.group_parts_mod); //14102024 
+                if (this.my_prefix != gc_id_prefix_end) {
 
-                //this.scene_mod.background = new THREE.Color(0xf0f0f0);
+                    // установки для модели
+                    //======================================================================
 
+                    this.lo_renderer_mod = null;
+                    this.container_mod = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape_mod);//20062024
+                    this.scene_mod = new THREE.Scene();
+                    ///this.group_parts_mod = new THREE.Object3D(); //14102024 
+                    //this.group_parts_mod.position.set(0, 0, 0);
+                    this.group_parts_mod = new THREE.Group(); //14102024 
+                    this.scene_mod.add(this.group_parts_mod); //14102024 
 
-                // CAMERA
-                var SCREEN_WIDTH = this.container_mod.clientWidth, SCREEN_HEIGHT = this.container_mod.clientHeight;
-                var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
-                this.camera_mod = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-                this.scene_mod.add(this.camera_mod);
-
-                //this.camera_mod.position.set(0, 150, 400);
-                this.camera_mod.position.set(50, 150, 250);
-                this.camera_mod.lookAt(this.scene_mod.position);
+                    //this.scene_mod.background = new THREE.Color(0xf0f0f0);
 
 
+                    // CAMERA
+                    var SCREEN_WIDTH = this.container_mod.clientWidth, SCREEN_HEIGHT = this.container_mod.clientHeight;
+                    var VIEW_ANGLE = 45, ASPECT = SCREEN_WIDTH / SCREEN_HEIGHT, NEAR = 0.1, FAR = 20000;
+                    this.camera_mod = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
+                    this.scene_mod.add(this.camera_mod);
 
-
-                ////this.scene_mod.add(new THREE.AmbientLight(0xf0f0f0, 3));
-                ////const light_mod = new THREE.SpotLight(0xffffff, 4.5);
-                ////light_mod.position.set(0, 1500, 200);
-                ////light_mod.angle = Math.PI * 0.2;
-                ////light_mod.decay = 0;
-                ////light_mod.castShadow = true;
-                ////light_mod.shadow.camera.near = 200;
-                ////light_mod.shadow.camera.far = 2000;
-                ////light_mod.shadow.bias = - 0.000222;
-                ////light_mod.shadow.mapSize.width = 1024;
-                ////light_mod.shadow.mapSize.height = 1024;
-                ////this.scene_mod.add(light_mod);
-
-
-                ////let ambientLight = new THREE.AmbientLight(0x7c7c7c, 3.0);
-
-                ////let light1 = new THREE.DirectionalLight(0xFFFFFF, 3.0);
-                ////light1.position.set(0.32, 0.39, 0.7);
-
-                ////this.scene_mod.add(ambientLight);
-                ////this.scene_mod.add(light1);
-
-                ////////////////////////////////////////const pointLight1 = new THREE.PointLight(0xffffff, 3, 0, 0);
-                ///////////////////////////////////////////pointLight1.position.set(500, 500, 500);
-                ////////////////////////////////////////this.scene_mod.add(pointLight1);
-
-                ////////////////////////////////////////const pointLight2 = new THREE.PointLight(0xffffff, 1, 0, 0);
-                ////////////////////////////////////////pointLight2.position.set(- 500, - 500, - 500);
-                ////////////////////////////////////////this.scene_mod.add(pointLight2);
+                    //this.camera_mod.position.set(0, 150, 400);
+                    this.camera_mod.position.set(50, 150, 250);
+                    this.camera_mod.lookAt(this.scene_mod.position);
 
 
 
 
+                    ////this.scene_mod.add(new THREE.AmbientLight(0xf0f0f0, 3));
+                    ////const light_mod = new THREE.SpotLight(0xffffff, 4.5);
+                    ////light_mod.position.set(0, 1500, 200);
+                    ////light_mod.angle = Math.PI * 0.2;
+                    ////light_mod.decay = 0;
+                    ////light_mod.castShadow = true;
+                    ////light_mod.shadow.camera.near = 200;
+                    ////light_mod.shadow.camera.far = 2000;
+                    ////light_mod.shadow.bias = - 0.000222;
+                    ////light_mod.shadow.mapSize.width = 1024;
+                    ////light_mod.shadow.mapSize.height = 1024;
+                    ////this.scene_mod.add(light_mod);
+
+
+                    ////let ambientLight = new THREE.AmbientLight(0x7c7c7c, 3.0);
+
+                    ////let light1 = new THREE.DirectionalLight(0xFFFFFF, 3.0);
+                    ////light1.position.set(0.32, 0.39, 0.7);
+
+                    ////this.scene_mod.add(ambientLight);
+                    ////this.scene_mod.add(light1);
+
+
+
+                    //////let lo_planeGeometry_mod;
+                    //////lo_planeGeometry_mod = new THREE.PlaneGeometry(2000, 2000);
+                    //////lo_planeGeometry_mod.rotateX(- Math.PI / 2);
+
+                    //////let lo_planeMaterial_mod;
+                    ////////lo_planeMaterial_mod = new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.2 });
+                    //////lo_planeMaterial_mod = new THREE.ShadowMaterial({ color: 0xFF0000, opacity: 1 });
+
+                    //////this.plane_mod = new THREE.Mesh(lo_planeGeometry, lo_planeMaterial);
+                    //////this.plane_mod.receiveShadow = true;
+                    //////this.scene_mod.add(this.plane_mod);
+
+
+
+                    this.renderer_mod = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+                    //////////////his.renderer_mod.setSize(this.id_side_shape_mod.clientWidth, this.id_side_shape_mod.clientHeight);// 06052024
+                    this.container_mod.appendChild(this.renderer_mod.domElement);
 
 
 
 
+                    //this.renderer_mod.setClearColor(0x000fff);//, 1);// цвет фона
+                    //08112024 this.renderer_mod.setClearColor(0xf0f0f0);//, 1);// цвет фона
+                    this.renderer_mod.setClearColor(0xffffff);//, 1);// цвет фона //08112024 
 
 
 
-
-                //////let lo_planeGeometry_mod;
-                //////lo_planeGeometry_mod = new THREE.PlaneGeometry(2000, 2000);
-                //////lo_planeGeometry_mod.rotateX(- Math.PI / 2);
-
-                //////let lo_planeMaterial_mod;
-                ////////lo_planeMaterial_mod = new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.2 });
-                //////lo_planeMaterial_mod = new THREE.ShadowMaterial({ color: 0xFF0000, opacity: 1 });
-
-                //////this.plane_mod = new THREE.Mesh(lo_planeGeometry, lo_planeMaterial);
-                //////this.plane_mod.receiveShadow = true;
-                //////this.scene_mod.add(this.plane_mod);
-
-
-
-                this.renderer_mod = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
-                //////////////his.renderer_mod.setSize(this.id_side_shape_mod.clientWidth, this.id_side_shape_mod.clientHeight);// 06052024
-                this.container_mod.appendChild(this.renderer_mod.domElement);
-
-
-
-
-                //this.renderer_mod.setClearColor(0x000fff);//, 1);// цвет фона
-                //08112024 this.renderer_mod.setClearColor(0xf0f0f0);//, 1);// цвет фона
-                this.renderer_mod.setClearColor(0xffffff);//, 1);// цвет фона //08112024 
-
-
-
-                ////////////this.renderer_mod.setPixelRatio(window.devicePixelRatio);
-                /////////////////////////this.renderer_mod.setAnimationLoop(this.animate_mod);
+                    ////////////this.renderer_mod.setPixelRatio(window.devicePixelRatio);
+                    /////////////////////////this.renderer_mod.setAnimationLoop(this.animate_mod);
 
 
 
@@ -691,19 +690,22 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                // Controls
-                this.controls_mod = new OrbitControls(this.camera_mod, this.renderer_mod.domElement);
-                ////this.controls_mod.damping = 0.2;
-                ////this.controls_mod.enableRotate = false;// bvi
-                //this.controls_mod.autoRotate = true;
+                    // Controls
+                    this.controls_mod = new OrbitControls(this.camera_mod, this.renderer_mod.domElement);
+                    ////this.controls_mod.damping = 0.2;
+                    ////this.controls_mod.enableRotate = false;// bvi
+                    //this.controls_mod.autoRotate = true;
 
 
 
 
-                this.add_lights_for_model(this.scene_mod);
+                    this.add_lights_for_model(this.scene_mod);
 
-                this.model_parts_positions = []; // new Array();
+                    this.model_parts_positions = []; // new Array();
 
+
+
+                } // 06122024 this.my_prefix != gc_id_prefix_end
 
                 //=================================================================================================
 
@@ -750,6 +752,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.make_shape(false, null);
 
+                this.render();
                 ////}
 
 
@@ -924,6 +927,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             return ls_parameters;
         }
+
+
         //------------------------------------------------------------------------
         Shape_generator.prototype.make_shape = function (pv_is_use_data, po_side_data) {
 
@@ -971,9 +976,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-
-                    //    this.make_shape(false, null);
-
                     this.group_contours = new THREE.Group();
                     this.group_contours.name = cv_name_group_contours;
                     this.scene.add(this.group_contours);
@@ -989,38 +991,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 else {
 
-                    //04122024 {
-
                     if (!this.group_end_shape) {
                         this.group_end_shape = new THREE.Group();
                         this.group_end_shape.name = cv_name_group_end_shape;
                     }
 
-                    if (!this.end_shape) {
-                        this.end_shape = new EndShape(this);
-                        //this.scene.add(this.group_end_shape); 
+                    //if (!this.end_shape) {
+                    //if (this.my_prefix == gc_id_prefix_end) {
 
-                        ///////this.group_end_shape.add(this.end_shape.shape);
-                        this.scene.add(this.group_end_shape);
-
-                    }
-
-
-                    ////let geometry = new THREE.SphereGeometry(20);
-                    ////let material = new THREE.MeshPhongMaterial({ color: 0xff00ff, side: THREE.DoubleSide });
-
-                    ////let sphere = null;
-                    ////sphere = new THREE.Mesh(geometry, material);
-                    ////sphere.position.x = 50;
-                    ////sphere.position.y = 50;
-
-                    ////this.group_end_shape.add(sphere);
-                    ////this.scene.add(this.group_end_shape);
-
-                    //04122024 }
-
-
-
+                    this.end_shape = new EndShape(this);
+                    this.scene.add(this.group_end_shape);
+                    //}
 
                 }
 
@@ -1973,8 +1954,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 }, 100);
 
 
-
-
             }
 
 
@@ -1988,16 +1967,19 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 let lo_active_side = get_active_side_shape_generator();
 
-                if (lo_active_side) {
-
-                    lo_active_side.common_func.model_rotation(lo_active_side.group_parts_mod);
-
-                    lo_active_side.renderer_mod.render(lo_active_side.scene_mod, lo_active_side.camera_mod);
+                if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
 
 
+                    if (lo_active_side) {
 
+                        lo_active_side.common_func.model_rotation(lo_active_side.group_parts_mod);
+
+                        lo_active_side.renderer_mod.render(lo_active_side.scene_mod, lo_active_side.camera_mod);
+
+
+
+                    }
                 }
-
             }
 
             catch (e) {
@@ -2500,6 +2482,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
+
+            go_end_side_shape_generator.end_shape.redraw_end_shape();//06122024
+
         }
 
 
@@ -2520,22 +2505,25 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //05112024 let lv_scale = pv_value / lo_active_side.params.shape_width_beg;
             let lv_scale = pv_value / lo_active_side.rectangle.shape_width;
 
-            if (lo_passive_side) {
-                if (typeof lo_passive_side.gui !== "undefined" && lo_passive_side.gui) {
-                    lo_passive_side.params.shape_width = pv_value;
-                    CommonFunc.prototype.guiUpdateDisplay(lo_passive_side.gui);
+            //06122024 {
+            ////// закомментировано - при изменении ширины одной стороны ширина другой не меняется
+            ////if (lo_passive_side) {
 
-                    lo_passive_side.rectangle.shape.scale.x = lv_scale;
-                    lo_passive_side.render();
-                    if (lo_active_side.params.is_space_adjust) {
-                        lo_passive_side.shapes.adjust_splines_by_external_shape();
-                    }
+            ////    if (typeof lo_passive_side.gui !== "undefined" && lo_passive_side.gui) {
+            ////        lo_passive_side.params.shape_width = pv_value;
+            ////        CommonFunc.prototype.guiUpdateDisplay(lo_passive_side.gui);
+
+            ////        lo_passive_side.rectangle.shape.scale.x = lv_scale;
+            ////        lo_passive_side.render();
+            ////        if (lo_active_side.params.is_space_adjust) {
+            ////            lo_passive_side.shapes.adjust_splines_by_external_shape();
+            ////        }
 
 
-                }
+            ////    }
 
-            }
-
+            ////}
+            //06122024 }
 
 
             if (lo_active_side.is_big_window) {
@@ -2559,6 +2547,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
             //27112024 lo_active_side.model_params_changed = true; // признак изменения данных модели
+
+            go_end_side_shape_generator.end_shape.redraw_end_shape();//06122024
+
 
         }
 
@@ -2723,20 +2714,25 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             let lo_active_side = get_active_side_shape_generator();
 
-            lo_active_side.aspect = lo_active_side.container.clientWidth / lo_active_side.container.clientHeight;
-            lo_active_side.renderer.setSize(lo_active_side.container.clientWidth, lo_active_side.container.clientHeight);
-            lo_active_side.camera.aspect = lo_active_side.container.clientWidth / lo_active_side.container.clientHeight;
-            lo_active_side.camera.updateProjectionMatrix();
-            lo_active_side.render();
+            //if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
 
 
-            lo_active_side.aspect_mod = lo_active_side.container_mod.clientWidth / lo_active_side.container_mod.clientHeight;
-            lo_active_side.renderer_mod.setSize(lo_active_side.container_mod.clientWidth, lo_active_side.container_mod.clientHeight);
-            lo_active_side.camera_mod.aspect = lo_active_side.container_mod.clientWidth / lo_active_side.container_mod.clientHeight;
-            lo_active_side.camera_mod.updateProjectionMatrix();
-            lo_active_side.render_mod();
+                lo_active_side.aspect = lo_active_side.container.clientWidth / lo_active_side.container.clientHeight;
+                lo_active_side.renderer.setSize(lo_active_side.container.clientWidth, lo_active_side.container.clientHeight);
+                lo_active_side.camera.aspect = lo_active_side.container.clientWidth / lo_active_side.container.clientHeight;
+                lo_active_side.camera.updateProjectionMatrix();
+                lo_active_side.render();
 
 
+            if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
+
+                lo_active_side.aspect_mod = lo_active_side.container_mod.clientWidth / lo_active_side.container_mod.clientHeight;
+                lo_active_side.renderer_mod.setSize(lo_active_side.container_mod.clientWidth, lo_active_side.container_mod.clientHeight);
+                lo_active_side.camera_mod.aspect = lo_active_side.container_mod.clientWidth / lo_active_side.container_mod.clientHeight;
+                lo_active_side.camera_mod.updateProjectionMatrix();
+                lo_active_side.render_mod();
+
+            }
 
         }
         //////------------------------------------------------------------------------
@@ -2788,7 +2784,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             lo_active_side.shapes.add_spline();
 
             //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
-
+            go_end_side_shape_generator.end_shape.redraw_end_shape();
         }
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_read_model = function () {

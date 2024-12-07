@@ -17,11 +17,18 @@ import {
 
 
 import { CommonFunc } from './my_common_func.js';
+
 import {
     gc_id_prefix_up,
     gc_id_prefix_lateral,
     gc_id_prefix_end,
+
+    go_up_side_shape_generator,
+    go_lateral_side_shape_generator,
+    go_end_side_shape_generator,
+
     get_active_side_shape_generator
+
 } from './my_shape_generator.js';
 
 
@@ -1183,6 +1190,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         this.do_delete_spline(lo_parent_parent);
 
+                        if (this.shape_amount_curves > 0) {
+                            this.shape_amount_curves--; //06122024
+                        }
+
 
                         // Удаление сплайна из списка
                         for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
@@ -1222,6 +1233,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             // очистка списка выделенных сегментов
             this.ar_selected_segments = [];
 
+            go_end_side_shape_generator.end_shape.redraw_end_shape();
 
             this.main.render();
 
@@ -1266,7 +1278,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             this.main.splines.create_spline(lo_main_curves_group, lv_spline_offset_x, /*this.height_koef_previous,*/ this.segment_transform_data);//30042024
 
-
+            this.shape_amount_curves++; //06122024
 
             this.ar_splines = this.get_splines();
             this.ar_splines_nodes = this.get_splines_points();

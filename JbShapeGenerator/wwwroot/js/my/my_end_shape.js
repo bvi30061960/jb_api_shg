@@ -7,6 +7,14 @@ import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 import { Constants } from './my_common_const.js';
 import { CommonFunc } from './my_common_func.js';
 
+import {
+    go_up_side_shape_generator,
+    go_lateral_side_shape_generator,
+    go_end_side_shape_generator
+} from './my_shape_generator.js';
+
+
+
 const cv_rectangle_name = "my_end_shape";
 
 
@@ -31,7 +39,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
     //=====================================================================
 
-    if (typeof this.create_end_shape != "function") {
+    if (typeof this.redraw_end_shape != "function") {
 
         //----------------------------------------------------------
         // Методы
@@ -40,13 +48,20 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
         //------------------------------------------------------------------------
-        EndShape.prototype.create_end_shape = function (po_is_use_data, po_sides_data) {
+        EndShape.prototype.redraw_end_shape = function (po_is_use_data, po_sides_data) {
 
             try {
 
+
+                CommonFunc.prototype.clear_group_childrens(this.main.group_end_shape);
+
                 let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle(
-                    this.main.params.shape_width,
-                    this.main.params.shape_width);
+                    //this.main.params.shape_width,
+                    //this.main.params.shape_width);
+                    go_lateral_side_shape_generator.params.shape_width,
+                    go_up_side_shape_generator.params.shape_width
+
+                );
 
 
                 this.main.group_end_shape.add(lo_rectangle);
@@ -60,8 +75,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lo_line_hor = null;
                 let lo_line_vert = null;
 
-                let lv_curve_distance_hor = this.main.params.shape_width / (this.main.params.shape_amount_curves + 1);
-                let lv_curve_distance_vert = this.main.params.shape_width / (this.main.params.shape_amount_curves + 1);
+                //let lv_curve_distance_vert = this.main.params.shape_width / (go_up_side_shape_generator.shapes.shape_amount_curves + 1);
+                //let lv_curve_distance_hor = this.main.params.shape_width / (go_lateral_side_shape_generator.shapes.shape_amount_curves + 1);
+                let lv_curve_distance_vert = go_up_side_shape_generator.params.shape_width / (go_up_side_shape_generator.shapes.shape_amount_curves + 1);
+                let lv_curve_distance_hor = go_lateral_side_shape_generator.params.shape_width / (go_lateral_side_shape_generator.shapes.shape_amount_curves + 1);
 
                 var lo_material = new THREE.LineBasicMaterial({
                     color: Constants.shape_line_color
@@ -69,25 +86,28 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 lo_geom_hor = new THREE.BufferGeometry().setFromPoints([
                     new THREE.Vector2(0, 0),
-                    new THREE.Vector2(this.main.params.shape_width, 0)
+                    new THREE.Vector2(go_up_side_shape_generator.params.shape_width, 0)
+                    //new THREE.Vector2(0, go_up_side_shape_generator.params.shape_width)
                 ]);
                 lo_line_hor = new THREE.LineSegments(lo_geom_hor, lo_material);
 
                 lo_geom_vert = new THREE.BufferGeometry().setFromPoints([
                     new THREE.Vector2(0, 0),
-                    new THREE.Vector2(0, this.main.params.shape_width)
+                    new THREE.Vector2(0, go_lateral_side_shape_generator.params.shape_width)
+                    //new THREE.Vector2(go_lateral_side_shape_generator.params.shape_width, 0)
                 ]);
                 lo_line_vert = new THREE.LineSegments(lo_geom_vert, lo_material);
 
-                for (let lv_i = 0; lv_i < this.main.params.shape_amount_curves; lv_i++) {
+                for (let lv_i = 0; lv_i < go_lateral_side_shape_generator.shapes.shape_amount_curves; lv_i++) {
 
                     lo_line_curr = lo_line_hor.clone();
                     lo_line_curr.position.y = lv_curve_distance_hor * (lv_i + 1);
                     this.main.group_end_shape.add(lo_line_curr);
+                }
 
-
+                for (let lv_i = 0; lv_i < go_up_side_shape_generator.shapes.shape_amount_curves; lv_i++) {
                     lo_line_curr = lo_line_vert.clone();
-                    lo_line_curr.position.x = lv_curve_distance_hor * (lv_i + 1);
+                    lo_line_curr.position.x = lv_curve_distance_vert * (lv_i + 1);
                     this.main.group_end_shape.add(lo_line_curr);
 
                 }
@@ -96,7 +116,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
             catch (e) {
 
-                alert('error create_end_shape: ' + e.stack);
+                alert('error redraw_end_shape: ' + e.stack);
 
             }
 
@@ -112,7 +132,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
 
-    this.create_end_shape(false, null);
+    this.redraw_end_shape(false, null);
 
 
 }
