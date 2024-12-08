@@ -69,14 +69,65 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
 
+
+
+
+
+
+
+                ////let lo_line_curr = null;
+                ////let lo_geom_hor = null;
+                ////let lo_geom_vert = null;
+                ////let lo_line_hor = null;
+                ////let lo_line_vert = null;
+
+                ////let lv_curve_distance_vert = go_up_side_shape_generator.params.shape_width / (go_up_side_shape_generator.shapes.shape_amount_curves + 1);
+                ////let lv_curve_distance_hor = go_lateral_side_shape_generator.params.shape_width / (go_lateral_side_shape_generator.shapes.shape_amount_curves + 1);
+
+                ////var lo_material = new THREE.LineBasicMaterial({
+                ////    color: Constants.shape_line_color
+                ////});
+
+                ////lo_geom_hor = new THREE.BufferGeometry().setFromPoints([
+                ////    new THREE.Vector2(0, 0),
+                ////    new THREE.Vector2(go_up_side_shape_generator.params.shape_width, 0)
+                ////]);
+                ////lo_line_hor = new THREE.LineSegments(lo_geom_hor, lo_material);
+
+                ////lo_geom_vert = new THREE.BufferGeometry().setFromPoints([
+                ////    new THREE.Vector2(0, 0),
+                ////    new THREE.Vector2(0, go_lateral_side_shape_generator.params.shape_width)
+                ////]);
+                ////lo_line_vert = new THREE.LineSegments(lo_geom_vert, lo_material);
+
+                ////for (let lv_i = 0; lv_i < go_lateral_side_shape_generator.shapes.shape_amount_curves; lv_i++) {
+
+                ////    lo_line_curr = lo_line_hor.clone();
+                ////    lo_line_curr.position.y = lv_curve_distance_hor * (lv_i + 1);
+                ////    this.main.group_end_shape.add(lo_line_curr);
+                ////}
+
+                ////for (let lv_i = 0; lv_i < go_up_side_shape_generator.shapes.shape_amount_curves; lv_i++) {
+                ////    lo_line_curr = lo_line_vert.clone();
+                ////    lo_line_curr.position.x = lv_curve_distance_vert * (lv_i + 1);
+                ////    this.main.group_end_shape.add(lo_line_curr);
+
+                ////}
+
+
+
+
+
+
+
                 let lo_line_curr = null;
                 let lo_geom_hor = null;
                 let lo_geom_vert = null;
                 let lo_line_hor = null;
                 let lo_line_vert = null;
 
-                //let lv_curve_distance_vert = this.main.params.shape_width / (go_up_side_shape_generator.shapes.shape_amount_curves + 1);
-                //let lv_curve_distance_hor = this.main.params.shape_width / (go_lateral_side_shape_generator.shapes.shape_amount_curves + 1);
+                let pv_position = null;
+
                 let lv_curve_distance_vert = go_up_side_shape_generator.params.shape_width / (go_up_side_shape_generator.shapes.shape_amount_curves + 1);
                 let lv_curve_distance_hor = go_lateral_side_shape_generator.params.shape_width / (go_lateral_side_shape_generator.shapes.shape_amount_curves + 1);
 
@@ -87,30 +138,65 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 lo_geom_hor = new THREE.BufferGeometry().setFromPoints([
                     new THREE.Vector2(0, 0),
                     new THREE.Vector2(go_up_side_shape_generator.params.shape_width, 0)
-                    //new THREE.Vector2(0, go_up_side_shape_generator.params.shape_width)
                 ]);
                 lo_line_hor = new THREE.LineSegments(lo_geom_hor, lo_material);
 
                 lo_geom_vert = new THREE.BufferGeometry().setFromPoints([
                     new THREE.Vector2(0, 0),
                     new THREE.Vector2(0, go_lateral_side_shape_generator.params.shape_width)
-                    //new THREE.Vector2(go_lateral_side_shape_generator.params.shape_width, 0)
                 ]);
                 lo_line_vert = new THREE.LineSegments(lo_geom_vert, lo_material);
+
+
+
 
                 for (let lv_i = 0; lv_i < go_lateral_side_shape_generator.shapes.shape_amount_curves; lv_i++) {
 
                     lo_line_curr = lo_line_hor.clone();
-                    lo_line_curr.position.y = lv_curve_distance_hor * (lv_i + 1);
+
+                    //lo_line_curr.position.y = lv_curve_distance_hor * (lv_i + 1);
+
+                    //координаты начальной точки текущей кривой
+                    if (go_lateral_side_shape_generator.shapes
+                        || go_lateral_side_shape_generator.shapes.ar_splines[lv_i]
+                        || go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0]
+                        || go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
+                        || go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
+                    ) {
+                        pv_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                    }
+
+                    lo_line_curr.position.y = go_lateral_side_shape_generator.params.shape_width - pv_position; // lv_curve_distance_hor * (lv_i + 1);
+
                     this.main.group_end_shape.add(lo_line_curr);
                 }
 
                 for (let lv_i = 0; lv_i < go_up_side_shape_generator.shapes.shape_amount_curves; lv_i++) {
                     lo_line_curr = lo_line_vert.clone();
-                    lo_line_curr.position.x = lv_curve_distance_vert * (lv_i + 1);
+
+                    //lo_line_curr.position.x = lv_curve_distance_vert * (lv_i + 1);
+
+                    if (go_up_side_shape_generator.shapes
+                        || go_up_side_shape_generator.shapes.ar_splines[lv_i]
+                        || go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0]
+                        || go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
+                        || go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
+                    ) {
+                        pv_position = go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                    }
+
+                    lo_line_curr.position.x = pv_position; // lv_curve_distance_hor * (lv_i + 1);
+
                     this.main.group_end_shape.add(lo_line_curr);
 
                 }
+
+
+
+
+
+
+
 
             }
 

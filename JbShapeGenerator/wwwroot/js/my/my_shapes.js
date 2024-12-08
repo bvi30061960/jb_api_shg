@@ -256,10 +256,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 let lar = this.main.scene.getObjectsByProperty("type", "Group");
 
-                //let lv_i_end = lar.length;
-                //for (let lv_i = 0; lv_i < lv_i_end; lv_i++) {
                 for (let lv_i = 0; lv_i < lar.length; lv_i++) {
-                    //30042024 if (lar[lv_i].name.indexOf(cv_spline_name_prefix) >= 0) {
                     if (lar[lv_i].name.indexOf(cv_spline_group_name_prefix) >= 0) { //30042024
                         lar_out.push(lar[lv_i]);
                     }
@@ -1299,9 +1296,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
             try {
-
-                //let lo_active_side = get_active_side_shape_generator();
-
 
                 this.clear_group_contours();//27072024 
                 this.clear_group_color_mesh();//27072024 

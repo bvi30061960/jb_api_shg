@@ -3200,47 +3200,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 return;
             }
 
-
             let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
             lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
 
+            go_end_side_shape_generator.end_shape.redraw_end_shape();//07122024
+
             lo_active_side.render();
 
-
-
-
-
-            //lo_active_side_shape_generator.is_gragging = false; //25072024
-
-
-
-            //////27072024 {
-            ////if (lo_active_side.prev_selected_splines.spline_left !== null
-            ////    || lo_active_side.prev_selected_splines.spline_right !== null
-            ////)
-            ////{
-
-            ////    lo_active_side_shape.shapes.select_shape_contour(lo_active_side.prev_selected_splines);
-
-            ////}
-            //////27072024 }
-
-
-
-
-
-
-
-
-
-
-
-            //po_event.cancelBubble = true;
-            //po_event.bubbles = false;
-
-            //////    po_event.preventDefault();
-            //////    po_event.stopPropagation();
-            //////    return false;
         }
 
 
