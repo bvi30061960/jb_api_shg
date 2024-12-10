@@ -1495,9 +1495,8 @@ export function CommonFunc() {
         }
 
 
-
         //---------------------------------------------------------------------------------------------
-        CommonFunc.prototype.get_drawing_rectangle = function (pv_width, pv_height,  pv_color, po_material) {
+        CommonFunc.prototype.get_drawing_rectangle = function (pv_width, pv_height, pv_color, po_material) {
 
             let lo_result = null;
             let lo_renderer = null;
@@ -1533,7 +1532,7 @@ export function CommonFunc() {
                 lo_geometry.setPositions([
                     0, 0, 0,
                     0, pv_width, 0,
-                    pv_height, pv_width,  0,
+                    pv_height, pv_width, 0,
                     pv_height, 0, 0,
                     0, 0, 0
                 ]);
@@ -1551,6 +1550,27 @@ export function CommonFunc() {
             }
         }
 
+        //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.Create2DArray = function (pv_rows, pv_cols, pv_init_value) {
+
+            let lar_array;
+
+            try {
+
+                lar_array = new Array(pv_rows);
+                for (let i = 0; i < pv_rows; i++) {
+                    lar_array[i] = new Array(pv_cols).fill(pv_init_value); // Заполняем начальным значением
+                }
+            }
+
+            catch (e) {
+
+                alert('error Create2DArray: ' + e.stack);
+
+            }
+
+            return lar_array;
+        }
 
         //======================================================================================
         //======================================================================================
