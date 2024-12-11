@@ -50,19 +50,59 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
         //------------------------------------------------------------------------
-        EndShape.prototype.redraw_end_shape = function (pv_deleted_spline_num, po_is_use_data, po_sides_data) {
+        EndShape.prototype.redraw_end_shape = function (
+            pv_added_spline_num, pv_deleted_spline_num,
+            //pv_up_added_spline_num, pv_up_deleted_spline_num,
+            //pv_lateral_added_spline_num, pv_lateral_deleted_spline_num,
+            po_is_use_data, po_sides_data
+        ) {
 
-            try {
+
+            ////let lv_up_added_spline_num = null;
+            ////let lv_up_deleted_spline_num = null;
+            ////let lv_lateral_added_spline_num = null;
+            ////let lv_lateral_deleted_spline_num = null;
+
+
+
+            ////try {
+
+            ////    switch (this.main) {
+
+            ////        case "go_up_side_shape_generator":
+            ////            lv_up_added_spline_num = pv_added_spline_num;
+            ////            lv_up_deleted_spline_num = pv_deleted_spline_num;
+            ////            break;
+
+            ////        case "go_lateral_side_shape_generator":
+            ////            lv_lateral_added_spline_num = pv_added_spline_num;
+            ////            lv_lateral_deleted_spline_num = pv_deleted_spline_num;
+            ////            break;
+            ////    }
+
 
                 CommonFunc.prototype.clear_group_childrens(this.main.group_end_shape);
 
 
                 // переопределение размерности массива цветов
 
-                let lv_rows = go_up_side_shape_generator.shapes.shape_amount_curves;
-                let lv_cols = go_lateral_side_shape_generator.shapes.shape_amount_curves;
+                let lv_up_splines_amount = go_up_side_shape_generator.shapes.shape_amount_curves;
+                let lv_lateral_splines_amount = go_lateral_side_shape_generator.shapes.shape_amount_curves;
 
-                this.ColorParts = redefine_arr_color_parts(lv_rows, lv_cols, pv_deleted_spline_num);
+                //this.ColorParts =
+                this.redefine_arr_color_parts(lv_up_splines_amount, lv_lateral_splines_amount,
+                    null, // pv_up_added_spline_num
+                    null, // pv_up_deleted_spline_num
+                    null, // pv_lateral_added_spline_num
+                    null // pv_lateral_deleted_spline_num
+                );
+
+
+                //lv_up_splines_amount, lv_lateral_splines_amountm,
+                //    pv_up_added_spline_num, pv_up_deleted_spline_num,
+                //    pv_lateral_added_spline_num, pv_lateral_deleted_spline_num
+
+
 
 
                 let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle(
@@ -221,25 +261,54 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
         //------------------------------------------------------------------------
         EndShape.prototype.redefine_arr_color_parts = function (
             pv_up_splines_amount, pv_lateral_splines_amount,
-            pv_deleted_up_spline_num, pv_deleted_lateral_spline_num) {
+            pv_added_spline_num, pv_deleted_spline_num,
+            //pv_up_added_spline_num, pv_up_deleted_spline_num,
+            //pv_lateral_added_spline_num, pv_lateral_deleted_spline_num
+
+        ) {
 
 
-            let lar_color_parts = null;
+            let lv_up_added_spline_num = null;
+            let lv_up_deleted_spline_num = null;
+            let lv_lateral_added_spline_num = null;
+            let lv_lateral_deleted_spline_num = null;
+
+
 
             try {
 
-                if (pv_up_splines_amount < 0 || pv_lateral_splines_amount < 0) {
+                switch (this.main) {
 
-                    return lar_color_parts;
+                    case "go_up_side_shape_generator":
+                        lv_up_added_spline_num = pv_added_spline_num;
+                        lv_up_deleted_spline_num = pv_deleted_spline_num;
+                        break;
+
+                    case "go_lateral_side_shape_generator":
+                        lv_lateral_added_spline_num = pv_added_spline_num;
+                        lv_lateral_deleted_spline_num = pv_deleted_spline_num;
+                        break;
                 }
+
+
+
+            let lar_result_color_parts = null;
+
+            try {
+
+                //if ( pv_up_splines_amount == null || pv_lateral_splines_amount == null
+                //    || pv_up_splines_amount < 0 || pv_lateral_splines_amount < 0 ) {
+
+                //    return lar_result_color_parts;
+                //}
 
 
 
                 if (!this.ColorParts) {
 
-                    lar_color_parts = CommonFunc.prototype.Create2DArray(pv_lateral_splines_amount, pv_up_splines_amount, 0xfff);
+                    lar_result_color_parts = CommonFunc.prototype.Create2DArray(pv_lateral_splines_amount, pv_up_splines_amount, 0xfff);
 
-                    return lar_color_parts;
+                    return lar_result_color_parts;
 
                 }
 
@@ -250,45 +319,102 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lv_color_up_parts_amount = this.ColorParts[0].length;
                 let lv_color_lateral_parts_amount = this.ColorParts.length;
 
+                let lar_newRow = null;
 
 
 
+                let lar_cop_color_parts = Array.from(this.ColorParts);
 
 
 
+                // Операции со строками
 
+                // добавление
+                if (pv_lateral_added_spline_num >= 0) {
 
+                    lar_newRow = lar_cop_color_parts[pv_lateral_added_spline_num];
+                    lar_cop_color_parts.splice(pv_lateral_added_spline_num, 0, lar_newRow);
 
+                }
 
+                // удаление
+                if (pv_lateral_deleted_spline_num >= 0) {
 
-
-
-                if ((pv_deleted_up_spline_num == null || pv_deleted_up_spline_num < 0)
-                    && (pv_deleted_lateral_spline_num == null || pv_deleted_lateral_spline_num < 0)
-                ) {
-
-                    return this.ColorParts;
-
+                    lar_cop_color_parts.splice(pv_lateral_deleted_spline_num, 1); // Удаляем строку с индексом pv_deleted_up_spline_num
                 }
 
 
 
-                //let lar_cop_color_parts = Array.from(this.ColorParts);
+
+                // Операции со столбцами
+
+                // добавление
+                if (pv_up_added_spline_num >= 0) {
 
 
-                if (pv_deleted_lateral_spline_num >= 0 && pv_deleted_lateral_spline_num < this.ColorParts.length) {
-                    // Удаляем строку с индексом pv_deleted_lateral_spline_num
-                    this.ColorParts.splice(pv_deleted_up_spline_num, 1);
-                }
+                    // копирование столбца
+                    let lar_column = lar_cop_color_parts.map(row => row[pv_up_added_spline_num]);
 
-
-                if (pv_deleted_up_spline_num >= 0 && pv_deleted_up_spline_num < this.ColorParts[0].length) {
-                    // Удаляем столбец с индексом pv_deleted_up_spline_num
-
-                    for (let row of this.ColorParts) {
-                        row.splice(pv_deleted_up_spline_num, 1); // Удаляем элемент из каждой строки
+                    // добавление
+                    for (let lv_i = 0; lv_i < lar_cop_color_parts.length; lv_i++) {
+                        lar_cop_color_parts[lv_i].splice(pv_up_added_spline_num, 0, lar_column[lv_i]);
                     }
+
                 }
+
+                // удаление
+                if (pv_up_deleted_spline_num >= 0) {
+
+                    for (let lar_row of lar_cop_color_parts) {
+                        lar_row.splice(pv_up_deleted_spline_num, 1); // Удаляем элемент из каждой строки
+                    }
+
+                }
+
+
+                this.ColorParts = lar_result_color_parts;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                //if ((pv_up_deleted_spline_num == null || pv_up_deleted_spline_num < 0)
+                //    && (pv_lateral_deleted_spline_num == null || pv_lateral_deleted_spline_num < 0)
+                //) {
+
+                //    return this.ColorParts;
+
+                //}
+
+
+
+                ////let lar_cop_color_parts = Array.from(this.ColorParts);
+
+
+                //if (pv_lateral_deleted_spline_num >= 0 && pv_lateral_deleted_spline_num < this.ColorParts.length) {
+                //    // Удаляем строку с индексом pv_deleted_lateral_spline_num
+                //    this.ColorParts.splice(pv_up_deleted_spline_num, 1);
+                //}
+
+
+                //if (pv_up_deleted_spline_num >= 0 && pv_up_deleted_spline_num < this.ColorParts[0].length) {
+                //    // Удаляем столбец с индексом pv_deleted_up_spline_num
+
+                //    for (let row of this.ColorParts) {
+                //        row.splice(pv_up_deleted_spline_num, 1); // Удаляем элемент из каждой строки
+                //    }
+                //}
 
 
 
@@ -313,7 +439,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
 
-    this.redraw_end_shape(false, null);
+    this.redraw_end_shape(
+        null, null,
+        null, null,
+        null, null
+    );
 
 
 }

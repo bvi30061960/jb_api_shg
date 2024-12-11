@@ -1180,7 +1180,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     if (this.ar_selected_segments[lv_i].parent.parent) {
 
-
                         let lo_parent = this.ar_selected_segments[lv_i].parent;
                         let lo_parent_parent = this.ar_selected_segments[lv_i].parent.parent;
 
@@ -1206,12 +1205,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         // удаление удалённых узлов из списка
                         for (let lv_i = this.ar_splines_nodes.length - 1; lv_i >= 0; lv_i--) {
 
-                            //////if (this.ar_splines_nodes[lv_i].parent == lo_parent) {
-                            ////if (this.ar_splines_nodes[lv_i].parent.parent == lo_parent_parent) {
-                            ////	this.ar_splines_nodes.splice(lv_i, 1);
-                            ////}
-
-
                             if (this.ar_splines_nodes[lv_i].parent == null) {
                                 this.ar_splines_nodes.splice(lv_i, 1);
                             }
@@ -1222,7 +1215,24 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                     }
+
+
                 }
+
+
+
+
+
+                go_end_side_shape_generator.end_shape.redraw_end_shape(
+
+                    go_up_side_shape_generator.shapes.shape_amount_curves,
+                    go_lateral_side_shape_generator.shapes.shape_amount_curves,
+                    null, pv_deleted_spline_num //??
+
+
+                );
+
+
 
             }
 
@@ -1230,7 +1240,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             // очистка списка выделенных сегментов
             this.ar_selected_segments = [];
 
-            go_end_side_shape_generator.end_shape.redraw_end_shape();
+            //10122024 go_end_side_shape_generator.end_shape.redraw_end_shape();
 
             this.main.render();
 
