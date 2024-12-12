@@ -2324,7 +2324,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             if (lo_active_side.group_contours.userData) {
 
-                //if (lo_active_side_shape_generator.group_contours.userData.num_spline_left != null || this.main.group_contours.userData.num_spline_right != null) {
                 if (lo_active_side.group_contours.userData.num_spline_left != null || lo_active_side.group_contours.userData.num_spline_right != null) {
 
                     let lar_splines_order = [];
@@ -2340,18 +2339,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     let lv_hexColor = lo_active_side.common_func.rgbToNumber(pv_value);
 
-                    //lo_active_side_shape_generator.shapes.draw_contour_and_shape(0x0f0, lo_spline_left, lo_spline_right, false, true/*, true*/);
                     lo_active_side.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true/*, true*/);
 
                 }
             }
 
-
-
-            //lo_active_side_shape_generator.camera.updateProjectionMatrix();
             lo_active_side.render();
-
-            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
         }
 

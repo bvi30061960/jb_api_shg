@@ -735,25 +735,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             try {
 
 
-                //this.clear_group_color_mesh();
-
-
-                //document.removeEventListener('pointerdown', this.onPointerDown);
-                //window.removeEventListener('mousemove', this.onmousemove);
-
-
-                // 30072024 {
-                ////if (pv_is_clear_group_before) {
-
-                ////	// Очистка группы от предыдущих объектов
-                ////	for (let lv_i = 0; lv_i < this.main.group_contours.children.length; lv_i++) {
-                ////		this.main.common_func.removeObjectsWithChildren(this.main.group_contours.children[lv_i], true);
-                ////	}
-                // 30072024 }
-
-                ////}
-
-
                 if (!po_spline_left && !po_spline_right) {
                     return;
                 }
@@ -1193,6 +1174,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         // Удаление сплайна из списка
                         for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                        //for (let lv_i = this.ar_splines.length-1; lv_i >= 0; lv_i--) { //11122024
 
                             if (this.ar_splines[lv_i] == lo_parent_parent) {
 
@@ -1222,16 +1204,16 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
+                //11122024 {
+                //go_end_side_shape_generator.end_shape.redraw_end_shape(
 
-                go_end_side_shape_generator.end_shape.redraw_end_shape(
-
-                    go_up_side_shape_generator.shapes.shape_amount_curves,
-                    go_lateral_side_shape_generator.shapes.shape_amount_curves,
-                    null, pv_deleted_spline_num //??
+                //    go_up_side_shape_generator.shapes.shape_amount_curves,
+                //    go_lateral_side_shape_generator.shapes.shape_amount_curves,
+                //    null, pv_deleted_spline_num //??
 
 
-                );
-
+                //);
+                //11122024 }
 
 
             }
@@ -1254,6 +1236,15 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             for (let lv_i = po_spline_group.children.length - 1; lv_i >= 0; lv_i--) {
 
                 let lo_object = po_spline_group.children[lv_i];
+
+                let lv_numspline = this.main.common_func.get_numspline_from_left_to_right(lo_object);//11122024
+                go_end_side_shape_generator.end_shape.Prototype.redefine_arr_color_parts(
+                    go_up_side_shape_generator.shapes.shape_amount_curves,
+                    go_lateral_side_shape_generator.shapes.shape_amount_curves,
+                    null, lv_numspline
+                );
+
+
 
                 this.main.common_func.removeObjectsWithChildren(lo_object, true);
 

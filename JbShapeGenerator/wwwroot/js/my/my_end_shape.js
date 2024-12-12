@@ -57,6 +57,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
             po_is_use_data, po_sides_data
         ) {
 
+            return;
 
             ////let lv_up_added_spline_num = null;
             ////let lv_up_deleted_spline_num = null;
@@ -65,7 +66,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
 
-            ////try {
+            try {
 
             ////    switch (this.main) {
 
@@ -88,6 +89,12 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 let lv_up_splines_amount = go_up_side_shape_generator.shapes.shape_amount_curves;
                 let lv_lateral_splines_amount = go_lateral_side_shape_generator.shapes.shape_amount_curves;
+
+
+                let lv_cols = lv_up_splines_amount + 1;
+                let lv_rows = lv_lateral_splines_amount + 1;
+
+
 
                 //this.ColorParts =
                 this.redefine_arr_color_parts(lv_up_splines_amount, lv_lateral_splines_amount,
@@ -178,8 +185,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 let pv_position = null;
 
-                let lv_curve_distance_vert = go_up_side_shape_generator.params.shape_width / (lv_rows + 1);
-                let lv_curve_distance_hor = go_lateral_side_shape_generator.params.shape_width / (lv_cols + 1);
+                let lv_curve_distance_vert = go_up_side_shape_generator.params.shape_width / lv_rows;
+                let lv_curve_distance_hor = go_lateral_side_shape_generator.params.shape_width / lv_cols;
 
                 var lo_material = new THREE.LineBasicMaterial({
                     color: Constants.shape_line_color
@@ -207,11 +214,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     //lo_line_curr.position.y = lv_curve_distance_hor * (lv_i + 1);
 
                     //координаты начальной точки текущей кривой
-                    if (go_lateral_side_shape_generator.shapes
-                        || go_lateral_side_shape_generator.shapes.ar_splines[lv_i]
-                        || go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0]
-                        || go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
-                        || go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
+                    if (   go_lateral_side_shape_generator.shapes
+                        && go_lateral_side_shape_generator.shapes.ar_splines[lv_i]
+                        && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0]
+                        && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
+                        && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
                     ) {
                         pv_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
                     }
@@ -227,10 +234,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     //lo_line_curr.position.x = lv_curve_distance_vert * (lv_i + 1);
 
                     if (go_up_side_shape_generator.shapes
-                        || go_up_side_shape_generator.shapes.ar_splines[lv_i]
-                        || go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0]
-                        || go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
-                        || go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
+                        && go_up_side_shape_generator.shapes.ar_splines[lv_i]
+                        && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0]
+                        && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
+                        && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
                     ) {
                         pv_position = go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
                     }
@@ -240,10 +247,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     this.main.group_end_shape.add(lo_line_curr);
 
                 }
-
-
-
-
 
 
 
@@ -261,7 +264,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
         //------------------------------------------------------------------------
         EndShape.prototype.redefine_arr_color_parts = function (
             pv_up_splines_amount, pv_lateral_splines_amount,
-            pv_added_spline_num, pv_deleted_spline_num,
+            pv_added_spline_num, pv_deleted_spline_num
             //pv_up_added_spline_num, pv_up_deleted_spline_num,
             //pv_lateral_added_spline_num, pv_lateral_deleted_spline_num
 
@@ -294,7 +297,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
             let lar_result_color_parts = null;
 
-            try {
+            //try {
 
                 //if ( pv_up_splines_amount == null || pv_lateral_splines_amount == null
                 //    || pv_up_splines_amount < 0 || pv_lateral_splines_amount < 0 ) {
@@ -440,7 +443,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
     this.redraw_end_shape(
-        null, null,
+        //null, null,
         null, null,
         null, null
     );

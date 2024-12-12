@@ -1572,6 +1572,37 @@ export function CommonFunc() {
             return lar_array;
         }
 
+
+        //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.get_numspline_from_left_to_right = function (po_spline) {
+
+            let lv_numspline = -1;
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                let lar_sorted = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();
+
+                for (let lv_i = 0; lv_i < lar_sorted.length; lv_i++) {
+
+                    if (lar_sorted[lv_i].spline == po_spline) {
+                        lv_numspline = lv_i;
+                        break;
+                    }
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error get_numspline_from_left_to_right: ' + e.stack);
+
+            }
+
+            return lv_numspline;
+        }
+
         //======================================================================================
         //======================================================================================
         //======================================================================================
