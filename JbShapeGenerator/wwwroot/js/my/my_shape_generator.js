@@ -999,7 +999,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     //if (!this.end_shape) {
                     //if (this.my_prefix == gc_id_prefix_end) {
 
-                    this.end_shape = new EndShape(this);
+                    this.end_shape = new EndShape(/*this*/);//12122024
+
                     this.scene.add(this.group_end_shape);
                     //}
 

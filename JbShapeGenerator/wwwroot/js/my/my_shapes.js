@@ -34,6 +34,7 @@ import {
 
 
 import * as GeometryUtils from 'three/addons/utils/GeometryUtils.js';
+import { EndShape } from './my_end_shape.js';
 
 //--------------------------------------------------------------------------
 
@@ -1237,14 +1238,21 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 let lo_object = po_spline_group.children[lv_i];
 
-                let lv_numspline = this.main.common_func.get_numspline_from_left_to_right(lo_object);//11122024
-                go_end_side_shape_generator.end_shape.Prototype.redefine_arr_color_parts(
-                    go_up_side_shape_generator.shapes.shape_amount_curves,
-                    go_lateral_side_shape_generator.shapes.shape_amount_curves,
-                    null, lv_numspline
-                );
+                if (lo_object.type == "Line") {
 
-
+                    let lv_numspline = this.main.common_func.get_numspline_from_left_to_right(lo_object);//11122024
+                    //go_end_side_shape_generator.prototype.redefine_arr_color_parts(
+                    //    go_up_side_shape_generator.shapes.shape_amount_curves,
+                    //    go_lateral_side_shape_generator.shapes.shape_amount_curves,
+                    //    null, lv_numspline
+                    //);
+                    EndShape.prototype.redefine_arr_color_parts(
+                        this.main, //12122024
+                        go_up_side_shape_generator.shapes.shape_amount_curves,
+                        go_lateral_side_shape_generator.shapes.shape_amount_curves,
+                        null, lv_numspline
+                    );
+                }
 
                 this.main.common_func.removeObjectsWithChildren(lo_object, true);
 

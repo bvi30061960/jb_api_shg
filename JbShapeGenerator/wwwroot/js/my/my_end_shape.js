@@ -19,11 +19,12 @@ const cv_rectangle_name = "my_end_shape";
 
 
 // Class Rectangle
-export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
+export function EndShape(/*po_main*/) { //, po_is_use_data, po_sides_data ) {
 
     // Свойства
 
-    this.main = po_main;
+    //12122024 this.main = po_main;
+
     //this.is_use_data = po_is_use_data;
     //this.sides_data = po_sides_data;
 
@@ -263,6 +264,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
         //------------------------------------------------------------------------
         EndShape.prototype.redefine_arr_color_parts = function (
+            po_main,
             pv_up_splines_amount, pv_lateral_splines_amount,
             pv_added_spline_num, pv_deleted_spline_num
             //pv_up_added_spline_num, pv_up_deleted_spline_num,
@@ -280,22 +282,21 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
             try {
 
-                switch (this.main) {
+                switch (po_main) {
 
-                    case "go_up_side_shape_generator":
+                    case go_up_side_shape_generator:
                         lv_up_added_spline_num = pv_added_spline_num;
                         lv_up_deleted_spline_num = pv_deleted_spline_num;
                         break;
 
-                    case "go_lateral_side_shape_generator":
+                    case go_lateral_side_shape_generator:
                         lv_lateral_added_spline_num = pv_added_spline_num;
                         lv_lateral_deleted_spline_num = pv_deleted_spline_num;
                         break;
                 }
 
 
-
-            let lar_result_color_parts = null;
+            ////var lar_result_color_parts = null;
 
             //try {
 
@@ -309,9 +310,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 if (!this.ColorParts) {
 
-                    lar_result_color_parts = CommonFunc.prototype.Create2DArray(pv_lateral_splines_amount, pv_up_splines_amount, 0xfff);
+                    //lar_result_color_parts = CommonFunc.prototype.Create2DArray(pv_lateral_splines_amount, pv_up_splines_amount, 0xfff);
+                    this.ColorParts = CommonFunc.prototype.Create2DArray(pv_lateral_splines_amount, pv_up_splines_amount, 0xfff);
 
-                    return lar_result_color_parts;
+                    return;  /*lar_result_color_parts;*/
 
                 }
 
@@ -333,49 +335,62 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 // Операции со строками
 
                 // добавление
-                if (pv_lateral_added_spline_num >= 0) {
+                if (lv_lateral_added_spline_num) {
 
-                    lar_newRow = lar_cop_color_parts[pv_lateral_added_spline_num];
-                    lar_cop_color_parts.splice(pv_lateral_added_spline_num, 0, lar_newRow);
+                    if (lv_lateral_added_spline_num >= 0) {
 
+                        lar_newRow = lar_cop_color_parts[pv_lateral_added_spline_num];
+                        lar_cop_color_parts.splice(pv_lateral_added_spline_num, 0, lar_newRow);
+
+                    }
                 }
+
 
                 // удаление
-                if (pv_lateral_deleted_spline_num >= 0) {
+                if (lv_lateral_deleted_spline_num) {
 
-                    lar_cop_color_parts.splice(pv_lateral_deleted_spline_num, 1); // Удаляем строку с индексом pv_deleted_up_spline_num
+                    if (lv_lateral_deleted_spline_num >= 0) {
+
+                        lar_cop_color_parts.splice(pv_lateral_deleted_spline_num, 1); // Удаляем строку с индексом pv_deleted_up_spline_num
+                    }
                 }
-
 
 
 
                 // Операции со столбцами
 
                 // добавление
-                if (pv_up_added_spline_num >= 0) {
+                if (lv_up_added_spline_num) {
+                    if (lv_up_added_spline_num >= 0) {
 
 
-                    // копирование столбца
-                    let lar_column = lar_cop_color_parts.map(row => row[pv_up_added_spline_num]);
+                        // копирование столбца
+                        let lar_column = lar_cop_color_parts.map(row => row[pv_up_added_spline_num]);
 
-                    // добавление
-                    for (let lv_i = 0; lv_i < lar_cop_color_parts.length; lv_i++) {
-                        lar_cop_color_parts[lv_i].splice(pv_up_added_spline_num, 0, lar_column[lv_i]);
+                        // добавление
+                        for (let lv_i = 0; lv_i < lar_cop_color_parts.length; lv_i++) {
+                            lar_cop_color_parts[lv_i].splice(pv_up_added_spline_num, 0, lar_column[lv_i]);
+                        }
+
                     }
-
                 }
+
 
                 // удаление
-                if (pv_up_deleted_spline_num >= 0) {
+                if (lv_up_deleted_spline_num) {
+                    if (lv_up_deleted_spline_num >= 0) {
 
-                    for (let lar_row of lar_cop_color_parts) {
-                        lar_row.splice(pv_up_deleted_spline_num, 1); // Удаляем элемент из каждой строки
+                        for (let lar_row of lar_cop_color_parts) {
+                            lar_row.splice(lv_up_deleted_spline_num, 1); // Удаляем элемент из каждой строки
+                        }
+
                     }
-
                 }
 
 
-                this.ColorParts = lar_result_color_parts;
+
+
+                this.ColorParts = lar_cop_color_parts;
 
 
 
