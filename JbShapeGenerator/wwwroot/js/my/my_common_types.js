@@ -177,3 +177,12 @@ export function typ_progress_data() {
     this.date_time_changed = "";
 
 };
+
+
+export function typ_color_part() {
+    this.left_top = new THREE.Vector2(0,0) ;
+    this.right_bottom = new THREE.Vector2(0, 0);
+    this.cell_color = 0;
+    this.is_contour_visible = false;
+
+};

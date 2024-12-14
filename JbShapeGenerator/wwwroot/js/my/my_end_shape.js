@@ -20,6 +20,12 @@ import {
 
 } from './my_shape_generator.js';
 
+
+import {
+    typ_color_part
+} from "./my_common_types.js";
+
+//========================================================================================
 const cv_rectangle_name = "my_end_shape";
 
 
@@ -88,6 +94,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 if (po_main) {
 
+                    // переопределение размерности массива цветов
+
                     this.redefine_arr_color_parts(
                         po_main,
                         lv_up_splines_amount, lv_lateral_splines_amount,
@@ -101,28 +109,12 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 CommonFunc.prototype.clear_group_childrens(this.main.group_end_shape);
 
 
-                // переопределение размерности массива цветов
-
-                //let lv_up_splines_amount = go_up_side_shape_generator.shapes.shape_amount_curves;
-                //let lv_lateral_splines_amount = go_lateral_side_shape_generator.shapes.shape_amount_curves;
-
 
                 let lv_cols = lv_up_splines_amount + 1;
                 let lv_rows = lv_lateral_splines_amount + 1;
 
 
-
-
-                //lv_up_splines_amount, lv_lateral_splines_amountm,
-                //    pv_up_added_spline_num, pv_up_deleted_spline_num,
-                //    pv_lateral_added_spline_num, pv_lateral_deleted_spline_num
-
-
-
-
                 let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle(
-                    //this.main.params.shape_width,
-                    //this.main.params.shape_width);
                     go_lateral_side_shape_generator.params.shape_width,
                     go_up_side_shape_generator.params.shape_width
 
@@ -130,56 +122,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 lo_rectangle.name = cv_rectangle_name;
 
                 this.main.group_end_shape.add(lo_rectangle);
-
-
-
-
-
-
-
-
-
-
-                ////let lo_line_curr = null;
-                ////let lo_geom_hor = null;
-                ////let lo_geom_vert = null;
-                ////let lo_line_hor = null;
-                ////let lo_line_vert = null;
-
-                ////let lv_curve_distance_vert = go_up_side_shape_generator.params.shape_width / (go_up_side_shape_generator.shapes.shape_amount_curves + 1);
-                ////let lv_curve_distance_hor = go_lateral_side_shape_generator.params.shape_width / (go_lateral_side_shape_generator.shapes.shape_amount_curves + 1);
-
-                ////var lo_material = new THREE.LineBasicMaterial({
-                ////    color: Constants.shape_line_color
-                ////});
-
-                ////lo_geom_hor = new THREE.BufferGeometry().setFromPoints([
-                ////    new THREE.Vector2(0, 0),
-                ////    new THREE.Vector2(go_up_side_shape_generator.params.shape_width, 0)
-                ////]);
-                ////lo_line_hor = new THREE.LineSegments(lo_geom_hor, lo_material);
-
-                ////lo_geom_vert = new THREE.BufferGeometry().setFromPoints([
-                ////    new THREE.Vector2(0, 0),
-                ////    new THREE.Vector2(0, go_lateral_side_shape_generator.params.shape_width)
-                ////]);
-                ////lo_line_vert = new THREE.LineSegments(lo_geom_vert, lo_material);
-
-                ////for (let lv_i = 0; lv_i < go_lateral_side_shape_generator.shapes.shape_amount_curves; lv_i++) {
-
-                ////    lo_line_curr = lo_line_hor.clone();
-                ////    lo_line_curr.position.y = lv_curve_distance_hor * (lv_i + 1);
-                ////    this.main.group_end_shape.add(lo_line_curr);
-                ////}
-
-                ////for (let lv_i = 0; lv_i < go_up_side_shape_generator.shapes.shape_amount_curves; lv_i++) {
-                ////    lo_line_curr = lo_line_vert.clone();
-                ////    lo_line_curr.position.x = lv_curve_distance_vert * (lv_i + 1);
-                ////    this.main.group_end_shape.add(lo_line_curr);
-
-                ////}
-
-
 
 
 
@@ -252,6 +194,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     lo_line_curr.position.x = pv_position; // lv_curve_distance_hor * (lv_i + 1);
 
+
                     this.main.group_end_shape.add(lo_line_curr);
 
                 }
@@ -267,47 +210,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
             }
 
-        }
-
-        //------------------------------------------------------------------------
-        EndShape.prototype.handle_click_on_end_side = function (po_event) {
-
-
-            try {
-
-                let lo_active_side = get_active_side_shape_generator();
-
-                while (true) {
-
-                    let { top, left, width, height } = lo_active_side.container.getBoundingClientRect();//07052024
-
-                    let lv_clickMouse = new THREE.Vector2();
-                    lv_clickMouse.x = ((po_event.clientX - left) / width) * 2 - 1;
-                    lv_clickMouse.y = - ((po_event.clientY - top) / height) * 2 + 1;
-
-                    // Определение - щелчок внутри фигуры, или нет
-                    let lo_rectangle = this.main.group_end_shape.children[0];
-
-                    if (lo_rectangle && lo_rectangle.name == cv_rectangle_name) {
-                        let lv_isInside = lo_active_side.common_func.IsInsideRectangle(po_event, lo_rectangle /*lo_active_side.rectangle*/)
-
-                        if (!lv_isInside) {
-                            return;
-                        }
-                    }
-
-
-
-
-                }// while
-
-            }
-
-            catch (e) {
-
-                alert('error redefine_arr_color_parts: ' + e.stack);
-
-            }
         }
 
         //------------------------------------------------------------------------
@@ -356,7 +258,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 if (!this.ColorParts) {
 
-                    this.ColorParts = CommonFunc.prototype.Create2DArray(pv_up_splines_amount, pv_lateral_splines_amount, 0xfff);
+                    this.ColorParts = CommonFunc.prototype.Create2DArray(pv_up_splines_amount, pv_lateral_splines_amount, new typ_color_part() ); // 0xfff);
 
                     return;
 
@@ -441,6 +343,45 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
         }
 
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.handle_click_on_end_side = function (po_event) {
+
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                while (true) {
+
+                    let { top, left, width, height } = lo_active_side.container.getBoundingClientRect();//07052024
+
+                    let lv_clickMouse = new THREE.Vector2();
+                    lv_clickMouse.x = ((po_event.clientX - left) / width) * 2 - 1;
+                    lv_clickMouse.y = - ((po_event.clientY - top) / height) * 2 + 1;
+
+                    // Определение - щелчок внутри фигуры, или нет
+                    let lo_rectangle = this.main.group_end_shape.children[0];
+
+                    if (lo_rectangle && lo_rectangle.name == cv_rectangle_name) {
+                        let lv_isInside = lo_active_side.common_func.IsInsideRectangle(po_event, lo_rectangle /*lo_active_side.rectangle*/)
+
+                        if (!lv_isInside) {
+                            return;
+                        }
+                    }
+
+
+                }// while
+
+            }
+
+            catch (e) {
+
+                alert('error redefine_arr_color_parts: ' + e.stack);
+
+            }
+        }
 
         //====================================================================
 
