@@ -707,6 +707,21 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 } // 06122024 this.my_prefix != gc_id_prefix_end
 
+                else {
+
+                    //12122024 {
+                    this.group_end_shape = new THREE.Group();
+                    this.group_end_shape.name = cv_name_group_end_shape;
+
+                    this.end_shape = new EndShape(this);
+                    //this.group_end_shape.add(this.end_shape);
+
+                    this.scene.add(this.group_end_shape);
+                    //12122024 }
+
+                }
+
+
                 //=================================================================================================
 
                 // обработчики событий gui
@@ -726,20 +741,15 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 ////if (this.my_prefix == gc_id_prefix_end) {
 
 
-
+                ////12122024 {
                 //this.group_end_shape = new THREE.Group();
                 //this.group_end_shape.name = cv_name_group_end_shape;
 
                 //this.end_shape = new EndShape(this);
-                //this.group_end_shape.add(this.end_shape);
+                ////this.group_end_shape.add(this.end_shape);
 
                 //this.scene.add(this.group_end_shape);
-
-
-
-
-
-
+                ////12122024 }
 
 
 
@@ -752,16 +762,15 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.make_shape(false, null);
 
-                this.render();
+                //this.render();
                 ////}
-
-
-
 
 
 
                 this.grid_select_models = new GridSelectModels(this.id_prefix);
 
+
+                this.render();
 
                 //==============================================================================
                 //==============================================================================
@@ -990,20 +999,19 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 }
 
                 else {
+                    //12122024 {
+                    //////if (!this.group_end_shape) {
+                    //////    this.group_end_shape = new THREE.Group();
+                    //////    this.group_end_shape.name = cv_name_group_end_shape;
+                    //////}
 
-                    if (!this.group_end_shape) {
-                        this.group_end_shape = new THREE.Group();
-                        this.group_end_shape.name = cv_name_group_end_shape;
-                    }
+                    ////////if (!this.end_shape) {
+                    ////////if (this.my_prefix == gc_id_prefix_end) {
 
-                    //if (!this.end_shape) {
-                    //if (this.my_prefix == gc_id_prefix_end) {
-
-                    this.end_shape = new EndShape(/*this*/);//12122024
-
-                    this.scene.add(this.group_end_shape);
-                    //}
-
+                    //////this.end_shape = new EndShape(/*this*/);//12122024
+                    //////this.scene.add(this.group_end_shape);
+                    ////////}
+                    //12122024 }
                 }
 
 
@@ -2380,9 +2388,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             lo_active_side.shapes.adjust_splines_by_external_shape();
 
             //lo_active_side.camera.updateProjectionMatrix();
-            lo_active_side.render();
 
             //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
+
+            lo_active_side.render();
 
         }
 
@@ -2402,7 +2411,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             po_side.rectangle.shape.scale.y = lv_scale;
 
-            po_side.render();
+            //13122024 po_side.render();
 
 
             po_side.segment_transform_data = po_side.segments.get_segment_transform_data(
@@ -2413,6 +2422,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             if (po_side.params.is_space_adjust) {
                 po_side.shapes.adjust_splines_by_external_shape(pv_value);
             }
+
+            po_side.render();//13122024 
 
         }
 
@@ -2477,7 +2488,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
 
-            go_end_side_shape_generator.end_shape.redraw_end_shape();//06122024
+            go_end_side_shape_generator.end_shape.redraw_end_shape(
+                this,       //this.main,
+                null, null, //pv_added_spline_num, pv_deleted_spline_num,
+                null, null  //po_is_use_data, po_sides_data
+            );
 
         }
 
@@ -2530,7 +2545,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             CommonFunc.prototype.guiUpdateDisplay(lo_active_side.gui);
 
             lo_active_side.rectangle.shape.scale.x = lv_scale;
-            lo_active_side.render();
+            //13122024 lo_active_side.render();
 
 
             if (lo_active_side.params.is_space_adjust) {
@@ -2542,8 +2557,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             //27112024 lo_active_side.model_params_changed = true; // признак изменения данных модели
 
-            go_end_side_shape_generator.end_shape.redraw_end_shape();//06122024
+            go_end_side_shape_generator.end_shape.redraw_end_shape(
+                this,       //this.main,
+                null, null, //pv_added_spline_num, pv_deleted_spline_num,
+                null, null  //po_is_use_data, po_sides_data
+            );
 
+            lo_active_side.render(); //13122024
 
         }
 
@@ -2728,6 +2748,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
 
+
         }
         //////------------------------------------------------------------------------
         ////Shape_generator.prototype.onChangeCurvesCount = function (po_event, pv_value) {
@@ -2760,7 +2781,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             lo_active_side.shapes.adjust_splines_by_external_shape();
 
             //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
-
+            lo_active_side.render(); //13122024 
         }
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_chb_curve_width_adjust = function (po_event, pv_value) {
@@ -2777,8 +2798,14 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lo_active_side = get_active_side_shape_generator();
             lo_active_side.shapes.add_spline();
 
+            go_end_side_shape_generator.end_shape.redraw_end_shape(
+                lo_active_side,       //this.main,
+                lo_active_side.shapes.shape_amount_curves - 1, null, //pv_added_spline_num, pv_deleted_spline_num,
+                null, null  //po_is_use_data, po_sides_data
+            );
+
             //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
-            go_end_side_shape_generator.end_shape.redraw_end_shape();
+
         }
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_read_model = function () {
@@ -3197,7 +3224,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
             lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
 
-            go_end_side_shape_generator.end_shape.redraw_end_shape();//07122024
+            go_end_side_shape_generator.end_shape.redraw_end_shape(
+                null, //lo_active_side,
+                null, //lo_active_side.shapes.shape_amount_curves - 1,
+                null,
+                null, null
+
+            );
 
             lo_active_side.render();
 
@@ -3207,16 +3240,25 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.onPointerDown = function (po_event) {
 
-            let lo_active_side_shape_generator = get_active_side_shape_generator();
+            let lo_active_side = get_active_side_shape_generator();
 
             try {
 
-                if (lo_active_side_shape_generator.shapes == null) {
+                if (lo_active_side.my_prefix == gc_id_prefix_end) {
+
+                    lo_active_side.end_shape.handle_click_on_end_side(po_event)
+                    return;
+                }
+
+                
+
+
+                if (lo_active_side.shapes == null) {
                     return;
                 }
 
 
-                let lo_clicked_spline_and_segment = lo_active_side_shape_generator.shapes.get_splines_and_segment_of_clicked_figure(po_event);
+                let lo_clicked_spline_and_segment = lo_active_side.shapes.get_splines_and_segment_of_clicked_figure(po_event);
 
 
                 if (po_event.button == 2 && po_event.buttons == 2) {
@@ -3229,8 +3271,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     let lo_clicked_segment = lo_clicked_spline_and_segment.segment;
 
                     if (lo_clicked_segment) {
-                        lo_active_side_shape_generator.shapes.switch_visible_nodes_by_segment(lo_clicked_segment);
-                        lo_active_side_shape_generator.render();
+                        lo_active_side.shapes.switch_visible_nodes_by_segment(lo_clicked_segment);
+                        //13122024 lo_active_side_shape_generator.render();
                     }
 
                     return;
@@ -3253,16 +3295,15 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                         let { top, left, width, height } = lo_active_side.container.getBoundingClientRect();//07052024
 
-
                         let lv_clickMouse = new THREE.Vector2();
                         lv_clickMouse.x = ((po_event.clientX - left) / width) * 2 - 1;
                         lv_clickMouse.y = - ((po_event.clientY - top) / height) * 2 + 1;
 
-                        // {
                         // Определение - щелчок внутри фигуры, или нет
                         if (lo_active_side.rectangle) {
 
-                            let lv_isInside = lo_active_side.common_func.IsInsideRectangle(po_event, lo_active_side.rectangle)
+                            //13122024 let lv_isInside = lo_active_side.common_func.IsInsideRectangle(po_event, lo_active_side.rectangle)
+                            let lv_isInside = lo_active_side.common_func.IsInsideRectangle(po_event, lo_active_side.rectangle.shape); //13122024
 
                             if (!lv_isInside) {
                                 return;
@@ -3326,9 +3367,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     // Выделение границ фигуры между кривыми
 
-                    let lo_active_side_shape = get_active_side_shape_generator();
+                    ///13122024 let lo_active_side = get_active_side_shape_generator();
 
-                    let lo_clicked_splines_and_segment = lo_active_side_shape.shapes.get_splines_and_segment_of_clicked_figure(po_event);
+                    let lo_clicked_splines_and_segment = lo_active_side.shapes.get_splines_and_segment_of_clicked_figure(po_event);
 
                     let lo_clicked_splines = {
                         spline_left: lo_clicked_splines_and_segment.spline_left,
@@ -3338,34 +3379,34 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     let lo_prev_clicked_splines = null; //04122024
 
-                    if (lo_active_side_shape.group_contours) { //04122024
-                        if (lo_active_side_shape.group_contours.userData) { //04122024
+                    if (lo_active_side.group_contours) { //04122024
+                        if (lo_active_side.group_contours.userData) { //04122024
 
-                            lo_prev_clicked_splines = lo_active_side_shape.group_contours.userData;
+                            lo_prev_clicked_splines = lo_active_side.group_contours.userData;
                         }
 
                     }
 
 
-                    lo_active_side_shape.shapes.clear_group_contours();
+                    lo_active_side.shapes.clear_group_contours();
 
 
-                    if (lo_active_side_shape.group_contours) { //04122024
+                    if (lo_active_side.group_contours) { //04122024
 
-                        if (lo_active_side_shape.group_contours.userData == null) {
+                        if (lo_active_side.group_contours.userData == null) {
 
-                            lo_active_side_shape.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+                            lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment);
 
 
-                            //lo_active_side_shape.prev_selected_splines = {
+                            //lo_active_side.prev_selected_splines = {
                             //    spline_left: null,
                             //    spline_right: null
                             //};
 
                             ////////    //30072024 {
                             ////////    //28072024 {
-                            ////////    lo_active_side_shape.prev_selected_splines.spline_left = lo_active_side_shape.group_contours.userData.spline_left;//27072024
-                            ////////    lo_active_side_shape.prev_selected_splines.spline_right = lo_active_side_shape.group_contours.userData.spline_right;//27072024
+                            ////////    lo_active_side.prev_selected_splines.spline_left = lo_active_side.group_contours.userData.spline_left;//27072024
+                            ////////    lo_active_side.prev_selected_splines.spline_right = lo_active_side.group_contours.userData.spline_right;//27072024
 
                             ////////    //28072024 }
                             ////////    //30072024 }
@@ -3378,10 +3419,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                                 if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
                                     && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right) {
 
-                                    lo_active_side_shape.group_contours.userData = null;
+                                    lo_active_side.group_contours.userData = null;
                                 }
                                 else {
-                                    lo_active_side_shape.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+                                    lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment);
                                 }
                             }
                         }
@@ -3389,7 +3430,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     }//04122024
 
-                    lo_active_side_shape.render();
+                    lo_active_side.render();
 
                 }
 
@@ -3547,7 +3588,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lo_rect = this.scene.getObjectByName(pv_name);
 
             if (lo_rect) {
-                lo_gabarits = this.shapes.GetTwoShapeIntersect(lo_rect, lo_rect);
+                //13122024 lo_gabarits = this.shapes.GetTwoShapeIntersect(lo_rect, lo_rect);
+                lo_gabarits = this.common_func.GetTwoShapeIntersect(lo_rect, lo_rect); //13122024
             }
 
             return lo_gabarits;
@@ -3685,7 +3727,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 go_lateral_side_shape_generator.clear_shape_objects(go_lateral_side_shape_generator);
                 go_lateral_side_shape_generator.make_shape(true, sides_data.data2);
-                go_lateral_side_shape_generator.render();
+                //131220244 go_lateral_side_shape_generator.render();
 
 
                 //go_end_side_shape_generator.clear_shape_objects(go_end_side_shape_generator);

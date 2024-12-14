@@ -732,11 +732,20 @@ export function CommonFunc() {
                 lo_line_to_down = new THREE.Line(lo_geometry, lo_material);
                 //lo_active_side.scene.add(lo_line_to_down);
 
+                //13122024 {
+                ////let lo_intersect_to_right_object = lo_active_side.shapes.GetTwoShapeIntersect(lo_line_to_right, po_rectangle.shape);
+                ////let lo_intersect_to_left_object = lo_active_side.shapes.GetTwoShapeIntersect(lo_line_to_left, po_rectangle.shape);
+                ////let lo_intersect_to_up_object = lo_active_side.shapes.GetTwoShapeIntersect(lo_line_to_up, po_rectangle.shape);
+                ////let lo_intersect_to_down_object = lo_active_side.shapes.GetTwoShapeIntersect(lo_line_to_down, po_rectangle.shape);
 
-                let lo_intersect_to_right_object = lo_active_side.shapes.GetTwoShapeIntersect(lo_line_to_right, po_rectangle.shape);
-                let lo_intersect_to_left_object = lo_active_side.shapes.GetTwoShapeIntersect(lo_line_to_left, po_rectangle.shape);
-                let lo_intersect_to_up_object = lo_active_side.shapes.GetTwoShapeIntersect(lo_line_to_up, po_rectangle.shape);
-                let lo_intersect_to_down_object = lo_active_side.shapes.GetTwoShapeIntersect(lo_line_to_down, po_rectangle.shape);
+
+                let lo_intersect_to_right_object = lo_active_side.common_func.GetTwoShapeIntersect(lo_line_to_right, po_rectangle);
+                let lo_intersect_to_left_object = lo_active_side.common_func.GetTwoShapeIntersect(lo_line_to_left, po_rectangle);
+                let lo_intersect_to_up_object = lo_active_side.common_func.GetTwoShapeIntersect(lo_line_to_up, po_rectangle);
+                let lo_intersect_to_down_object = lo_active_side.common_func.GetTwoShapeIntersect(lo_line_to_down, po_rectangle);
+
+
+                //13122024 }
 
 
                 if (lo_intersect_to_right_object
@@ -754,6 +763,7 @@ export function CommonFunc() {
                 alert('error IsInsideRectangle: ' + e.stack);
             }
 
+            //alert(lv_result);
 
             return lv_result;
         }
@@ -1602,6 +1612,78 @@ export function CommonFunc() {
 
             return lv_numspline;
         }
+
+
+
+
+
+
+
+
+        //-----------------------------------------------------------------
+
+        CommonFunc.prototype.GetTwoShapeIntersect = function (object1, object2) {
+            // (example from https://stackoverflow.com/questions/49417007/how-to-find-intersection-of-objects-in-three-js)
+            /**
+             * This function check if two object3d intersect or not
+             * @param {THREE.Object3D} object1
+             * @param {THREE.Object3D} object2
+             * @returns {Boolean} 
+            */
+
+            let lv_result = null;
+
+
+            try {
+
+                // Check for intersection using bounding box intersection test
+                let bBox1 = new THREE.Box3().setFromObject(object1);
+                bBox1.max.z = 0;
+                bBox1.min.z = 0;
+
+                object2.geometry.computeBoundingBox();
+
+                let bBox2 = new THREE.Box3().setFromObject(object2);
+                bBox2.max.z = 0;
+                bBox2.min.z = 0;
+
+                const intersection = bBox1.intersectsBox(bBox2);
+                // const intersection = mesh1.geometry.boundingBox.intersectsBox(mesh2.geometry.boundingBox);
+
+                if (intersection) { // The shape geometries intersect.
+
+                    //let lv_nspline = this.get_nspline_by_name(object2.name);
+
+                    lv_result = {
+                        min_x: bBox2.min.x,
+                        min_y: bBox2.min.y,
+                        max_x: bBox2.max.x,
+                        max_y: bBox2.max.y,
+                        object: object2
+                        //nspline: lv_nspline
+                    };
+                }
+                //else
+                //{ // The shape geometries do not intersect.
+                //	return false
+                //}
+
+
+
+            }
+
+            catch (e) {
+
+                alert('error GetTwoShapeIntersect: ' + e.stack);
+
+            }
+            return lv_result;
+
+        }
+
+
+
+
 
         //======================================================================================
         //======================================================================================

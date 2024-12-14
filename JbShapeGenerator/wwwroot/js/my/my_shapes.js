@@ -393,8 +393,13 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     let lo_spl = this.ar_splines[lv_i].children[lv_line_index];
 
-                    let lo_intersect_to_right_object = this.GetTwoShapeIntersect(lo_line_to_right, lo_spl);
-                    let lo_intersect_to_left_object = this.GetTwoShapeIntersect(lo_line_to_left, lo_spl);
+                    //13122024 {
+                    ////let lo_intersect_to_right_object = this.GetTwoShapeIntersect(lo_line_to_right, lo_spl);
+                    ////let lo_intersect_to_left_object = this.GetTwoShapeIntersect(lo_line_to_left, lo_spl);
+                    let lo_intersect_to_right_object = this.main.common_func.GetTwoShapeIntersect(lo_line_to_right, lo_spl);
+                    let lo_intersect_to_left_object = this.main.common_func.GetTwoShapeIntersect(lo_line_to_left, lo_spl);
+                    //13122024 }
+
 
                     //////if (lo_intersect_to_right_object) {
 
@@ -518,7 +523,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                             let lo_segment_line = lo_spline_result_right.object.parent.children[lv_i].children[lv_line_index];
 
-                            let lo_intersect_object = this.GetTwoShapeIntersect(lo_line_to_right, lo_segment_line)
+                            //13122024 let lo_intersect_object = this.GetTwoShapeIntersect(lo_line_to_right, lo_segment_line)
+                            let lo_intersect_object = this.main.common_func.GetTwoShapeIntersect(lo_line_to_right, lo_segment_line); //13122024
 
                             if (lo_intersect_object) {
 
@@ -1032,7 +1038,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     let lo_spl = this.ar_splines[lv_i].children[lv_line_index];
 
-                    let lo_intersect_object = this.GetTwoShapeIntersect(lo_line, lo_spl)
+                    //13122024 let lo_intersect_object = this.GetTwoShapeIntersect(lo_line, lo_spl)
+                    let lo_intersect_object = this.main.common_func.GetTwoShapeIntersect(lo_line, lo_spl); //13122024
                     if (lo_intersect_object) {
 
                         if (lo_prev_intersect_object) {
@@ -1073,7 +1080,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         let lo_segment_line = lo_spline_result.parent.children[lv_i].children[lv_line_index];
 
-                        let lo_intersect_object = this.GetTwoShapeIntersect(lo_line, lo_segment_line)
+                        //13122024 let lo_intersect_object = this.GetTwoShapeIntersect(lo_line, lo_segment_line)
+                        let lo_intersect_object = this.main.common_func.GetTwoShapeIntersect(lo_line, lo_segment_line); //13122024 
 
                         if (lo_intersect_object) {
 
@@ -1175,7 +1183,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         // Удаление сплайна из списка
                         for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
-                        //for (let lv_i = this.ar_splines.length-1; lv_i >= 0; lv_i--) { //11122024
+                            //for (let lv_i = this.ar_splines.length-1; lv_i >= 0; lv_i--) { //11122024
 
                             if (this.ar_splines[lv_i] == lo_parent_parent) {
 
@@ -1205,29 +1213,26 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
-                //11122024 {
-                //go_end_side_shape_generator.end_shape.redraw_end_shape(
-
-                //    go_up_side_shape_generator.shapes.shape_amount_curves,
-                //    go_lateral_side_shape_generator.shapes.shape_amount_curves,
-                //    null, pv_deleted_spline_num //??
-
-
-                //);
-                //11122024 }
 
 
             }
 
 
+
+            go_end_side_shape_generator.end_shape.redraw_end_shape(
+                null,       //this.main,
+                null, null, //pv_added_spline_num, pv_deleted_spline_num,
+                null, null  //po_is_use_data, po_sides_data
+            );
+
+
+
             // очистка списка выделенных сегментов
             this.ar_selected_segments = [];
 
-            //10122024 go_end_side_shape_generator.end_shape.redraw_end_shape();
-
             this.main.render();
 
-            let lo_active_side = get_active_side_shape_generator();
+            //let lo_active_side = get_active_side_shape_generator();
             //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
         }
@@ -1289,7 +1294,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             this.ar_splines = this.get_splines();
             this.ar_splines_nodes = this.get_splines_points();
 
-            this.main.render();
+            //13122024 this.main.render();
 
 
             if (this.params.is_space_adjust) {
@@ -1297,6 +1302,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 //this.adjust_space_bt_splines_by_shape();
                 this.adjust_splines_by_external_shape();
             }
+
+            this.main.render();
 
         }
 
@@ -1435,7 +1442,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 //03082024 }
 
 
-                this.main.render();
+                //13122024 this.main.render();
 
             }
 
@@ -2387,72 +2394,73 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         }
 
 
+        //13122024 {
+        ////////////-----------------------------------------------------------------
 
-        //-----------------------------------------------------------------
+        //////////Shapes.prototype.GetTwoShapeIntersect = function (object1, object2) {
+        //////////    // (example from https://stackoverflow.com/questions/49417007/how-to-find-intersection-of-objects-in-three-js)
+        //////////    /**
+        //////////     * This function check if two object3d intersect or not
+        //////////     * @param {THREE.Object3D} object1
+        //////////     * @param {THREE.Object3D} object2
+        //////////     * @returns {Boolean}
+        //////////    */
 
-
-
-        Shapes.prototype.GetTwoShapeIntersect = function (object1, object2) {
-            // (example from https://stackoverflow.com/questions/49417007/how-to-find-intersection-of-objects-in-three-js)
-            /**
-             * This function check if two object3d intersect or not
-             * @param {THREE.Object3D} object1
-             * @param {THREE.Object3D} object2
-             * @returns {Boolean} 
-            */
-
-            let lv_result = null;
+        //////////    let lv_result = null;
 
 
-            try {
+        //////////    try {
 
-                // Check for intersection using bounding box intersection test
-                let bBox1 = new THREE.Box3().setFromObject(object1);
-                bBox1.max.z = 0;
-                bBox1.min.z = 0;
+        //////////        // Check for intersection using bounding box intersection test
+        //////////        let bBox1 = new THREE.Box3().setFromObject(object1);
+        //////////        bBox1.max.z = 0;
+        //////////        bBox1.min.z = 0;
 
-                object2.geometry.computeBoundingBox();
+        //////////        object2.geometry.computeBoundingBox();
 
-                let bBox2 = new THREE.Box3().setFromObject(object2);
-                bBox2.max.z = 0;
-                bBox2.min.z = 0;
+        //////////        let bBox2 = new THREE.Box3().setFromObject(object2);
+        //////////        bBox2.max.z = 0;
+        //////////        bBox2.min.z = 0;
 
-                const intersection = bBox1.intersectsBox(bBox2);
-                // const intersection = mesh1.geometry.boundingBox.intersectsBox(mesh2.geometry.boundingBox);
+        //////////        const intersection = bBox1.intersectsBox(bBox2);
+        //////////        // const intersection = mesh1.geometry.boundingBox.intersectsBox(mesh2.geometry.boundingBox);
 
-                if (intersection) { // The shape geometries intersect.
+        //////////        if (intersection) { // The shape geometries intersect.
 
-                    //let lv_nspline = this.get_nspline_by_name(object2.name);
+        //////////            //let lv_nspline = this.get_nspline_by_name(object2.name);
 
-                    lv_result = {
-                        min_x: bBox2.min.x,
-                        min_y: bBox2.min.y,
-                        max_x: bBox2.max.x,
-                        max_y: bBox2.max.y,
-                        object: object2
-                        //nspline: lv_nspline
-                    };
-                }
-                //else
-                //{ // The shape geometries do not intersect.
-                //	return false
-                //}
+        //////////            lv_result = {
+        //////////                min_x: bBox2.min.x,
+        //////////                min_y: bBox2.min.y,
+        //////////                max_x: bBox2.max.x,
+        //////////                max_y: bBox2.max.y,
+        //////////                object: object2
+        //////////                //nspline: lv_nspline
+        //////////            };
+        //////////        }
+        //////////        //else
+        //////////        //{ // The shape geometries do not intersect.
+        //////////        //	return false
+        //////////        //}
 
 
 
-            }
+        //////////    }
 
-            catch (e) {
+        //////////    catch (e) {
 
-                alert('error GetTwoShapeIntersect: ' + e.stack);
+        //////////        alert('error GetTwoShapeIntersect: ' + e.stack);
 
-            }
+        //////////    }
 
 
 
-            return lv_result;
+        //////////    return lv_result;
 
-        }
+        //////////}
+        //13122024 }
+
+
 
         //------------------------------------------------------------------------
         Shapes.prototype.get_distance_bt_curves = function () {
