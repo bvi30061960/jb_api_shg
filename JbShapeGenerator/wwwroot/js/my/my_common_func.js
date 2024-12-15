@@ -1560,6 +1560,64 @@ export function CommonFunc() {
             }
         }
 
+
+
+        //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.get_drawing_rectangle_by_points = function (po_left_top, po_right_bottom, pv_color, po_material) {
+
+             //pv_width, pv_height, pv_color, po_material
+
+            let lo_result = null;
+            let lo_renderer = null;
+            let lo_material = null;
+            let lv_color = null;
+
+            try {
+                if (pv_color) {
+                    lv_color = pv_color;
+                }
+                else {
+                    lv_color = Constants.shape_countour_color;
+                }
+
+
+                if (po_material) {
+                    lo_material = po_material;
+                }
+                else {
+
+                    lo_renderer = new THREE.WebGLRenderer({});
+                    let lo_resolution = new THREE.Vector2();
+                    lo_renderer.getSize(lo_resolution);
+
+                    lo_material = new LineMaterial({
+                        resolution: lo_resolution,
+                        linewidth: 0.7,
+                        color: lv_color
+                    });
+                }
+
+                let lo_geometry = new LineGeometry();
+                lo_geometry.setPositions([
+                    po_left_top.y, po_left_top.x,  0,                                           //y0, x0, 0,
+                    po_left_top.y, po_right_bottom.x - po_left_top.x, 0,                        //y0, pv_width, 0,
+                    po_right_bottom.y - po_left_top.y, po_right_bottom.x - po_left_top.x, 0,   //pv_height, pv_width, 0,
+                    po_right_bottom.y - po_left_top.y, po_left_top.x, 0,                       //pv_height, x0, 0,
+                    po_left_top.y, po_left_top.x, 0                                            //y0, x0, 0
+                ]);
+
+                lo_result = new Line2(lo_geometry, lo_material);
+
+                return lo_result;
+
+            }
+
+            catch (e) {
+
+                alert('error get_drawing_rectangle: ' + e.stack);
+
+            }
+        }
         //---------------------------------------------------------------------------------------------
         CommonFunc.prototype.Create2DArray = function (pv_rows, pv_cols, pv_init_value) {
 

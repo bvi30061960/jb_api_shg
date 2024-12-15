@@ -92,17 +92,17 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
 
-                if (po_main) {
+                //14122024 if (po_main) {
 
-                    // переопределение размерности массива цветов
+                // переопределение размерности массива цветов
 
-                    this.redefine_arr_color_parts(
-                        po_main,
-                        lv_up_splines_amount, lv_lateral_splines_amount,
-                        pv_added_spline_num, pv_deleted_spline_num
-                    );
+                this.redefine_arr_color_parts(
+                    po_main,
+                    lv_up_splines_amount, lv_lateral_splines_amount,
+                    pv_added_spline_num, pv_deleted_spline_num
+                );
 
-                }
+                //14122024 }
 
 
 
@@ -110,8 +110,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
 
-                let lv_cols = lv_up_splines_amount + 1;
-                let lv_rows = lv_lateral_splines_amount + 1;
+                let lv_cols = lv_up_splines_amount;// + 1;
+                let lv_rows = lv_lateral_splines_amount;// + 1;
 
 
                 let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle(
@@ -161,8 +161,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     lo_line_curr = lo_line_hor.clone();
 
-                    //lo_line_curr.position.y = lv_curve_distance_hor * (lv_i + 1);
-
                     //координаты начальной точки текущей кривой
                     if (go_lateral_side_shape_generator.shapes
                         && go_lateral_side_shape_generator.shapes.ar_splines[lv_i]
@@ -175,13 +173,37 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     lo_line_curr.position.y = go_lateral_side_shape_generator.params.shape_width - pv_position; // lv_curve_distance_hor * (lv_i + 1);
 
+                    // присвоение координаты y в массиве ячеек ColorParts
+                    //for (let lv_i = 0; lv_i < this.ColorParts.lenght - 1; lv_i++) {
+
+                    if (lv_i <= this.ColorParts.length - 1) {
+
+                        for (let lv_j = 0; lv_j < this.ColorParts[0].length - 1; lv_j++) {
+
+                            this.ColorParts[lv_i][lv_j].left_top.y = lo_line_curr.position.y;
+
+                            if (lv_i < lv_cols - 1) {
+
+                                this.ColorParts[lv_i + 1][lv_j].right_bottom.y = lo_line_curr.position.y;
+
+                            }
+
+
+
+                        }
+                    }
+                    //}
+
+
                     this.main.group_end_shape.add(lo_line_curr);
                 }
 
-                for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
-                    lo_line_curr = lo_line_vert.clone();
 
-                    //lo_line_curr.position.x = lv_curve_distance_vert * (lv_i + 1);
+
+
+                for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
+
+                    lo_line_curr = lo_line_vert.clone();
 
                     if (go_up_side_shape_generator.shapes
                         && go_up_side_shape_generator.shapes.ar_splines[lv_i]
@@ -194,13 +216,31 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     lo_line_curr.position.x = pv_position; // lv_curve_distance_hor * (lv_i + 1);
 
+                    // присвоение координаты x в массиве ячеек ColorParts
+
+                    if (lv_i <= this.ColorParts[0].length - 1) {
+
+                        for (let lv_j = 0; lv_j < this.ColorParts.length - 1; lv_j++) {
+
+                            this.ColorParts[lv_j][lv_i].left_top.x = lo_line_curr.position.x;
+
+                            if (lv_i < lv_rows - 1) {
+
+                                this.ColorParts[lv_j][lv_i + 1].right_bottom.x = lo_line_curr.position.x;
+
+                            }
+
+                        }
+
+                    }
+
 
                     this.main.group_end_shape.add(lo_line_curr);
 
                 }
 
 
-
+                this.draw_cells_contours();
 
             }
 
@@ -209,6 +249,36 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 alert('error redraw_end_shape: ' + e.stack);
 
             }
+
+        }
+
+
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.draw_cells_contours = function () {
+
+
+            CommonFunc.prototype.clear_group_childrens(this.main.group_end_cells_contours);
+
+
+            for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {
+
+                for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {
+
+
+                    let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle_by_points(
+                        this.ColorParts[lv_i][lv_j].left_top,
+                        this.ColorParts[lv_i][lv_j].right_bottom
+
+                    );
+
+
+                    this.main.group_end_cells_contours.add(lo_rectangle);
+
+                }
+            }
+
+
 
         }
 
@@ -244,22 +314,29 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 }
 
 
-                ////var lar_result_color_parts = null;
-
-                //try {
-
-                //if ( pv_up_splines_amount == null || pv_lateral_splines_amount == null
-                //    || pv_up_splines_amount < 0 || pv_lateral_splines_amount < 0 ) {
-
-                //    return lar_result_color_parts;
-                //}
-
-
-
                 if (!this.ColorParts) {
 
-                    this.ColorParts = CommonFunc.prototype.Create2DArray(pv_up_splines_amount, pv_lateral_splines_amount, new typ_color_part() ); // 0xfff);
+                    //this.ColorParts = CommonFunc.prototype.Create2DArray(pv_up_splines_amount, pv_lateral_splines_amount, new typ_color_part()); // 0xfff);
 
+                    let lar_array;
+
+
+                    lar_array = new Array(pv_up_splines_amount);
+                    for (let lv_i = 0; lv_i < pv_up_splines_amount; lv_i++) {
+
+                        lar_array[lv_i] = new Array(pv_lateral_splines_amount);
+
+                        for (let lv_j = 0; lv_j < pv_lateral_splines_amount; lv_j++) {
+                            lar_array[lv_i][lv_j] = new typ_color_part();
+                            lar_array[lv_i][lv_j].left_top = new THREE.Vector2(0, 0);
+                            lar_array[lv_i][lv_j].right_bottom = new THREE.Vector2(0, 0);
+                        }
+
+                    }
+
+                    this.ColorParts = lar_array;
+
+                    
                     return;
 
                 }

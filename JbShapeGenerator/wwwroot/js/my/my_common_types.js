@@ -180,8 +180,8 @@ export function typ_progress_data() {
 
 
 export function typ_color_part() {
-    this.left_top = new THREE.Vector2(0,0) ;
-    this.right_bottom = new THREE.Vector2(0, 0);
+    this.left_top = null; // new THREE.Vector2(0,0) ;
+    this.right_bottom = null; // new THREE.Vector2(0, 0);
     this.cell_color = 0;
     this.is_contour_visible = false;
 
