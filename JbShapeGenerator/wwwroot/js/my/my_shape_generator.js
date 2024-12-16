@@ -3233,14 +3233,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
             lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
 
-            go_end_side_shape_generator.end_shape.redraw_end_shape(
-                null, //lo_active_side,
-                null, //lo_active_side.shapes.shape_amount_curves - 1,
-                null,
-                null, null
 
-            );
+            if (this.my_prefix == gc_id_prefix_end ) {  //15122024 
+                go_end_side_shape_generator.end_shape.redraw_end_shape(
+                    null, //lo_active_side,
+                    null, //lo_active_side.shapes.shape_amount_curves - 1,
+                    null,
+                    null, null
 
+                );
+
+            }
             lo_active_side.render();
 
         }

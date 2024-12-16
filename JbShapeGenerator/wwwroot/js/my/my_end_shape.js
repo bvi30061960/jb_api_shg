@@ -133,7 +133,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lo_line_hor = null;
                 let lo_line_vert = null;
 
-                let pv_position = null;
+                let lv_position = null;
+                //let lv_next_position = null;
 
                 let lv_curve_distance_vert = go_up_side_shape_generator.params.shape_width / lv_rows;
                 let lv_curve_distance_hor = go_lateral_side_shape_generator.params.shape_width / lv_cols;
@@ -168,32 +169,42 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
                         && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
                     ) {
-                        pv_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+
+                        lv_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+
+                        //lv_next_position = null;
+                        //let lv_next_position_y = null;
+                        //if (lv_i + 1 < lv_cols) {
+                        //    lv_next_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i + 1].children[0].children[0].position.x;
+                        //    lv_next_position_y = go_lateral_side_shape_generator.params.shape_width - lv_next_position;
+                        //}
                     }
 
-                    lo_line_curr.position.y = go_lateral_side_shape_generator.params.shape_width - pv_position; // lv_curve_distance_hor * (lv_i + 1);
+                    lo_line_curr.position.y = go_lateral_side_shape_generator.params.shape_width - lv_position; // lv_curve_distance_hor * (lv_i + 1);
 
                     // присвоение координаты y в массиве ячеек ColorParts
-                    //for (let lv_i = 0; lv_i < this.ColorParts.lenght - 1; lv_i++) {
-
-                    if (lv_i <= this.ColorParts.length - 1) {
-
-                        for (let lv_j = 0; lv_j < this.ColorParts[0].length - 1; lv_j++) {
-
-                            this.ColorParts[lv_i][lv_j].left_top.y = lo_line_curr.position.y;
-
-                            if (lv_i < lv_cols - 1) {
-
-                                this.ColorParts[lv_i + 1][lv_j].right_bottom.y = lo_line_curr.position.y;
-
-                            }
+                    //if (lv_i <= this.ColorParts.length - 1) {
 
 
+                    let lv_prev_y = 0;
+
+                    for (let lv_j = 0; lv_j < this.ColorParts[0].length - 1; lv_j++) {
+
+                        if (lv_i == 0) {
+
+                            this.ColorParts[lv_i][lv_j].left_top.y = 0;
 
                         }
-                    }
-                    //}
+                        if (lv_i > 0) {
+                            this.ColorParts[lv_i - 1][lv_j].left_top.y = lv_prev_y;
+                        }
 
+
+                        this.ColorParts[lv_i][lv_j].right_bottom.y = lo_line_curr.position.y;
+                        lv_prev_y = lo_line_curr.position.y;
+
+
+                    }
 
                     this.main.group_end_shape.add(lo_line_curr);
                 }
@@ -211,28 +222,37 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
                         && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
                     ) {
-                        pv_position = go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                        lv_position = go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
                     }
 
-                    lo_line_curr.position.x = pv_position; // lv_curve_distance_hor * (lv_i + 1);
+                    lo_line_curr.position.x = lv_position; // lv_curve_distance_hor * (lv_i + 1);
 
                     // присвоение координаты x в массиве ячеек ColorParts
 
-                    if (lv_i <= this.ColorParts[0].length - 1) {
 
-                        for (let lv_j = 0; lv_j < this.ColorParts.length - 1; lv_j++) {
+                    //if (lv_i <= this.ColorParts[0].length - 1) {
+                    let lv_prev_x = 0;
 
-                            this.ColorParts[lv_j][lv_i].left_top.x = lo_line_curr.position.x;
+                    for (let lv_j = 0; lv_j < this.ColorParts.length - 1; lv_j++) {
 
-                            if (lv_i < lv_rows - 1) {
 
-                                this.ColorParts[lv_j][lv_i + 1].right_bottom.x = lo_line_curr.position.x;
+                        if (lv_i == 0) {
 
-                            }
+                            this.ColorParts[lv_i][lv_j].left_top.x = 0;
 
                         }
+                        if (lv_i > 0) {
+                            this.ColorParts[lv_i - 1][lv_j].left_top.x = lv_prev_x;
+                        }
+
+
+
+                        this.ColorParts[lv_j][lv_i].right_bottom.x = lo_line_curr.position.x;
+                        lv_prev_x = lo_line_curr.position.x;
 
                     }
+
+                    //}
 
 
                     this.main.group_end_shape.add(lo_line_curr);
@@ -257,6 +277,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
         //------------------------------------------------------------------------
         EndShape.prototype.draw_cells_contours = function () {
 
+            //return;
 
             CommonFunc.prototype.clear_group_childrens(this.main.group_end_cells_contours);
 
@@ -336,10 +357,15 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     this.ColorParts = lar_array;
 
-                    
+
                     return;
 
                 }
+
+
+                //return; //15122024
+
+
 
 
                 let lv_shape_up_parts_amount = pv_up_splines_amount + 1;
@@ -448,7 +474,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         }
                     }
 
-
+                    break;
                 }// while
 
             }
