@@ -110,8 +110,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
 
-                let lv_cols = lv_up_splines_amount;// + 1;
-                let lv_rows = lv_lateral_splines_amount;// + 1;
+                let lv_cols = lv_up_splines_amount + 1;
+                let lv_rows = lv_lateral_splines_amount + 1;
 
 
                 let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle(
@@ -157,6 +157,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
 
+                let lv_prev_y = null;
 
                 for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
 
@@ -182,34 +183,38 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     lo_line_curr.position.y = go_lateral_side_shape_generator.params.shape_width - lv_position; // lv_curve_distance_hor * (lv_i + 1);
 
-                    // присвоение координаты y в массиве ячеек ColorParts
-                    //if (lv_i <= this.ColorParts.length - 1) {
+                    // присвоение координат в массиве ячеек ColorParts
+
+                    // присвоение координаты y
 
 
-                    let lv_prev_y = 0;
 
-                    for (let lv_j = 0; lv_j < this.ColorParts[0].length - 1; lv_j++) {
+                    for (let lv_j = 0; lv_j < this.ColorParts[0].length/* - 1*/; lv_j++) {
 
-                        if (lv_i == 0) {
+                        //if (lv_i == 0) {
 
-                            this.ColorParts[lv_i][lv_j].left_top.y = 0;
+                        //    this.ColorParts[lv_i][lv_j].left_top.y = 0;
 
-                        }
+                        //}
                         if (lv_i > 0) {
                             this.ColorParts[lv_i - 1][lv_j].left_top.y = lv_prev_y;
                         }
 
 
                         this.ColorParts[lv_i][lv_j].right_bottom.y = lo_line_curr.position.y;
-                        lv_prev_y = lo_line_curr.position.y;
+                        //lv_prev_y = lo_line_curr.position.y;
 
 
                     }
+
+                    lv_prev_y = lo_line_curr.position.y;
+
 
                     this.main.group_end_shape.add(lo_line_curr);
                 }
 
 
+                let lv_prev_x = null;
 
 
                 for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
@@ -227,20 +232,23 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     lo_line_curr.position.x = lv_position; // lv_curve_distance_hor * (lv_i + 1);
 
-                    // присвоение координаты x в массиве ячеек ColorParts
 
+                    // присвоение координат в массиве ячеек ColorParts
+
+
+                    // присвоение координаты x 
 
                     //if (lv_i <= this.ColorParts[0].length - 1) {
-                    let lv_prev_x = 0;
+                    //let lv_prev_x = 0;
 
-                    for (let lv_j = 0; lv_j < this.ColorParts.length - 1; lv_j++) {
+                    for (let lv_j = 0; lv_j < this.ColorParts.length/* - 1*/; lv_j++) {
 
 
-                        if (lv_i == 0) {
+                        //if (lv_i == 0) {
 
-                            this.ColorParts[lv_i][lv_j].left_top.x = 0;
+                        //    this.ColorParts[lv_i][lv_j].left_top.x = 0;
 
-                        }
+                        //}
                         if (lv_i > 0) {
                             this.ColorParts[lv_i - 1][lv_j].left_top.x = lv_prev_x;
                         }
@@ -248,11 +256,13 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                         this.ColorParts[lv_j][lv_i].right_bottom.x = lo_line_curr.position.x;
-                        lv_prev_x = lo_line_curr.position.x;
+                        //lv_prev_x = lo_line_curr.position.x;
 
                     }
 
                     //}
+
+                    lv_prev_x = lo_line_curr.position.x;
 
 
                     this.main.group_end_shape.add(lo_line_curr);
@@ -290,7 +300,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle_by_points(
                         this.ColorParts[lv_i][lv_j].left_top,
                         this.ColorParts[lv_i][lv_j].right_bottom
-
                     );
 
 
@@ -341,13 +350,15 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     let lar_array;
 
+                    let lv_cols = pv_up_splines_amount + 1;
+                    let lv_rows = pv_lateral_splines_amount + 1;
 
-                    lar_array = new Array(pv_up_splines_amount);
-                    for (let lv_i = 0; lv_i < pv_up_splines_amount; lv_i++) {
+                    lar_array = new Array(lv_cols);
+                    for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
 
-                        lar_array[lv_i] = new Array(pv_lateral_splines_amount);
+                        lar_array[lv_i] = new Array(lv_rows);
 
-                        for (let lv_j = 0; lv_j < pv_lateral_splines_amount; lv_j++) {
+                        for (let lv_j = 0; lv_j < lv_rows; lv_j++) {
                             lar_array[lv_i][lv_j] = new typ_color_part();
                             lar_array[lv_i][lv_j].left_top = new THREE.Vector2(0, 0);
                             lar_array[lv_i][lv_j].right_bottom = new THREE.Vector2(0, 0);
