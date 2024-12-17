@@ -1599,11 +1599,21 @@ export function CommonFunc() {
 
                 let lo_geometry = new LineGeometry();
                 lo_geometry.setPositions([
-                    po_left_top.y, po_left_top.x,  0,                                           //y0, x0, 0,
-                    po_left_top.y, po_right_bottom.x - po_left_top.x, 0,                        //y0, pv_width, 0,
-                    po_right_bottom.y - po_left_top.y, po_right_bottom.x - po_left_top.x, 0,   //pv_height, pv_width, 0,
-                    po_right_bottom.y - po_left_top.y, po_left_top.x, 0,                       //pv_height, x0, 0,
-                    po_left_top.y, po_left_top.x, 0                                            //y0, x0, 0
+                    //16122024 {
+                //    po_left_top.y, po_left_top.x,  0,                                           //y0, x0, 0,
+                //    po_left_top.y, po_right_bottom.x - po_left_top.x, 0,                        //y0, pv_width, 0,
+                //    po_right_bottom.y - po_left_top.y, po_right_bottom.x - po_left_top.x, 0,   //pv_height, pv_width, 0,
+                //    po_right_bottom.y - po_left_top.y, po_left_top.x, 0,                       //pv_height, x0, 0,
+                    //    po_left_top.y, po_left_top.x, 0                                            //y0, x0, 0
+
+                    po_left_top.x, po_left_top.y, 0,                                           //y0, x0, 0,
+                    po_left_top.x, po_right_bottom.y - po_left_top.y, 0,                        //y0, pv_width, 0,
+                    po_right_bottom.x - po_left_top.x, po_right_bottom.y - po_left_top.y, 0,   //pv_height, pv_width, 0,
+                    po_right_bottom.x - po_left_top.x, po_left_top.y, 0,                       //pv_height, x0, 0,
+                    po_left_top.x, po_left_top.y, 0                                            //y0, x0, 0
+
+                    // 16122024 }
+
                 ]);
 
                 lo_result = new Line2(lo_geometry, lo_material);

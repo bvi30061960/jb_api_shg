@@ -724,7 +724,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     this.scene.add(this.group_end_shape);
                     this.scene.add(this.group_end_cells_contours);
-                   //12122024 }
+                    //12122024 }
 
                 }
 
@@ -1953,7 +1953,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     requestAnimationFrame(lo_active_side.animate_mod);
                     lo_active_side.render_mod();
 
-                }, 100);
+                }, 200); // 100);
 
             }
             else {
@@ -1969,7 +1969,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     requestAnimationFrame(this.animate_mod);
                     this.render_mod();
 
-                }, 100);
+                }, 200); // 100);
 
 
             }
@@ -2740,11 +2740,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
 
 
-                lo_active_side.aspect = lo_active_side.container.clientWidth / lo_active_side.container.clientHeight;
-                lo_active_side.renderer.setSize(lo_active_side.container.clientWidth, lo_active_side.container.clientHeight);
-                lo_active_side.camera.aspect = lo_active_side.container.clientWidth / lo_active_side.container.clientHeight;
-                lo_active_side.camera.updateProjectionMatrix();
-                lo_active_side.render();
+            lo_active_side.aspect = lo_active_side.container.clientWidth / lo_active_side.container.clientHeight;
+            lo_active_side.renderer.setSize(lo_active_side.container.clientWidth, lo_active_side.container.clientHeight);
+            lo_active_side.camera.aspect = lo_active_side.container.clientWidth / lo_active_side.container.clientHeight;
+            lo_active_side.camera.updateProjectionMatrix();
+            lo_active_side.render();
 
 
             if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
@@ -3220,31 +3220,57 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.onPointerUp = function (po_event) {
 
-            po_event.stopPropagation();
+            try {
+                po_event.stopPropagation();
 
-            let lo_active_side = get_active_side_shape_generator();
-            lo_active_side.button_down = false;
-            lo_active_side.draggableObject = undefined;
+                let lo_active_side = get_active_side_shape_generator();
+                lo_active_side.button_down = false;
+                lo_active_side.draggableObject = undefined;
 
-            if (lo_active_side.shapes == null) {
-                return;
+
+                //16122024 {
+                ////if (lo_active_side.shapes == null) {
+                ////    return;
+                ////}
+
+                ////let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
+                ////lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
+
+
+                if (lo_active_side.my_prefix == gc_id_prefix_end) {  //15122024 
+
+                    go_end_side_shape_generator.end_shape.redraw_end_shape(
+                        null, //lo_active_side,
+                        null, //lo_active_side.shapes.shape_amount_curves - 1,
+                        null,
+                        null, null
+                    );
+
+                }
+                else {
+
+                    if (lo_active_side.shapes == null) {
+                        return;
+                    }
+
+                    let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
+                    lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
+
+
+                    //16122024 }
+
+                }
+
+
+                lo_active_side.render();
+
             }
 
-            let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
-            lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
+            catch (e) {
 
-
-            if (this.my_prefix == gc_id_prefix_end ) {  //15122024 
-                go_end_side_shape_generator.end_shape.redraw_end_shape(
-                    null, //lo_active_side,
-                    null, //lo_active_side.shapes.shape_amount_curves - 1,
-                    null,
-                    null, null
-
-                );
+                alert('error onPointerUp: ' + e.stack);
 
             }
-            lo_active_side.render();
 
         }
 
@@ -3262,7 +3288,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     return;
                 }
 
-                
+
 
 
                 if (lo_active_side.shapes == null) {
