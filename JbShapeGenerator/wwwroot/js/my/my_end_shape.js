@@ -161,106 +161,171 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
 
-                    lo_line_curr = lo_line_hor.clone();
+                    if (lv_i == 0) {
 
-                    //координаты начальной точки текущей кривой
-                    if (go_lateral_side_shape_generator.shapes
-                        && go_lateral_side_shape_generator.shapes.ar_splines[lv_i]
-                        && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0]
-                        && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
-                        && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
-                    ) {
+                        lv_position = 0;
 
-                        lv_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                        for (let lv_j = 0; lv_j < this.ColorParts.length - 1; lv_j++) {
+                            this.ColorParts[lv_i][lv_j].left_bottom.y = lv_position;
+                        }
 
-                        lo_line_curr.position.y = go_lateral_side_shape_generator.params.shape_width - lv_position; // lv_curve_distance_hor * (lv_i + 1);
+                    }
+                    else {
 
+                        if (lv_i == lv_rows) {
 
+                            lv_position = go_lateral_side_shape_generator.params.shape_width;;
 
-                        // присвоение координат в массиве ячеек ColorParts
+                            for (let lv_j = 0; lv_j <= this.ColorParts.length - 1; lv_j++) {
 
-                        // присвоение координаты y
+                                this.ColorParts[lv_i][lv_j].right_top.y = lv_position;
 
-                        for (let lv_j = 0; lv_j < this.ColorParts[0].length/* - 1*/; lv_j++) {
-
-                            //if (lv_i == 0) {
-
-                            //    this.ColorParts[lv_i][lv_j].left_top.y = 0;
-
-                            //}
-                            if (lv_i > 0) {
-                                this.ColorParts[lv_i - 1][lv_j].left_top.y = lv_prev_y;
-                                this.ColorParts[lv_i - 1][lv_j].right_bottom.y = lo_line_curr.position.y;
-                                this.ColorParts[lv_i][lv_j].left_top.y = lo_line_curr.position.y;
-
-                                if (lv_i == lv_rows - 1) {
-                                    this.ColorParts[lv_i][lv_j].right_bottom.y = go_lateral_side_shape_generator.params.shape_width;
-                                }
                             }
-
-
-                            //this.ColorParts[lv_i][lv_j].right_bottom.y = lo_line_curr.position.y;
-
 
                         }
 
-                        lv_prev_y = lo_line_curr.position.y;
+                        else {
 
 
-                        this.main.group_end_shape.add(lo_line_curr);
+
+                            lo_line_curr = lo_line_hor.clone();
+
+                            //координаты начальной точки текущей кривой
+                            if (go_lateral_side_shape_generator.shapes
+                                && go_lateral_side_shape_generator.shapes.ar_splines[lv_i]
+                                && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0]
+                                && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
+                                && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
+                            ) {
+
+                                //lv_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                                lv_position = go_lateral_side_shape_generator.params.shape_width - go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+
+                                //lo_line_curr.position.y = go_lateral_side_shape_generator.params.shape_width - lv_position; // lv_curve_distance_hor * (lv_i + 1);
+                                lo_line_curr.position.y = lv_position; // lv_curve_distance_hor * (lv_i + 1);
+
+
+
+                                // присвоение координат в массиве ячеек ColorParts
+
+                                // присвоение координаты y
+
+                                for (let lv_j = 0; lv_j <= this.ColorParts[0].length - 1; lv_j++) {
+
+
+                                    this.ColorParts[lv_i][lv_j].left_bottom.y = lv_position;
+                                    this.ColorParts[lv_i - 1][lv_j].right_top.y = lv_position;
+
+
+
+                                    //if (lv_i == 0) {
+
+                                    //    this.ColorParts[lv_i][lv_j].left_bottom.y = 0;
+
+                                    //}
+                                    //if (lv_i > 0) {
+                                    //    this.ColorParts[lv_i - 1][lv_j].left_bottom.y = lv_prev_y;
+                                    //    this.ColorParts[lv_i - 1][lv_j].right_top.y = lo_line_curr.position.y;
+                                    //    this.ColorParts[lv_i][lv_j].left_bottom.y = lo_line_curr.position.y;
+
+                                    //    if (lv_i == lv_rows - 1) {
+                                    //        this.ColorParts[lv_i][lv_j].right_top.y = go_lateral_side_shape_generator.params.shape_width;
+                                    //    }
+                                    //}
+
+
+                                    //this.ColorParts[lv_i][lv_j].right_top.y = lo_line_curr.position.y;
+
+
+                                }
+
+                                //lv_prev_y = lo_line_curr.position.y;
+
+
+                                this.main.group_end_shape.add(lo_line_curr);
+                            }
+
+                        }
+
+
+                        //let lv_prev_x = null;
+
                     }
                 }
+                //------------------------------------------------------------------------------------
 
-
-                let lv_prev_x = null;
 
 
                 for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
 
-                    lo_line_curr = lo_line_vert.clone();
+                    if (lv_i == 0) {
 
-                    if (go_up_side_shape_generator.shapes
-                        && go_up_side_shape_generator.shapes.ar_splines[lv_i]
-                        && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0]
-                        && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
-                        && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
-                    ) {
+                        lv_position = 0;
 
-                        lv_position = go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
-                        //}
+                        for (let lv_j = 0; lv_j < this.ColorParts.length - 1; lv_j++) {
+                            this.ColorParts[lv_j][lv_i].left_bottom.x = lv_position;
+                        }
 
-                        lo_line_curr.position.x = lv_position;
+                    }
+                    else {
 
+                        if (lv_i == lv_cols) {
 
-                        // присвоение координат в массиве ячеек ColorParts
+                            lv_position = go_up_side_shape_generator.params.shape_width;;
 
-                        // присвоение координаты x 
+                            for (let lv_j = 0; lv_j <= this.ColorParts.length - 1; lv_j++) {
 
-                        for (let lv_j = 0; lv_j < this.ColorParts.length/* - 1*/; lv_j++) {
-
-                            //if (lv_i == 0) {
-                            //    this.ColorParts[lv_j][lv_i].left_top.x = 0;
-                            //}
-
-                            if (lv_i > 0) {
-                                this.ColorParts[lv_j][lv_i - 1].left_top.x = lv_prev_x;
-                                this.ColorParts[lv_j][lv_i - 1].right_bottom.x = lo_line_curr.position.x;
-                                this.ColorParts[lv_j][lv_i].right_bottom.x = lo_line_curr.position.x;
+                                this.ColorParts[lv_j][lv_i].right_top.x = lv_position;
 
                             }
-                            if (lv_i == lv_cols - 1) {
-                                this.ColorParts[lv_j][lv_i].right_bottom.x = go_up_side_shape_generator.params.shape_width;
-                            }
-                            //this.ColorParts[lv_j][lv_i].right_bottom.x = lo_line_curr.position.x;
 
                         }
 
+                        else {
+
+                            lo_line_curr = lo_line_vert.clone();
+
+                            if (go_up_side_shape_generator.shapes
+                                && go_up_side_shape_generator.shapes.ar_splines[lv_i]
+                                && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0]
+                                && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
+                                && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
+                            ) {
+
+                                lv_position = go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+
+                                lo_line_curr.position.x = lv_position;
+
+
+                                // присвоение координат в массиве ячеек ColorParts
+
+                                // присвоение координаты x 
+
+                                for (let lv_j = 0; lv_j <= this.ColorParts.length - 1; lv_j++) {
+
+                                    this.ColorParts[lv_j][lv_i].left_bottom.x = lv_position;
+                                    this.ColorParts[lv_j][lv_i - 1].right_top.x = lv_position;
+
+                                }
+
+                                //this.ColorParts[lv_j][lv_i].right_top.x = lo_line_curr.position.x;
+
+                                //this.main.group_end_shape.add(lo_line_curr);
+
+                            }
+
+                            //}
+
+                            //lv_prev_x = lo_line_curr.position.x;
+
+
+                            this.main.group_end_shape.add(lo_line_curr);
+
+                        }
+
+
                         //}
 
-                        lv_prev_x = lo_line_curr.position.x;
-
-
-                        this.main.group_end_shape.add(lo_line_curr);
                     }
                 }
 
@@ -268,6 +333,9 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                 this.draw_cells_contours();
+
+
+
 
             }
 
@@ -308,8 +376,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                         let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle_by_points(
-                            this.ColorParts[lv_i][lv_j].left_top,
-                            this.ColorParts[lv_i][lv_j].right_bottom,
+                            this.ColorParts[lv_i][lv_j].left_bottom,
+                            this.ColorParts[lv_i][lv_j].right_top,
                             lv_color, //null,
                             lo_material
                         );
@@ -317,16 +385,24 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                         const geometry = new THREE.SphereGeometry(3);
-                        const material = new THREE.MeshBasicMaterial({ color: 0xff000f });
+                        const material = new THREE.MeshBasicMaterial({ color: 0xff000f, side: THREE.BackSide });
 
- 
+
                         let sphere = null;
 
+
                         sphere = new THREE.Mesh(geometry, material);
-                        sphere.position.x = 0; // this.ColorParts[0][0].left_top.x;
-                        sphere.position.y = 0; // this.ColorParts[0][0].left_top.y;
+                        sphere.position.x = this.ColorParts[0][0].left_bottom.x;
+                        sphere.position.y = this.ColorParts[0][0].left_bottom.y;
                         sphere.position.z = 0;
                         //po_scene.add(sphere);
+
+
+
+
+
+
+
 
                         this.main.group_end_cells_contours.add(sphere);
 
@@ -397,8 +473,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                         for (let lv_j = 0; lv_j < lv_rows; lv_j++) {
                             lar_array[lv_i][lv_j] = new typ_color_part();
-                            lar_array[lv_i][lv_j].left_top = new THREE.Vector2(0, 0);
-                            lar_array[lv_i][lv_j].right_bottom = new THREE.Vector2(0, 0);
+                            lar_array[lv_i][lv_j].left_bottom = new THREE.Vector2(0, 0);
+                            lar_array[lv_i][lv_j].right_top = new THREE.Vector2(0, 0);
                         }
 
                     }

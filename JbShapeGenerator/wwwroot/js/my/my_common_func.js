@@ -1563,7 +1563,7 @@ export function CommonFunc() {
 
 
         //---------------------------------------------------------------------------------------------
-        CommonFunc.prototype.get_drawing_rectangle_by_points = function (po_left_top, po_right_bottom, pv_color, po_material) {
+        CommonFunc.prototype.get_drawing_rectangle_by_points = function (po_left_bottom, po_right_top, pv_color, po_material) {
 
              //pv_width, pv_height, pv_color, po_material
 
@@ -1600,17 +1600,17 @@ export function CommonFunc() {
                 let lo_geometry = new LineGeometry();
                 lo_geometry.setPositions([
                     //16122024 {
-                //    po_left_top.y, po_left_top.x,  0,                                           //y0, x0, 0,
-                //    po_left_top.y, po_right_bottom.x - po_left_top.x, 0,                        //y0, pv_width, 0,
-                //    po_right_bottom.y - po_left_top.y, po_right_bottom.x - po_left_top.x, 0,   //pv_height, pv_width, 0,
-                //    po_right_bottom.y - po_left_top.y, po_left_top.x, 0,                       //pv_height, x0, 0,
-                    //    po_left_top.y, po_left_top.x, 0                                            //y0, x0, 0
+                //    po_left_bottom.y, po_left_bottom.x,  0,                                           //y0, x0, 0,
+                //    po_left_bottom.y, po_right_top.x - po_left_bottom.x, 0,                        //y0, pv_width, 0,
+                //    po_right_top.y - po_left_bottom.y, po_right_top.x - po_left_bottom.x, 0,   //pv_height, pv_width, 0,
+                //    po_right_top.y - po_left_bottom.y, po_left_bottom.x, 0,                       //pv_height, x0, 0,
+                    //    po_left_bottom.y, po_left_bottom.x, 0                                            //y0, x0, 0
 
-                    po_left_top.x, po_left_top.y, 0,                                           //y0, x0, 0,
-                    po_left_top.x, po_right_bottom.y - po_left_top.y, 0,                        //y0, pv_width, 0,
-                    po_right_bottom.x - po_left_top.x, po_right_bottom.y - po_left_top.y, 0,   //pv_height, pv_width, 0,
-                    po_right_bottom.x - po_left_top.x, po_left_top.y, 0,                       //pv_height, x0, 0,
-                    po_left_top.x, po_left_top.y, 0                                            //y0, x0, 0
+                    po_left_bottom.x, po_left_bottom.y, 0,                                           //y0, x0, 0,
+                    po_left_bottom.x, po_right_top.y - po_left_bottom.y, 0,                        //y0, pv_width, 0,
+                    po_right_top.x - po_left_bottom.x, po_right_top.y - po_left_bottom.y, 0,   //pv_height, pv_width, 0,
+                    po_right_top.x - po_left_bottom.x, po_left_bottom.y, 0,                       //pv_height, x0, 0,
+                    po_left_bottom.x, po_left_bottom.y, 0                                            //y0, x0, 0
 
                     // 16122024 }
 
