@@ -184,21 +184,21 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                             //lv_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
                             lv_spline_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
-
                             lv_line_position = go_lateral_side_shape_generator.params.shape_width - lv_spline_position;
                             //lv_line_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
                         }
 
-                        lv_cell_position = 0;
+                        lv_cell_position = go_lateral_side_shape_generator.params.shape_width;
 
-                       //lv_position = 0;
+                        //lv_position = 0;
 
                         for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
                             this.ColorParts[lv_i][lv_j].left_bottom.y = lv_cell_position;
+                            this.ColorParts[lv_i][lv_j].right_top.y = lv_line_position; // lv_spline_position;
                         }
 
                         lo_line_curr.position.y = lv_line_position;
-                        lv_prev_line_position = lv_spline_position;
+                        lv_prev_line_position = lv_line_position;// lv_spline_position;
 
 
                         this.main.group_end_shape.add(lo_line_curr);
@@ -207,13 +207,15 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     }
                     else {
 
-                        if (lv_i == lv_rows-1) {
+                        if (lv_i == lv_rows - 1) {
 
-                            lv_cell_position = go_lateral_side_shape_generator.params.shape_width;;
+                            lv_cell_position = 0; // go_lateral_side_shape_generator.params.shape_width;;
 
                             for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
 
-                                this.ColorParts[lv_i - 1][lv_j].left_bottom.y = lv_prev_line_position;
+                                this.ColorParts[lv_i - 1][lv_j].right_top.y = lv_prev_line_position;
+                                this.ColorParts[lv_i][lv_j].left_bottom.y = lv_prev_line_position;
+                                this.ColorParts[lv_i][lv_j].right_top.y = lv_cell_position; // go_lateral_side_shape_generator.params.shape_width;
 
                             }
                         }
@@ -271,6 +273,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                                 }
+
                                 lv_prev_line_position = lv_spline_position; // lv_cell_position; // lv_line_position;
 
                                 //lv_prev_y = lo_line_curr.position.y;
@@ -313,24 +316,27 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                         for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
                             this.ColorParts[lv_j][lv_i].left_bottom.x = lv_cell_position;
+                            this.ColorParts[lv_i][lv_j].right_top.x = lv_line_position; // lv_spline_position;
                         }
                         //lo_line_curr = lo_line_hor.clone();
 
                         lo_line_curr.position.x = lv_line_position;
-                        lv_prev_line_position = lv_spline_position;
+                        lv_prev_line_position = lv_line_position; // lv_spline_position;
 
                         this.main.group_end_shape.add(lo_line_curr);
 
                     }
                     else {
 
-                        if (lv_i == lv_cols-1) {
+                        if (lv_i == lv_cols - 1) {
 
                             lv_cell_position = go_up_side_shape_generator.params.shape_width;;
 
                             for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
 
-                                this.ColorParts[lv_j][lv_i - 1].left_bottom.x = lv_prev_line_position;
+                                this.ColorParts[lv_j][lv_i - 1].right_top.x = lv_prev_line_position;
+                                this.ColorParts[lv_j][lv_i].left_bottom.x = lv_prev_line_position;
+                                this.ColorParts[lv_j][lv_i].right_top.y = go_up_side_shape_generator.params.shape_width;
 
                             }
 
@@ -352,12 +358,13 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                                 lo_line_curr.position.x = lv_line_position;
 
+                                lv_cell_position = lv_line_position;
 
                                 // присвоение координат в массиве ячеек ColorParts
 
                                 // присвоение координаты x 
 
-                                for (let lv_j = 0; lv_j <this.ColorParts.length; lv_j++) {
+                                for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
 
                                     this.ColorParts[lv_j][lv_i].left_bottom.x = lv_line_position;
                                     this.ColorParts[lv_j][lv_i - 1].right_top.x = lv_prev_line_position; // lv_line_position;
@@ -368,15 +375,17 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                                 //this.main.group_end_shape.add(lo_line_curr);
 
+                                lv_prev_line_position = lv_spline_position; // lv_line_position;
+                                this.main.group_end_shape.add(lo_line_curr);
+
                             }
 
                             //}
 
                             //lv_prev_x = lo_line_curr.position.x;
-                            lv_prev_line_position = lv_spline_position; // lv_line_position;
 
-
-                            this.main.group_end_shape.add(lo_line_curr);
+                            //lv_prev_line_position = lv_spline_position; // lv_line_position;
+                            //this.main.group_end_shape.add(lo_line_curr);
 
                         }
 
@@ -416,6 +425,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 lo_renderer.getSize(lo_resolution);
 
                 let lv_color = Constants.shape_countour_color;
+
                 let lo_material = new LineMaterial({
                     resolution: lo_resolution,
                     linewidth: 0.7,
@@ -427,10 +437,19 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 CommonFunc.prototype.clear_group_childrens(this.main.group_end_cells_contours);
 
 
+
+                const geometry = new THREE.SphereGeometry(3);
+                const material = new THREE.MeshBasicMaterial({ color: 0xff000f, side: THREE.BackSide });
+                let sphere = new THREE.Mesh(geometry, material);
+                let lo_sphere_curr = null;
+
+
+
+
+
                 for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {
 
                     for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {
-
 
                         let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle_by_points(
                             this.ColorParts[lv_i][lv_j].left_bottom,
@@ -439,25 +458,17 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             lo_material
                         );
 
-
-                        const geometry = new THREE.SphereGeometry(3);
-                        const material = new THREE.MeshBasicMaterial({ color: 0xff000f, side: THREE.BackSide });
-
-
-                        let sphere = null;
-
-
-                        sphere = new THREE.Mesh(geometry, material);
-                        sphere.position.x = this.ColorParts[0][0].left_bottom.x;
-                        sphere.position.y = this.ColorParts[0][0].left_bottom.y;
-                        sphere.position.z = 0;
-                        //po_scene.add(sphere);
-
-
-                        this.main.group_end_cells_contours.add(sphere);
-
-
                         this.main.group_end_cells_contours.add(lo_rectangle);
+
+
+
+
+                        //let sphere = new THREE.Mesh(geometry, material);
+                        lo_sphere_curr = sphere.clone();
+                        lo_sphere_curr.position.x = this.ColorParts[lv_i][lv_j].left_bottom.x;
+                        lo_sphere_curr.position.y = this.ColorParts[lv_i][lv_j].left_bottom.y;
+                        lo_sphere_curr.position.z = 0;
+                        this.main.group_end_cells_contours.add(lo_sphere_curr);
 
                     }
                 }
