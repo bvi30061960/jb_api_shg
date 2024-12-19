@@ -1624,7 +1624,7 @@ export function CommonFunc() {
 
             catch (e) {
 
-                alert('error get_drawing_rectangle: ' + e.stack);
+                alert('error get_drawing_rectangle_by_points: ' + e.stack);
 
             }
         }

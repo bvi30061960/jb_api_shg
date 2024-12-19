@@ -163,8 +163,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lv_line_position = 0;
                 let lv_prev_line_position = 0;
                 let lv_cell_position = 0;
+                let lv_spline_position = 0;
 
-                for (let lv_i = 0; lv_i <= lv_rows; lv_i++) {
+                //for (let lv_i = 0; lv_i <= lv_rows; lv_i++) {
+                for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
 
                     lo_line_curr = lo_line_hor.clone();
 
@@ -181,7 +183,9 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         ) {
 
                             //lv_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
-                            lv_line_position = go_lateral_side_shape_generator.params.shape_width - go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                            lv_spline_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+
+                            lv_line_position = go_lateral_side_shape_generator.params.shape_width - lv_spline_position;
                             //lv_line_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
                         }
 
@@ -193,10 +197,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             this.ColorParts[lv_i][lv_j].left_bottom.y = lv_cell_position;
                         }
 
-                        //lo_line_curr = lo_line_hor.clone();
-
                         lo_line_curr.position.y = lv_line_position;
-                        lv_prev_line_position = lv_line_position;
+                        lv_prev_line_position = lv_spline_position;
 
 
                         this.main.group_end_shape.add(lo_line_curr);
@@ -205,7 +207,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     }
                     else {
 
-                        if (lv_i == lv_rows) {
+                        if (lv_i == lv_rows-1) {
 
                             lv_cell_position = go_lateral_side_shape_generator.params.shape_width;;
 
@@ -230,21 +232,22 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                                 //lv_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
                                 //lv_line_position = go_lateral_side_shape_generator.params.shape_width - go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
-                                lv_line_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+
+                                lv_spline_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                                lv_line_position = lv_spline_position;
 
                                 lo_line_curr.position.y = go_lateral_side_shape_generator.params.shape_width - lv_line_position; // lv_curve_distance_hor * (lv_i + 1);
                                 //lo_line_curr.position.y = lv_line_position; // lv_curve_distance_hor * (lv_i + 1);
 
-
+                                lv_cell_position = go_lateral_side_shape_generator.params.shape_width - lv_line_position;
                                 // присвоение координат в массиве ячеек ColorParts
 
                                 // присвоение координаты y
 
-                                for (let lv_j = 0; lv_j <this.ColorParts[0].length; lv_j++) {
-
+                                for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {
 
                                     this.ColorParts[lv_i][lv_j].left_bottom.y = lv_line_position;
-                                    this.ColorParts[lv_i - 1][lv_j].right_top.y = lv_line_position;
+                                    this.ColorParts[lv_i - 1][lv_j].right_top.y = lv_prev_line_position; // lv_line_position;
 
 
 
@@ -268,7 +271,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                                 }
-                                lv_prev_line_position = lv_line_position;
+                                lv_prev_line_position = lv_spline_position; // lv_cell_position; // lv_line_position;
 
                                 //lv_prev_y = lo_line_curr.position.y;
 
@@ -287,7 +290,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 //------------------------------------------------------------------------------------
 
-                for (let lv_i = 0; lv_i <= lv_cols; lv_i++) {
+                //for (let lv_i = 0; lv_i <= lv_cols; lv_i++) {
+                for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
 
                     lo_line_curr = lo_line_vert.clone();
 
@@ -301,7 +305,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         ) {
 
                             //lv_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
-                            lv_line_position = go_up_side_shape_generator.params.shape_width - go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                            lv_spline_position = go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                            lv_line_position = /*go_up_side_shape_generator.params.shape_width -*/ lv_spline_position;
                             //lv_line_position = go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
                         }
                         lv_cell_position = 0;
@@ -312,14 +317,14 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         //lo_line_curr = lo_line_hor.clone();
 
                         lo_line_curr.position.x = lv_line_position;
-                        lv_prev_line_position = lv_line_position;
+                        lv_prev_line_position = lv_spline_position;
 
                         this.main.group_end_shape.add(lo_line_curr);
 
                     }
                     else {
 
-                        if (lv_i == lv_cols) {
+                        if (lv_i == lv_cols-1) {
 
                             lv_cell_position = go_up_side_shape_generator.params.shape_width;;
 
@@ -342,7 +347,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                                 && go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
                             ) {
 
-                                lv_line_position = go_up_side_shape_generator.params.shape_width - go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                                lv_spline_position = go_up_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
+                                lv_line_position = /*go_up_side_shape_generator.params.shape_width -*/ lv_spline_position;
 
                                 lo_line_curr.position.x = lv_line_position;
 
@@ -354,7 +360,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                                 for (let lv_j = 0; lv_j <this.ColorParts.length; lv_j++) {
 
                                     this.ColorParts[lv_j][lv_i].left_bottom.x = lv_line_position;
-                                    this.ColorParts[lv_j][lv_i - 1].right_top.x = lv_line_position;
+                                    this.ColorParts[lv_j][lv_i - 1].right_top.x = lv_prev_line_position; // lv_line_position;
 
                                 }
 
@@ -367,7 +373,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             //}
 
                             //lv_prev_x = lo_line_curr.position.x;
-                            lv_prev_line_position = lv_line_position;
+                            lv_prev_line_position = lv_spline_position; // lv_line_position;
 
 
                             this.main.group_end_shape.add(lo_line_curr);
@@ -421,9 +427,9 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 CommonFunc.prototype.clear_group_childrens(this.main.group_end_cells_contours);
 
 
-                for (let lv_i = 0; lv_i == 0; /* < this.ColorParts.length; */lv_i++) {
+                for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {
 
-                    for (let lv_j = 0; lv_j == 0; /* < this.ColorParts[0].length;*/ lv_j++) {
+                    for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {
 
 
                         let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle_by_points(
@@ -432,7 +438,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             lv_color, //null,
                             lo_material
                         );
-
 
 
                         const geometry = new THREE.SphereGeometry(3);
