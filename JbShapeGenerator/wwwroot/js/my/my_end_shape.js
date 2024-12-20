@@ -168,6 +168,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
 
                     lo_line_curr = lo_line_hor.clone();
+                    //lo_line_curr.name = lv_i.toString();
 
 
                     if (lv_i == 0) {
@@ -255,6 +256,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
 
                     lo_line_curr = lo_line_vert.clone();
+
+                    //lo_line_curr.name = lo_line_curr.name + "_" + lv_i.toString();
+
+
 
                     if (lv_i == 0) {
                         //координаты начальной точки текущей кривой
@@ -395,23 +400,34 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             lo_material
                         );
 
+                        //if (lv_i % 2) {
+                        //    lo_rectangle.visible = false;
+                        //}
+
+                        //if (lv_j % 2) {
+                        //    lo_rectangle.visible = false;
+                        //}
+
+                        lo_rectangle.name = lv_i.toString() + "_" + lv_j.toString();
+
+
                         this.main.group_end_cells_contours.add(lo_rectangle);
 
 
 
 
-                        lo_sphere_curr = sphere.clone();
-                        lo_sphere_curr.position.x = this.ColorParts[lv_i][lv_j].left_bottom.x;
-                        lo_sphere_curr.position.y = this.ColorParts[lv_i][lv_j].left_bottom.y;
-                        lo_sphere_curr.position.z = 0;
-                        this.main.group_end_cells_contours.add(lo_sphere_curr);
+                        ////lo_sphere_curr = sphere.clone();
+                        ////lo_sphere_curr.position.x = this.ColorParts[lv_i][lv_j].left_bottom.x;
+                        ////lo_sphere_curr.position.y = this.ColorParts[lv_i][lv_j].left_bottom.y;
+                        ////lo_sphere_curr.position.z = 0;
+                        ////this.main.group_end_cells_contours.add(lo_sphere_curr);
 
 
-                        lo_sphere_curr = sphere.clone();
-                        lo_sphere_curr.position.x = this.ColorParts[lv_i][lv_j].right_top.x;
-                        lo_sphere_curr.position.y = this.ColorParts[lv_i][lv_j].right_top.y;
-                        lo_sphere_curr.position.z = 0;
-                        this.main.group_end_cells_contours.add(lo_sphere_curr);
+                        ////lo_sphere_curr = sphere.clone();
+                        ////lo_sphere_curr.position.x = this.ColorParts[lv_i][lv_j].right_top.x;
+                        ////lo_sphere_curr.position.y = this.ColorParts[lv_i][lv_j].right_top.y;
+                        ////lo_sphere_curr.position.z = 0;
+                        ////this.main.group_end_cells_contours.add(lo_sphere_curr);
 
                     }
                 }
@@ -597,6 +613,16 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         if (!lv_isInside) {
                             return;
                         }
+
+                        let lo_rectangle_color_cell = this.get_rectangle_color_cell(po_event /*lv_clickMouse.x, lv_clickMouse.y*/);
+
+                        if (lo_rectangle_color_cell) {
+
+                            lo_rectangle_color_cell.visible = !lo_rectangle_color_cell.visible;
+                        }
+
+
+
                     }
 
                     break;
@@ -611,27 +637,100 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
             }
         }
 
-        //====================================================================
 
+        //------------------------------------------------------------------------
+        EndShape.prototype.get_spline_position_by_side = function (po_side) {
 
-
-    }  // if (typeof this.create_rectangle !== "function")
-
-    //====================================================================
-
-
-
-    this.redraw_end_shape(
-        null,
-        null, null,          //   po_main,
-        null, null           //   pv_added_spline_num, pv_deleted_spline_num,
-    );                       //   po_is_use_data, po_sides_data
+            let lv_result = null;
 
 
 
 
 
-}
+            let lo_pos = null;
+            try {
+
+
+            }
+
+
+
+            catch (e) {
+
+                alert('error get_spline_position: ' + e.stack);
+
+            }
+
+        }
+        //------------------------------------------------------------------------
+        EndShape.prototype.get_rectangle_color_cell = function (po_event /*pv_x, pv_y*/) {
+
+            let lo_pos = null;
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                let lo_container = lo_active_side.container;
+
+                lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
+
+
+
+
+                let lv_rows = go_lateral_side_shape_generator.shapes.ar_splines.length;
+                let lv_cols = go_up_side_shape_generator.shapes.ar_splines.length;
+
+
+
+
+                for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
+
+                    lo_line_curr = lo_line_hor.clone();
+                    //lo_line_curr.name = lv_i.toString();
+
+
+                    if (lv_i == 0) {
+
+                        //координаты начальной точки текущей кривой
+                        if (go_lateral_side_shape_generator.shapes
+                            && go_lateral_side_shape_generator.shapes.ar_splines[lv_i]
+                            && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0]
+                            && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
+                            && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
+                        ) {
+
+
+
+
+                        }
+
+            catch (e) {
+
+                            alert('error redefine_arr_color_parts: ' + e.stack);
+
+                        }
+                    }
+                    //====================================================================
+
+
+
+                }  // if (typeof this.create_rectangle !== "function")
+
+                //====================================================================
+
+
+
+                this.redraw_end_shape(
+                    null,
+                    null, null,          //   po_main,
+                    null, null           //   pv_added_spline_num, pv_deleted_spline_num,
+                );                       //   po_is_use_data, po_sides_data
+
+
+
+
+
+            }
 
 // end Class Rectangle
 //=====================================================================

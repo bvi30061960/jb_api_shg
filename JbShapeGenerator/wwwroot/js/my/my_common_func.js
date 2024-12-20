@@ -133,29 +133,47 @@ export function CommonFunc() {
         //-----------------------------------------------------------------------------
         CommonFunc.prototype.recalc_coord_event2world = function (po_camera, po_container, pv_event_clientX, pv_event_clientY) {
 
-            const { top, left, width, height } = po_container.getBoundingClientRect();
-
             let lv_moveMouse = new THREE.Vector2();
 
-            // пересчёт координат с учётом положения контейнера three.js
-            lv_moveMouse.x = ((pv_event_clientX - left) / width) * 2 - 1;
-            lv_moveMouse.y = - ((pv_event_clientY - top) / height) * 2 + 1;
+            try {
 
-            let lo_pos = this.screenToWorld(
+                const { top, left, width, height } = po_container.getBoundingClientRect();
 
-                lv_moveMouse.x,
-                lv_moveMouse.y,
 
-                po_container.clientWidth,
-                po_container.clientHeight,
-                po_camera
-            )
+                // пересчёт координат с учётом положения контейнера three.js
+                lv_moveMouse.x = ((pv_event_clientX - left) / width) * 2 - 1;
+                lv_moveMouse.y = - ((pv_event_clientY - top) / height) * 2 + 1;
 
-            return lo_pos;
+                let lo_pos = this.screenToWorld(
+
+                    lv_moveMouse.x,
+                    lv_moveMouse.y,
+
+                    //20122024 {
+                    //po_container.clientWidth,
+                    //po_container.clientHeight,
+                    //20122024 }
+
+                    po_camera
+                )
+
+
+
+
+                return lo_pos;
+
+            }
+
+            catch (e) {
+
+                alert('error screenToWorld: ' + e.stack);
+
+            }
+
 
         }
         //---------------------------------------------------------------------------
-        CommonFunc.prototype.screenToWorld = function (pv_x, pv_y, pv_canvasWidth, pv_canvasHeight, po_camera) {
+        CommonFunc.prototype.screenToWorld = function (pv_x, pv_y, /* 20122024 pv_canvasWidth, pv_canvasHeight,*/ po_camera) {
 
             try {
                 let lv_coords = new THREE.Vector3(pv_x, pv_y, 0);
@@ -1642,7 +1660,7 @@ export function CommonFunc() {
                     po_left_bottom.x, po_left_bottom.y, 0,  // Левая нижняя точка
                     po_left_bottom.x, po_right_top.y, 0     // Левая верхняя точка (замкнем квадрат)
 
-                ]);                                       
+                ]);
 
                 let squareGeometry = new LineGeometry();
 
