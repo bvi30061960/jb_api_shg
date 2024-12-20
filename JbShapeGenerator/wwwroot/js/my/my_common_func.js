@@ -1565,8 +1565,6 @@ export function CommonFunc() {
         //---------------------------------------------------------------------------------------------
         CommonFunc.prototype.get_drawing_rectangle_by_points = function (po_left_bottom, po_right_top, pv_color, po_material) {
 
-             //pv_width, pv_height, pv_color, po_material
-
             let lo_result = null;
             let lo_renderer = null;
             let lo_material = null;
@@ -1597,26 +1595,63 @@ export function CommonFunc() {
                     });
                 }
 
-                let lo_geometry = new LineGeometry();
-                lo_geometry.setPositions([
-                    //16122024 {
-                //    po_left_bottom.y, po_left_bottom.x,  0,                                           //y0, x0, 0,
-                //    po_left_bottom.y, po_right_top.x - po_left_bottom.x, 0,                        //y0, pv_width, 0,
-                //    po_right_top.y - po_left_bottom.y, po_right_top.x - po_left_bottom.x, 0,   //pv_height, pv_width, 0,
-                //    po_right_top.y - po_left_bottom.y, po_left_bottom.x, 0,                       //pv_height, x0, 0,
-                    //    po_left_bottom.y, po_left_bottom.x, 0                                            //y0, x0, 0
 
-                    po_left_bottom.x, po_left_bottom.y, 0,                                           //y0, x0, 0,
-                    po_left_bottom.x, po_right_top.y - po_left_bottom.y, 0,                        //y0, pv_width, 0,
-                    po_right_top.x - po_left_bottom.x, po_right_top.y - po_left_bottom.y, 0,   //pv_height, pv_width, 0,
-                    po_right_top.x - po_left_bottom.x, po_left_bottom.y, 0,                       //pv_height, x0, 0,
-                    po_left_bottom.x, po_left_bottom.y, 0                                            //y0, x0, 0
 
-                    // 16122024 }
 
-                ]);
 
-                lo_result = new Line2(lo_geometry, lo_material);
+
+                //////let lo_geometry = new LineGeometry();
+                //////lo_geometry.setPositions([
+                //////    //16122024 {
+                ////////    po_left_bottom.y, po_left_bottom.x,  0,                                           //y0, x0, 0,
+                ////////    po_left_bottom.y, po_right_top.x - po_left_bottom.x, 0,                        //y0, pv_width, 0,
+                ////////    po_right_top.y - po_left_bottom.y, po_right_top.x - po_left_bottom.x, 0,   //pv_height, pv_width, 0,
+                ////////    po_right_top.y - po_left_bottom.y, po_left_bottom.x, 0,                       //pv_height, x0, 0,
+                //////    //    po_left_bottom.y, po_left_bottom.x, 0                                            //y0, x0, 0
+
+                //////    po_left_bottom.x, po_left_bottom.y, 0,                                           //y0, x0, 0,
+                //////    po_left_bottom.x, po_right_top.y - po_left_bottom.y, 0,                        //y0, pv_width, 0,
+                //////    po_right_top.x - po_left_bottom.x, po_right_top.y - po_left_bottom.y, 0,   //pv_height, pv_width, 0,
+                //////    po_right_top.x - po_left_bottom.x, po_left_bottom.y, 0                       //pv_height, x0, 0,
+                //////    ///////////////////po_left_bottom.x, po_left_bottom.y, 0                                            //y0, x0, 0
+
+                //////    // 16122024 }
+
+                //////]);
+
+
+                //po_left_bottom, po_right_top
+
+                const squareVertices = new Float32Array([
+                    //-2, 2, 0,  // Левая верхняя точка
+                    //2, 2, 0,   // Правая верхняя точка
+                    //2, 2, 0,   // Правая верхняя точка
+                    //2, -2, 0,   // Правая нижняя точка
+                    //2, -2, 0,   // Правая нижняя точка
+                    //-2, -2, 0,  // Левая нижняя точка
+                    //-2, -2, 0,  // Левая нижняя точка
+                    //-2, 2, 0   // Левая верхняя точка (замкнем квадрат)
+
+
+                    po_left_bottom.x, po_right_top.y, 0,    // Левая верхняя точка
+                    po_right_top.x, po_right_top.y, 0,      // Правая верхняя точка
+                    po_right_top.x, po_right_top.y, 0,      // Правая верхняя точка
+                    po_right_top.x, po_left_bottom.y, 0,    // Правая нижняя точка
+                    po_right_top.x, po_left_bottom.y, 0,    // Правая нижняя точка
+                    po_left_bottom.x, po_left_bottom.y, 0,  // Левая нижняя точка
+                    po_left_bottom.x, po_left_bottom.y, 0,  // Левая нижняя точка
+                    po_left_bottom.x, po_right_top.y, 0     // Левая верхняя точка (замкнем квадрат)
+
+                ]);                                       
+
+                let squareGeometry = new LineGeometry();
+
+                squareGeometry.setPositions(squareVertices);
+
+                let squareLine = new Line2(squareGeometry, lo_material);
+                lo_result = new Line2(squareGeometry, lo_material);
+
+                //lo_result = new Line2(lo_geometry, lo_material);
 
                 return lo_result;
 
