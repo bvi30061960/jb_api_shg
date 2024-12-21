@@ -2088,6 +2088,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 // очистка обработчиков событий
                 document.removeEventListener('pointerdown', this.onPointerDown);
+
+
+
                 document.removeEventListener('pointerup', this.onPointerUp);
                 //document.addEventListener('pointermove', null);
                 window.removeEventListener('resize', this.onWindowResize);
@@ -2097,6 +2100,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 if (lo_passive_side_shape_generator) {
                     document.removeEventListener('pointerdown', lo_passive_side_shape_generator.onPointerDown);
+
                     document.removeEventListener('pointerup', lo_passive_side_shape_generator.onPointerUp);
                     //document.addEventListener('pointermove', null);
                     window.removeEventListener('resize', lo_passive_side_shape_generator.onWindowResize);
@@ -2127,6 +2131,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 document.addEventListener('pointerdown', this.onPointerDown);
+
                 document.addEventListener('pointerup', this.onPointerUp);
                 //document.addEventListener('pointermove', onPointerMove);
                 window.addEventListener('resize', this.onWindowResize);
@@ -3237,15 +3242,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 ////lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
 
 
-                if (lo_active_side.my_prefix == gc_id_prefix_end) {  //15122024 
+                if (lo_active_side.my_prefix == gc_id_prefix_end) {  //15122024
 
-                    go_end_side_shape_generator.end_shape.redraw_end_shape(
-                        null, //lo_active_side,
-                        null, //lo_active_side.shapes.shape_amount_curves - 1,
-                        null,
-                        null, null
-                    );
-
+                    //21122024 {
+                    //go_end_side_shape_generator.end_shape.redraw_end_shape(
+                    //    null, //lo_active_side,
+                    //    null, //lo_active_side.shapes.shape_amount_curves - 1,
+                    //    null,
+                    //    null, null
+                    //);
+                    //21122024 }
                 }
                 else {
 
@@ -3280,12 +3286,26 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             let lo_active_side = get_active_side_shape_generator();
 
+            let lv_is_gragging;
+
             try {
 
                 if (lo_active_side.my_prefix == gc_id_prefix_end) {
 
-                    lo_active_side.end_shape.handle_click_on_end_side(po_event)
-                    return;
+                    if (po_event.button == 0 && po_event.buttons == 1) {
+
+                        // Левая кнопка
+
+                        lo_active_side.button_down = true;
+                        lv_is_gragging = false;
+
+                        //alert("раз");
+                        lo_active_side.end_shape.handle_click_on_end_side(po_event);
+
+                        po_event.stopPropagation()
+                    }
+
+                    return false;
                 }
 
 
@@ -3327,7 +3347,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     lo_active_side.button_down = true;
 
 
-                    let lv_is_gragging = false;
+                    lv_is_gragging = false;
+
 
                     while (true) {
 
