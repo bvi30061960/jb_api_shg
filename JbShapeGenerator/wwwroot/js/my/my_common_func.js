@@ -1583,7 +1583,11 @@ export function CommonFunc() {
 
 
         //---------------------------------------------------------------------------------------------
-        CommonFunc.prototype.get_drawing_rectangle_by_points = function (po_left_bottom, po_right_top, pv_color, po_material) {
+        CommonFunc.prototype.get_drawing_rectangle_by_points = function (po_left_bottom, po_right_top, pv_color, po_material,
+            pv_delta_x,
+            pv_delta_y
+
+        ) {
 
             let lo_result = null;
             let lo_renderer = null;
@@ -1653,14 +1657,14 @@ export function CommonFunc() {
                     //-2, 2, 0   // Левая верхняя точка (замкнем квадрат)
 
 
-                    po_left_bottom.x, po_right_top.y, 0,    // Левая верхняя точка
-                    po_right_top.x, po_right_top.y, 0,      // Правая верхняя точка
-                    po_right_top.x, po_right_top.y, 0,      // Правая верхняя точка
-                    po_right_top.x, po_left_bottom.y, 0,    // Правая нижняя точка
-                    po_right_top.x, po_left_bottom.y, 0,    // Правая нижняя точка
-                    po_left_bottom.x, po_left_bottom.y, 0,  // Левая нижняя точка
-                    po_left_bottom.x, po_left_bottom.y, 0,  // Левая нижняя точка
-                    po_left_bottom.x, po_right_top.y, 0     // Левая верхняя точка (замкнем квадрат)
+                    po_left_bottom.x + pv_delta_x, po_right_top.y + pv_delta_y, 0,    // Левая верхняя точка
+                    po_right_top.x + pv_delta_x, po_right_top.y + pv_delta_y, 0,      // Правая верхняя точка
+                    po_right_top.x + pv_delta_x, po_right_top.y + pv_delta_y, 0,      // Правая верхняя точка
+                    po_right_top.x + pv_delta_x, po_left_bottom.y + pv_delta_y, 0,    // Правая нижняя точка
+                    po_right_top.x + pv_delta_x, po_left_bottom.y + pv_delta_y, 0,    // Правая нижняя точка
+                    po_left_bottom.x + pv_delta_x, po_left_bottom.y + pv_delta_y, 0,  // Левая нижняя точка
+                    po_left_bottom.x + pv_delta_x, po_left_bottom.y + pv_delta_y, 0,  // Левая нижняя точка
+                    po_left_bottom.x + pv_delta_x, po_right_top.y + pv_delta_y, 0     // Левая верхняя точка (замкнем квадрат)
 
                 ]);
 

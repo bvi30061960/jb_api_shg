@@ -388,20 +388,36 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let sphere = new THREE.Mesh(geometry, material);
                 let lo_sphere_curr = null;
 
+                let lv_delta_x = 0;
+                let lv_delta_y = 0;
 
 
                 for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {
                     for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {
 
-                        if (lv_i !== lv_j) {
-                            continue;
+                        //if (lv_i !== lv_j) {
+                        //    continue;
+                        //}
+
+                        lv_delta_y = 0;
+                        if (lv_i % 2) {
+                            lv_delta_y = -1;
                         }
+
+                        lv_delta_x = 0;
+                        if (lv_j % 2) {
+                            lv_delta_x = -1;
+                        }
+
+
 
                         let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle_by_points(
                             this.ColorParts[lv_i][lv_j].left_bottom,
                             this.ColorParts[lv_i][lv_j].right_top,
                             lv_color, //null,
-                            lo_material
+                            lo_material,
+                            lv_delta_x,
+                            lv_delta_y
                         );
 
                         //if (lv_i % 2) {
@@ -703,7 +719,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     //координата начальной точки текущей кривой
                     lv_spline_position = go_lateral_side_shape_generator.params.shape_width
-                                            - this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
+                        - this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
 
                     if (lo_click_pos.y >= lv_spline_position) {
 
