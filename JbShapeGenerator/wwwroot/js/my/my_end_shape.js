@@ -393,6 +393,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {
                     for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {
 
+                        if (lv_i !== lv_j) {
+                            continue;
+                        }
+
                         let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle_by_points(
                             this.ColorParts[lv_i][lv_j].left_bottom,
                             this.ColorParts[lv_i][lv_j].right_top,
@@ -677,13 +681,13 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
 
                     //координата начальной точки текущей кривой
-                    lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
+                    lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_up_side_shape_generator, lv_i);
 
                     if (lo_click_pos.x <= lv_spline_position) {
 
-                        if (lv_i > 0) {
-                            lv_cell_num_row = lv_i + 1;
-                        }
+                        //if (lv_i > 0) {
+                        lv_cell_num_row = lv_i;
+                        //}
                         break;
                     }
                 }
@@ -693,18 +697,19 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     return null;
                 }
 
-                //-----------------------------------------------------------------
+                //----------
 
                 for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
 
                     //координата начальной точки текущей кривой
-                    lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_up_side_shape_generator, lv_i);
+                    lv_spline_position = go_lateral_side_shape_generator.params.shape_width
+                                            - this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
 
-                    if (lo_click_pos.y <= lv_spline_position) {
+                    if (lo_click_pos.y >= lv_spline_position) {
 
-                        if (lv_i > 0) {
-                            lv_cell_num_column = lv_i + 1;
-                        }
+                        //if (lv_i > 0) {
+                        lv_cell_num_column = lv_i;
+                        //}
                         break;
                     }
                 }

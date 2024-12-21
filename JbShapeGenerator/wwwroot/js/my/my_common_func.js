@@ -1749,7 +1749,8 @@ export function CommonFunc() {
             let lv_result = null;
 
             try {
-                if (!lv_cell_num_row || !lv_cell_num_column) {
+                if (lv_cell_num_row == null || lv_cell_num_row < 0
+                    || lv_cell_num_column == null || lv_cell_num_column < 0) {
 
                     return lv_result;
                 }
