@@ -619,14 +619,24 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         if (lo_rectangle_color_cell) {
 
                             lo_rectangle_color_cell.visible = !lo_rectangle_color_cell.visible;
+
+
+                            //lo_rectangle_color_cell.needsUpdate = true;
                         }
 
 
 
                     }
 
+
+                    //lo_active_side.render();
+
                     break;
                 }// while
+
+
+                lo_active_side.render();
+
 
             }
 
@@ -637,33 +647,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
             }
         }
 
-
-        //------------------------------------------------------------------------
-        EndShape.prototype.get_spline_position_by_side = function (po_side) {
-
-            let lv_result = null;
-
-
-
-
-
-            let lo_pos = null;
-            try {
-
-
-            }
-
-
-
-            catch (e) {
-
-                alert('error get_spline_position: ' + e.stack);
-
-            }
-
-        }
         //------------------------------------------------------------------------
         EndShape.prototype.get_rectangle_color_cell = function (po_event /*pv_x, pv_y*/) {
+
+            let lo_result = null;
 
             let lo_pos = null;
             try {
@@ -672,65 +659,151 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 let lo_container = lo_active_side.container;
 
-                lo_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
+                let lo_click_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
+
+                let lv_rows = go_lateral_side_shape_generator.shapes.ar_splines.length + 1;
+                let lv_cols = go_up_side_shape_generator.shapes.ar_splines.length + 1;
 
 
+                let lv_spline_position;
 
+                let lv_prev_spline_position = 0;
 
-                let lv_rows = go_lateral_side_shape_generator.shapes.ar_splines.length;
-                let lv_cols = go_up_side_shape_generator.shapes.ar_splines.length;
-
+                let lv_cell_num_column = null;
+                let lv_cell_num_row = null;
 
 
 
                 for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
 
-                    lo_line_curr = lo_line_hor.clone();
-                    //lo_line_curr.name = lv_i.toString();
+                    //координата начальной точки текущей кривой
+                    lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
 
+                    if (lo_click_pos.x <= lv_spline_position) {
 
-                    if (lv_i == 0) {
-
-                        //координаты начальной точки текущей кривой
-                        if (go_lateral_side_shape_generator.shapes
-                            && go_lateral_side_shape_generator.shapes.ar_splines[lv_i]
-                            && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0]
-                            && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
-                            && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
-                        ) {
-
-
-
-
+                        if (lv_i > 0) {
+                            lv_cell_num_row = lv_i + 1;
                         }
+                        break;
+                    }
+                }
+
+                if (lv_cell_num_row == null) {
+
+                    return null;
+                }
+
+                //-----------------------------------------------------------------
+
+                for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
+
+                    //координата начальной точки текущей кривой
+                    lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_up_side_shape_generator, lv_i);
+
+                    if (lo_click_pos.y <= lv_spline_position) {
+
+                        if (lv_i > 0) {
+                            lv_cell_num_column = lv_i + 1;
+                        }
+                        break;
+                    }
+                }
+
+                if (lv_cell_num_column == null) {
+
+                    return null;
+                }
+
+                // Формирование имени контура по номеру строки и столбца
+
+                let lv_rectangle_name = this.main.common_func.get_name_by_numrow_numcol(lv_cell_num_row, lv_cell_num_column);
+
+                // Чтение объекта контура по имени
+                if (lv_rectangle_name) {
+                    lo_result = this.main.group_end_cells_contours.getObjectByName(lv_rectangle_name);
+                }
+
+                return lo_result;
+            }
 
             catch (e) {
 
-                            alert('error redefine_arr_color_parts: ' + e.stack);
-
-                        }
-                    }
-                    //====================================================================
-
-
-
-                }  // if (typeof this.create_rectangle !== "function")
-
-                //====================================================================
-
-
-
-                this.redraw_end_shape(
-                    null,
-                    null, null,          //   po_main,
-                    null, null           //   pv_added_spline_num, pv_deleted_spline_num,
-                );                       //   po_is_use_data, po_sides_data
-
-
-
-
+                alert('error get_rectangle_color_cell: ' + e.stack);
 
             }
+        }
+
+
+
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.get_spline_position_by_side_and_num_spline = function (po_side, pv_num_spline) {
+
+            let lv_result = null;
+
+
+            try {
+
+                if (!po_side) {
+
+                    return lv_result;
+                }
+
+                if (pv_num_spline == null || pv_num_spline < 0) {
+
+                    return lv_result;
+                }
+
+                if (po_side.shapes
+                    && po_side.shapes.ar_splines[pv_num_spline]
+                    && po_side.shapes.ar_splines[pv_num_spline].children[0]
+                    && po_side.shapes.ar_splines[pv_num_spline].children[0].children[0]
+                    && po_side.shapes.ar_splines[pv_num_spline].children[0].children[0].position.x
+                ) {
+                    lv_result = po_side.shapes.ar_splines[pv_num_spline].children[0].children[0].position.x;
+                }
+                else {
+
+                    return lv_result;
+                }
+
+            }
+
+
+            catch (e) {
+
+                alert('error get_spline_position: ' + e.stack);
+
+            }
+
+            return lv_result;
+
+        }
+
+
+
+
+        //====================================================================
+
+
+
+    }  // if (typeof this.create_rectangle !== "function")
+
+    //====================================================================
+
+
+
+    this.redraw_end_shape(
+        null,
+        null, null,          //   po_main,
+        null, null           //   pv_added_spline_num, pv_deleted_spline_num,
+    );                       //   po_is_use_data, po_sides_data
+
+
+
+
+
+}
 
 // end Class Rectangle
 //=====================================================================

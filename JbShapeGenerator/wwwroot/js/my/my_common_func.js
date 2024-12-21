@@ -133,6 +133,8 @@ export function CommonFunc() {
         //-----------------------------------------------------------------------------
         CommonFunc.prototype.recalc_coord_event2world = function (po_camera, po_container, pv_event_clientX, pv_event_clientY) {
 
+            let lo_pos = null;
+
             let lv_moveMouse = new THREE.Vector2();
 
             try {
@@ -144,7 +146,7 @@ export function CommonFunc() {
                 lv_moveMouse.x = ((pv_event_clientX - left) / width) * 2 - 1;
                 lv_moveMouse.y = - ((pv_event_clientY - top) / height) * 2 + 1;
 
-                let lo_pos = this.screenToWorld(
+                lo_pos = this.screenToWorld(
 
                     lv_moveMouse.x,
                     lv_moveMouse.y,
@@ -1739,7 +1741,29 @@ export function CommonFunc() {
 
 
 
+        //-----------------------------------------------------------------
 
+        CommonFunc.prototype.get_name_by_numrow_numcol = function (lv_cell_num_row, lv_cell_num_column) {
+
+
+            let lv_result = null;
+
+            try {
+                if (!lv_cell_num_row || !lv_cell_num_column) {
+
+                    return lv_result;
+                }
+
+                return lv_cell_num_row.toString() + "_" + lv_cell_num_column.toString();
+            }
+
+            catch (e) {
+
+                alert('error get_name_by_numrow_numcol: ' + e.stack);
+
+            }
+
+        }
 
         //-----------------------------------------------------------------
 
