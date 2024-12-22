@@ -962,19 +962,6 @@ export function CommonFunc() {
 
             // Очистка сцены
 
-            ////while (po_scene.children.length > 0) {
-            ////	//po_scene.remove(po_scene.children[0]);
-
-            ////	if (pv_nodelete_type) {
-            ////		if (po_scene.children[0].type !== pv_nodelete_type) {
-            ////			this.removeObjectsWithChildren(po_scene.children[0], true);
-            ////		}
-            ////	}
-            ////	else {
-            ////		this.removeObjectsWithChildren(po_scene.children[0], true);
-            ////	}
-            ////}
-
             let lv_beg = po_scene.children.length - 1;
             let lv_end = 0;
 

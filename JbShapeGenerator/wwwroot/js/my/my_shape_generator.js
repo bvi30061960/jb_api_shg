@@ -2340,35 +2340,56 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         }
         //------------------------------------------------------------------------
-        Shape_generator.prototype.onColorChange = function (/*pv_id,*/ pv_value) {
+        Shape_generator.prototype.onColorChange = function ( pv_value) {
 
             let lo_active_side = get_active_side_shape_generator();
 
+            //21122024 
+            try {
 
-            if (lo_active_side.group_contours.userData) {
+                while (true) {
 
-                if (lo_active_side.group_contours.userData.num_spline_left != null || lo_active_side.group_contours.userData.num_spline_right != null) {
+                    if (lo_active_side.my_prefix == gc_id_prefix_end) { //"end_shape"
 
-                    let lar_splines_order = [];
-                    lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();
+                        go_end_side_shape_generator.end_shape.set_color_to_selected_rectangle_cells(pv_value);
 
-                    let lv_num_spline_left = lo_active_side.group_contours.userData.num_spline_left;
-                    let lv_num_spline_right = lo_active_side.group_contours.userData.num_spline_right;
-
-
-                    let lo_spline_left = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
-                    let lo_spline_right = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
-
-
-                    let lv_hexColor = lo_active_side.common_func.rgbToNumber(pv_value);
-
-                    lo_active_side.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true/*, true*/);
-
+                    break;
                 }
+
+
+                if (lo_active_side.group_contours.userData) {
+
+                    if (lo_active_side.group_contours.userData.num_spline_left != null || lo_active_side.group_contours.userData.num_spline_right != null) {
+
+                        let lar_splines_order = [];
+                        lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();
+
+                        let lv_num_spline_left = lo_active_side.group_contours.userData.num_spline_left;
+                        let lv_num_spline_right = lo_active_side.group_contours.userData.num_spline_right;
+
+
+                        let lo_spline_left = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
+                        let lo_spline_right = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
+
+
+                        let lv_hexColor = lo_active_side.common_func.rgbToNumber(pv_value);
+
+                        lo_active_side.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true);
+
+                    }
+                }
+
+                    break;
+            } // while true
+
+                lo_active_side.render();
+
             }
+            catch (e) { //21122024
 
-            lo_active_side.render();
+                alert('error onColorChange: ' + e.stack);
 
+            }
         }
 
 
@@ -3242,15 +3263,15 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 ////lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
 
 
-                if (lo_active_side.my_prefix == gc_id_prefix_end) {  //15122024
+                if (lo_active_side.my_prefix !== gc_id_prefix_end) {  //15122024
 
                     //21122024 {
-                    //go_end_side_shape_generator.end_shape.redraw_end_shape(
-                    //    null, //lo_active_side,
-                    //    null, //lo_active_side.shapes.shape_amount_curves - 1,
-                    //    null,
-                    //    null, null
-                    //);
+                    go_end_side_shape_generator.end_shape.redraw_end_shape(
+                        null, //lo_active_side,
+                        null, //lo_active_side.shapes.shape_amount_curves - 1,
+                        null,
+                        null, null
+                    );
                     //21122024 }
                 }
                 else {
@@ -3296,13 +3317,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                         // Левая кнопка
 
-                        lo_active_side.button_down = true;
+                        //lo_active_side.button_down = true;
                         lv_is_gragging = false;
 
                         //alert("раз");
                         lo_active_side.end_shape.handle_click_on_end_side(po_event);
 
-                        po_event.stopPropagation()
+                        //po_event.stopPropagation()
                     }
 
                     return false;
