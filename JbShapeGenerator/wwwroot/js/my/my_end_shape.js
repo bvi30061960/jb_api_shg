@@ -157,25 +157,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     if (lv_i == 0) {
 
                         //координаты начальной точки текущей кривой
-
-                        //21122024 {
-                        //if (go_lateral_side_shape_generator.shapes
-                        //    && go_lateral_side_shape_generator.shapes.ar_splines[lv_i]
-                        //    && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0]
-                        //    && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
-                        //    && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
-                        //) {
-
-                        //    lv_spline_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
-                        //    lv_line_position = go_lateral_side_shape_generator.params.shape_width - lv_spline_position;
-                        //}
-
                         lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
                         lv_line_position = go_lateral_side_shape_generator.params.shape_width - lv_spline_position;
-                        //21122024 }
-
-
-
 
                         lv_cell_position = go_lateral_side_shape_generator.params.shape_width;
 
@@ -208,24 +191,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             lo_line_curr = lo_line_hor.clone();
 
                             //координаты начальной точки текущей кривой
-
-                            //21122024 {
-                            //if (go_lateral_side_shape_generator.shapes
-                            //    && go_lateral_side_shape_generator.shapes.ar_splines[lv_i]
-                            //    && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0]
-                            //    && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0]
-                            //    && go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x
-                            //) {
-
-                            //    lv_spline_position = go_lateral_side_shape_generator.shapes.ar_splines[lv_i].children[0].children[0].position.x;
-                            //    lv_line_position = go_lateral_side_shape_generator.params.shape_width - lv_spline_position;
-                            //}
-
                             lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
                             lv_line_position = go_lateral_side_shape_generator.params.shape_width - lv_spline_position;
-
-                            //21122024 }
-
 
 
                             lo_line_curr.position.y = lv_line_position; // lv_curve_distance_hor * (lv_i + 1);
@@ -245,7 +212,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             lv_prev_line_position = lv_line_position; // lv_spline_position; // lv_cell_position; // lv_line_position;
 
                             this.main.group_end_shape.add(lo_line_curr);
-                            ///}
 
                         }
 
@@ -692,10 +658,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
         }
 
         //------------------------------------------------------------------------
-        EndShape.prototype.get_rectangle_color_cell = function (po_event /*pv_x, pv_y*/) {
+        EndShape.prototype.get_rectangle_color_cell = function (po_event) {
 
             //let lo_result = null;
-            let lo_rectangle = null;
+            let lo_result_rectangle = null;
 
             let lo_pos = null;
             try {
@@ -730,8 +696,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             - this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
                     }
 
-
-
                     if (lo_click_pos.y >= lv_spline_position) {
 
                         lv_cell_num_row = lv_i;
@@ -741,8 +705,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 }
 
                 if (lv_cell_num_row == null) {
-                    //if (lv_cell_num_column == null) {
-
                     return null;
                 }
 
@@ -777,12 +739,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 // Чтение объекта контура по имени
                 if (lv_rectangle_name) {
-                    lo_rectangle = this.main.group_end_cells_contours.getObjectByName(lv_rectangle_name);
+
+                    lo_result_rectangle = this.main.group_end_cells_contours.getObjectByName(lv_rectangle_name);
                 }
 
-                //return lo_result;
-
-                return { rectangle: lo_rectangle, row: lv_cell_num_row, col: lv_cell_num_column }
+                return { rectangle: lo_result_rectangle, row: lv_cell_num_row, col: lv_cell_num_column }
             }
 
             catch (e) {
@@ -792,6 +753,36 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
             }
         }
 
+        //------------------------------------------------------------------------
+        EndShape.prototype.refresh_end_shapes = function () {
+
+            try {
+
+                let lv_nrows = this.ColorParts.length;
+                let lv_ncols = this.ColorParts[0].length;
+                let lv_color = null;
+
+                for (let lv_i = 0; lv_i < lv_nrows; lv_i++) {
+
+                    for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
+
+                        //if (this.ColorParts[lv_i][lv_j].is_contour_visible) {
+
+                        lv_color = this.ColorParts[lv_i][lv_j].cell_color;
+                        this.set_color_to_rectangle_cell(lv_color, lv_i, lv_j);
+                        //}
+
+                    }
+
+                }
+            }
+
+            catch (e) {
+
+                alert('error refresh_end_shapes: ' + e.stack);
+
+            }
+        }
 
 
         //------------------------------------------------------------------------
@@ -847,6 +838,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 }
 
 
+                //lo_rectangle.visible = false;
+                //this.ColorParts[pv_cell_num_row][pv_cell_num_col].is_contour_visible = false;
+
+
+
                 let lar_shape_points = [];
                 lar_shape_points.push(
                     new THREE.Vector2(this.ColorParts[pv_cell_num_row][pv_cell_num_col].left_bottom.x, this.ColorParts[pv_cell_num_row][pv_cell_num_col].left_bottom.y/*, 0*/),
@@ -861,7 +857,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lo_shape = new THREE.Shape(lar_shape_points);
                 let lo_geometry = new THREE.ShapeGeometry(lo_shape);
                 let lo_mesh = new THREE.Mesh(lo_geometry, new THREE.MeshBasicMaterial({ color: pv_color_value/*, side: THREE.DoubleSide*/ }));
-                this.main.group_end_cells_contours.add(lo_mesh);
+                //this.main.group_end_cells_contours.add(lo_mesh);
+                this.main.group_end_cells_mesh.add(lo_mesh);
 
 
 

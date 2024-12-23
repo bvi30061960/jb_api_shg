@@ -62,6 +62,7 @@ const cv_name_group_contours = "group_contours";
 const cv_name_group_color_mesh = "group_color_mesh";
 const cv_name_group_end_shape = "group_end_shape";
 const cv_name_group_end_cells_contours = "group_end_cells_contours";
+const cv_name_group_end_cells_mesh = "group_end_cells_mesh";
 //30102024 }
 
 export var go_up_side_shape_generator = null;
@@ -710,21 +711,24 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 else {
 
-                    //12122024 {
                     this.group_end_shape = new THREE.Group();
                     this.group_end_shape.name = cv_name_group_end_shape;
+                    this.group_end_shape.renderOrder = 5;
 
                     this.group_end_cells_contours = new THREE.Group();
                     this.group_end_cells_contours.name = cv_name_group_end_cells_contours;
+                    this.group_end_cells_contours.renderOrder = 3;
 
-
+                    this.group_end_cells_mesh = new THREE.Group();
+                    this.group_end_cells_mesh.name = cv_name_group_end_cells_mesh;
+                    this.group_end_cells_mesh.renderOrder = 2;
 
                     this.end_shape = new EndShape(this);
                     //this.group_end_shape.add(this.end_shape);
 
                     this.scene.add(this.group_end_shape);
                     this.scene.add(this.group_end_cells_contours);
-                    //12122024 }
+                    this.scene.add(this.group_end_cells_mesh);
 
                 }
 
