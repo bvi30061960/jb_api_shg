@@ -62,7 +62,7 @@ const cv_name_group_contours = "group_contours";
 const cv_name_group_color_mesh = "group_color_mesh";
 const cv_name_group_end_shape = "group_end_shape";
 const cv_name_group_end_cells_contours = "group_end_cells_contours";
-const cv_name_group_end_cells_mesh = "group_end_cells_mesh";
+const cv_name_end_group_cells_mesh = "end_group_cells_mesh";
 //30102024 }
 
 export var go_up_side_shape_generator = null;
@@ -462,7 +462,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-                $.fn.colorPicker.defaults.colors = ['fa0d00', 'fa6e00', 'faf100', '3dfa00', '00a7fa', '3b00fa', 'ffffff'];
+                $.fn.colorPicker.defaults.colors = [
+                    'ffffff',
+                    'fa0d00',
+                    'fa6e00',
+                    'faf100',
+                    '3dfa00',
+                    '00a7fa',
+                    '3b00fa',
+                    'f0f0f0' //Constants.background_color
+                ];
 
 
                 switch (this.my_prefix) {
@@ -528,7 +537,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.container = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape);//20062024);
                 this.scene = new THREE.Scene();
-                this.scene.background = new THREE.Color(0xf0f0f0);
+                //this.scene.background = new THREE.Color(0xf0f0f0);
+                this.scene.background = new THREE.Color(Constants.background_color);
+                //this.scene.background = new THREE.Color(0xfff000);
 
                 let lo_cameraPersp, lo_cameraOrtho;
 
@@ -719,16 +730,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.group_end_cells_contours.name = cv_name_group_end_cells_contours;
                     this.group_end_cells_contours.renderOrder = 3;
 
-                    this.group_end_cells_mesh = new THREE.Group();
-                    this.group_end_cells_mesh.name = cv_name_group_end_cells_mesh;
-                    this.group_end_cells_mesh.renderOrder = 2;
+                    this.end_group_cells_mesh = new THREE.Group();
+                    this.end_group_cells_mesh.name = cv_name_end_group_cells_mesh;
+                    this.end_group_cells_mesh.renderOrder = 2;
 
                     this.end_shape = new EndShape(this);
                     //this.group_end_shape.add(this.end_shape);
 
                     this.scene.add(this.group_end_shape);
                     this.scene.add(this.group_end_cells_contours);
-                    this.scene.add(this.group_end_cells_mesh);
+                    this.scene.add(this.end_group_cells_mesh);
 
                 }
 
@@ -3286,9 +3297,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
                     lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
-
-
                     //16122024 }
+
+                    //go_end_side_shape_generator.end_shape.refresh_end_shapes(); //22122024
+
 
                 }
 
@@ -3513,6 +3525,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                     }//04122024
+
 
                     lo_active_side.render();
 

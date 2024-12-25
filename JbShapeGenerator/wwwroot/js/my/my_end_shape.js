@@ -77,9 +77,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lv_lateral_splines_amount = go_lateral_side_shape_generator.shapes.shape_amount_curves;
 
 
-
-                //14122024 if (po_main) {
-
                 // переопределение размерности массива цветов
 
                 this.redefine_arr_color_parts(
@@ -87,9 +84,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     lv_up_splines_amount, lv_lateral_splines_amount,
                     pv_added_spline_num, pv_deleted_spline_num
                 );
-
-                //14122024 }
-
 
 
                 CommonFunc.prototype.clear_group_childrens(this.main.group_end_shape);
@@ -119,9 +113,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lo_line_hor = null;
                 let lo_line_vert = null;
 
-                //let lv_curve_distance_vert = go_up_side_shape_generator.params.shape_width / lv_rows;
-                //let lv_curve_distance_hor = go_lateral_side_shape_generator.params.shape_width / lv_cols;
-
                 var lo_material = new THREE.LineBasicMaterial({
                     color: Constants.shape_line_color
                 });
@@ -139,10 +130,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 lo_line_vert = new THREE.LineSegments(lo_geom_vert, lo_material);
 
 
-
-                //let lv_prev_y = null;
-
-
                 let lv_line_position = 0;
                 let lv_prev_line_position = 0;
                 let lv_cell_position = 0;
@@ -151,8 +138,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
 
                     lo_line_curr = lo_line_hor.clone();
-                    //lo_line_curr.name = lv_i.toString();
-
 
                     if (lv_i == 0) {
 
@@ -163,7 +148,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         lv_cell_position = go_lateral_side_shape_generator.params.shape_width;
 
                         for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
-                            this.ColorParts[lv_i][lv_j].right_top.y = lv_cell_position;// lv_spline_position; // lv_cell_position;
+                            this.ColorParts[lv_i][lv_j].right_top.y = lv_cell_position;
                         }
 
                         lo_line_curr.position.y = lv_line_position;
@@ -330,6 +315,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 this.draw_cells_contours();
 
+
+                this.refresh_end_shapes(); //23122024
+
+
             }
 
             catch (e) {
@@ -364,11 +353,13 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 CommonFunc.prototype.clear_group_childrens(this.main.group_end_cells_contours);
 
 
+                //24122024 {
+                //////const geometry = new THREE.SphereGeometry(3);
+                //////const material = new THREE.MeshBasicMaterial({ mcolor: 0xff000f, side: THREE.BackSide });
+                //////let sphere = new THREE.Mesh(geometry, material);
+                //////let lo_sphere_curr = null;
+                //24122024 }
 
-                const geometry = new THREE.SphereGeometry(3);
-                const material = new THREE.MeshBasicMaterial({ color: 0xff000f, side: THREE.BackSide });
-                let sphere = new THREE.Mesh(geometry, material);
-                let lo_sphere_curr = null;
 
                 let lv_delta = 0.5;
                 //let lv_delta_y = 0;
@@ -483,26 +474,29 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     //this.ColorParts = CommonFunc.prototype.Create2DArray(pv_up_splines_amount, pv_lateral_splines_amount, new typ_color_part()); // 0xfff);
 
-                    let lar_array;
+                    //25122024 {
+                    ////let lar_array;
 
-                    let lv_cols = pv_up_splines_amount + 1;
-                    let lv_rows = pv_lateral_splines_amount + 1;
+                    ////let lv_cols = pv_up_splines_amount + 1;
+                    ////let lv_rows = pv_lateral_splines_amount + 1;
 
-                    lar_array = new Array(lv_cols);
-                    for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
+                    ////lar_array = new Array(lv_cols);
+                    ////for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
 
-                        lar_array[lv_i] = new Array(lv_rows);
+                    ////    lar_array[lv_i] = new Array(lv_rows);
 
-                        for (let lv_j = 0; lv_j < lv_rows; lv_j++) {
-                            lar_array[lv_i][lv_j] = new typ_color_part();
-                            lar_array[lv_i][lv_j].left_bottom = new THREE.Vector2(0, 0);
-                            lar_array[lv_i][lv_j].right_top = new THREE.Vector2(0, 0);
-                        }
+                    ////    for (let lv_j = 0; lv_j < lv_rows; lv_j++) {
+                    ////        lar_array[lv_i][lv_j] = new typ_color_part();
+                    ////        lar_array[lv_i][lv_j].left_bottom = new THREE.Vector2(0, 0);
+                    ////        lar_array[lv_i][lv_j].right_top = new THREE.Vector2(0, 0);
+                    ////    }
 
-                    }
+                    ////}
 
-                    this.ColorParts = lar_array;
+                    ////this.ColorParts = lar_array;
+                    //25122024 }
 
+                    this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
 
                     return;
 
@@ -592,6 +586,44 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
         }
 
+        //------------------------------------------------------------------------
+        EndShape.prototype.init_color_parts = function (pv_up_splines_amount, pv_lateral_splines_amount)
+        {
+
+
+            try {
+
+
+                let lar_array;
+
+                let lv_cols = pv_up_splines_amount + 1;
+                let lv_rows = pv_lateral_splines_amount + 1;
+
+                lar_array = new Array(lv_cols);
+                for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
+
+                    lar_array[lv_i] = new Array(lv_rows);
+
+                    for (let lv_j = 0; lv_j < lv_rows; lv_j++) {
+                        lar_array[lv_i][lv_j] = new typ_color_part();
+                        lar_array[lv_i][lv_j].left_bottom = new THREE.Vector2(0, 0);
+                        lar_array[lv_i][lv_j].right_top = new THREE.Vector2(0, 0);
+                        lar_array[lv_i][lv_j].cell_color = Constants.background_color;
+                    }
+
+                }
+
+                this.ColorParts = lar_array;
+
+            }
+
+            catch (e) {
+
+                alert('error init_color_parts: ' + e.stack);
+
+            }
+
+        }
 
         //------------------------------------------------------------------------
         EndShape.prototype.handle_click_on_end_side = function (po_event) {
@@ -762,6 +794,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lv_ncols = this.ColorParts[0].length;
                 let lv_color = null;
 
+
+                CommonFunc.prototype.clear_group_childrens(this.main.end_group_cells_mesh);
+
+
                 for (let lv_i = 0; lv_i < lv_nrows; lv_i++) {
 
                     for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
@@ -852,13 +888,14 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     new THREE.Vector2(this.ColorParts[pv_cell_num_row][pv_cell_num_col].left_bottom.x, this.ColorParts[pv_cell_num_row][pv_cell_num_col].left_bottom.y/*, 0*/)
                 );
 
-
+                this.ColorParts[pv_cell_num_row][pv_cell_num_col].cell_color = pv_color_value; //25122024
 
                 let lo_shape = new THREE.Shape(lar_shape_points);
                 let lo_geometry = new THREE.ShapeGeometry(lo_shape);
                 let lo_mesh = new THREE.Mesh(lo_geometry, new THREE.MeshBasicMaterial({ color: pv_color_value/*, side: THREE.DoubleSide*/ }));
+
                 //this.main.group_end_cells_contours.add(lo_mesh);
-                this.main.group_end_cells_mesh.add(lo_mesh);
+                this.main.end_group_cells_mesh.add(lo_mesh);
 
 
 
