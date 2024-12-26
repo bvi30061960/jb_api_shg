@@ -612,7 +612,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                if (this.my_prefix != gc_id_prefix_end) {
+                if (this.my_prefix != gc_id_prefix_end
+                    // && this.my_prefix != gc_id_prefix_lateral //25122024
+                ) {
 
                     // установки для модели
                     //======================================================================
