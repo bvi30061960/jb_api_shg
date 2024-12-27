@@ -165,7 +165,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             lv_cell_position = 0; // go_lateral_side_shape_generator.params.shape_width;;
 
                             //25122024 for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
-                                for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) { //25122024
+                            for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) { //25122024
 
                                 this.ColorParts[lv_i][lv_j].left_bottom.y = lv_cell_position;
                                 this.ColorParts[lv_i][lv_j].right_top.y = lv_prev_line_position; // go_lateral_side_shape_generator.params.shape_width;
@@ -254,7 +254,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                         if (lv_i == lv_cols - 1) {
 
-                          //25122024  lv_cell_position = lv_line_position; // 0; //go_up_side_shape_generator.params.shape_width;;
+                            //25122024  lv_cell_position = lv_line_position; // 0; //go_up_side_shape_generator.params.shape_width;;
 
                             for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
 
@@ -594,8 +594,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
         }
 
         //------------------------------------------------------------------------
-        EndShape.prototype.init_color_parts = function (pv_up_splines_amount, pv_lateral_splines_amount)
-        {
+        EndShape.prototype.init_color_parts = function (pv_up_splines_amount, pv_lateral_splines_amount) {
 
 
             try {
@@ -640,6 +639,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 let lo_active_side = get_active_side_shape_generator();
 
+
+
                 while (true) {
 
                     let { top, left, width, height } = lo_active_side.container.getBoundingClientRect();//07052024
@@ -652,11 +653,16 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     let lo_rectangle = this.main.group_end_shape.children[0];
 
                     if (lo_rectangle && lo_rectangle.name == cv_rectangle_name) {
+
                         let lv_isInside = lo_active_side.common_func.IsInsideRectangle(po_event, lo_rectangle /*lo_active_side.rectangle*/)
 
                         if (!lv_isInside) {
                             return;
                         }
+
+                        //// Сброс выделенности всех контуров
+                        //this.set_visible_all_contours(false);
+
 
                         let lo_rectangle_color_cell = this.get_rectangle_color_cell(po_event);
 
@@ -669,6 +675,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                             // Запоминание состояния видимости контура в массиве ячеек
                             this.ColorParts[lv_cell_row][lv_cell_col].is_contour_visible = lo_rectangle_color_cell.rectangle.visible;
+
+
+                            // Сброс выделенности всех предыдущих контуров
+                            this.set_visible_all_contours(lo_rectangle_color_cell.rectangle, lv_cell_row, lv_cell_col,  false);///////
 
 
                         }
@@ -692,6 +702,65 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
             catch (e) {
 
                 alert('error handle_click_on_end_side: ' + e.stack);
+
+            }
+        }
+        //------------------------------------------------------------------------
+        EndShape.prototype.set_visible_all_contours = function (po_rectangle, pv_cell_row, pv_cell_col, pv_is_visible) {
+
+            try {
+
+
+                this.main.group_end_cells_contours
+
+                for (let lo_mesh of this.main.group_end_cells_contours.children) {
+
+
+                    if (lo_mesh.type == "Line2") {
+
+                        if (lo_mesh !== po_rectangle) {
+
+                            lo_mesh.visible = pv_is_visible;
+                        }
+                    }
+
+                }
+
+                this.set_visible_all_color_cells(pv_cell_row, pv_cell_col, pv_is_visible, pv_is_visible);
+
+            }
+
+            catch (e) {
+
+                alert('error reset_all_contours: ' + e.stack);
+
+            }
+        }
+
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.set_visible_all_color_cells = function (pv_cell_row, pv_cell_col, pv_is_visible) {
+
+            try {
+
+                let lv_nrows = this.ColorParts.length;
+                let lv_ncols = this.ColorParts[0].length;
+
+                for (let lv_i = 0; lv_i < lv_nrows; lv_i++) {
+
+                    for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
+
+                        if (lv_i !== pv_cell_row || lv_j !== pv_cell_col) {
+
+                            this.ColorParts[lv_i][lv_j].is_contour_visible = pv_is_visible;
+                        }
+                    }
+                }
+            }
+
+            catch (e) {
+
+                alert('error set_visible_all_color_cells: ' + e.stack);
 
             }
         }
