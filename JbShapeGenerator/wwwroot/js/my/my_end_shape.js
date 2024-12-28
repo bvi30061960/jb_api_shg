@@ -553,7 +553,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 // добавление столбца
                 if (lv_up_added_spline_num) {
                     if (lv_up_added_spline_num >= 0) {
-
+                          
 
                         // копирование столбца
                         let lar_column = lar_cop_color_parts.map(row => row[lv_up_added_spline_num]);
