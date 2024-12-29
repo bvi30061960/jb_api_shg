@@ -2357,7 +2357,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         }
         //------------------------------------------------------------------------
-        Shape_generator.prototype.onColorChange = function ( pv_value) {
+        Shape_generator.prototype.onColorChange = function (pv_value) {
 
             let lo_active_side = get_active_side_shape_generator();
 
@@ -2370,34 +2370,34 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                         go_end_side_shape_generator.end_shape.set_color_to_selected_rectangle_cells(pv_value);
 
-                    break;
-                }
-
-
-                if (lo_active_side.group_contours.userData) {
-
-                    if (lo_active_side.group_contours.userData.num_spline_left != null || lo_active_side.group_contours.userData.num_spline_right != null) {
-
-                        let lar_splines_order = [];
-                        lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();
-
-                        let lv_num_spline_left = lo_active_side.group_contours.userData.num_spline_left;
-                        let lv_num_spline_right = lo_active_side.group_contours.userData.num_spline_right;
-
-
-                        let lo_spline_left = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
-                        let lo_spline_right = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
-
-
-                        let lv_hexColor = lo_active_side.common_func.rgbToNumber(pv_value);
-
-                        lo_active_side.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true);
-
+                        break;
                     }
-                }
+
+
+                    if (lo_active_side.group_contours.userData) {
+
+                        if (lo_active_side.group_contours.userData.num_spline_left != null || lo_active_side.group_contours.userData.num_spline_right != null) {
+
+                            let lar_splines_order = [];
+                            lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();
+
+                            let lv_num_spline_left = lo_active_side.group_contours.userData.num_spline_left;
+                            let lv_num_spline_right = lo_active_side.group_contours.userData.num_spline_right;
+
+
+                            let lo_spline_left = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
+                            let lo_spline_right = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
+
+
+                            let lv_hexColor = lo_active_side.common_func.rgbToNumber(pv_value);
+
+                            lo_active_side.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true);
+
+                        }
+                    }
 
                     break;
-            } // while true
+                } // while true
 
                 lo_active_side.render();
 
@@ -2847,17 +2847,29 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_add_spline = function () {
 
-            let lo_active_side = get_active_side_shape_generator();
-            lo_active_side.shapes.add_spline();
+            try {
 
-            go_end_side_shape_generator.end_shape.redraw_end_shape(
-                lo_active_side,       //this.main,
-                lo_active_side.shapes.shape_amount_curves - 1, null, //pv_added_spline_num, pv_deleted_spline_num,
-                null, null  //po_is_use_data, po_sides_data
-            );
 
-            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
+                let lo_active_side = get_active_side_shape_generator();
+                lo_active_side.shapes.add_spline();
 
+                go_end_side_shape_generator.end_shape.redraw_end_shape(
+                    lo_active_side,       //this.main,
+                    lo_active_side.shapes.shape_amount_curves - 1, null, //pv_added_spline_num, pv_deleted_spline_num,
+                    null, null  //po_is_use_data, po_sides_data
+                );
+
+                //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
+
+                lo_active_side.render(); //28122024
+
+            }
+
+            catch (e) {
+
+                alert('error onclick_add_spline: ' + e.stack);
+
+            }
         }
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_read_model = function () {

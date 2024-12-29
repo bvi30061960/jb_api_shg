@@ -1259,8 +1259,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             ////let lo_spline_group = new THREE.Group();
             //////lo_group_shape.name = this.main.common_func.get_object_name(this.shape_name_group_prefix, lo_group_shape);
             ////lo_spline_group.name = this.main.common_func.get_object_name(cv_spline_group_name_prefix, lo_spline_group);
-            // группа всех кривых
 
+            // группа всех кривых
             let lo_main_curves_group = this.main.scene.getObjectByName(this.main_curves_group_prefix);
             if (!lo_main_curves_group) {
                 return;
@@ -1280,11 +1280,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             if (this.params.is_space_adjust) {
 
-                //this.adjust_space_bt_splines_by_shape();
                 this.adjust_splines_by_external_shape();
             }
 
-            this.main.render();
+            //28122024 this.main.render();
 
         }
 
