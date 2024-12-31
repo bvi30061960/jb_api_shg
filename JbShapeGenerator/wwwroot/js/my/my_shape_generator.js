@@ -2393,6 +2393,46 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                             lo_active_side.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true);
 
+
+                            // установка цвета ячейки на торце
+                            let lv_cell_num_row = 0;
+                            let lv_cell_num_col = 0;
+
+
+
+                            let lv_num_cell = 0;
+
+                            if (lv_num_spline_left == null) {
+
+                                lv_num_cell = 0;
+                            }
+                            else {
+
+                                lv_num_cell = lv_num_spline_left + 1;
+
+                            }
+                            
+
+                            switch (lo_active_side.my_prefix) {
+
+                                case gc_id_prefix_up:
+                                    lv_cell_num_row = 0;
+                                    lv_cell_num_col = lv_num_cell;// + 1;
+                                    break;
+
+                                case gc_id_prefix_lateral:
+                                    lv_cell_num_row = lv_num_cell;// + 1;
+                                    lv_cell_num_col = 0;
+                                    break;
+                            }
+
+                            go_end_side_shape_generator.end_shape.set_color_to_rectangle_cell(lv_hexColor, lv_cell_num_row, lv_cell_num_col);
+
+
+
+
+
+
                         }
                     }
 
@@ -2854,9 +2894,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 lo_active_side.shapes.add_spline();
 
                 go_end_side_shape_generator.end_shape.redraw_end_shape(
-                    lo_active_side,       //this.main,
-                    lo_active_side.shapes.shape_amount_curves - 1, null, //pv_added_spline_num, pv_deleted_spline_num,
-                    null, null  //po_is_use_data, po_sides_data
+                    lo_active_side,    
+                    lo_active_side.shapes.shape_amount_curves - 1, null,    //pv_added_spline_num, pv_deleted_spline_num,
+                    null, null                                              //po_is_use_data, po_sides_data
                 );
 
                 //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
