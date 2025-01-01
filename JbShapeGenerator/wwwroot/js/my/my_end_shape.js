@@ -949,6 +949,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
             try {
 
+
+                let lv_i_result = null;
+                let lv_j_result = null;
+
                 let lv_nrows = this.ColorParts.length;
                 let lv_ncols = this.ColorParts[0].length;
 
@@ -957,8 +961,9 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
 
                         if (this.ColorParts[lv_i][lv_j].is_contour_visible) {
-
                             this.set_color_to_rectangle_cell(pv_color_value, lv_i, lv_j);
+                            lv_i_result = lv_i;
+                            lv_j_result = lv_j;
                         }
 
                     }
@@ -973,6 +978,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 alert('error set_color_to_selected_rectangle_cells: ' + e.stack);
 
+            }
+
+            return {
+                cell_num_row: lv_i_result,
+                cell_num_col: lv_j_result
             }
 
         }

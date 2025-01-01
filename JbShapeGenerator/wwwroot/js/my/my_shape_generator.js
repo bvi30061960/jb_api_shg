@@ -2361,15 +2361,81 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             let lo_active_side = get_active_side_shape_generator();
 
-            //21122024 
+
+            let lar_splines_order = [];
+
+            let lv_num_spline_left = null;
+            let lv_num_spline_right = null;
+
+
+            let lo_spline_left = null;
+            let lo_spline_right = null;
+
+
+            let lv_hexColor = null;
+
+
+
+
+
+
+
             try {
 
                 while (true) {
 
+                    lv_hexColor = lo_active_side.common_func.rgbToNumber(pv_value);
+
+
                     if (lo_active_side.my_prefix == gc_id_prefix_end) { //"end_shape"
 
-                        go_end_side_shape_generator.end_shape.set_color_to_selected_rectangle_cells(pv_value);
+                        let lo_handled_cell = go_end_side_shape_generator.end_shape.set_color_to_selected_rectangle_cells(pv_value);
 
+
+                        // Установка цвета фигуры на сторонах, если есть нулевая ячейка на конце
+                        if (lo_handled_cell == null) {
+                            return;
+                        }
+
+                        ///lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();
+
+                        if (lo_handled_cell.cell_num_row == 0) {
+
+                            if (lo_handled_cell.cell_num_col == 0) {
+                                lv_num_spline_left = null;
+                                lv_num_spline_right = 0;
+                            }
+                            if (lo_handled_cell.cell_num_col > 0) {
+                                lv_num_spline_left = lo_handled_cell.cell_num_col - 1;
+                                lv_num_spline_right = lo_handled_cell.cell_num_col;
+                            }
+
+                            lar_splines_order = go_up_side_shape_generator.shapes.SortSplinesOrderFromLeftToRight();
+
+                            lo_spline_left = go_up_side_shape_generator.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
+                            lo_spline_right = go_up_side_shape_generator.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
+
+                            go_up_side_shape_generator.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true);
+                        }
+
+                        if (lo_handled_cell.cell_num_col == 0) {
+
+                            if (lo_handled_cell.cell_num_row == 0) {
+                                lv_num_spline_left = null;
+                                lv_num_spline_right = 0;
+                            }
+                            if (lo_handled_cell.cell_num_row > 0) {
+                                lv_num_spline_left = lo_handled_cell.cell_num_row - 1;
+                                lv_num_spline_right = lo_handled_cell.cell_num_row;
+                            }
+
+                            lar_splines_order = go_lateral_side_shape_generator.shapes.SortSplinesOrderFromLeftToRight();
+
+                            lo_spline_left = go_lateral_side_shape_generator.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
+                            lo_spline_right = go_lateral_side_shape_generator.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
+                            go_lateral_side_shape_generator.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true);
+                        }
+                        
                         break;
                     }
 
@@ -2378,18 +2444,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                         if (lo_active_side.group_contours.userData.num_spline_left != null || lo_active_side.group_contours.userData.num_spline_right != null) {
 
-                            let lar_splines_order = [];
+                            //let lar_splines_order = [];
                             lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();
 
-                            let lv_num_spline_left = lo_active_side.group_contours.userData.num_spline_left;
-                            let lv_num_spline_right = lo_active_side.group_contours.userData.num_spline_right;
+                            lv_num_spline_left = lo_active_side.group_contours.userData.num_spline_left;
+                            lv_num_spline_right = lo_active_side.group_contours.userData.num_spline_right;
 
 
-                            let lo_spline_left = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
-                            let lo_spline_right = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
+                            lo_spline_left = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
+                            lo_spline_right = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
 
-
-                            let lv_hexColor = lo_active_side.common_func.rgbToNumber(pv_value);
+                            ///lv_hexColor = lo_active_side.common_func.rgbToNumber(pv_value);
 
                             lo_active_side.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true);
 
@@ -2411,7 +2476,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                                 lv_num_cell = lv_num_spline_left + 1;
 
                             }
-                            
+
 
                             switch (lo_active_side.my_prefix) {
 
@@ -2427,10 +2492,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                             }
 
                             go_end_side_shape_generator.end_shape.set_color_to_rectangle_cell(lv_hexColor, lv_cell_num_row, lv_cell_num_col);
-
-
-
-
 
 
                         }
@@ -2894,7 +2955,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 lo_active_side.shapes.add_spline();
 
                 go_end_side_shape_generator.end_shape.redraw_end_shape(
-                    lo_active_side,    
+                    lo_active_side,
                     lo_active_side.shapes.shape_amount_curves - 1, null,    //pv_added_spline_num, pv_deleted_spline_num,
                     null, null                                              //po_is_use_data, po_sides_data
                 );
