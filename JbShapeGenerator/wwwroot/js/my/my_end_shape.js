@@ -563,7 +563,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         //lar_cop_color_parts[lar_cop_color_parts.length] = lar_newRow;
 
 
-                        lar_newRow = JSON.parse(JSON.stringify(lar_cop_color_parts[lv_lateral_added_spline_num])); 
+                        lar_newRow = JSON.parse(JSON.stringify(lar_cop_color_parts[lv_lateral_added_spline_num]));
                         lar_cop_color_parts[lar_cop_color_parts.length] = lar_newRow;
 
 
@@ -947,11 +947,12 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
         //------------------------------------------------------------------------
         EndShape.prototype.set_color_to_selected_rectangle_cells = function (pv_color_value) {
 
+            let lv_i_result = null;
+            let lv_j_result = null;
+
             try {
 
 
-                let lv_i_result = null;
-                let lv_j_result = null;
 
                 let lv_nrows = this.ColorParts.length;
                 let lv_ncols = this.ColorParts[0].length;
