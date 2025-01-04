@@ -2630,7 +2630,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
 
-
+             
             lo_active_side.params.shape_height = pv_value;
             CommonFunc.prototype.guiUpdateDisplay(lo_active_side.gui);
 
