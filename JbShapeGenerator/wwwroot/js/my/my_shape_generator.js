@@ -2640,13 +2640,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
-
-            go_end_side_shape_generator.end_shape.redraw_end_shape(
-                this,       //this.main,
-                null, null, //pv_added_spline_num, pv_deleted_spline_num,
-                null, null  //po_is_use_data, po_sides_data
-            );
-
+            //03012025 {
+            ////go_end_side_shape_generator.end_shape.redraw_end_shape(
+            ////    this,       //this.main,
+            ////    null, null, //pv_added_spline_num, pv_deleted_spline_num,
+            ////    null, null  //po_is_use_data, po_sides_data
+            ////);
+            //03012025 }
         }
 
 
@@ -2710,11 +2710,14 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             //27112024 lo_active_side.model_params_changed = true; // признак изменения данных модели
 
-            go_end_side_shape_generator.end_shape.redraw_end_shape(
-                this,       //this.main,
-                null, null, //pv_added_spline_num, pv_deleted_spline_num,
-                null, null  //po_is_use_data, po_sides_data
-            );
+            //03012025 {
+            ////go_end_side_shape_generator.end_shape.redraw_end_shape(
+            ////    this,       //this.main,
+            ////    null, null, //pv_added_spline_num, pv_deleted_spline_num,
+            ////    null, null  //po_is_use_data, po_sides_data
+            ////);
+            //03012025 }
+
 
             lo_active_side.render(); //13122024
 

@@ -953,7 +953,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
             try {
 
 
-
                 let lv_nrows = this.ColorParts.length;
                 let lv_ncols = this.ColorParts[0].length;
 
@@ -965,6 +964,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             this.set_color_to_rectangle_cell(pv_color_value, lv_i, lv_j);
                             lv_i_result = lv_i;
                             lv_j_result = lv_j;
+                            break;
                         }
 
                     }
