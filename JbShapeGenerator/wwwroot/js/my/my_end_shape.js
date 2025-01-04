@@ -60,7 +60,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
         // Методы
         //----------------------------------------------------------
 
-
+         
         //------------------------------------------------------------------------
         EndShape.prototype.redraw_end_shape = function (
             po_main,
