@@ -396,7 +396,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
             // Загрузка данных начальной премодели
-            //04122024 this.load_initial_model(/*pv_prefix*/ /*30112024*/);
+            this.load_initial_model(/*pv_prefix*/ /*30112024*/);//04012025
 
 
 
@@ -406,7 +406,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.load_initial_model = function (/*pv_prefix *//*30112024*/) {
+        Shape_generator.prototype.load_initial_model = function () {
 
             try {
 
@@ -1351,36 +1351,49 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //-------------------------------------------------------------------
         Shape_generator.prototype.on_load_model = function (geometry_mod) {
 
-            let lo_active_side = get_active_side_shape_generator();
-            let lo_passive_side = get_passive_side_shape_generator();
 
-            geometry_mod.center();// Объект - в центре вращения
+            try {
 
-            lo_active_side.progress_bar.set_display_value(70);
+                let lo_active_side = get_active_side_shape_generator();
+                let lo_passive_side = get_passive_side_shape_generator();
 
+                geometry_mod.center();// Объект - в центре вращения
 
-
-
-            //-------------------------------------------------------------------
-            const mesh_mod1 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
-            const mesh_mod2 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+                lo_active_side.progress_bar.set_display_value(70);
 
 
-            lo_active_side.group_parts_mod.add(mesh_mod1);
-            lo_passive_side.group_parts_mod.add(mesh_mod2);//24112024
 
-            lo_active_side.progress_bar.set_display_value(90);
 
-            let lv_is_before = false;
-            lo_active_side.do_before_after_model_request(lv_is_before, false);
+                //-------------------------------------------------------------------
+                const mesh_mod1 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+                const mesh_mod2 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
 
-            lo_active_side.progress_bar.set_display_value(100);
-            lo_active_side.progress_bar.stop_progress();
 
-            lo_active_side.animate_mod();
+                lo_active_side.group_parts_mod.add(mesh_mod1);
+                lo_passive_side.group_parts_mod.add(mesh_mod2);//24112024
 
-            lo_active_side.is_building_model = false;
-            lo_passive_side.is_building_model = false;
+                lo_active_side.progress_bar.set_display_value(90);
+
+                let lv_is_before = false;
+                lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                lo_active_side.progress_bar.set_display_value(100);
+                lo_active_side.progress_bar.stop_progress();
+
+                lo_active_side.animate_mod();
+
+                lo_active_side.is_building_model = false;
+                lo_passive_side.is_building_model = false;
+
+            }
+
+            catch (e) {
+
+                this.model_params_changed = false; //29082024
+
+                alert('error on_load_model: ' + e.stack);
+
+            }
 
         }
 
@@ -2170,7 +2183,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                this.render_mod();//23082024
+                // 05012025 this.render_mod();
 
 
 
@@ -2377,7 +2390,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-             
+
 
 
             try {
@@ -2435,7 +2448,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                             lo_spline_right = go_lateral_side_shape_generator.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
                             go_lateral_side_shape_generator.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true);
                         }
-                        
+
                         break;
                     }
 
@@ -2630,7 +2643,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
 
-             
+
             lo_active_side.params.shape_height = pv_value;
             CommonFunc.prototype.guiUpdateDisplay(lo_active_side.gui);
 
@@ -3398,14 +3411,14 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 if (lo_active_side.my_prefix !== gc_id_prefix_end) {  //15122024
 
-                    //21122024 {
+                    //////05012025 {
                     go_end_side_shape_generator.end_shape.redraw_end_shape(
                         null, //lo_active_side,
                         null, //lo_active_side.shapes.shape_amount_curves - 1,
                         null,
                         null, null
                     );
-                    //21122024 }
+                    //////05012025 }
                 }
                 else {
 

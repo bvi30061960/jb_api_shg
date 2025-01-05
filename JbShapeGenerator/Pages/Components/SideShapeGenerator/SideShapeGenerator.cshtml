@@ -47,7 +47,7 @@
     var @id_but_random_curve = @lv_id_prefix + "_" + "id_but_random_curve";
 
 
-    
+
 
 
     var @id_div_3dmodel = @lv_id_prefix + "_" + "id_div_3dmodel";
@@ -74,6 +74,28 @@
     var @id_label_progress = @lv_id_prefix + "_" + "id_label_progress";
     var @id_progressbar = @lv_id_prefix + "_" + "id_progressbar";
 
+    var @id_div_img_jb = @lv_id_prefix + "_" + "id_div_img_jb";
+
+
+    var @id_img_jb = @lv_id_prefix + "_" + "id_img_jb";
+
+    var @lv_path_img_jb = ""; 
+
+    @switch(lv_id_prefix) {
+
+        case "up":
+            lv_path_img_jb = "/images/jb_up.png";
+            break;
+
+        case "lateral":
+            lv_path_img_jb = "/images/jb_lateral.png";
+            break;
+
+        case "end":
+            lv_path_img_jb = "/images/jb_end.png";
+            break;
+
+    }
 
 
 
@@ -90,7 +112,8 @@
             <div id=@id_shg_left>
                 <div id=@id_shape>
 
-                    <div id="@id_div_shape_dblclk"> <label>Double click</label>&nbsp;<i class="bi-arrows-fullscreen"></i> </div>
+                    <div id=@id_div_shape_dblclk> <label>Double click</label>&nbsp;<i class="bi-arrows-fullscreen"></i> </div>
+                    <div id=@id_div_img_jb> <img id=@id_img_jb src=@lv_path_img_jb width="90" height="90" /> </div>
 
                 </div>
             </div>
