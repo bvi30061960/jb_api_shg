@@ -1314,19 +1314,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 if (lv_splines_height !== 0) {
                     lv_height_koef_relative = this.params.shape_height / lv_splines_height;
-                    //lv_height_koef_relative = this.params.shape_height / this.main.current_spline_max_y;
-                    //lv_height_koef_relative = this.main.current_spline_max_y / this.params.shape_height;
-
-
-                    ;
                 }
                 else {
                     lv_height_koef_relative = 1;
 
                 }
 
-
-                //03112024 }
 
                 let lv_spline_distance = this.params.shape_width / this.ar_splines.length;
 

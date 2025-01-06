@@ -347,8 +347,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         container_width: this.container.clientWidth,
         container_height: this.container.clientHeight,
-        shape_width_beg: 50,
-        shape_width: 50,
+        shape_width_beg: 70, //50,
+        shape_width: 70, //50,
         shape_height_beg: 100,
         shape_height: 100,
         shape_amount_curves: 3, // ;//, //5
@@ -2457,7 +2457,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                             }
                             if (lo_handled_cell.cell_num_row > 0) {
-                            //if (lo_handled_cell.cell_num_row < lv_ncol_max) {
+                                //if (lo_handled_cell.cell_num_row < lv_ncol_max) {
                                 lv_num_spline_left = lo_handled_cell.cell_num_row - 1;
                                 lv_num_spline_right = lo_handled_cell.cell_num_row;
                             }
@@ -3208,6 +3208,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
         }
 
+
+
         //------------------------------------------------------------------------
         Shape_generator.prototype.onmousemove = function (po_event) {
 
@@ -3237,7 +3239,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                let lar_findresult;
+                //let lar_findresult;
 
                 lo_active_side_shape_generator.container.style.cursor = "default";
 
@@ -3274,7 +3276,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                         if (lo_active_side_shape_generator.draggableObject.geometry.type == "LineGeometry") {
 
-                            // rectangle
+                            // двигаем параллелепипед 
 
                             lo_active_side_shape_generator.container.style.cursor = "pointer";
 
@@ -3291,21 +3293,19 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         let lar_spline_points = lo_active_side_shape_generator.shapes.get_spline_points(lo_active_side_shape_generator.draggableObject.parent.parent);
 
                         if (lo_active_side_shape_generator.draggableObject.geometry.type == "BoxGeometry") {
-                            // BoxGeometry
+                            // Выделен один из крайних (квадратных) узлов, двигаем всю кривую (сплайн)
 
-                            // Выделен один из крайних узлов, двигаем всю кривую (сплайн)
                             let lv_delta_x = lo_pos.x - lo_active_side_shape_generator.draggableObject.position.x;
 
                             for (let lv_i = 0; lv_i < lar_spline_points.length; lv_i++) {
                                 lar_spline_points[lv_i].x = lar_spline_points[lv_i].x + lv_delta_x;
                             }
 
-                            //go_container.style.cursor = "ew-resize";
                             lo_active_side_shape_generator.container.style.cursor = "ew-resize";
 
                             ////05012025 {
-                            //let lar_splines_order = lo_active_side_shape_generator.shapes.SortSplinesOrderFromLeftToRight();
-                            //lo_active_side_shape_generator.shapes.redraw_meshes_color(lar_splines_order);
+                            let lar_splines_order = lo_active_side_shape_generator.shapes.SortSplinesOrderFromLeftToRight();
+                            lo_active_side_shape_generator.shapes.redraw_meshes_color(lar_splines_order);
                             ////05012025 }
 
                         }
@@ -3370,13 +3370,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                                 if (lo_object.geometry.type == "BoxGeometry") {
                                     // Выделен один из крайних узлов, двигаем всю кривую (сплайн)
-                                    //go_container.style.cursor = "ew-resize";
                                     lo_active_side_shape_generator.container.style.cursor = "ew-resize";
                                 }
 
                                 if (lo_object.geometry.type == "CircleGeometry") {
                                     // Выделен не крайний узел, двигаем один узел
-                                    //go_container.style.cursor = "pointer";
                                     lo_active_side_shape_generator.container.style.cursor = "pointer";
                                 }
 
@@ -3428,36 +3426,44 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 //16122024 {
-                ////if (lo_active_side.shapes == null) {
-                ////    return;
-                ////}
 
-                ////let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
-                ////lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
+                //if (lo_active_side.shapes == null) {
+                //    return;
+                //}
+
+                //let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
+                //lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
 
 
                 if (lo_active_side.my_prefix !== gc_id_prefix_end) {  //15122024
 
 
+
                     if (this.is_shape_gragging)//05012025
                     {
-                        //this.is_shape_gragging = false;//05012025
 
-                        //////05012025 {
-                        go_end_side_shape_generator.end_shape.redraw_end_shape(
-                            null, //lo_active_side,
-                            null, //lo_active_side.shapes.shape_amount_curves - 1,
-                            null,
-                            null, null
-                        );
+                        //06012025 {
+                        if (lo_active_side.shapes == null) {
+                            return;
+                        }
+
+                        let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
+                        lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
+
+                        //06012025 }
+
+                        //this.is_shape_gragging = false;//05012025
 
                         //05012025 {
                         go_end_side_shape_generator.end_shape.redraw_end_shape(
                             null,         //   po_main,
                             null, null,   //   pv_added_spline_num, pv_deleted_spline_num,       
                             null, null    //   po_is_use_data, po_sides_data       
-                        );                       
+                        );
                         //05012025 }
+
+                        lo_active_side.select_contour_between_slides(po_event); //06012025
+
                     }
                     //////05012025 }
                 }
@@ -3571,7 +3577,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         // Определение - щелчок внутри фигуры, или нет
                         if (lo_active_side.rectangle) {
 
-                            //13122024 let lv_isInside = lo_active_side.common_func.IsInsideRectangle(po_event, lo_active_side.rectangle)
                             let lv_isInside = lo_active_side.common_func.IsInsideRectangle(po_event, lo_active_side.rectangle.shape); //13122024
 
                             if (!lv_isInside) {
@@ -3636,71 +3641,61 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     // click
 
-                    // Выделение границ фигуры между кривыми
+                    //06012025 {
+                    ////// Выделение границ фигуры между кривыми
 
-                    ///13122024 let lo_active_side = get_active_side_shape_generator();
+                    ////let lo_clicked_splines_and_segment = lo_active_side.shapes.get_splines_and_segment_of_clicked_figure(po_event);
 
-                    let lo_clicked_splines_and_segment = lo_active_side.shapes.get_splines_and_segment_of_clicked_figure(po_event);
-
-                    let lo_clicked_splines = {
-                        spline_left: lo_clicked_splines_and_segment.spline_left,
-                        spline_right: lo_clicked_splines_and_segment.spline_right
-                    };
-
-
-                    let lo_prev_clicked_splines = null; //04122024
-
-                    if (lo_active_side.group_contours) { //04122024
-                        if (lo_active_side.group_contours.userData) { //04122024
-
-                            lo_prev_clicked_splines = lo_active_side.group_contours.userData;
-                        }
-
-                    }
+                    ////let lo_clicked_splines = {
+                    ////    spline_left: lo_clicked_splines_and_segment.spline_left,
+                    ////    spline_right: lo_clicked_splines_and_segment.spline_right
+                    ////};
 
 
-                    lo_active_side.shapes.clear_group_contours();
+                    ////let lo_prev_clicked_splines = null; //04122024
+
+                    ////if (lo_active_side.group_contours) { //04122024
+                    ////    if (lo_active_side.group_contours.userData) { //04122024
+
+                    ////        lo_prev_clicked_splines = lo_active_side.group_contours.userData;
+                    ////    }
+
+                    ////}
 
 
-                    if (lo_active_side.group_contours) { //04122024
-
-                        if (lo_active_side.group_contours.userData == null) {
-
-                            lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+                    ////lo_active_side.shapes.clear_group_contours();
 
 
-                            //lo_active_side.prev_selected_splines = {
-                            //    spline_left: null,
-                            //    spline_right: null
-                            //};
+                    ////if (lo_active_side.group_contours) { //04122024
 
-                            ////////    //30072024 {
-                            ////////    //28072024 {
-                            ////////    lo_active_side.prev_selected_splines.spline_left = lo_active_side.group_contours.userData.spline_left;//27072024
-                            ////////    lo_active_side.prev_selected_splines.spline_right = lo_active_side.group_contours.userData.spline_right;//27072024
+                    ////    if (lo_active_side.group_contours.userData == null) {
 
-                            ////////    //28072024 }
-                            ////////    //30072024 }
-                        }
-                        else {
+                    ////        lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+
+                    ////    }
+                    ////    else {
 
 
-                            if (lo_prev_clicked_splines) { //04122024
+                    ////        if (lo_prev_clicked_splines) { //04122024
 
-                                if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
-                                    && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right) {
+                    ////            if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
+                    ////                && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right) {
 
-                                    lo_active_side.group_contours.userData = null;
-                                }
-                                else {
-                                    lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment);
-                                }
-                            }
-                        }
+                    ////                lo_active_side.group_contours.userData = null;
+                    ////            }
+                    ////            else {
+                    ////                lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+                    ////            }
+                    ////        }
+                    ////    }
 
 
-                    }//04122024
+                    ////}//04122024
 
+
+                    lo_active_side.select_contour_between_slides(po_event);
+
+                    // 06012025 }
 
                     lo_active_side.render();
 
@@ -3716,6 +3711,79 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
         }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.select_contour_between_slides = function (po_event) {
+
+
+            // Выделение границ фигуры между кривыми
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                let lo_clicked_splines_and_segment = lo_active_side.shapes.get_splines_and_segment_of_clicked_figure(po_event);
+
+                let lo_clicked_splines = {
+                    spline_left: lo_clicked_splines_and_segment.spline_left,
+                    spline_right: lo_clicked_splines_and_segment.spline_right
+                };
+
+
+                let lo_prev_clicked_splines = null;
+
+                if (lo_active_side.group_contours) {
+                    if (lo_active_side.group_contours.userData) {
+
+                        lo_prev_clicked_splines = lo_active_side.group_contours.userData;
+                    }
+
+                }
+
+
+                lo_active_side.shapes.clear_group_contours();
+
+
+                if (lo_active_side.group_contours) { //04122024
+
+                    if (lo_active_side.group_contours.userData == null) {
+
+                        lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+
+                    }
+                    else {
+
+
+                        if (lo_prev_clicked_splines) { //04122024
+
+                            if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
+                                && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right) {
+
+                                lo_active_side.group_contours.userData = null;
+                            }
+                            else {
+                                lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+                            }
+                        }
+                    }
+
+
+                }
+
+
+
+            }
+
+            catch (e) {
+
+                alert('error select_contour_between_slides: ' + e.stack);
+
+            }
+        }
+
+
 
 
         //////////------------------------------------------------------------------------

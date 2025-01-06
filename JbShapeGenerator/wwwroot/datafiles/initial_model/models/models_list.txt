@@ -1,1 +1,1 @@
-{"wwwroot/datafiles\\initial_model\\models\\initial_model":{"path_file_wo_ext":"wwwroot/datafiles\\initial_model\\models\\initial_model","filename":"New model","picture":null,"wide_model_type":1,"price":"0","change_datetime":"27-Nov-24 10:14:35"}}
+{"wwwroot/datafiles\\initial_model\\models\\initial_model":{"path_file_wo_ext":"wwwroot/datafiles\\initial_model\\models\\initial_model","filename":"New model","picture":null,"wide_model_type":1,"price":"0","change_datetime":"06-Jan-25 10:07:02"}}
