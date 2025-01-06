@@ -96,16 +96,15 @@ export function Rectangle(/*po_container, po_camera,*/ po_scene,
 
                 geometry.setColors(clrs);
 
-                let resolution = new THREE.Vector2();
-
-                let renderer = new THREE.WebGLRenderer({ /*antialias: true*/ });
-                renderer.getSize(resolution);
+                let lo_resolution = new THREE.Vector2();
+                let lo_renderer = new THREE.WebGLRenderer({ /*antialias: true*/ });
+                lo_renderer.getSize(lo_resolution);
 
                 let material = new LineMaterial({
                     //color: new Color("#fff").getHex(),
                     vertexColors: 0xf0f, //VertexColors,
                     linewidth: 0.5, //1, //2,
-                    resolution: resolution
+                    resolution: lo_resolution
                     //dashed: false, //true,
                     //gapSize: 0.75,
                     //dashScale: 1.5,

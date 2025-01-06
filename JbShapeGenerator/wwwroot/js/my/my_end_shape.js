@@ -135,6 +135,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lv_cell_position = 0;
                 let lv_spline_position = 0;
 
+
+                // Задание горизонтальных линий по y
+                //------------------------------------------------------------------------------------
+
                 for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
 
                     lo_line_curr = lo_line_hor.clone();
@@ -207,7 +211,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     }
                 }
 
-
+                // Задание вертикальных линий по x
                 //------------------------------------------------------------------------------------
 
                 for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
@@ -289,13 +293,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 }
 
 
-
-                this.draw_cells_contours();
-
-
-                this.refresh_end_shapes(); //23122024
-
-
+                //05012025 {
+                ////this.draw_cells_contours();
+                ////this.refresh_end_shapes(); //23122024
+                //05012025 }
             }
 
             catch (e) {
@@ -316,6 +317,9 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lo_renderer = new THREE.WebGLRenderer({});
                 let lo_resolution = new THREE.Vector2();
                 lo_renderer.getSize(lo_resolution);
+
+
+                //this.main.renderer.getSize(lo_resolution); //05012025
 
                 let lv_color = Constants.shape_countour_color;
 
@@ -980,6 +984,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
             }
 
         }
+
+
         //------------------------------------------------------------------------
         EndShape.prototype.get_spline_position_by_side_and_num_spline = function (po_side, pv_num_spline) {
 
