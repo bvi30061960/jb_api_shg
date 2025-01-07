@@ -3251,7 +3251,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     //1807202 lo_active_side_shape_generator.was_draggable = true;
 
 
-                    //go_container.style.cursor = "pointer";
                     lo_active_side_shape_generator.container.style.cursor = "pointer";
 
                     let lo_pos = lo_active_side_shape_generator.common_func.recalc_coord_event2world(lo_active_side_shape_generator.camera, lo_active_side_shape_generator.container, event.clientX, event.clientY);
@@ -3276,14 +3275,15 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                         if (lo_active_side_shape_generator.draggableObject.geometry.type == "LineGeometry") {
 
-                            // двигаем параллелепипед 
+                            //06012025 {
+                            ////// двигаем параллелепипед 
 
-                            lo_active_side_shape_generator.container.style.cursor = "pointer";
+                            ////lo_active_side_shape_generator.container.style.cursor = "pointer";
+                            ////lo_active_side_shape_generator.draggableObject.position.x = lo_pos.x + lo_active_side_shape_generator.delta_rect_drag_x;
+                            ////lo_active_side_shape_generator.draggableObject.position.y = lo_pos.y + lo_active_side_shape_generator.delta_rect_drag_y;
 
-                            lo_active_side_shape_generator.draggableObject.position.x = lo_pos.x + lo_active_side_shape_generator.delta_rect_drag_x;
-                            lo_active_side_shape_generator.draggableObject.position.y = lo_pos.y + lo_active_side_shape_generator.delta_rect_drag_y;
-
-                            lo_active_side_shape_generator.render();
+                            ////lo_active_side_shape_generator.render();
+                            //06012025 }
 
                             break;
                         }
@@ -3386,7 +3386,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                             lo_found = lo_raycaster.intersectObjects([lo_active_side_shape_generator.rectangle.shape]);
                             if (lo_found.length) {
-                                lo_active_side_shape_generator.container.style.cursor = "pointer";
+                                lo_active_side_shape_generator.container.style.cursor = 'default';// "pointer";
                                 break;
                             }
                         }
