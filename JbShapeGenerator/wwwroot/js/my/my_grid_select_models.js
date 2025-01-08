@@ -537,10 +537,25 @@ export function GridSelectModels(pv_prefix) {
                 }
 
 
+                ////07012025 {
+                //if (!lo_active_side) {
+                //    return;
+                //}
+                ////07012025 }
+
+
                 // Задержка после парсинга ?
                 setTimeout(function () {
 
                     let lo_active_side = get_active_side_shape_generator();
+
+                    ////07012025 {
+                    //if (!lo_active_side) {
+                    //    return;
+                    //}
+                    ////07012025 }
+
+
 
                     $("#id_model_name").val(lo_data.model_name);
 

@@ -37,6 +37,7 @@
             <li><a href="#tab-1">Upper side of the model</a></li>
             <li><a href="#tab-2">Lateral side of the model</a></li>
             <li><a href="#tab-3">End face of the model</a></li>
+            @*<li><a href="#tab-4">Orders</a></li>*@
         </ul>
 
 
@@ -52,6 +53,10 @@
         <div id="tab-3">
             <vc:side-shape-generator id_prefix="end" />
        </div> @* tabs-3 *@
+
+        @* <div id="tab-4"> *@
+            @* @await Html.PartialAsync("Partials/_Orders") *@
+        @*</div> @* tabs-3 *@
 
     </div>
     
