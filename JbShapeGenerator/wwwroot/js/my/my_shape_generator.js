@@ -45,6 +45,7 @@ import { Splines } from "./my_splines.js";
 import { Segments } from "./my_segments.js";
 import { Rectangle } from './my_rectangle.js';
 import { EndShape } from './my_end_shape.js';
+import { Tab_orders } from './my_tab_orders.js';
 
 import { GridSelectModels } from './my_grid_select_models.js';
 
@@ -69,6 +70,7 @@ const cv_name_end_group_cells_mesh = "end_group_cells_mesh";
 export var go_up_side_shape_generator = null;
 export var go_lateral_side_shape_generator = null;
 export var go_end_side_shape_generator = null;
+export var go_tab_orders = null;
 
 
 var go_active_side_shape_generator = null;
@@ -186,7 +188,19 @@ function on_tab_side_activate(event, ui) {
             go_active_side_shape_generator = null;
             go_passive_side_shape_generator = null;
 
+            go_up_side_shape_generator.reset_event_handlers(go_up_side_shape_generator);
+            go_lateral_side_shape_generator.reset_event_handlers(go_lateral_side_shape_generator);;
+            go_end_side_shape_generator.reset_event_handlers(go_end_side_shape_generator);
+
+            if (!go_tab_orders) //12062024
+            {
+                go_tab_orders = new Tab_orders();
+            }
+
+
             return;
+
+            
 
             break;
     }
@@ -226,8 +240,12 @@ function get_side_shape_generator_by_prefix(pv_prefix) {
             lo_object = go_end_side_shape_generator;
             break;
 
-    }
+        case gc_id_prefix_end:
+            lo_object = go_end_side_shape_generator;
+            break;
 
+    }
+    go_end_side_shape_generator
 
     return lo_object;
 }
@@ -571,7 +589,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 lo_cameraPersp = new THREE.PerspectiveCamera(50, this.aspect, 0.01, 30000);
                 //lo_cameraOrtho = new THREE.OrthographicCamera(-30 * this.aspect, 100 * this.aspect, 90 * this.aspect, -15.0 * this.aspect);//, 0,10);
-                lo_cameraOrtho = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
+                ///lo_cameraOrtho = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
+                lo_cameraOrtho = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);//, -0.100 * this.aspect, 20 * this.aspect);
 
 
                 //02112024 const frustumSize = 500;
@@ -580,7 +599,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 if (this.my_prefix == gc_id_prefix_end) {
 
-                    this.camera = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
+                    //this.camera = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
+                    this.camera = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
                     //this.camera.position.x = 10;
                     //this.camera.position.y = -20;
                     //this.camera.position.z = 2;
@@ -2013,18 +2033,18 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                ////07012025 {
-                //if (!lo_active_side) {
-                //    return;
-                //}
-                ////07012025 }
+                //07012025 {
+                if (!lo_active_side) {
+                    return;
+                }
+                //07012025 }
 
                 setTimeout(function () {
-                    ////07012025 {
-                    //if (!lo_active_side) {
-                    //    return;
-                    //}
-                    ////07012025 }
+                    //07012025 {
+                    if (!lo_active_side) {
+                        return;
+                    }
+                    //07012025 }
 
                     requestAnimationFrame(lo_active_side.animate_mod);
                     lo_active_side.render_mod();
@@ -2034,20 +2054,22 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
             else {
 
-                lv_slider_value = $(this.id_prefix + "id_dist_part_slider").slider('value');
-                //lv_delta_slider_value = lv_slider_value - this.slider_value_prev;
+                if (this) { //08012025
 
-                //this.common_func.move_details_from_to_center(this.group_parts_mod, lv_delta_slider_value);
-                this.common_func.move_details_from_to_center(this.group_parts_mod, lv_slider_value);
+                    lv_slider_value = $(this.id_prefix + "id_dist_part_slider").slider('value');
+                    //lv_delta_slider_value = lv_slider_value - this.slider_value_prev;
 
-
-                setTimeout(function () {
-                    requestAnimationFrame(this.animate_mod);
-                    this.render_mod();
-
-                }, 200); // 100);
+                    //this.common_func.move_details_from_to_center(this.group_parts_mod, lv_delta_slider_value);
+                    this.common_func.move_details_from_to_center(this.group_parts_mod, lv_slider_value);
 
 
+                    setTimeout(function () {
+                        requestAnimationFrame(this.animate_mod);
+                        this.render_mod();
+
+                    }, 200); // 100);
+
+                }
             }
 
 
@@ -2061,11 +2083,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 let lo_active_side = get_active_side_shape_generator();
 
-                ////07012025 {
-                //if (!lo_active_side) {
-                //    return;
-                //}
-                ////07012025 }
+                //07012025 {
+                if (!lo_active_side) {
+                    return;
+                }
+                //07012025 }
 
                 if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
 
@@ -2088,6 +2110,179 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
         }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.reset_event_handlers = function (po_side) {
+
+            try {
+
+                //let lo_active_side_shape_generator = get_active_side_shape_generator();
+                //let lo_passive_side_shape_generator = get_passive_side_shape_generator();
+
+                $(document).off('click  change pointerdown pointerup pointermove');//17062024
+                $(window).off('resize dblclick doubleclick mousemove');
+                $(window).off('resize dblclick doubleclick mousemove');
+                $(window).off('resize dblclick doubleclick mousemove');
+
+                $(document).unbind('click change pointerdown pointerup pointermove');//17062024
+                $(window).unbind('resize dblclick mousemove');
+
+                if (po_side) {
+
+                    if (po_side.controls) {
+
+                        if (po_side.render) {
+                            po_side.controls.removeEventListener('change', po_side.render);// очистка обработчика событий
+                        }
+                    }
+
+                    //if (this.render) {
+                    //    po_side.controls.removeEventListener('change', this.render);// очистка обработчика событий
+                    //}
+
+                }
+
+                //if (po_side.controls) {
+                //    po_side.controls.addEventListener('change', po_side.render);
+                //}
+
+
+                // очистка обработчиков событий
+                $(this.passive_id_prefix + "id_but_read_model").off("click");
+                $(this.passive_id_prefix + "id_but_refresh").off("click");
+                $(this.passive_id_prefix + "id_chb_space_adjust").off("click");
+                $(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
+                $(this.passive_id_prefix + "id_but_del_spline").off("click");
+                $(this.passive_id_prefix + "id_but_add_spline").off("click");
+                $(this.passive_id_prefix + "id_but_save_model").off("click");
+                $(this.passive_id_prefix + "id_but_make_model").off("click");
+                $(this.passive_id_prefix + "id_but_set_color").off("click");
+                $(this.passive_id_prefix + "id_but_rotate_mode").off("click");
+
+
+
+                //$(this.id_prefix + "id_chb_space_adjust").off("click").click(this.onclick_chb_space_adjust);
+                //$(this.id_prefix + "id_chb_curve_width_adjust").off("click").click(this.onclick_chb_curve_width_adjust);
+
+                //$(this.id_prefix + "id_but_read_model").off("click").click(this.onclick_read_model);
+
+                //$(this.id_prefix + "id_but_del_spline").off("click").click(this.onclick_del_spline);
+                //$(this.id_prefix + "id_but_add_spline").off("click").click(this.onclick_add_spline);
+                //$(this.id_prefix + "id_but_save_model").off("click").click(this.onclick_save_model);
+                //$(this.id_prefix + "id_but_make_model").off("click").click(this.onclick_make_model);
+                //$(this.id_prefix + "id_but_set_color").off("click").click(this.onclick_id_but_set_color);
+                //$(this.id_prefix + "id_but_rotate_mode").off("click").click(this.onclick_id_but_rotate_mode);
+
+                //$(this.id_prefix + "id_but_refresh").off("click").click(this.onclick_refresh_model);
+
+                //$(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(this.ondblclick_id_shape);//17062024
+                //$(this.id_prefix + this.id_side_shape_mod).off("dblclick").dblclick(this.ondblclick_id_shape);//25082024
+                //$(this.id_prefix + this.id_side_shape).dblclick(null);
+                //$(this.id_prefix + this.id_side_shape_mod).dblclick(null);//25082024
+
+                //--------------------------------------------------------------------------------------------
+
+                ////// обработчики событий gui
+
+
+                //}
+                //--------------------------------------------------------------------------------------------
+
+
+                // очистка обработчиков событий
+                document.removeEventListener('pointerdown', this.onPointerDown);
+                document.removeEventListener('pointerup', this.onPointerUp);
+                //document.addEventListener('pointermove', null);
+                window.removeEventListener('resize', this.onWindowResize);
+                window.removeEventListener('mousemove', this.onmousemove);
+
+                $(this.id_prefix + this.id_side_shape).dblclick(null);//17062024 
+
+                //if (lo_passive_side_shape_generator) {
+                //    document.removeEventListener('pointerdown', lo_passive_side_shape_generator.onPointerDown);
+
+                //    document.removeEventListener('pointerup', lo_passive_side_shape_generator.onPointerUp);
+                //    //document.addEventListener('pointermove', null);
+                //    window.removeEventListener('resize', lo_passive_side_shape_generator.onWindowResize);
+                //    window.removeEventListener('mousemove', lo_passive_side_shape_generator.onmousemove);
+
+                //    $(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(lo_passive_side_shape_generator.ondblclick_id_shape);//17062024
+                //    $(this.id_prefix + this.id_side_shape).dblclick(null);//17062024 
+
+                //}
+
+
+                if (po_side) {
+                    document.removeEventListener('pointerdown', po_side.onPointerDown);
+                    document.removeEventListener('pointerup', po_side.onPointerUp);
+                    //document.addEventListener('pointermove', null);
+                    window.removeEventListener('resize', po_side.onWindowResize);
+                    window.removeEventListener('mousemove', po_side.onmousemove);
+
+                }
+
+
+                //17062024 {
+
+
+
+
+                //document.addEventListener('pointerdown', this.onPointerDown);
+                //document.addEventListener('pointerup', this.onPointerUp);
+                ////document.addEventListener('pointermove', onPointerMove);
+                //window.addEventListener('resize', this.onWindowResize);
+                //window.addEventListener('mousemove', this.onmousemove);
+                ////////////////////window.addEventListener('dblclick', this.ondblclick_id_shape);//17062024
+
+                ////window.addEventListener('click', window_onclick	);
+                //$(this.passive_id_prefix + this.id_side_shape).off("click");
+                //$(this.passive_id_prefix + "id_but_mirror").off("click");
+
+                //$(this.id_prefix + this.id_side_shape).off("click").on("click", this.onclick_shape);//17072024 
+
+                //$(this.id_prefix + "id_but_mirror").off("click").on("click", this.but_mirror_onclick);
+
+
+                ////this.render();//05052024
+                //lo_active_side_shape_generator.onWindowResize();//21062024
+
+
+
+
+                // 05012025 this.render_mod();
+
+
+
+
+
+                ////--------------------------------------------------------------------
+                //// наблюдатель за изменением цвета элемента
+
+                //// Создание экземпляра MutationObserver
+                //const observer = new MutationObserver(this.common_func.handleColorChange);
+
+                //// Целевой элемент, за которым нужно следить
+                //const targetElement = document.getElementById(this.id_prefix_wo_sharp + "id_for_colorpicker");
+
+                //// Параметры наблюдения
+                //const config = { attributes: true, attributeFilter: ['style'] };
+
+                //// Начало наблюдения за целевым элементом
+                //observer.observe(targetElement, config); //, lf_callback);
+
+                ////--------------------------------------------------------------------
+
+
+            }
+            catch (e) {
+
+                alert('error reset_event_handlers: ' + e.stack);
+
+            }
+
+        }
+
 
 
         //------------------------------------------------------------------------

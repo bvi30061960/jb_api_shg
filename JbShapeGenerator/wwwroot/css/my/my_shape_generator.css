@@ -515,11 +515,30 @@ th.ui-th-column {
     background-color:deeppink;
 }
 */
+/********************** tab orders ***************************************************/
 
+#id_div_orders table {
+   /* margin-left: auto;
+    margin-right: auto;*/
+}
+
+#id_but_model_download {
+    font-size: 1em;
+    border-radius: 12px;
+    width: 15vw; /*2em;*/
+    height: 2em;
+    /*background-image: url('/images/my/css_sprites.png');*/
+    /*background-color: Transparent;
+    background-repeat: no-repeat;
+    background-attachment: initial;*/
+    /*background-position: 50%, 50%;*/
+}
+/*#id_but_model_download {
+    font-size: 0.5em;
+}*/
 
 
 /*================================ отладка ===============================*/
 
-/** {   border: 1px solid red; }*/
-
+/*  * {   border: 1px solid red; } */
 /*================================ отладка ===============================*/

@@ -426,39 +426,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 if (!this.ColorParts) {
 
-                    //this.ColorParts = CommonFunc.prototype.Create2DArray(pv_up_splines_amount, pv_lateral_splines_amount, new typ_color_part()); // 0xfff);
-
-                    //25122024 {
-                    ////let lar_array;
-
-                    ////let lv_cols = pv_up_splines_amount + 1;
-                    ////let lv_rows = pv_lateral_splines_amount + 1;
-
-                    ////lar_array = new Array(lv_cols);
-                    ////for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
-
-                    ////    lar_array[lv_i] = new Array(lv_rows);
-
-                    ////    for (let lv_j = 0; lv_j < lv_rows; lv_j++) {
-                    ////        lar_array[lv_i][lv_j] = new typ_color_part();
-                    ////        lar_array[lv_i][lv_j].left_bottom = new THREE.Vector2(0, 0);
-                    ////        lar_array[lv_i][lv_j].right_top = new THREE.Vector2(0, 0);
-                    ////    }
-
-                    ////}
-
-                    ////this.ColorParts = lar_array;
-                    //25122024 }
-
                     this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
 
                     return;
 
                 }
-
-
-                //return; //15122024
-
 
 
 
@@ -672,8 +644,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     }
 
 
-                    //lo_active_side.render();
-
                     break;
                 }// while
 
@@ -853,7 +823,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lv_nrows = this.ColorParts.length;
                 let lv_ncols = this.ColorParts[0].length;
                 let lv_color = null;
-
 
                 CommonFunc.prototype.clear_group_childrens(this.main.end_group_cells_mesh);
 
