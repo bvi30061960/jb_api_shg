@@ -1819,8 +1819,24 @@ export function CommonFunc() {
         }
 
 
+        //-----------------------------------------------------------------
+
+        CommonFunc.prototype.read_file_from_server_with_wait_indicator = function (pv_url) {
 
 
+            let lv_result = null;
+
+            try {
+
+            }
+
+            catch (e) {
+
+                alert('error read_file_from_server_with_wait_indicator: ' + e.stack);
+
+            }
+            return lv_result;
+        }
 
         //======================================================================================
         //======================================================================================

@@ -4,9 +4,30 @@
 //import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 
 
+
+import { Constants } from './my_common_const.js';
+import {
+    struc_gabarits,
+    struc_segment_transform_data,
+    cv_spline_name_prefix,
+    cv_segment_name_prefix,
+
+    typ_color_data,
+    typ_side_data,
+    typ_mesh_colors,
+    type_rotate_mode,
+    typ_sides_data,
+    typ_parameters
+
+} from "./my_common_types.js";
+
+import { CommonFunc } from './my_common_func.js';
+
+
+//==========================================================================================
 // Class Tab_orders
-export function Tab_orders(/*po_container, po_camera,po_scene,*/ 
-	/*po_params*/ /*pv_shape_width, pv_shape_height*/ 
+export function Tab_orders(/*po_container, po_camera,po_scene,*/
+    /*po_params*/ /*pv_shape_width, pv_shape_height*/
 ) {
 
     // Свойства
@@ -126,6 +147,12 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
                 //this.scene.add(this.shape);
 
+
+
+                $("#id_but_model_download").on("click", this.onclick_but_model_download);
+
+
+
             }
 
             catch (e) {
@@ -136,8 +163,23 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
         }
 
+        //-----------------------------------------------------------------
+
+        Tab_orders.prototype.onclick_but_model_download = function (po_event) {
 
 
+            try {
+
+                //alert(po_event);
+
+            }
+
+            catch (e) {
+
+                alert('error onclick_but_model_download: ' + e.stack);
+
+            }
+        }
         //-----------------------------------------------------------------
 
 
