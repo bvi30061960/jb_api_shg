@@ -1,4 +1,10 @@
-﻿namespace jb_api_shg.AppCode
+﻿using System.Diagnostics;
+using System.IO.Compression;
+
+
+using System.IO.Compression;
+
+namespace jb_api_shg.AppCode
 {
 
     ////////******************************************************************************************
@@ -202,7 +208,48 @@
 
             }
         }
-    }
+        //}
 
+
+        //-----------------------------------------------------------------------------------------------
+
+        public static bool MakeZipFile(string pv_folder_with_files_for_zip, string pv_result_zipfile_name)
+        {
+            // Создание zip-файла для заданной папки
+
+            bool lv_result = false;
+
+            try
+            {
+
+                string lv_path_result_file = Path.Combine(pv_folder_with_files_for_zip, pv_result_zipfile_name);
+
+                if (Directory.Exists(pv_folder_with_files_for_zip))
+                {
+                    // Удаляем существующий ZIP-файл, если он есть
+                    if (File.Exists(lv_path_result_file))
+                    {
+                        File.Delete(lv_path_result_file);
+                    }
+
+                    // Создаем ZIP-архив
+                    ZipFile.CreateFromDirectory(pv_folder_with_files_for_zip, lv_path_result_file);
+                    lv_result = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                lv_result = false;
+            }
+
+            return lv_result;
+
+        }
+
+
+
+    } // end class Commons
+    //=======================================================================================
 
 }
