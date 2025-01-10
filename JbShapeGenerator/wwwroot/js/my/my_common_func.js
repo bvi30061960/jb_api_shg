@@ -1820,13 +1820,22 @@ export function CommonFunc() {
 
 
         //-----------------------------------------------------------------
-
         CommonFunc.prototype.read_file_from_server_with_wait_indicator = function (pv_url) {
-
 
             let lv_result = null;
 
             try {
+
+                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts +
+                    "&filename=" + pv_filename
+                    + "&chdata=" + Math.random().toString();
+
+
+                let lv_is_before = true;
+
+
+                read_file(lv_url);
+
 
             }
 
@@ -1835,7 +1844,33 @@ export function CommonFunc() {
                 alert('error read_file_from_server_with_wait_indicator: ' + e.stack);
 
             }
+
             return lv_result;
+
+
+            //--------------------------------------------------
+            async function read_file(pv_url) {
+
+                await $.get(pv_url, "", this.oncomplete_read_file);
+            }
+            //--------------------------------------------------
+
+
+        }
+
+        //-----------------------------------------------------------------
+        CommonFunc.prototype.oncomplete_read_file = function (po_data) {
+
+            try {
+
+            }
+
+            catch (e) {
+
+                alert('error oncomplete_read_file: ' + e.stack);
+
+            }
+
         }
 
         //======================================================================================
