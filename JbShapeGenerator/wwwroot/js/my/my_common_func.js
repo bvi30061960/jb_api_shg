@@ -1547,11 +1547,19 @@ export function CommonFunc() {
 
                 let lo_geometry = new LineGeometry();
                 lo_geometry.setPositions([
+                    //11012025 {
                     0, 0, 0,
                     0, pv_width, 0,
                     pv_height, pv_width, 0,
                     pv_height, 0, 0,
                     0, 0, 0
+
+                    //0, 0, 0,
+                    //0, pv_height, 0,
+                    //pv_width, pv_height, 0,
+                    //pv_width, 0, 0,
+                    //0, 0, 0
+                    //11012025 }
                 ]);
 
                 lo_result = new Line2(lo_geometry, lo_material);

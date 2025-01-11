@@ -600,7 +600,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 if (this.my_prefix == gc_id_prefix_end) {
 
                     //this.camera = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
-                    this.camera = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
+                    //11012025 this.camera = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
+                    this.camera = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
                     //this.camera.position.x = 10;
                     //this.camera.position.y = -20;
                     //this.camera.position.z = 2;
@@ -640,7 +641,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
-                this.renderer.setSize(this.id_side_shape.clientWidth, this.id_side_shape.clientHeight);// 06052024
+                //11012025 this.renderer.setSize(this.id_side_shape.clientWidth, this.id_side_shape.clientHeight);// 06052024
+                this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);// 06052024
+
+
 
                 this.container.appendChild(this.renderer.domElement);
 
