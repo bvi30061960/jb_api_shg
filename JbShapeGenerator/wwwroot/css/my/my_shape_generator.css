@@ -522,23 +522,24 @@ th.ui-th-column {
     margin-right: auto;*/
 }
 
-#id_but_model_download {
+#id_but_model_download,
+#id_but_go_to_amazon 
+{
     font-size: 1em;
     border-radius: 12px;
-    width: 15vw; /*2em;*/
     height: 2em;
-    /*background-image: url('/images/my/css_sprites.png');*/
-    /*background-color: Transparent;
-    background-repeat: no-repeat;
-    background-attachment: initial;*/
-    /*background-position: 50%, 50%;*/
 }
-/*#id_but_model_download {
-    font-size: 0.5em;
-}*/
+
+#id_but_model_download {
+    width: 15vw; 
+}
+
+#id_but_go_to_amazon {
+    width: 27vw; 
+}
+
 
 
 /*================================ отладка ===============================*/
-
 /*  * {   border: 1px solid red; } */
 /*================================ отладка ===============================*/

@@ -150,6 +150,7 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
 
                 $("#id_but_model_download").on("click", this.onclick_but_model_download);
+                $("#id_but_go_to_amazon").on("click", this.onclick_but_go_to_amazon);
 
 
 
@@ -180,8 +181,28 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
             }
         }
+
+
         //-----------------------------------------------------------------
 
+        Tab_orders.prototype.onclick_but_go_to_amazon = function (po_event) {
+
+
+            try {
+
+                let lv_url = "https://www.amazon.com/s?k=loose+leaf+tea%2C+not+bagged&i=grocery&crid=1YUTWIU5EM8LJ&sprefix=loose+leaf+tea%2C+not+bagged%2Cgrocery%2C144&ref=nb_sb_noss";
+                let lo_new_window = window.open(lv_url, "_blank");
+
+                //window.open();
+
+            }
+
+            catch (e) {
+
+                alert('error onclick_but_go_to_amazon: ' + e.stack);
+
+            }
+        }
 
         //====================================================================
     }  // if (typeof this.create_rectangle !== "function")
