@@ -1548,17 +1548,17 @@ export function CommonFunc() {
                 let lo_geometry = new LineGeometry();
                 lo_geometry.setPositions([
                     //11012025 {
-                    0, 0, 0,
-                    0, pv_width, 0,
-                    pv_height, pv_width, 0,
-                    pv_height, 0, 0,
-                    0, 0, 0
+                    ////0, 0, 0,
+                    ////0, pv_width, 0,
+                    ////pv_height, pv_width, 0,
+                    ////pv_height, 0, 0,
+                    ////0, 0, 0
 
-                    //0, 0, 0,
-                    //0, pv_height, 0,
-                    //pv_width, pv_height, 0,
-                    //pv_width, 0, 0,
-                    //0, 0, 0
+                    0, 0, 0,
+                    0, pv_height, 0,
+                    pv_width, pv_height, 0,
+                    pv_width, 0, 0,
+                    0, 0, 0
                     //11012025 }
                 ]);
 
@@ -1828,58 +1828,80 @@ export function CommonFunc() {
 
 
         //-----------------------------------------------------------------
-        CommonFunc.prototype.read_file_from_server_with_wait_indicator = function (pv_url) {
+        //CommonFunc.prototype.read_file_from_server_with_wait_indicator = function (pv_url, pv_downloaded_filename) {
+        CommonFunc.prototype.read_file_from_server = function (pv_url, pv_downloaded_filename) {
 
             let lv_result = null;
 
+            ////try {
+
+            ////    let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts +
+            ////        "&filename=" + pv_filename
+            ////        + "&chdata=" + Math.random().toString();
+            ////    let lv_is_before = true;
+            ////    read_file(lv_url);
+
+
+            ////}
+
+            ////catch (e) {
+
+            ////    alert('error read_file_from_server_with_wait_indicator: ' + e.stack);
+
+            ////}
+
+            ////return lv_result;
+
+
+            //////--------------------------------------------------
+            ////async function read_file(pv_url) {
+
+            ////    await $.get(pv_url, "", this.oncomplete_read_file);
+            ////}
+            //////--------------------------------------------------
+
             try {
 
-                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts +
-                    "&filename=" + pv_filename
-                    + "&chdata=" + Math.random().toString();
+                fetch(pv_url)
+                    .then(response => response.arrayBuffer())
+                    .then(buffer => {
+                        const blob = new Blob([buffer], { type: "application/octet-stream" });
+                        const url = URL.createObjectURL(blob);
 
+                        const a = document.createElement("a");
+                        a.href = url;
+                        a.download = pv_downloaded_filename; // "downloaded_file.bin";
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    })
 
-                let lv_is_before = true;
-
-
-                read_file(lv_url);
-
+                    .catch(error => console.error("Ошибка загрузки файла:", error));
 
             }
 
             catch (e) {
 
-                alert('error read_file_from_server_with_wait_indicator: ' + e.stack);
+                alert('error read_file_from_server: ' + e.stack);
 
             }
-
-            return lv_result;
-
-
-            //--------------------------------------------------
-            async function read_file(pv_url) {
-
-                await $.get(pv_url, "", this.oncomplete_read_file);
-            }
-            //--------------------------------------------------
-
-
         }
 
-        //-----------------------------------------------------------------
-        CommonFunc.prototype.oncomplete_read_file = function (po_data) {
+        //////-----------------------------------------------------------------
+        ////CommonFunc.prototype.oncomplete_read_file = function (po_data) {
 
-            try {
+        ////    try {
 
-            }
+        ////    }
 
-            catch (e) {
+        ////    catch (e) {
 
-                alert('error oncomplete_read_file: ' + e.stack);
+        ////        alert('error oncomplete_read_file: ' + e.stack);
 
-            }
+        ////    }
 
-        }
+        ////}
 
         //======================================================================================
         //======================================================================================

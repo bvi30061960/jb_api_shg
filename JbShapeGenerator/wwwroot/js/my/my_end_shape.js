@@ -95,8 +95,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                 let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle(
-                    go_lateral_side_shape_generator.params.shape_width,
-                    go_up_side_shape_generator.params.shape_width
+                    //go_lateral_side_shape_generator.params.shape_width, //11012025
+                    //go_up_side_shape_generator.params.shape_width
+
+                    go_up_side_shape_generator.params.shape_width,
+                    go_lateral_side_shape_generator.params.shape_width //11012025
 
                 );
                 lo_rectangle.name = cv_rectangle_name;

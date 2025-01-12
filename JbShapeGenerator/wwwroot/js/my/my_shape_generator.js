@@ -200,7 +200,7 @@ function on_tab_side_activate(event, ui) {
 
             return;
 
-            
+
 
             break;
     }
@@ -577,92 +577,111 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-                this.container = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape);//20062024);
-                this.scene = new THREE.Scene();
-                //this.scene.background = new THREE.Color(0xf0f0f0);
-                this.scene.background = new THREE.Color(Constants.background_color);
-                //this.scene.background = new THREE.Color(0xfff000);
+                if (
+                    this.my_prefix == gc_id_prefix_up
+                    || this.my_prefix == gc_id_prefix_lateral
+                    || this.my_prefix == gc_id_prefix_end
+                ) {
 
-                let lo_cameraPersp, lo_cameraOrtho;
+                    this.container = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape);//20062024);
+                    this.scene = new THREE.Scene();
+                    //this.scene.background = new THREE.Color(0xf0f0f0);
+                    this.scene.background = new THREE.Color(Constants.background_color);
+                    //this.scene.background = new THREE.Color(0xfff000);
 
-                this.aspect = this.container.clientWidth / this.container.clientHeight;//04022023
+                    let lo_cameraPersp, lo_cameraOrtho;
 
-                lo_cameraPersp = new THREE.PerspectiveCamera(50, this.aspect, 0.01, 30000);
-                //lo_cameraOrtho = new THREE.OrthographicCamera(-30 * this.aspect, 100 * this.aspect, 90 * this.aspect, -15.0 * this.aspect);//, 0,10);
-                ///lo_cameraOrtho = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
-                lo_cameraOrtho = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);//, -0.100 * this.aspect, 20 * this.aspect);
+                    this.aspect = this.container.clientWidth / this.container.clientHeight;//04022023
+
+                    lo_cameraPersp = new THREE.PerspectiveCamera(50, this.aspect, 0.01, 30000);
+                    //lo_cameraOrtho = new THREE.OrthographicCamera(-30 * this.aspect, 100 * this.aspect, 90 * this.aspect, -15.0 * this.aspect);//, 0,10);
+                    ///lo_cameraOrtho = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
+                    lo_cameraOrtho = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);//, -0.100 * this.aspect, 20 * this.aspect);
 
 
-                //02112024 const frustumSize = 500;
+                    //02112024 const frustumSize = 500;
 
-                this.camera = lo_cameraOrtho;
+                    this.camera = lo_cameraOrtho;
 
-                if (this.my_prefix == gc_id_prefix_end) {
+                    //11012025 {
+                    ////if (this.my_prefix == gc_id_prefix_end) {
 
-                    //this.camera = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
-                    //11012025 this.camera = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
-                    this.camera = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
-                    //this.camera.position.x = 10;
-                    //this.camera.position.y = -20;
-                    //this.camera.position.z = 2;
+                    ////    //this.camera = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
+                    ////    //11012025 this.camera = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
+                    ////    this.camera = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
+                    ////    //this.camera.position.x = 10;
+                    ////    //this.camera.position.y = -20;
+                    ////    //this.camera.position.z = 2;
+                    ////}
+                    //11012025 }
+
+
+
+                    //04082024 this.camera.position.set(0, 0, 1);
+
+
+                    this.scene.add(new THREE.AmbientLight(0xf0f0f0, 3));
+                    //this.scene.add(new THREE.DirectionalLight(0xf0f0f0, 3));
+                    const light = new THREE.SpotLight(0xffffff, 4.5);
+                    light.position.set(0, 1500, 200);
+                    light.angle = Math.PI * 0.2;
+                    light.decay = 0;
+                    light.castShadow = true;
+                    light.shadow.camera.near = 200;
+                    light.shadow.camera.far = 2000;
+                    light.shadow.bias = - 0.000222;
+                    light.shadow.mapSize.width = 1024;
+                    light.shadow.mapSize.height = 1024;
+                    this.scene.add(light);
+
+                    let lo_planeGeometry;
+                    lo_planeGeometry = new THREE.PlaneGeometry(2000, 2000);
+                    lo_planeGeometry.rotateX(- Math.PI / 2);
+
+                    let lo_planeMaterial;
+                    lo_planeMaterial = new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.2 });
+
+                    this.plane = new THREE.Mesh(lo_planeGeometry, lo_planeMaterial);
+                    this.plane.receiveShadow = true;
+                    this.scene.add(this.plane);
+
+
+
+                    this.renderer = new THREE.WebGLRenderer(/*{ antialias: true }*/);
+
+                    //11012025 this.renderer.setSize(this.id_side_shape.clientWidth, this.id_side_shape.clientHeight);// 06052024
+
+                    ///////////////////////////11012025 this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);// 06052024
+
+
+
+                    this.container.appendChild(this.renderer.domElement);
+
+
+                    // Controls
+                    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
+                    this.controls.damping = 0.2;
+                    this.controls.enableRotate = false;// bvi
+
+                    this.camera.position.set(0, 0, 1);//04082024
+
+
                 }
-
-
-
-                //04082024 this.camera.position.set(0, 0, 1);
-
-
-                this.scene.add(new THREE.AmbientLight(0xf0f0f0, 3));
-                //this.scene.add(new THREE.DirectionalLight(0xf0f0f0, 3));
-                const light = new THREE.SpotLight(0xffffff, 4.5);
-                light.position.set(0, 1500, 200);
-                light.angle = Math.PI * 0.2;
-                light.decay = 0;
-                light.castShadow = true;
-                light.shadow.camera.near = 200;
-                light.shadow.camera.far = 2000;
-                light.shadow.bias = - 0.000222;
-                light.shadow.mapSize.width = 1024;
-                light.shadow.mapSize.height = 1024;
-                this.scene.add(light);
-
-                let lo_planeGeometry;
-                lo_planeGeometry = new THREE.PlaneGeometry(2000, 2000);
-                lo_planeGeometry.rotateX(- Math.PI / 2);
-
-                let lo_planeMaterial;
-                lo_planeMaterial = new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.2 });
-
-                this.plane = new THREE.Mesh(lo_planeGeometry, lo_planeMaterial);
-                this.plane.receiveShadow = true;
-                this.scene.add(this.plane);
-
-
-
-                this.renderer = new THREE.WebGLRenderer({ antialias: true });
-
-                //11012025 this.renderer.setSize(this.id_side_shape.clientWidth, this.id_side_shape.clientHeight);// 06052024
-                this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);// 06052024
-
-
-
-                this.container.appendChild(this.renderer.domElement);
-
-
-                // Controls
-                this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-                this.controls.damping = 0.2;
-                this.controls.enableRotate = false;// bvi
-
-                this.camera.position.set(0, 0, 1);//04082024
 
                 //-------------------------------------------------------------------
 
 
+                //11012025 {
+                //if (this.my_prefix != gc_id_prefix_end
+                //    // && this.my_prefix != gc_id_prefix_lateral //25122024
+                //) {
 
-                if (this.my_prefix != gc_id_prefix_end
-                    // && this.my_prefix != gc_id_prefix_lateral //25122024
+                if (
+                    this.my_prefix == gc_id_prefix_up
+                    || this.my_prefix == gc_id_prefix_lateral
                 ) {
+
+                    //11012025 }
 
                     // установки для модели
                     //======================================================================
@@ -770,7 +789,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 } // 06122024 this.my_prefix != gc_id_prefix_end
 
-                else {
+
+                if (this.my_prefix == gc_id_prefix_end) { //11012025
+
+                    //else {
 
                     this.group_end_shape = new THREE.Group();
                     this.group_end_shape.name = cv_name_group_end_shape;
@@ -3166,7 +3188,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             lo_active_side.render();
 
 
-            if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
+            //11012025 { if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
+            if (lo_active_side.my_prefix == gc_id_prefix_up || lo_active_side.my_prefix == gc_id_prefix_lateral) { // 11012025
 
                 lo_active_side.aspect_mod = lo_active_side.container_mod.clientWidth / lo_active_side.container_mod.clientHeight;
                 lo_active_side.renderer_mod.setSize(lo_active_side.container_mod.clientWidth, lo_active_side.container_mod.clientHeight);

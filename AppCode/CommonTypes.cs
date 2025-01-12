@@ -17,6 +17,8 @@
         public const string method_delete_model_parts = "delete_model_parts";
         public const string method_read_progress_value = "read_progress_value";
         public const string method_read_result_refresh_premodel = "read_result_refresh_premodel";
+        public const string method_read_jb_model_parts_zip = "read_jb_model_parts_zip";
+        public const string parameter_folder_for_model_parts_zip = "folder_for_model_parts_zip";
 
         public const string path_AppData = "AppData";
         public const string path_temp_data = "temp_data";

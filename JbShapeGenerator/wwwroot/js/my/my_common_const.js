@@ -14,12 +14,13 @@ export var Constants = {
     method_read_model_from_server: "ReadModelFromServer",
     method_check_file_exist_on_server: "CheckFileExistOnServer",
     method_read_progress_value: "read_progress_value",
+    method_read_jb_model_parts_zip: "read_jb_model_parts_zip";
 
     word_client_id: "client_id",
     word_task_id: "task_id",
     word_task_id: "task_id",
     path_result_file: "path_result_file",
-
+    parameter_folder_for_model_parts_zip: "folder_for_model_parts_zip",
 
     file_model_ext: ".stl",
     file_model_screenshot: ".scr",
@@ -67,7 +68,9 @@ export var Constants = {
     initial_load: "initial_load",
     background_color: 'c3c3c3', // цвет фона сцены
     shape_countour_color: 0x0000ff, // цвет контура фигур
-    shape_line_color: 0xff00ff // цвет линий разреза
+    shape_line_color: 0xff00ff, // цвет линий разреза
+    path_model_parts_folder: "",
+    calc_jbmodel_server_url: "https://localhost:7095/CalcJBModel" //?method="
 };
 
 

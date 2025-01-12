@@ -171,7 +171,19 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
             try {
 
-                //alert(po_event);
+                    //const link = document.createElement("a");
+                    //link.setAttribute("download", "screenshot.png");
+                    //link.setAttribute("href", imageData);
+                    //link.click();
+                    
+                let lv_url = Constants.calc_jbmodel_server_url + "?method=" + Constants.method_read_jb_model_parts_zip
+                    + "&"
+                    + Constants.parameter_folder_for_model_parts_zip + "=" + lv_folder_for_model_parts_zip;
+                    + "&chdata=" + Math.random().toString(); // 23112024
+
+                   
+                let lv_downloaded_filename = "jb_puzzle_parts.zip";
+                CommonFunc.prototype.read_file_from_server(lv_url,lv_downloaded_filename);
 
             }
 
