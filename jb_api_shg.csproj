@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <Folder Include="AppData\" />
+    <Folder Include="AppData\temp_data\" />
     <Folder Include="test_data\" />
   </ItemGroup>
 
