@@ -214,21 +214,20 @@ namespace jb_api.Controllers
                     break;
 
 
-                case CommonConstants.method_read_jb_model_parts_zip:
+                //case CommonConstants.method_read_jb_model_parts_zip:
 
-                    string lv_folder_for_model_parts_zip = Request.Query["folder_for_model_parts_zip"];
+                //    string lv_folder_for_model_parts_zip = Request.Query["folder_for_model_parts_zip"];
 
-                    lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
-                                            Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
-
-
-                    HandlePathsAndNames.Delete_files_by_dir_and_mask(lv_path_model_part, lv_prefix_file + "_*.stl");
-
-                    return Results.Empty;
+                //    lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
+                //                            Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
 
 
+                //    HandlePathsAndNames.Delete_files_by_dir_and_mask(lv_path_model_part, lv_prefix_file + "_*.stl");
 
-                    break;
+                //    return Results.Empty;
+
+                //    break;
+
             }
 
 

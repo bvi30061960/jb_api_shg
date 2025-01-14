@@ -28,7 +28,6 @@
     <Folder Include="AppData\temp_data\" />
     <Folder Include="Data\" />
     <Folder Include="wwwroot\css\" />
-    <Folder Include="wwwroot\datafiles\" />
     <Folder Include="wwwroot\images\" />
     <Folder Include="wwwroot\js\three\addons\" />
     <Folder Include="wwwroot\lib\bootstrap\" />

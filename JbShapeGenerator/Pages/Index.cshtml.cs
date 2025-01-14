@@ -52,7 +52,7 @@ namespace JbShapeGenerator.Pages
         //-----------------------------------------------------------------------------------------------------
         public async Task<IActionResult> OnGetProgressStatus()
         {
-            return new OkObjectResult(ProgressStatus.ProgressValue );
+            return new OkObjectResult(ProgressStatus.ProgressValue);
         }
 
 
@@ -193,6 +193,56 @@ namespace JbShapeGenerator.Pages
 
             return new OkObjectResult(lv_result);
         }
+
+
+
+
+
+
+        //-----------------------------------------------------------------------------------------------------
+        public async Task<IActionResult> OnGetReadModelPartsZipFile()
+        //public async Task<byte[]> OnGetReadModelPartsZipFile()
+        {
+
+
+            byte[] lv_result = null;
+
+            string? lv_path_filename = "";
+
+
+            try
+            {
+
+                HandlePathsAndNames.Clear_names_and_paths();
+                HandlePathsAndNames.Create_names_and_directories(PageContext);
+
+
+
+                string? lv_filename_zip = Request.Query["filename"];
+
+
+                lv_path_filename = Path.Combine(HandlePathsAndNames.av_unic_user_models_dir, lv_filename_zip);
+
+                lv_result = await HandleModel.ReadBinaryFile(lv_path_filename);
+
+
+            }
+            catch (Exception ex)
+            {
+                //return null;
+                return new OkObjectResult("");
+            }
+
+            //return new OkObjectResult(lv_result);
+
+            return File(lv_result, "application/zip"/*, "example.zip"*/);
+        }
+
+
+
+
+
+
 
 
         //-----------------------------------------------------------------------------------------------------

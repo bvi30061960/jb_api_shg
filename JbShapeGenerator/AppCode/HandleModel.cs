@@ -240,6 +240,40 @@ namespace JbShapeGenerator.AppCode
             return lv_result;
 
         }
+
+
+        //----------------------------------------------------------------------------------------------------------
+        internal static async Task<byte[]> ReadBinaryFile(string pv_path_filename)
+        {
+            byte[] lv_result = null;
+
+            try
+            {
+
+                ////using (BinaryReader sr = new BinaryReader(pv_path_filename))
+
+                //////using (StreamReader sr = new StreamReader(pv_path_filename))
+                ////{
+                ////    //lv_result = await sr.ReadToEndAsync();
+                ////    lv_result = await sr.rea
+                ////}
+                ///
+
+
+                lv_result = await File.ReadAllBytesAsync(pv_path_filename);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+
+
+            return lv_result;
+
+        }
+
         //----------------------------------------------------------------------------------------------------------
 
         async internal static Task<typ_united_model_data> ReadUnitedModelData(string? lv_path_model, bool pv_is_initial_load)

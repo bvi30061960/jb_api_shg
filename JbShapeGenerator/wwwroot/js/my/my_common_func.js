@@ -32,7 +32,13 @@ import { Shapes } from './my_shapes.js';//27072024
 import {
     typ_united_model_data,
     type_rotate_mode
-} from './my_common_types.js';//2409202 
+} from './my_common_types.js';//2409202
+
+
+
+var go_this = null;
+
+
 
 // Class CommonFunc
 export function CommonFunc() {
@@ -41,17 +47,20 @@ export function CommonFunc() {
     //	this.container = po_container;
 
 
+    go_this = this;
+
     this.$dialog_question = $("#id_div_dialog_question");
 
     this.$dialog_message = $("#id_div_dialog_message");
 
     this.message_timeout = 1500;
 
+    this.downloaded_filename = "";
 
 
-    const lo_link = document.createElement('a');
-    lo_link.style.display = 'none';
-    document.body.appendChild(lo_link);
+    //const lo_link = document.createElement('a');
+    //lo_link.style.display = 'none';
+    //document.body.appendChild(lo_link);
 
     //=====================================================================
 
@@ -1828,80 +1837,113 @@ export function CommonFunc() {
 
 
         //-----------------------------------------------------------------
-        //CommonFunc.prototype.read_file_from_server_with_wait_indicator = function (pv_url, pv_downloaded_filename) {
-        CommonFunc.prototype.read_file_from_server = function (pv_url, pv_downloaded_filename) {
-
-            let lv_result = null;
-
-            ////try {
-
-            ////    let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts +
-            ////        "&filename=" + pv_filename
-            ////        + "&chdata=" + Math.random().toString();
-            ////    let lv_is_before = true;
-            ////    read_file(lv_url);
-
-
-            ////}
-
-            ////catch (e) {
-
-            ////    alert('error read_file_from_server_with_wait_indicator: ' + e.stack);
-
-            ////}
-
-            ////return lv_result;
-
-
-            //////--------------------------------------------------
-            ////async function read_file(pv_url) {
-
-            ////    await $.get(pv_url, "", this.oncomplete_read_file);
-            ////}
-            //////--------------------------------------------------
+        CommonFunc.prototype.read_file_from_server =  async function (pv_url, pv_downloaded_filename) {
 
             try {
 
-                fetch(pv_url)
-                    .then(response => response.arrayBuffer())
-                    .then(buffer => {
-                        const blob = new Blob([buffer], { type: "application/octet-stream" });
-                        const url = URL.createObjectURL(blob);
+                go_this.downloaded_filename = pv_downloaded_filename;
 
-                        const a = document.createElement("a");
-                        a.href = url;
-                        a.download = pv_downloaded_filename; // "downloaded_file.bin";
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(url);
-                    })
+                let response = await fetch(pv_url);
 
-                    .catch(error => console.error("Ошибка загрузки файла:", error));
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                let lar_blob = await response.blob();
+                let lv_url = URL.createObjectURL(lar_blob);
 
-            }
+                let a = document.createElement('a');
+                a.href = lv_url;
+                a.download = pv_downloaded_filename; // 'example.zip';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
 
-            catch (e) {
+                URL.revokeObjectURL(lv_url);
+
+            } catch (e) {
 
                 alert('error read_file_from_server: ' + e.stack);
-
+                //console.error('Error downloading file:', e);
             }
+
         }
 
-        //////-----------------------------------------------------------------
-        ////CommonFunc.prototype.oncomplete_read_file = function (po_data) {
+
+
+
+
+        //////////    try {
+
+
+        //////////        go_this.downloaded_filename = pv_downloaded_filename;
+        //////////        //get_read_result_refresh_premodel(lv_url);
+
+
+        //////////        ////--------------------------------------------------
+        //////////        //async function get_read_result_refresh_premodel(pv_url) {
+        //////////        //--------------------------------------------------
+        //////////        ///*await*/ $.get(pv_url, "", this.oncomplete_read_file_from_server);
+        //////////        /*await*/ $.get(pv_url, "", go_this.oncomplete_read_file_from_server);
+        //////////        //}
+
+
+        //////////    }
+
+        //////////    catch (e) {
+
+
+        //////////        //lo_active_side.model_params_changed = false; //04102024
+        //////////        //lo_passive_side.model_params_changed = false; //04102024
+
+        //////////        //let lv_is_before = false;
+        //////////        //lo_active_side.do_before_after_model_request(lv_is_before, false);
+        //////////        //lo_passive_side.do_before_after_model_request(lv_is_before, false);
+
+        //////////        alert('error read_file_from_server: ' + e.stack);
+
+        //////////    }
+
+        //////////}
+
+
+
+        //////-------------------------------------------------------------------
+        ////CommonFunc.prototype.oncomplete_read_file_from_server = function (po_data) {
 
         ////    try {
+
+        ////        //let lv_data = new Blob([po_data], { type: "application/octet-stream" }); //{ type: "text/plain" });
+        ////        let lv_data = new Blob([po_data], { type: "application/zip" }); //{ type: "text/plain" });
+        ////        // let lv_data = new Blob([po_data], { type: "text/plain" });
+
+        ////        let lv_url = URL.createObjectURL(lv_data);
+        ////        //let lv_url = URL.createObjectURL(po_data);
+
+        ////        const a = document.createElement("a");
+        ////        a.href = lv_url;
+        ////        a.download = go_this.downloaded_filename; // "downloaded_file.bin";
+        ////        document.body.appendChild(a);
+        ////        a.click();
+        ////        document.body.removeChild(a);
+        ////        URL.revokeObjectURL(lv_url);
+
+
+        ////        document.body.removeChild(a); // Удаляем ссылку из DOM
+
+        ////        // Освобождаем память, удаляя объект URL
+        ////        URL.revokeObjectURL(lv_url);
+
 
         ////    }
 
         ////    catch (e) {
 
-        ////        alert('error oncomplete_read_file: ' + e.stack);
+        ////        alert('error oncomplete_read_file_from_server: ' + e.stack);
 
         ////    }
 
         ////}
+
 
         //======================================================================================
         //======================================================================================
