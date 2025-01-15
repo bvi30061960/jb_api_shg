@@ -498,6 +498,12 @@ export function GridSelectModels(pv_prefix) {
 
                 let lo_active_side = get_active_side_shape_generator();
 
+                //14012025 {
+                if (!lo_active_side) {
+                    return;
+                }
+                //14012025 }
+
                 lo_active_side.is_ask_about_save_file = false;
                 lo_active_side.is_model_changed = false;
 
@@ -512,7 +518,7 @@ export function GridSelectModels(pv_prefix) {
 
 
                 let lo_data = JSON.parse(po_data); //29102024
-                
+
                 ////// Очистка группы с превью
                 ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
 
@@ -549,11 +555,11 @@ export function GridSelectModels(pv_prefix) {
 
                     let lo_active_side = get_active_side_shape_generator();
 
-                    ////07012025 {
-                    //if (!lo_active_side) {
-                    //    return;
-                    //}
-                    ////07012025 }
+                    //07012025 {
+                    if (!lo_active_side) {
+                        return;
+                    }
+                    //07012025 }
 
 
 

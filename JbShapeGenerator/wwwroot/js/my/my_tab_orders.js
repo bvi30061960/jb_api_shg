@@ -103,23 +103,14 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
             try {
 
-                    //const link = document.createElement("a");
-                    //link.setAttribute("download", "screenshot.png");
-                    //link.setAttribute("href", imageData);
-                    //link.click();
+                $("#id_order_loading_indicator").show(); // показываем индикатор загрузки
 
-                let lv_filename_zip = "test_file.zip"; // надо считывать имя файла или hash-имя файла
-
-
-                //let lv_url = Constants.calc_jbmodel_server_url + "?method=" + Constants.method_read_jb_model_parts_zip
-                //    + "&"
-                //    + Constants.parameter_folder_for_model_parts_zip + "=" + lv_folder_for_model_parts_zip;
-                //    + "&chdata=" + Math.random().toString(); // 23112024
+                let lv_filename_zip = "test_file.zip"; // это имя файла надо считывать или hash-имя файла
 
                 let lv_url = "/Index?handler=" + Constants.method_read_model_parts_zip_file
                     + "&"
                     + "filename" + "=" + lv_filename_zip
-                    + "&chdata=" + Math.random().toString(); // 23112024
+                    + "&chdata=" + Math.random().toString(); 
 
                    
                 let lv_downloaded_filename = "jb_puzzle_parts.zip";
@@ -127,30 +118,12 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
                 CommonFunc.prototype.read_file_from_server(lv_url,lv_downloaded_filename);
 
-
-
-
-
-
-                //get_check_file_exist_on_server(lv_url, pf_callback);
-                ////--------------------------------------------------
-                //async function get_check_file_exist_on_server(pv_url, pf_callback) {
-
-                //    try {
-
-                //        //await $.get(pv_url, "", go_this.oncomplete_check_file_exist_on_server);
-                //        await $.get(pv_url, "", pf_callback);
-
-
-
-
-
-
-
-
             }
 
             catch (e) {
+
+
+                $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
 
                 alert('error onclick_but_model_download: ' + e.stack);
 

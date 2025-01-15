@@ -1110,6 +1110,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         Shapes.prototype.delete_splines = function () {
 
             if (this.ar_selected_segments.length == 0) {
+
+                this.main.common_func.Show_message("Right click to select curves to delete", 3000);
+
                 return;
             }
 
@@ -1197,6 +1200,13 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
             }
+
+            //14012025 {
+            if (this.params.is_space_adjust) {
+                this.adjust_splines_by_external_shape();
+            }
+
+            //14012025 }
 
 
 

@@ -513,7 +513,6 @@ export function CommonFunc() {
 
 
 
-            //this.send(lv_url, lo_united_model_data);
             this.send(lv_url, lv_str_united_model_data);
 
 
@@ -538,37 +537,12 @@ export function CommonFunc() {
 
                 //const message = await response.json();
                 const message = await response.text();
-                //10112024 alert(message);
                 let lo_active_side = get_active_side_shape_generator();
 
-                lo_active_side.common_func.Show_message("Model data saved"); //, 1500);
 
-
-
-
-                //fetch(url, {
-                //    credentials: 'include'
-                //}).then((response) => {
-                //    return response.json()
-                //}).then((data) => {
-                //    if (!data.message) {
-                //        //Обработка ответа
-                //    } else {
-                //        console.log(data.message);
-                //    }
-                //})
-
-
-
-                //$.ajax({
-                //    url: '...',
-                //    method: 'get',
-                //    success: (response): {
-                //    let data = JSON.parse(response.responseText);
-                //    console.log(data.message); //Omg, Not Found!!!
-                //}
-                //});
-
+                let lv_modelname = $("#id_model_name").val();
+                let lv_message_text = 'Model "' + lv_modelname + '" saved';
+                lo_active_side.common_func.Show_message(lv_message_text, 2000);
 
 
             }
@@ -652,7 +626,7 @@ export function CommonFunc() {
 
             //let lo_link = $("#id_anch_for_save_model");
 
-            lo_link.href = URL.createObjectURL(blob); // "E:\\Temp\\"; //
+            lo_link.href = URL.createObjectURL(blob);
             lo_link.download = filename;
             lo_link.click();
 
@@ -1483,21 +1457,24 @@ export function CommonFunc() {
         }
         //---------------------------------------------------------------------------------------------
         CommonFunc.prototype.set_message_timeout = function (pv_timeout) {
-            this.message_timeout = pv_timeout;
+            //14012025 this.message_timeout = pv_timeout;
+            go_this.message_timeout = pv_timeout;//14012025 
         }
 
         //---------------------------------------------------------------------------------------------
         CommonFunc.prototype.get_message_timeout = function () {
-            return this.message_timeout;
+            //14012025 return this.message_timeout;
+            return go_this.message_timeout; //14012025
         }
 
         //========================================================================================================
 
         CommonFunc.prototype.on_open_dialog_message = function () {
 
-            let lo_active_side = get_active_side_shape_generator();
+            //let lo_active_side = get_active_side_shape_generator();
 
-            var lv_timeout = lo_active_side.common_func.get_message_timeout();///
+            //var lv_timeout = lo_active_side.common_func.get_message_timeout();///
+            var lv_timeout = go_this.get_message_timeout();///
 
             setTimeout(
                 function () {
@@ -1846,6 +1823,9 @@ export function CommonFunc() {
                 let response = await fetch(pv_url);
 
                 if (!response.ok) {
+
+                    $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
+
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 let lar_blob = await response.blob();
@@ -1860,12 +1840,20 @@ export function CommonFunc() {
 
                 URL.revokeObjectURL(lv_url);
 
+                $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
+
+                go_this.Show_message("Model file downloaded", 2000);
+
+
             } catch (e) {
 
+                $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
+
                 alert('error read_file_from_server: ' + e.stack);
+
                 //console.error('Error downloading file:', e);
             }
-
+            
         }
 
 

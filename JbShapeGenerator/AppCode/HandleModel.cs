@@ -308,15 +308,6 @@ namespace JbShapeGenerator.AppCode
                 string lv_filename_screen_model_graph = lv_path_model + UsingFileExtensions.png;
 
 
-
-
-
-                //// сохранение файла данных модели
-                //using (StreamWriter sw = new StreamWriter(lv_filename_sides_data))
-                //{
-                //    await sw.WriteAsync(united_model_data.sides_data);
-                //}
-
                 // чтение файла данных модели
                 using (StreamReader lo_sr = new StreamReader(lv_filename_sides_data))
                 {
@@ -324,24 +315,12 @@ namespace JbShapeGenerator.AppCode
                 }
 
 
-                //// сохранение файла предварительной модели
-                //using (StreamWriter sw = new StreamWriter(lv_filename_prev_model))
-                //{
-                //    await sw.WriteAsync(united_model_data.prev_model);
-                //}
-
                 // Чтение файла предварительной модели
                 using (StreamReader sr = new StreamReader(lv_filename_prev_model))
                 {
                     lo_united_model_data.prev_model = await sr.ReadToEndAsync();
                 }
 
-
-                //// сохранение файла копии экрана с изображением модели
-                //using (StreamWriter sw = new StreamWriter(lv_filename_screen_model))
-                //{
-                //    await sw.WriteAsync(united_model_data.screenshot);
-                //}
 
                 // Чтение файла копии экрана с изображением модели
                 using (StreamReader sr = new StreamReader(lv_filename_screen_model))

@@ -1642,7 +1642,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 }
 
                 // Очистка сцены new THREE.Group();
-                //14102024 let lar_no_delete = ["PointLight", "PerspectiveCamera"];// "Mesh", 
                 let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "PerspectiveCamera", "Group"];// 14102024
                 lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
 
@@ -1715,6 +1714,151 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 lo_active_side.do_before_after_model_request(lv_is_before, false);
 
             }
+
+        }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.oncomplete_read_model_part = function (po_data) {
+
+
+            try {
+
+                const loader = new STLLoader();
+                const geometry_mod = loader.parse(po_data);
+
+                let lo_active_side = get_active_side_shape_generator();
+                let lo_passive_side = get_passive_side_shape_generator();
+
+                /////////////geometry_mod.center();// Объект - в центре вращения
+
+
+                lo_active_side.num_loaded_model_parts++; // подсчёт числа загруженных деталей
+
+
+
+
+                //14012025 {
+                //-------------------------------------------------------------------
+                // сохранение детали на сервере
+
+
+                try {
+
+                    let response = await fetch(pv_url, {
+                        method: "POST",
+                        headers: {
+                            //"Accept": "application/json"
+                            "Content-Type": "application/json"
+                        },
+
+                        body: po_data_to_send
+
+                    });
+
+                    //const message = await response.json();
+                    const message = await response.text();
+                    let lo_active_side = get_active_side_shape_generator();
+
+
+                    let lv_modelname = $("#id_model_name").val();
+                    let lv_message_text = 'Model "' + lv_modelname + '" saved';
+                    lo_active_side.common_func.Show_message(lv_message_text, 2000);
+
+
+                }
+
+                catch (e) {
+                    alert('error send: ' + e.stack);
+                }
+
+
+
+
+                //-------------------------------------------------------------------
+                //14012025 }
+
+
+                //=========================================================================
+                const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+
+                lo_active_side.group_parts_mod.add(mesh_mod);//14102024
+
+
+                //=========================================================================
+                if (lo_active_side.num_loaded_model_parts == lo_active_side.model_numparts)
+                // конец загрузки
+                {
+                    ////// Задержка для загрузки всех деталей
+                    ////var delayInMilliseconds = 1000; // 1 second
+
+                    ////setTimeout(function () {
+
+                    lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
+
+                    // Запоминание в массиве начальных координат деталей
+
+                    lo_active_side.model_parts_positions.length = 0;
+                    for (let lv_i = 0; lv_i < lo_active_side.group_parts_mod.children.length; lv_i++) {
+
+
+                        //lo_active_side.group_parts_mod.children[lv_i].updateMatrix();
+                        //lo_active_side.group_parts_mod.children[lv_i].updateMatrixWorld();
+
+                        ////lo_active_side.model_parts_positions.
+                        ////    push(lo_active_side.group_parts_mod.children[lv_i].geometry.boundingBox);
+                        lo_active_side.model_parts_positions[lv_i] =
+                            lo_active_side.group_parts_mod.children[lv_i].geometry.boundingBox;
+
+
+                    }
+
+
+
+                    ////lo_active_side.is_building_model = false;
+                    ////lo_passive_side.is_building_model = false;
+
+                    ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                    ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+                    ////lo_active_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+                    ////lo_active_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+                    ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                    ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
+
+
+                    let lv_is_before = false;
+                    lo_active_side.do_before_after_model_request(lv_is_before, true);
+
+                    // Посылка команды на удаление промежуточных файлов на сервере
+
+                    let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
+                        "&filename=" + lo_active_side.model_prefix_filename
+                        + "&chdata=" + Math.random().toString(); // 23112024
+                    ;
+
+                    get_delete_on_server_model_parts(lv_url)
+                    async function get_delete_on_server_model_parts(pv_url) {
+                        //--------------------------------------------------
+                        await $.get(pv_url);
+                    }
+
+
+                    lo_active_side.animate_mod();
+
+                    ////}, delayInMilliseconds);
+
+                }
+
+            }
+
+
+            catch (e) {
+
+                alert('error oncomplete_read_model_part: ' + e.stack);
+
+            }
+
 
         }
 
@@ -1820,104 +1964,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             catch (e) {
 
                 alert('error do_before_after_model_request: ' + e.stack);
-
-            }
-
-
-        }
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.oncomplete_read_model_part = function (po_data) {
-
-
-            try {
-
-                const loader = new STLLoader();
-                const geometry_mod = loader.parse(po_data);
-
-                let lo_active_side = get_active_side_shape_generator();
-                let lo_passive_side = get_passive_side_shape_generator();
-
-                /////////////geometry_mod.center();// Объект - в центре вращения
-
-
-                lo_active_side.num_loaded_model_parts++; // подсчёт числа загруженных деталей 
-
-                //=========================================================================
-                const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
-
-                lo_active_side.group_parts_mod.add(mesh_mod);//14102024
-
-
-                //=========================================================================
-                if (lo_active_side.num_loaded_model_parts == lo_active_side.model_numparts)
-                // конец загрузки
-                {
-                    ////// Задержка для загрузки всех деталей
-                    ////var delayInMilliseconds = 1000; // 1 second
-
-                    ////setTimeout(function () {
-
-                    lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
-
-                    // Запоминание в массиве начальных координат деталей
-
-                    lo_active_side.model_parts_positions.length = 0;
-                    for (let lv_i = 0; lv_i < lo_active_side.group_parts_mod.children.length; lv_i++) {
-
-
-                        //lo_active_side.group_parts_mod.children[lv_i].updateMatrix();
-                        //lo_active_side.group_parts_mod.children[lv_i].updateMatrixWorld();
-
-                        ////lo_active_side.model_parts_positions.
-                        ////    push(lo_active_side.group_parts_mod.children[lv_i].geometry.boundingBox);
-                        lo_active_side.model_parts_positions[lv_i] =
-                            lo_active_side.group_parts_mod.children[lv_i].geometry.boundingBox;
-
-
-                    }
-
-
-
-                    ////lo_active_side.is_building_model = false;
-                    ////lo_passive_side.is_building_model = false;
-
-                    ////$('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                    ////$('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-                    ////lo_active_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
-                    ////lo_active_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
-                    ////$('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
-                    ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-
-
-                    let lv_is_before = false;
-                    lo_active_side.do_before_after_model_request(lv_is_before, true);
-
-                    // Посылка команды на удаление промежуточных файлов на сервере
-
-                    let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
-                        "&filename=" + lo_active_side.model_prefix_filename
-                        + "&chdata=" + Math.random().toString(); // 23112024
-                    ;
-
-                    get_delete_on_server_model_parts(lv_url)
-                    async function get_delete_on_server_model_parts(pv_url) {
-                        //--------------------------------------------------
-                        await $.get(pv_url);
-                    }
-
-
-                    lo_active_side.animate_mod();
-
-                    ////}, delayInMilliseconds);
-
-                }
-
-            }
-
-
-            catch (e) {
-
-                alert('error oncomplete_read_model_part: ' + e.stack);
 
             }
 

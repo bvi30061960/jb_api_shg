@@ -395,7 +395,8 @@ opacity: 1;
 }
 
 
-#up_id_loading_indicator, #lateral_id_loading_indicator, #end_id_loading_indicator {
+#up_id_loading_indicator, #lateral_id_loading_indicator, #end_id_loading_indicator
+{
     width: 40px;
     height: 40px;
     position: absolute;
@@ -404,6 +405,17 @@ opacity: 1;
     margin-right: auto;
     /*z-index:10;*/ /*15112024*/
 }
+
+#id_order_loading_indicator 
+{
+    width: 20px;
+    height: 20px;
+    /*position: absolute;
+    bottom: 12vh;
+    margin-left: auto;
+    margin-right: auto;*/
+}
+
 
 /*******************************************************************************/
 

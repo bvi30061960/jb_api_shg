@@ -235,7 +235,7 @@ namespace JbShapeGenerator.Pages
 
             //return new OkObjectResult(lv_result);
 
-            return File(lv_result, "application/zip"/*, "example.zip"*/);
+            return File(lv_result, "application/zip" /*, "example.zip"*/ );
         }
 
 
