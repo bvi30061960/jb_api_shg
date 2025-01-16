@@ -1,11 +1,23 @@
-﻿import * as THREE from 'three';
-import { Line2 } from 'three/addons/lines/Line2.js';
-import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
-import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+﻿//import * as THREE from 'three';
+import * as THREE from "https://unpkg.com/three@v0.149.0/build/three.module.js"
+
+//import { Line2 } from 'three/addons/lines/Line2.js';
+import { Line2 } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/Line2.js';
+
+//import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+import { LineMaterial } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/LineMaterial.js';
 
 
-import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
-import { STLExporter } from 'three/addons/exporters/STLExporter.js';
+//import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+import { LineGeometry } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/LineGeometry.js';
+
+
+//import { OBJExporter } from 'three/addons/exporters/OBJExporter.js';
+
+//import { STLExporter } from 'three/addons/exporters/STLExporter.js';
+import { STLExporter } from 'https://unpkg.com/three@v0.149.0/examples/jsm/exporters/STLExporter.js';
+
+
 
 
 import { Constants } from './my_common_const.js';

@@ -1,9 +1,14 @@
-﻿import * as THREE from 'three';
+﻿//import * as THREE from 'three';
+import * as THREE from "https://unpkg.com/three@v0.149.0/build/three.module.js"
 
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+//import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from 'https://unpkg.com/three@v0.149.0/examples/jsm/controls/OrbitControls.js';
+
+
 import { GUI } from '../three/addons/libs/lil-gui.module.min.js';
 
-import { LineMaterial } from 'three/addons/lines/LineMaterial.js';//04122024
+//import { LineMaterial } from 'three/addons/lines/LineMaterial.js';//04122024
+import { LineMaterial } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/LineMaterial.js';
 
 //////import { Line2 } from 'three/addons/lines/Line2.js';
 //import { CubeGeometry } from 'three/addons/CubeGeometry.js';
