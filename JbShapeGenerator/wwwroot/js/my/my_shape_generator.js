@@ -1,8 +1,7 @@
-﻿
-import * as THREE from 'three';
+﻿import * as THREE from 'three';
 
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
+import { GUI } from '../three/addons/libs/lil-gui.module.min.js';
 
 import { LineMaterial } from 'three/addons/lines/LineMaterial.js';//04122024
 
@@ -1737,41 +1736,37 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 lo_active_side.num_loaded_model_parts++; // подсчёт числа загруженных деталей
 
 
-
+                
 
                 //14012025 {
                 //-------------------------------------------------------------------
                 // сохранение детали на сервере
 
 
-                try {
+                //try {
+                //    let lv_url = "/Index?handler=" + Constants.method_save_model_part + "&filename=" + pv_filename;
 
-                    let response = await fetch(pv_url, {
-                        method: "POST",
-                        headers: {
-                            //"Accept": "application/json"
-                            "Content-Type": "application/json"
-                        },
+                //    let response = await fetch(lv_url, {
+                //        method: "POST",
+                //        headers: {
+                //            //"Accept": "application/json"
+                //            "Content-Type": "application/json"
+                //        },
 
-                        body: po_data_to_send
+                //        body: po_data
 
-                    });
+                //    });
 
-                    //const message = await response.json();
-                    const message = await response.text();
-                    let lo_active_side = get_active_side_shape_generator();
-
-
-                    let lv_modelname = $("#id_model_name").val();
-                    let lv_message_text = 'Model "' + lv_modelname + '" saved';
-                    lo_active_side.common_func.Show_message(lv_message_text, 2000);
+                //    //const message = await response.json();
+                //    const message = await response.text();
+                //    let lo_active_side = get_active_side_shape_generator();
 
 
-                }
+                //}
 
-                catch (e) {
-                    alert('error send: ' + e.stack);
-                }
+                //catch (e) {
+                //    alert('error send: ' + e.stack);
+                //}
 
 
 

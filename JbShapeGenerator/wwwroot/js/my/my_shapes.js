@@ -33,7 +33,7 @@ import {
 
 
 
-import * as GeometryUtils from 'three/addons/utils/GeometryUtils.js';
+//15012025 import * as GeometryUtils from './three/addons/utils/GeometryUtils.js';
 import { EndShape } from './my_end_shape.js';
 
 //--------------------------------------------------------------------------

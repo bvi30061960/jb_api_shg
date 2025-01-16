@@ -38,15 +38,33 @@ namespace JbShapeGenerator.Pages
         ////}
 
 
-        public void OnGet()
-        {
-
-        }
-
         public void OnPost()
         ///public async Task<IActionResult> OnPost()
         {
             //return StatusCode(200);
+        }
+
+        //-----------------------------------------------------------------------------------------------------
+
+        async public Task<IActionResult> OnPostSaveModel()
+        {
+            return await HandleModel.SaveModel(Request, PageContext);
+        }
+        //-----------------------------------------------------------------------------------------------------
+
+        async public Task<IActionResult> OnPostSaveModelPart()
+        {
+            return await HandleModel.SaveModelPart(Request, PageContext);
+        }
+
+
+        //=========================================================================================
+        //=========================================================================================
+
+
+        public void OnGet()
+        {
+
         }
 
         //-----------------------------------------------------------------------------------------------------
@@ -89,15 +107,6 @@ namespace JbShapeGenerator.Pages
 
 
 
-
-        //-----------------------------------------------------------------------------------------------------
-
-        async public Task<IActionResult> OnPostSaveModel()
-        {
-            return await HandleModel.SaveModel(Request, PageContext);
-        }
-
-        //-----------------------------------------------------------------------------------------------------
         public async Task<IActionResult> OnGetReadScreenshot()
         {
 
@@ -151,7 +160,7 @@ namespace JbShapeGenerator.Pages
 
                 //28102024 {
 
-                HandlePathsAndNames.Clear_names_and_paths();
+                //15012025 HandlePathsAndNames.Clear_names_and_paths();
                 HandlePathsAndNames.Create_names_and_directories(PageContext);
 
 
@@ -213,7 +222,7 @@ namespace JbShapeGenerator.Pages
             try
             {
 
-                HandlePathsAndNames.Clear_names_and_paths();
+                //15012025 HandlePathsAndNames.Clear_names_and_paths();
                 HandlePathsAndNames.Create_names_and_directories(PageContext);
 
 

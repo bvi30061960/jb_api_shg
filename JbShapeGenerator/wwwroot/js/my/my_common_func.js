@@ -27,7 +27,6 @@ import {
 
 
 import { Shapes } from './my_shapes.js';//27072024
-//import { GetTwoShapeIntersect } from './my_shapes.js';//27072024 
 
 import {
     typ_united_model_data,

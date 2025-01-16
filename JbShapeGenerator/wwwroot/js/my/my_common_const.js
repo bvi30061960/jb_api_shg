@@ -15,6 +15,7 @@ export var Constants = {
     method_check_file_exist_on_server: "CheckFileExistOnServer",
     method_read_progress_value: "read_progress_value",
     method_read_model_parts_zip_file: "ReadModelPartsZipFile",
+    method_save_model_part: "SaveModelPart",
 
     word_client_id: "client_id",
     word_task_id: "task_id",

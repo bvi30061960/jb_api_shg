@@ -67,24 +67,18 @@
     </script>
 
 
-
     @* <script type="module" src="~/js/my/my_start.js?version=1"></script> *@
-    @* <script type="module" src="~/js/my/my_segment.js"></script> *@
-    @*  <script type="module" src="~/js/my/my_spline.js"></script> *@
-
-
-
     <script type="module" src="~/js/my/my_common_const.js"></script>
     <script type="module" src="~/js/my/my_shape_generator.js"></script>
     <script type="module" src="~/js/my/my_common_types.js"></script>
     <script type="module" src="~/js/my/my_common_func.js"></script>
+    @* <script type="module" src="~/js/my/my_segment.js"></script> *@
     <script type="module" src="~/js/my/my_segments.js"></script>
+    @*  <script type="module" src="~/js/my/my_spline.js"></script> *@
     <script type="module" src="~/js/my/my_splines.js"></script>
     <script type="module" src="~/js/my/my_shapes.js"></script>
     <script type="module" src="~/js/my/my_progress_dialog.js"></script>
     <script src="~/js/my/my_filesaver.js"></script>
-
-    <script type="module" src="~/js/my/my_tab_orders.js"></script>
 
 </head>
 
@@ -125,13 +119,7 @@
     @*  <div style="text-align:center"> *@
 
 
-
-
-
-  @RenderBody()
-
-
-
+    @RenderBody()
 
 
     @* </div> *@
@@ -148,11 +136,14 @@
  *@
 
 
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    @* 10072024 { *@
     @* <script src="~/js/jquery/jquery.colorpicker.min.js"></script> *@ 
     <script src="~/js/jquery/jquery.colorpicker.js"></script>
+    @* 10072024 } *@
 
     @await RenderSectionAsync("Scripts", required: false)
 
