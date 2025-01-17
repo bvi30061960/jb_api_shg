@@ -22,7 +22,7 @@
 
         public const string path_AppData = "AppData";
         public const string path_temp_data = "temp_data";
-        public const string filename_dict_progress = "dict_progress.txt";
+        //public const string filename_dict_progress = "dict_progress.txt";
 
 
         //public const string cv_pattern_sentences = @"((?:(?-i)[А-ЯA-Z]).*(?<=(?:[а-яa-z]){2,})\.)";
@@ -51,6 +51,27 @@
     }
 
 
+    //******************************************************************************************
+    public struct UsingFileExtensions
+    {
+
+        public const string stl = ".stl";   // Файлы stl
+        public const string dat = ".dat";   // Файлы с данными фигуры и кривых
+        public const string prev = ".prev";  // stl Файл модели до разрезания
+        public const string png = ".png";   // графический файл копии экрана с изображением модели
+        public const string scr = ".scr";   // копия экрана с изображением модели
+
+        //    public const string t1c = ".t1c"; // Выход - файл для перевода с двухколоночной таблицей с текстом в одной левой колонке  
+        //                                      //public const string t2c = ".t2c"; // Выход - файл с двухколоночной таблицей с переведённым текстом в двух колонках  
+        //    public const string t2c = ".t2c"; // Выход - файл с серилизованным объектом - набором таблиц c переводом - по словам, предложениям, абзацам, страницам
+        //    /*** файл с двухколоночной таблицей с разбивкой в колонках по предложениям с текстом на двух языках в двух колонках */
+        //    //public const string t3c = ".t3c"; // Выход - файл для озвучивания с разбивкой в колонках по словам, фразам, предложениям и т.д. с текстом на двух языках в двух колонках
+        //    public const string mp3 = ".mp3"; // Выход - аудиофайл со сгенертрованным звуком на основании таблицы текста
+        //    public const string map = ".map"; // Выход - файл мэппинга временных меток с блоками текста
+        //    public const string txt = ".txt"; // Файлы словарей
+        //    public const string pbs = ".pbs"; // Файлы playbackset настроек
+        //    public const string zip = ".zip"; // Файлы zip
+    };
 
 
     public enum enum_model_side

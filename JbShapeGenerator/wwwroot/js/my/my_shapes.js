@@ -1,15 +1,16 @@
-﻿//import * as THREE from 'three';
-import * as THREE from "https://unpkg.com/three@v0.149.0/build/three.module.js"
+﻿import * as THREE from 'three';
+//import * as THREE from "https://unpkg.com/three@v0.149.0/build/three.module.js"
+//import { THREE } from "https://unpkg.com/three@v0.149.0/build/three.module.js"
 
 
-//import { Line2 } from 'three/addons/lines/Line2.js';
-import { Line2 } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/Line2.js';
+import { Line2 } from 'three/addons/lines/Line2.js';
+//import { Line2 } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/Line2.js';
 
-//import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
-import { LineMaterial } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/LineMaterial.js';
+import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
+//import { LineMaterial } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/LineMaterial.js';
 
-//import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
-import { LineGeometry } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/LineGeometry.js';
+import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
+//import { LineGeometry } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/LineGeometry.js';
 
 import {
     struc_gabarits,
