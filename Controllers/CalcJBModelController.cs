@@ -187,11 +187,31 @@ namespace jb_api.Controllers
                 case CommonConstants.method_read_model_parts:
 
 
-                    lv_filename = Request.Query["filename"];
+                    lv_filename = Request.Query["filename"]; //  в lv_filename - префикс имени файла (общая часть) плюс
+                                                             //  подчёркивание плюс номер детали + расширение ".stl"
+
+
+
+
+
+
+                    //17012025 {
+
+                    //Выделение общего начального префикса (до знака подчёркивания) из имени файла
+                    string lv_targetChar = "_";
+
+                    string lv_common_prefix = Commons.get_substr_until_last_substr(lv_filename, lv_targetChar);
+
+
+                    //lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
+                    //                        Path.Combine(CommonConstants.path_AppData,
+                    //                            Path.Combine(CommonConstants.path_temp_data), lv_filename));
 
                     lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
-                                            Path.Combine(CommonConstants.path_AppData,
-                                                Path.Combine(CommonConstants.path_temp_data), lv_filename));
+                                           Path.Combine(CommonConstants.path_AppData,
+                                             Path.Combine(CommonConstants.path_temp_data,
+                                               Path.Combine(lv_common_prefix, lv_filename))));
+                    //17012025 }
 
                     return Results.File(lv_path_model_part); //13102024
 
@@ -214,19 +234,19 @@ namespace jb_api.Controllers
                     break;
 
 
-                //case CommonConstants.method_read_jb_model_parts_zip:
+                    //case CommonConstants.method_read_jb_model_parts_zip:
 
-                //    string lv_folder_for_model_parts_zip = Request.Query["folder_for_model_parts_zip"];
+                    //    string lv_folder_for_model_parts_zip = Request.Query["folder_for_model_parts_zip"];
 
-                //    lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
-                //                            Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
+                    //    lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
+                    //                            Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
 
 
-                //    HandlePathsAndNames.Delete_files_by_dir_and_mask(lv_path_model_part, lv_prefix_file + "_*.stl");
+                    //    HandlePathsAndNames.Delete_files_by_dir_and_mask(lv_path_model_part, lv_prefix_file + "_*.stl");
 
-                //    return Results.Empty;
+                    //    return Results.Empty;
 
-                //    break;
+                    //    break;
 
             }
 

@@ -60,6 +60,7 @@
         public const string prev = ".prev";  // stl Файл модели до разрезания
         public const string png = ".png";   // графический файл копии экрана с изображением модели
         public const string scr = ".scr";   // копия экрана с изображением модели
+        public const string zip = ".zip";   // zip файл
 
         //    public const string t1c = ".t1c"; // Выход - файл для перевода с двухколоночной таблицей с текстом в одной левой колонке  
         //                                      //public const string t2c = ".t2c"; // Выход - файл с двухколоночной таблицей с переведённым текстом в двух колонках  

@@ -247,8 +247,22 @@ namespace jb_api_shg.AppCode
 
         }
 
+        internal static string get_substr_until_last_substr(string? lv_input, string lv_targetSubstr)
+        {
+            string lv_result = "";
 
+            // Находим индекс последнего вхождения символа
+            int lv_lastIndex = lv_input.LastIndexOf(lv_targetSubstr);
 
+            // Проверяем, найден ли символ
+            if (lv_lastIndex >= 0)
+            {
+                // Извлекаем подстроку от начала до последнего вхождения символа
+                lv_result = lv_input.Substring(0, lv_lastIndex);
+            }
+            
+            return lv_result;
+        }
     } // end class Commons
     //=======================================================================================
 

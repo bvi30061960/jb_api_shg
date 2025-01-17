@@ -1052,6 +1052,8 @@ namespace jb_api_shg.AppCode
             // Папка для сохранения файлов деталей модели
             string lv_path_dir_for_model_parts = Path.Combine(lv_dir_to_save, lv_common_part_filename);
 
+            Commons.create_directory_if_no_exist(lv_path_dir_for_model_parts);
+
             foreach (msg3DObject lo_curr_res_part in par_output_parts)
             {
                 po_scene.AttachObject(lo_curr_res_part);
@@ -1073,7 +1075,7 @@ namespace jb_api_shg.AppCode
             // создание zip-файла с деталями модели 
 
             // Путь до результирующего zip файла
-            string lv_to_save_zipfilename = Path.Combine(lv_dir_to_save, lv_common_part_filename+ "_*" + UsingFileExtensions.stl);
+            string lv_to_save_zipfilename = Path.Combine(lv_dir_to_save, lv_common_part_filename + "_" + UsingFileExtensions.zip);
 
             Commons.MakeZipFile(lv_path_dir_for_model_parts, lv_to_save_zipfilename);
 

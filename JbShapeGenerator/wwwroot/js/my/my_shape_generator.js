@@ -1477,23 +1477,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-
-                // закомментировано сохранение данных модели в папке "загрузки" {
-                //////////go_sides_data = this.read_model_sides_data();
-
-                //////////let stringify_model_data = JSON.stringify(go_sides_data);
-
-                ////////////var zip = new JSZip();
-                ////////////zip.file("DrawModelData.txt", drawdata);
-                ////////////var content = zip.generate({ type: "blob", compression: "DEFLATE" });
-                ////////////saveAs(stringify_model_data, "E:\test\ForSgModel.txt");
-
-
-                //////////let lv_blob = new Blob([stringify_model_data], { type: "text/plain;charset=utf-8;" });
-                ////////////saveAs(lv_blob, "E:\\test\\ForSgModel.txt");
-                //////////saveAs(lv_blob, "ForSgModel.txt");
-                // }
-
                 let lv_end_watching_progress_value = 50;
                 this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_make_model, this.load_model_parts, lv_end_watching_progress_value);
 
