@@ -117,13 +117,15 @@ function start() {
 
         //06122024 $("#id_tab_sides").tabs("option", "active", 2);//30112024  активация третьей закладки
 
-        $("#id_tab_sides").tabs("option", "active", 1);// активация второй закладки (для срабатывания события activate
+        $("#id_tab_sides").tabs("option", "active", 1);// активация второй закладки (lateral side) (для срабатывания события activate
         // и формирования на второй закладке фигуры и данных)
 
-        $("#id_tab_sides").tabs("option", "active", 2);////06122024   активация третьей закладки
+        $("#id_tab_sides").tabs("option", "active", 2);////06122024   активация третьей закладки (end side)
+
+        $("#id_tab_sides").tabs("option", "active", 3);//   активация четвёртой закладки (orders)
 
 
-        $("#id_tab_sides").tabs("option", "active", 0);// активация первой закладки
+        $("#id_tab_sides").tabs("option", "active", 0);// активация первой закладки (up side)
 
 
         //26112024 начальное обновление модели (сейчас работает загрузка начальной модели) go_up_side_shape_generator.model_params_changed = true;
@@ -1642,6 +1644,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 lo_active_side.model_prefix_filename = po_data.common_outfilename_part; // префикс - общая часть имён файлов деталей
+                go_tab_orders.model_prefix_filename = po_data.common_outfilename_part;
+
+
                 // Загрузка деталей модели
                 for (let lv_i = 1; lv_i <= po_data.number_outfiles; lv_i++) {
 

@@ -27,6 +27,9 @@ export var Constants = {
     file_model_screenshot: ".scr",
     file_model_prev: ".prev",
     file_model_graph: ".png",
+    file_model_zip: ".zip",
+
+
     //Number_of_blocks: 6,
     //SeparatorNameSet_from_data: "_@&@_",
     //Separator_between_items: "_&&_",

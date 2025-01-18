@@ -28,6 +28,9 @@ using Windows.Foundation;
 
 using System.Threading;
 
+
+using System.IO;
+
 namespace jb_api.Controllers
 {
 
@@ -221,13 +224,37 @@ namespace jb_api.Controllers
 
                 case CommonConstants.method_delete_model_parts:
 
-                    string lv_prefix_file = Request.Query["filename"];
-
-                    lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
-                                            Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
+                    Commons.Delete_model_parts(Request);
 
 
-                    HandlePathsAndNames.Delete_files_by_dir_and_mask(lv_path_model_part, lv_prefix_file + "_*.stl");
+
+                    //////string lv_common_filenames_prefix = Request.Query["filename"];
+
+
+
+                    ////////17012025 {
+                    ////////lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
+                    ////////                        Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
+
+                    //////string lv_path_temp_data = Path.Combine(Environment.CurrentDirectory,
+                    //////                        Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
+
+                    //////string lv_folder_to_delete = Path.Combine(lv_path_temp_data, lv_common_filenames_prefix);
+
+                    //////string lv_path_file_to_delete = Path.Combine(lv_path_temp_data, lv_common_filenames_prefix + UsingFileExtensions.zip);
+
+                    ////////HandlePathsAndNames.Delete_files_by_dir_and_mask(lv_path_model_part, lv_prefix_file + "_*.stl");
+
+                    //////HandlePathsAndNames.Delete_folder_with_files(lv_folder_to_delete); //17012025
+
+                    //////// Удаляем существующий ZIP-файл, если он есть
+                    //////if (System.IO.File.Exists(lv_path_file_to_delete))
+                    //////{
+                    //////    System.IO.File.Delete(lv_path_file_to_delete);
+                    //////}
+
+
+                    ////////17012025 }
 
                     return Results.Empty;
 

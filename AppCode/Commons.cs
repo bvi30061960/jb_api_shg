@@ -260,10 +260,52 @@ namespace jb_api_shg.AppCode
                 // Извлекаем подстроку от начала до последнего вхождения символа
                 lv_result = lv_input.Substring(0, lv_lastIndex);
             }
-            
+
             return lv_result;
         }
+
+
+        //----------------------------------------------------------------------------------
+        internal static void Delete_model_parts(HttpRequest po_request)
+        {
+
+            try
+            {
+                string lv_common_filenames_prefix = po_request.Query["filename"];
+
+
+                //17012025 {
+                //lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
+                //                        Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
+
+                string lv_path_temp_data = Path.Combine(Environment.CurrentDirectory,
+                                        Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
+
+                string lv_folder_to_delete = Path.Combine(lv_path_temp_data, lv_common_filenames_prefix);
+
+                string lv_path_file_to_delete = Path.Combine(lv_path_temp_data, lv_common_filenames_prefix + UsingFileExtensions.zip);
+
+                //HandlePathsAndNames.Delete_files_by_dir_and_mask(lv_path_model_part, lv_prefix_file + "_*.stl");
+
+                HandlePathsAndNames.Delete_folder_with_files(lv_folder_to_delete); //17012025
+
+                // Удаляем существующий ZIP-файл, если он есть
+                if (System.IO.File.Exists(lv_path_file_to_delete))
+                {
+                    System.IO.File.Delete(lv_path_file_to_delete);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Debug.WriteLine("Error in Delete_model_parts: " + ex.Message);
+            }
+            //17012025 }        
+
+        }
+
+
     } // end class Commons
-    //=======================================================================================
+      //=======================================================================================
 
 }

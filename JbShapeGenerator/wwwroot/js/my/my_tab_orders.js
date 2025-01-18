@@ -24,6 +24,21 @@ import { Constants } from './my_common_const.js';
 
 import { CommonFunc } from './my_common_func.js';
 
+import {
+    //get_active_side_shape_generator,
+    //get_passive_side_shape_generator,
+
+    //gc_id_prefix_up,
+    //gc_id_prefix_lateral,
+    //gc_id_prefix_end,
+
+    //go_up_side_shape_generator,
+    //go_lateral_side_shape_generator,
+    //go_end_side_shape_generator,
+
+    go_tab_orders
+
+} from './my_shape_generator.js';
 
 //==========================================================================================
 // Class Tab_orders
@@ -47,6 +62,8 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
     //this.cv_rectangle_name = "my_rectangle";
 
+
+    this.model_prefix_filename = null; // префикс имени файла модели
     //=====================================================================
 
     if (typeof this.init_tab_orders != "function") {
@@ -106,7 +123,7 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
                 $("#id_order_loading_indicator").show(); // показываем индикатор загрузки
 
-                let lv_filename_zip = "test_file.zip"; // это имя файла надо считывать или hash-имя файла
+                let lv_filename_zip = go_tab_orders.model_prefix_filename + Constants.file_model_zip;//   "test_file.zip"; // это имя файла надо считывать или hash-имя файла
 
                 let lv_url = "/Index?handler=" + Constants.method_read_model_parts_zip_file
                     + "&"

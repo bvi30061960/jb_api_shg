@@ -239,6 +239,30 @@ namespace jb_api_shg.AppCode
 
         }
 
+        //-------------------------------------------------------------------------------
+        internal static void Delete_folder_with_files(string lv_folder_to_delete)
+        {
+            try
+            {
+                // Проверяем, существует ли папка
+                if (Directory.Exists(lv_folder_to_delete))
+                {
+                    // Удаляем папку вместе с содержимым
+                    Directory.Delete(lv_folder_to_delete, true);
+                    //Console.WriteLine($"Папка '{folderPath}' успешно удалена.");
+                }
+                //else
+                //{
+                //    Console.WriteLine($"Папка '{folderPath}' не существует.");
+                //}
+            }
+            catch (Exception ex)
+            {
+                //// Обрабатываем возможные ошибки
+                //Console.WriteLine($"Ошибка при удалении папки: {ex.Message}");
+            }
+        }
+
 
         //////----------------------------------------------------------------------------------------------------------------
         ////public static string? get_full_path_with_unic_filename(string pv_extension_with_dot)
