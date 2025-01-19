@@ -304,6 +304,28 @@ namespace jb_api_shg.AppCode
 
         }
 
+        //internal static async Task<byte[]?> ReadBinaryFile(string lv_path_zip_file)
+        //{
+        //----------------------------------------------------------------------------------------------------------
+        internal static async Task<byte[]> ReadBinaryFile(string pv_path_filename)
+        {
+            byte[] lv_result = null;
+
+            try
+            {
+                lv_result = await File.ReadAllBytesAsync(pv_path_filename);
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return lv_result;
+
+        }
+
+
+
 
     } // end class Commons
       //=======================================================================================

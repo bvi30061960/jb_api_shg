@@ -102,6 +102,8 @@ namespace jb_api.Controllers
 
         [HttpGet(Name = "GetCalcJBModel")]
         //public IEnumerable<CalcModel> Get()
+
+
         async public Task<IResult> Get()
         {
 
@@ -261,19 +263,41 @@ namespace jb_api.Controllers
                     break;
 
 
-                    //case CommonConstants.method_read_jb_model_parts_zip:
+                case CommonConstants.method_read_model_parts_zip_file:
 
-                    //    string lv_folder_for_model_parts_zip = Request.Query["folder_for_model_parts_zip"];
+                    string zip_filename = Request.Query["filename"];// + UsingFileExtensions.zip;
 
-                    //    lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
-                    //                            Path.Combine(CommonConstants.path_AppData, CommonConstants.path_temp_data));
+                    string lv_path_zip_file = Path.Combine(Environment.CurrentDirectory,
+                                            Path.Combine(CommonConstants.path_AppData,
+                                            Path.Combine(CommonConstants.path_temp_data, zip_filename)));
 
 
-                    //    HandlePathsAndNames.Delete_files_by_dir_and_mask(lv_path_model_part, lv_prefix_file + "_*.stl");
+                    byte[] lv_result = null;
 
-                    //    return Results.Empty;
+                    try
+                    {
 
-                    //    break;
+                        //HandlePathsAndNames.Create_names_and_directories(PageContext);
+
+                        //string? lv_filename_zip = Request.Query["filename"];
+
+                        //lv_path_filename = Path.Combine(HandlePathsAndNames.av_unic_user_models_dir, lv_filename_zip);
+
+                        lv_result = await Commons.ReadBinaryFile(lv_path_zip_file);
+
+
+                    }
+                    catch (Exception ex)
+                    {
+                        //return null;
+                        return Results.Text("");
+                    }
+
+                    //return new OkObjectResult(lv_result);
+
+                    return Results.File(lv_result, "application/zip" );
+
+                    break;
 
             }
 

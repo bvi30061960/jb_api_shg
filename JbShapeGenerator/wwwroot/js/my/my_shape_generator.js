@@ -1723,6 +1723,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lo_active_side = get_active_side_shape_generator();
                 let lo_passive_side = get_passive_side_shape_generator();
 
+                let lv_url = null;
+
                 /////////////geometry_mod.center();// Объект - в центре вращения
 
 
@@ -1815,26 +1817,63 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     ////$('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
 
 
-                    let lv_is_before = false;
-                    lo_active_side.do_before_after_model_request(lv_is_before, true);
-
-                    // Посылка команды на удаление промежуточных файлов на сервере
-
-                    let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
-                        "&filename=" + lo_active_side.model_prefix_filename
-                        + "&chdata=" + Math.random().toString(); // 23112024
-                    ;
-
-                    get_delete_on_server_model_parts(lv_url)
-                    async function get_delete_on_server_model_parts(pv_url) {
-                        //--------------------------------------------------
-                        await $.get(pv_url);
-                    }
 
 
-                    lo_active_side.animate_mod();
+                    //18012025 {
+                    //---------------------------------------------------------------------------------
+                    // чтение и сохранение на сервере zip-файла с деталями модели
 
-                    ////}, delayInMilliseconds);
+                    let lv_filename_zip = lo_active_side.model_prefix_filename + Constants.file_model_zip;
+
+                    lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts_zip_file
+                        + "&"
+                        + "filename" + "=" + lv_filename_zip
+                        + "&chdata=" + Math.random().toString();
+
+
+                    ////let lv_filename_zip = lo_active_side.model_prefix_filename + Constants.file_model_zip;
+
+                    ////let lv_url = "/Index?handler=" 
+                    ////    + Constants.method_read_model_parts_zip_file
+                    ////    + "&filename=" + lv_filename_zip
+                    ////    + "&chdata=" + Math.random().toString(); // 23112024
+                    ////;
+
+
+                    let lv_is_download_to_downloads_folder = false;// сохранение в папку "Загрузки"
+                    let lv_downloaded_filename = lv_filename_zip;// "jb_puzzle_parts.zip";
+                    let lv_is_save_to_server = true;// сохранение файла на сервер
+                    CommonFunc.prototype.read_file_from_server(lv_url, lv_is_download_to_downloads_folder,
+                        lv_downloaded_filename, lv_is_save_to_server,
+                        lo_active_side.delete_on_server_model_parts);
+
+                    //18012025 }
+
+
+
+
+
+
+
+                    ////// Посылка команды на удаление промежуточных файлов на сервере
+
+                    ////let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
+                    ////    "&filename=" + lo_active_side.model_prefix_filename
+                    ////    + "&chdata=" + Math.random().toString(); // 23112024
+                    ////;
+
+                    ////get_delete_on_server_model_parts(lv_url)
+                    ////async function get_delete_on_server_model_parts(pv_url) {
+                    ////    //--------------------------------------------------
+                    ////    await $.get(pv_url);
+                    ////}
+
+
+                    ////lo_active_side.animate_mod();
+
+                    ////let lv_is_before = false;
+                    ////lo_active_side.do_before_after_model_request(lv_is_before, true);
+
 
                 }
 
@@ -1850,7 +1889,44 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         }
 
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.delete_on_server_model_parts = function () {
 
+            try {
+
+                let lo_active_side = get_active_side_shape_generator(); //04102024
+
+                // Посылка команды на удаление промежуточных файлов на сервере
+
+                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
+                    "&filename=" + lo_active_side.model_prefix_filename
+                    + "&chdata=" + Math.random().toString(); // 23112024
+                ;
+
+                get_delete_on_server_model_parts(lv_url)
+                async function get_delete_on_server_model_parts(pv_url) {
+                    //--------------------------------------------------
+                    await $.get(pv_url);
+                }
+
+
+                lo_active_side.animate_mod();
+
+                let lv_is_before = false;
+                lo_active_side.do_before_after_model_request(lv_is_before, true);
+
+
+
+
+            }
+
+            catch (e) {
+
+                alert('error delete_on_server_model_parts: ' + e.stack);
+
+            }
+
+        }
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.do_before_after_model_request = function (pv_is_before, pv_is_build_model) {

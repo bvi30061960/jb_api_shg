@@ -227,12 +227,23 @@ namespace JbShapeGenerator.AppCode
         }
 
         //----------------------------------------------------------------------------------------------------------------
-        public static string? Get_full_path_with_hashed_filename(string pv_filename, string pv_extension_with_dot)
+        public static string? Get_full_path_with_hashed_filename(string pv_filename, string pv_extension_with_dot, bool pv_is_get_hash)
         {
             string lv_result = "";
 
-            //string lv_filename = get_random_name() + pv_extension_with_dot;
-            string lv_filename = Get_hash_code_wo_spec_symbols(pv_filename) + pv_extension_with_dot;
+
+            string lv_filename = "";
+
+            if (pv_is_get_hash)
+            {
+                //string lv_filename = get_random_name() + pv_extension_with_dot;
+                lv_filename = Get_hash_code_wo_spec_symbols(pv_filename) + pv_extension_with_dot;
+            }
+            else
+            {
+                lv_filename = pv_filename + pv_extension_with_dot;
+            }
+
 
             string lv_unic_user_unic_dir = Path.Combine(av_path_unic_user_directory, AdminSets.models_directory);
 

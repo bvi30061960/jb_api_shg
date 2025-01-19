@@ -44,6 +44,16 @@ namespace JbShapeGenerator.Pages
             //return StatusCode(200);
         }
 
+
+        async public Task<IActionResult> OnPostSaveModelPartsZipFile([FromForm] IFormFile file)
+        {
+
+            return await HandleModel.SaveModelPartsZipFile( Request, PageContext,file);
+
+
+        }
+
+
         //-----------------------------------------------------------------------------------------------------
 
         async public Task<IActionResult> OnPostSaveModel()
@@ -91,7 +101,7 @@ namespace JbShapeGenerator.Pages
                     HandlePathsAndNames.Create_names_and_directories(PageContext);
 
 
-                    string lv_path_and_name_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename, UsingFileExtensions.dat);
+                    string lv_path_and_name_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename, UsingFileExtensions.dat, true);
                     lv_result = await CommonMethods.CheckFileExist(lv_path_and_name_file);
                 }
 
@@ -222,13 +232,9 @@ namespace JbShapeGenerator.Pages
             try
             {
 
-                //15012025 HandlePathsAndNames.Clear_names_and_paths();
                 HandlePathsAndNames.Create_names_and_directories(PageContext);
 
-
-
                 string? lv_filename_zip = Request.Query["filename"];
-
 
                 lv_path_filename = Path.Combine(HandlePathsAndNames.av_unic_user_models_dir, lv_filename_zip);
 

@@ -130,11 +130,10 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
                     + "filename" + "=" + lv_filename_zip
                     + "&chdata=" + Math.random().toString(); 
 
-                   
+                let lv_is_download_to_downloads_folder = true;// сохранение в папку "Загрузки"
                 let lv_downloaded_filename = "jb_puzzle_parts.zip";
-
-
-                CommonFunc.prototype.read_file_from_server(lv_url,lv_downloaded_filename);
+                let lv_is_save_to_server = false;// сохранение файла на сервер
+                CommonFunc.prototype.read_file_from_server(lv_url, lv_is_download_to_downloads_folder, lv_downloaded_filename, lv_is_save_to_server);
 
             }
 

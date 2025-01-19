@@ -1826,11 +1826,13 @@ export function CommonFunc() {
 
 
         //-----------------------------------------------------------------
-        CommonFunc.prototype.read_file_from_server =  async function (pv_url, pv_downloaded_filename) {
+        CommonFunc.prototype.read_file_from_server = async function (pv_url, pv_is_download_to_downloads_folder, pv_filename,
+            pv_is_save_to_server, po_callback) {
 
             try {
 
-                go_this.downloaded_filename = pv_downloaded_filename;
+                go_this.downloaded_filename = pv_filename;
+
 
                 let response = await fetch(pv_url);
 
@@ -1840,21 +1842,72 @@ export function CommonFunc() {
 
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
-                let lar_blob = await response.blob();
-                let lv_url = URL.createObjectURL(lar_blob);
+                let lar_data = await response.blob();
 
-                let a = document.createElement('a');
-                a.href = lv_url;
-                a.download = pv_downloaded_filename; // 'example.zip';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
+                //------------------------------------------------------------------
 
-                URL.revokeObjectURL(lv_url);
 
-                $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
+                if (pv_is_download_to_downloads_folder) {
 
-                go_this.Show_message("Model file downloaded", 2000);
+                    let lv_url = URL.createObjectURL(lar_data);
+                    let a = document.createElement('a');
+                    a.href = lv_url;
+                    a.download = pv_filename; // имя файла, под которым сохраняем 
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    URL.revokeObjectURL(lv_url);
+
+                    $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
+
+                    go_this.Show_message("Model file downloaded", 2000);
+                }
+
+                if (pv_is_save_to_server) {
+                    // Сохраняем файл на сервере
+
+                    //let lv_filename_zip = lo_active_side.model_prefix_filename + Constants.file_model_zip;
+                    let lv_filename_zip = pv_filename;// + Constants.file_model_zip;
+
+                    let lv_url = "/Index?handler="
+                        + Constants.method_save_model_parts_zip_file
+                        + "&filename=" + lv_filename_zip
+                        + "&chdata=" + Math.random().toString(); 
+
+
+                    const formData = new FormData();
+
+                    formData.append('file', lar_data);
+
+
+                    try {
+
+                        let response = await fetch(lv_url,
+                            {
+                                method: 'POST',
+                                body: formData //lar_data,
+                            });
+
+                        if (response.ok) {
+                            //const result = await response.json();
+                            //alert(`File uploaded successfully: ${result.filePath}`);
+                        } else {
+                            $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
+
+                            alert("File upload failed!");
+                        }
+                    } catch (error) {
+                        //console.error("Error uploading file:", error);
+                        alert("An error occurred!");
+                    }
+
+
+                    po_callback();  // Удаление временных файлов с api-сервера
+
+
+                }
+
 
 
             } catch (e) {
@@ -1865,7 +1918,10 @@ export function CommonFunc() {
 
                 //console.error('Error downloading file:', e);
             }
-            
+
+
+
+
         }
 
 
