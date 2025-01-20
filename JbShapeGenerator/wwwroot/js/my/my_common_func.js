@@ -1836,11 +1836,15 @@ export function CommonFunc() {
 
                 let response = await fetch(pv_url);
 
+
                 if (!response.ok) {
 
                     $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
 
-                    throw new Error(`HTTP error! Status: ${response.status}`);
+                    //throw new Error(`HTTP error! Status: ${response.status}`);
+                    go_this.Show_message("Error reading file!", 2000);
+                    return;
+
                 }
                 let lar_data = await response.blob();
 
@@ -1865,14 +1869,14 @@ export function CommonFunc() {
                 }
 
                 if (pv_is_save_to_server) {
-                    // Сохраняем файл на сервере
+                    // Сохраняем файл на сервере генератора
 
                     //let lv_filename_zip = lo_active_side.model_prefix_filename + Constants.file_model_zip;
                     let lv_filename_zip = pv_filename;// + Constants.file_model_zip;
 
                     let lv_url = "/Index?handler="
                         + Constants.method_save_model_parts_zip_file
-                        + "&filename=" + lv_filename_zip
+                        + "&filename=" + $("#id_model_name").val() //  lv_filename_zip
                         + "&chdata=" + Math.random().toString(); 
 
 
@@ -1895,11 +1899,14 @@ export function CommonFunc() {
                         } else {
                             $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
 
-                            alert("File upload failed!");
+                            //alert("File upload failed!");
+                            go_this.Show_message("Error reading file!", 2000);
+
                         }
                     } catch (error) {
                         //console.error("Error uploading file:", error);
                         alert("An error occurred!");
+                        go_this.Show_message("Error reading file!", 2000);
                     }
 
 
@@ -1914,9 +1921,9 @@ export function CommonFunc() {
 
                 $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
 
-                alert('error read_file_from_server: ' + e.stack);
-
-                //console.error('Error downloading file:', e);
+                //alert('error read_file_from_server: ' + e.stack);
+                
+                go_this.Show_message("Error reading file!", 2000);
             }
 
 

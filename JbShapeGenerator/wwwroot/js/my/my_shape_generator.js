@@ -1245,7 +1245,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         let lv_is_before = false;
                         lo_active_side.do_before_after_model_request(lv_is_before, false);
 
-                        alert('error send_for_refresh_model: ' + e.stack);
+                        //alert('error send_for_refresh_model: ' + e.stack);
+                        go_this.Show_message("Error updating model!", 2000);
+
 
                     }
 
@@ -1565,7 +1567,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         lo_active_side.do_before_after_model_request(lv_is_before, false);
 
 
-                        alert('error send_for_start_make_model: ' + e.stack);
+                        //alert('error send_for_start_make_model: ' + e.stack);
+                        lo_active_side.common_func.Show_message("Error making model!", 2000);
+
 
                     }
 
@@ -1731,7 +1735,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 lo_active_side.num_loaded_model_parts++; // подсчёт числа загруженных деталей
 
 
-                
+
 
                 //14012025 {
                 //-------------------------------------------------------------------
@@ -1777,8 +1781,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 //=========================================================================
+
                 if (lo_active_side.num_loaded_model_parts == lo_active_side.model_numparts)
-                // конец загрузки
+
+                // конец загрузки деталей
+
                 {
                     ////// Задержка для загрузки всех деталей
                     ////var delayInMilliseconds = 1000; // 1 second
@@ -1825,24 +1832,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     let lv_filename_zip = lo_active_side.model_prefix_filename + Constants.file_model_zip;
 
-                    lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts_zip_file
+                    lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts_zip_file_from_api
                         + "&"
                         + "filename" + "=" + lv_filename_zip
                         + "&chdata=" + Math.random().toString();
 
-
-                    ////let lv_filename_zip = lo_active_side.model_prefix_filename + Constants.file_model_zip;
-
-                    ////let lv_url = "/Index?handler=" 
-                    ////    + Constants.method_read_model_parts_zip_file
-                    ////    + "&filename=" + lv_filename_zip
-                    ////    + "&chdata=" + Math.random().toString(); // 23112024
-                    ////;
-
-
                     let lv_is_download_to_downloads_folder = false;// сохранение в папку "Загрузки"
                     let lv_downloaded_filename = lv_filename_zip;// "jb_puzzle_parts.zip";
-                    let lv_is_save_to_server = true;// сохранение файла на сервер
+                    let lv_is_save_to_server = true;// сохранение файла на сервер 
+
+
                     CommonFunc.prototype.read_file_from_server(lv_url, lv_is_download_to_downloads_folder,
                         lv_downloaded_filename, lv_is_save_to_server,
                         lo_active_side.delete_on_server_model_parts);
@@ -1882,7 +1881,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             catch (e) {
 
-                alert('error oncomplete_read_model_part: ' + e.stack);
+                //alert('error oncomplete_read_model_part: ' + e.stack);
+                CommonFunc.prototype.Show_message("Error making model!", 2000);
+
 
             }
 
@@ -2772,6 +2773,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lv_hexColor = null;
 
 
+            //19012025 {
+            let lar_splines_order2 = null;
+            let lv_num_spline_left2 = null;
+            let lv_num_spline_right2 = null;
+            let lo_spline_left2 = null;
+            let lo_spline_right2 = null;
+            //19012025 }
+
+
+
             try {
 
                 while (true) {
@@ -2846,19 +2857,49 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                         if (lo_active_side.group_contours.userData.num_spline_left != null || lo_active_side.group_contours.userData.num_spline_right != null) {
 
-                            //let lar_splines_order = [];
                             lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();
-
                             lv_num_spline_left = lo_active_side.group_contours.userData.num_spline_left;
                             lv_num_spline_right = lo_active_side.group_contours.userData.num_spline_right;
-
-
                             lo_spline_left = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
                             lo_spline_right = lo_active_side.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
-
-                            ///lv_hexColor = lo_active_side.common_func.rgbToNumber(pv_value);
-
                             lo_active_side.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true);
+
+
+                            //19012025 {
+                            // если для верхней стороны выделена самая правая фигура - 
+                            // красим в тот же цвет верхнюю фигуру на боковой стороне
+                            if (lo_active_side == go_up_side_shape_generator) {
+
+                                if (lo_spline_left !== null && lo_spline_right == null) {
+
+                                    lar_splines_order2 = go_lateral_side_shape_generator.shapes.SortSplinesOrderFromLeftToRight();
+                                    //lv_num_spline_left2 = null;
+                                    //lv_num_spline_right2 = 1;
+                                    lo_spline_left2 = null;
+                                    lo_spline_right2 = go_lateral_side_shape_generator.common_func.getSplineByNumber(lar_splines_order2, 0);
+                                    go_lateral_side_shape_generator.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left2, lo_spline_right2, false, true, false, true);
+
+                                }
+
+                            }
+
+                            // если для боковой стороны выделена самая левая фигура - 
+                            // красим в тот же цвет правую фигуру на верхней стороне
+                            if (lo_active_side == go_lateral_side_shape_generator) {
+
+                                if (lo_spline_left == null && lo_spline_right !== null) {
+
+                                    lar_splines_order2 = go_up_side_shape_generator.shapes.SortSplinesOrderFromLeftToRight();
+                                    lv_num_spline_left2 = go_up_side_shape_generator.shapes.ar_splines.length - 1;
+                                    //lv_num_spline_right2 = 1;
+                                    lo_spline_left2 = go_up_side_shape_generator.common_func.getSplineByNumber(lar_splines_order2, lv_num_spline_left2);
+                                    lo_spline_right2 = null;
+                                    go_up_side_shape_generator.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left2, lo_spline_right2, false, true, false, true);
+
+                                }
+
+                            }
+                            //19012025 }
 
 
                             // установка цвета ячейки на торце

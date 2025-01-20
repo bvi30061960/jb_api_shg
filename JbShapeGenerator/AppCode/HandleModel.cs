@@ -598,7 +598,7 @@ namespace JbShapeGenerator.AppCode
                 //}
 
 
-                string? lv_path_and_name_zip_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename_zip, "", false);
+                string? lv_path_and_name_zip_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename_zip, UsingFileExtensions.zip, true);
 
                 //string lv_filename_zip_file = lv_path_and_name_file_wo_extension + UsingFileExtensions.zip;
                 //string lv_filename_prev_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.prev;

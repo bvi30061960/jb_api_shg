@@ -263,7 +263,7 @@ namespace jb_api.Controllers
                     break;
 
 
-                case CommonConstants.method_read_model_parts_zip_file:
+                case CommonConstants.method_read_model_parts_zip_file_from_api:
 
                     string zip_filename = Request.Query["filename"];// + UsingFileExtensions.zip;
 

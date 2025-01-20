@@ -236,9 +236,12 @@ namespace JbShapeGenerator.Pages
 
                 string? lv_filename_zip = Request.Query["filename"];
 
-                lv_path_filename = Path.Combine(HandlePathsAndNames.av_unic_user_models_dir, lv_filename_zip);
+                string? lv_path_and_name_zip_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename_zip, UsingFileExtensions.zip, true);
 
-                lv_result = await HandleModel.ReadBinaryFile(lv_path_filename);
+                //19012025 lv_path_filename = Path.Combine(HandlePathsAndNames.av_unic_user_models_dir, lv_filename_zip);
+
+                //19012025 lv_result = await HandleModel.ReadBinaryFile(lv_path_filename);
+                lv_result = await HandleModel.ReadBinaryFile(lv_path_and_name_zip_file);//19012025 
 
 
             }

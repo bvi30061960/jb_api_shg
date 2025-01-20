@@ -98,11 +98,8 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
             try {
 
-
                 $("#id_but_model_download").on("click", this.onclick_but_model_download);
                 $("#id_but_go_to_amazon").on("click", this.onclick_but_go_to_amazon);
-
-
 
             }
 
@@ -123,7 +120,8 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
                 $("#id_order_loading_indicator").show(); // показываем индикатор загрузки
 
-                let lv_filename_zip = go_tab_orders.model_prefix_filename + Constants.file_model_zip;//   "test_file.zip"; // это имя файла надо считывать или hash-имя файла
+                //let lv_filename_zip = go_tab_orders.model_prefix_filename + Constants.file_model_zip;//   "test_file.zip"; // это имя файла надо считывать или hash-имя файла
+                let lv_filename_zip = $("#id_model_name").val();//19012025  + Constants.file_model_zip;//   "test_file.zip"; // это имя файла надо считывать или hash-имя файла
 
                 let lv_url = "/Index?handler=" + Constants.method_read_model_parts_zip_file
                     + "&"
@@ -131,7 +129,7 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
                     + "&chdata=" + Math.random().toString(); 
 
                 let lv_is_download_to_downloads_folder = true;// сохранение в папку "Загрузки"
-                let lv_downloaded_filename = "jb_puzzle_parts.zip";
+                let lv_downloaded_filename = lv_filename_zip + "_jb_puzzle_parts.zip"; 
                 let lv_is_save_to_server = false;// сохранение файла на сервер
                 CommonFunc.prototype.read_file_from_server(lv_url, lv_is_download_to_downloads_folder, lv_downloaded_filename, lv_is_save_to_server);
 
@@ -142,7 +140,8 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
                 $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
 
-                alert('error onclick_but_model_download: ' + e.stack);
+                //alert('error onclick_but_model_download: ' + e.stack);
+                CommonFunc.prototype.Show_message("Error while downloading model!", 2000);
 
             }
         }
