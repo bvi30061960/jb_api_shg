@@ -120,7 +120,6 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
 
                 $("#id_order_loading_indicator").show(); // показываем индикатор загрузки
 
-                //let lv_filename_zip = go_tab_orders.model_prefix_filename + Constants.file_model_zip;//   "test_file.zip"; // это имя файла надо считывать или hash-имя файла
                 let lv_filename_zip = $("#id_model_name").val();//19012025  + Constants.file_model_zip;//   "test_file.zip"; // это имя файла надо считывать или hash-имя файла
 
                 let lv_url = "/Index?handler=" + Constants.method_read_model_parts_zip_file
@@ -136,7 +135,6 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
             }
 
             catch (e) {
-
 
                 $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
 
