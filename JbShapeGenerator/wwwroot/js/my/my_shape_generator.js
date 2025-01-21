@@ -2816,7 +2816,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                             lo_spline_left = go_up_side_shape_generator.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
                             lo_spline_right = go_up_side_shape_generator.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
-
                             go_up_side_shape_generator.shapes.draw_contour_and_shape(lv_hexColor, lo_spline_left, lo_spline_right, false, true, false, true);
                         }
 
@@ -2826,7 +2825,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         if (lo_handled_cell.cell_num_col == lv_ncol_max) {
 
                             // Установка цвета фигур боковой стороны
-
                             if (lo_handled_cell.cell_num_row == 0) {
 
                                 lv_num_spline_left = null;
@@ -2905,8 +2903,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                             // установка цвета ячейки на торце
                             let lv_cell_num_row = 0;
                             let lv_cell_num_col = 0;
-
-
 
                             let lv_num_cell = 0;
 

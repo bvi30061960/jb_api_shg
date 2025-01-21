@@ -873,6 +873,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lv_nrows = this.ColorParts.length;
                 let lv_ncols = this.ColorParts[0].length;
 
+                let lv_is_break = false;
 
                 for (let lv_i = 0; lv_i < lv_nrows; lv_i++) {
                     for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
@@ -881,11 +882,14 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             this.set_color_to_rectangle_cell(pv_color_value, lv_i, lv_j);
                             lv_i_result = lv_i;
                             lv_j_result = lv_j;
+                            lv_is_break = true;
                             break;
                         }
 
                     }
-
+                    if (lv_is_break) {
+                        break;
+                    }
                 }
 
 

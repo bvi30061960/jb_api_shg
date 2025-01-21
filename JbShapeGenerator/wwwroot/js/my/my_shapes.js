@@ -162,6 +162,18 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
     this.ar_shapes_colors = []; // список объектов со сплайнами и цветами фигур, упорядоченных слева направо
 
+    //20012025 {
+    let lo_resolution = new THREE.Vector2();
+    this.main.renderer.getSize(lo_resolution);
+
+    this.material_for_countours = new LineMaterial({
+        //color: new THREE.Color("#f00").getHex(),
+        vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
+        linewidth: 2, //0.6,  // толщина линии
+        resolution: lo_resolution
+        //resolution: this.main.resolution //30072024
+    });
+    //20012025 }
 
     //=====================================================================
 
@@ -768,17 +780,24 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 let lo_geometry = new LineGeometry();
                 let clrs = [];
 
-                let lo_resolution = new THREE.Vector2();
-                this.main.renderer.getSize(lo_resolution);
+
+                //20012025 {
+                ////let lo_resolution = new THREE.Vector2();
+                ////this.main.renderer.getSize(lo_resolution);
 
 
-                let lo_material = new LineMaterial({
-                    //color: new THREE.Color("#f00").getHex(),
-                    vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
-                    linewidth: 2, //0.6,  // толщина линии
-                    resolution: lo_resolution
-                    //resolution: this.main.resolution //30072024
-                });
+                ////let lo_material = new LineMaterial({
+                ////    //color: new THREE.Color("#f00").getHex(),
+                ////    vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
+                ////    linewidth: 2, //0.6,  // толщина линии
+                ////    resolution: lo_resolution
+                ////    //resolution: this.main.resolution //30072024
+                ////});
+                //20012025 }
+
+
+
+
 
                 let lo_shape2 = null;
                 let lo_geometry2 = null;
@@ -860,22 +879,31 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 let lv_num_spline_left = this.main.common_func.getNumberBySpline(lar_splines_order, po_spline_left);
                 let lv_num_spline_right = this.main.common_func.getNumberBySpline(lar_splines_order, po_spline_right);
 
+                //20012025 {
+                //let lo_userData = {
+                //    spline_left: po_spline_left,
+                //    spline_right: po_spline_right,
+                //    num_spline_left: lv_num_spline_left,
+                //    num_spline_right: lv_num_spline_right
 
-                let lo_userData = {
-                    spline_left: po_spline_left,
-                    spline_right: po_spline_right,
-                    num_spline_left: lv_num_spline_left,
-                    num_spline_right: lv_num_spline_right
-
-                };
+                //};
+                let lo_userData = null;
 
                 if (pv_remember_contour) {
+
+                    lo_userData = {
+                        spline_left: po_spline_left,
+                        spline_right: po_spline_right,
+                        num_spline_left: lv_num_spline_left,
+                        num_spline_right: lv_num_spline_right
+
+                    };
 
                     this.main.group_contours.userData = lo_userData;
 
                 }
 
-
+                //20012025 }
 
                 let lo_countour_line = null;
 
@@ -889,7 +917,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     lo_geometry.setColors(clrs);
 
 
-                    lo_countour_line = new Line2(lo_geometry, lo_material);
+                    //20012025 lo_countour_line = new Line2(lo_geometry, lo_material);
+                    lo_countour_line = new Line2(lo_geometry, this.material_for_countours); //20012025
                     lo_countour_line.renderOrder = 2;
 
                     this.main.group_contours.add(lo_countour_line);
@@ -957,7 +986,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 lar_right_points = null;
                 lo_geometry = null;
                 clrs = null;
-                lo_material = null;
+                //20012025 lo_material = null;
                 lo_rectangle_coordinates = null;
                 lo_userData = null;
                 lo_countour_line = null;
@@ -1390,7 +1419,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                 // Восстановление выделенного контура
-                let lar_splines_order = []; //03082024 
+                let lar_splines_order = []; //03082024
+
+
+                lar_splines_order = this.SortSplinesOrderFromLeftToRight(); //20012025
+
 
                 if (this.main.group_contours) {
 
@@ -1398,7 +1431,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         if (this.main.group_contours.userData.num_spline_left != null || this.main.group_contours.userData.num_spline_right != null) {
 
-                            lar_splines_order = this.SortSplinesOrderFromLeftToRight();
+                            //20012025 lar_splines_order = this.SortSplinesOrderFromLeftToRight();
 
                             let lv_num_spline_left = this.main.group_contours.userData.num_spline_left;
                             let lv_num_spline_right = this.main.group_contours.userData.num_spline_right;
@@ -1483,7 +1516,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 for (let lv_i = 0; lv_i < this.ar_shapes_colors.length; lv_i++) {
 
-                    if (this.ar_shapes_colors[lv_i] == null || !this.ar_shapes_colors[lv_i]) {
+                    if (this.ar_shapes_colors[lv_i] == null /* 20012025 || !this.ar_shapes_colors[lv_i]*/ ) {
                         continue;
                     }
                     let lo_spline_left = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
