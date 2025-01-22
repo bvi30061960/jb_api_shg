@@ -56,6 +56,7 @@
     var @id_div_visual_model = @lv_id_prefix + "_" + "id_div_visual_model";
     var @id_canvas = @lv_id_prefix + "_" + "id_canvas";
     var @id_but_read_model = @lv_id_prefix + "_" + "id_but_read_model";
+    var @id_but_new_model = @lv_id_prefix + "_" + "id_but_new_model";
     var @id_dist_part_slider = @lv_id_prefix + "_" + "id_dist_part_slider";
     var @id_pos_color_picker = @lv_id_prefix + "_" + "id_pos_color_picker";
     var @id_loading_indicator = @lv_id_prefix + "_" + "id_loading_indicator";
@@ -79,20 +80,26 @@
 
     var @id_img_jb = @lv_id_prefix + "_" + "id_img_jb";
 
+
     var @lv_path_img_jb = ""; 
+
+    var @element_visibility = ""; //21012025
 
     @switch(lv_id_prefix) {
 
         case "up":
             lv_path_img_jb = "/images/jb_up.png";
+            element_visibility = "visible"; //21012025
             break;
 
         case "lateral":
             lv_path_img_jb = "/images/jb_lateral.png";
+            element_visibility = "visible"; //21012025
             break;
 
         case "end":
             lv_path_img_jb = "/images/jb_end.png";
+            element_visibility = "hidden"; //21012025
             break;
 
     }
@@ -141,7 +148,10 @@
                             <table id=@id_tab_button_bar2>
                                 <tr>
                                     <td>
-                                        <button id=@id_but_read_model class="btn" title="Open model list.."> <i class="bi-folder2-open"></i> </button>
+                                        <button id=@id_but_new_model class="btn" title="Create new model"> <i class="bi-plus-square-dotted"></i> </button>
+                                    </td>
+                                    <td>
+                                        <button id=@id_but_read_model class="btn" title="Open model list.."> <i class="bi-list-task"></i> </button>
                                     </td>
 
                                     @*// <td>
@@ -188,11 +198,11 @@
                                         <button id=@id_but_set_color class="btn" title="Set color"> <i class="bi-palette"></i> </button>
                                     </td>
                                     <td>
-                                        <button id=@id_but_del_spline class="btn" title="Delete selected"> <i class="bi-dash-square"></i> </button>
+                                        <button id=@id_but_del_spline class="btn" title="Delete selected curve"> <i class="bi-dash-circle"></i> </button>
                                     </td>
 
                                     <td>
-                                        <button id=@id_but_add_spline class="btn" title="Add curve"> <i class="bi-plus-square"></i> </button>
+                                        <button id=@id_but_add_spline class="btn" title="Add curve"> <i class="bi-plus-circle"></i> </button>
                                     </td>
                                     <td>
                                         <button id=@id_but_mirror class="btn " title="Mirroring segments"> <i class="bi-symmetry-vertical"></i> </button>
@@ -223,7 +233,7 @@
 
 
                 @* Индикатор ожидания формирования модели *@
-                <img src="~/images/wait.gif" id="@id_loading_indicator" />
+                <img src="~/images/wait.gif" id="@id_loading_indicator" style="visibility:@element_visibility" />
 
 
 
@@ -234,7 +244,7 @@
                 </div>
 
 
-                <div id=@id_div_visual_model>
+                <div id=@id_div_visual_model style ="visibility:@element_visibility">
 
                     <div id=@id_dist_part_slider title="Set the distance between parts" style="visibility: hidden">
                         <button id="@id_but_rotate_mode" title="Rotation mode" class="ui-button ui-corner-all">
@@ -243,8 +253,8 @@
                     </div>
 
 
-                    <div id="@id_div_dblclk"> <label>Double click</label>&nbsp;<i class="bi-arrows-fullscreen"></i> </div>
-
+                    <div id="@id_div_dblclk" style="visibility:@element_visibility"> <label>Double click</label>&nbsp;<i class="bi-arrows-fullscreen"></i> </div>
+                     
                 </div>
 
             </div>

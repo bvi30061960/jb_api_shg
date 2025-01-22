@@ -405,7 +405,7 @@ export function CommonFunc() {
                 let lo_element2 = lo_element1.children[2];
                 //lo_united_model_data.screenshot = this.screenshot(lo_element);
                 ////this.screenshot(lo_element, lo_united_model_data);
-                this.screenshot(lo_element2, lo_united_model_data);
+                this.get_screenshot(lo_element2, lo_united_model_data);
 
 
                 //let lv_str_united_model_data = JSON.stringify(lo_united_model_data);
@@ -422,8 +422,7 @@ export function CommonFunc() {
 
 
         //------------------------------------------------------------------------
-        ///CommonFunc.prototype.screenshot = function ($pv_element) {
-        CommonFunc.prototype.screenshot = function ($pv_element, po_united_model_data) {
+        CommonFunc.prototype.get_screenshot = function ($pv_element, po_united_model_data) {
 
             // Select the element that you want to capture
             //let captureElement = $pv_element;
@@ -431,31 +430,24 @@ export function CommonFunc() {
 
             try {
 
-                //let lv_imageData = null;
+                //21012025 {
+                let lv_url = null; //21012025
+                let lv_str_united_model_data = null;//21012025
+                //21012025 }
 
-                //html2canvas(captureElement).then((po_canvas) => {
                 html2canvas($pv_element).then((po_canvas) => {
-
-                    ////let lv_imageData = po_canvas.toDataURL(/*"image/png"*/);
-                    ////po_united_model_data.screenshot = lv_imageData;
 
                     po_united_model_data.screenshot = po_canvas.toDataURL(/*"image/png"*/);
 
-
-                    ///window.open(po_united_model_data.screenshot);
-
-                    // Do something with the image data, such as saving it as a file or sending it to a server
-                    // For example, you can create an anchor element and trigger a download action
-                    //////    const link = document.createElement("a");
-                    //////    link.setAttribute("download", "screenshot.png");
-                    //////    link.setAttribute("href", imageData);
-                    //////    link.click();
-
-
-                    this.on_fillsreenshot(po_united_model_data);
+                    //21012025 {
+                    //let lv_url = "/Index?handler=SaveModel"; //21012025
+                    //let lv_str_united_model_data = JSON.stringify(po_united_model_data);//21012025
+                    lv_url = "/Index?handler=SaveModel"; //21012025
+                    lv_str_united_model_data = JSON.stringify(po_united_model_data);//21012025
+                    this.on_fillsreenshot(lv_url, lv_str_united_model_data /*po_united_model_data*/);
+                    //21012025 }
 
                 });
-
 
 
                 ////////html2canvas(captureElement/*.children()*/,
@@ -482,15 +474,53 @@ export function CommonFunc() {
 
         }
         //------------------------------------------------------------------------
-        CommonFunc.prototype.on_fillsreenshot = function (po_united_model_data) {
+        CommonFunc.prototype.on_fillsreenshot = function (pv_url, pv_str_data /*po_united_model_data*/) {
+            
+            //let lv_url = "/Index?handler=SaveModel";
+            //21012025 let lv_str_united_model_data = JSON.stringify(po_united_model_data);
+            //21012025 this.send(lv_url, lv_str_united_model_data);
 
-            let lv_url = "/Index?handler=SaveModel";
-
-            let lv_str_united_model_data = JSON.stringify(po_united_model_data);
-
-            this.send(lv_url, lv_str_united_model_data);
+            this.send(pv_url, pv_str_data);
 
         }
+
+
+        //------------------------------------------------------------------------
+        CommonFunc.prototype.send = async function (pv_url, po_data_to_send/*, po_this*/) {
+
+            try {
+
+                let response = await fetch(pv_url, {
+                    method: "POST",
+                    headers: {
+                        //"Accept": "application/json"
+                        "Content-Type": "application/json"
+                    },
+
+                    body: po_data_to_send
+
+                });
+
+                //const message = await response.json();
+                const message = await response.text();
+                let lo_active_side = get_active_side_shape_generator();
+
+
+                let lv_modelname = $("#id_model_name").val();
+                let lv_message_text = 'Model "' + lv_modelname + '" saved';
+                lo_active_side.common_func.Show_message(lv_message_text, 2000);
+
+
+            }
+
+            catch (e) {
+                alert('error send: ' + e.stack);
+            }
+        }
+
+
+
+
 
         //------------------------------------------------------------------------
         CommonFunc.prototype.make_model = function (po_sides_data, po_scene_mod) {
@@ -529,41 +559,6 @@ export function CommonFunc() {
 
 
         }
-
-
-        //------------------------------------------------------------------------
-        CommonFunc.prototype.send = async function (pv_url, po_data_to_send/*, po_this*/) {
-
-            try {
-
-                let response = await fetch(pv_url, {
-                    method: "POST",
-                    headers: {
-                        //"Accept": "application/json"
-                        "Content-Type": "application/json"
-                    },
-
-                    body: po_data_to_send
-
-                });
-
-                //const message = await response.json();
-                const message = await response.text();
-                let lo_active_side = get_active_side_shape_generator();
-
-
-                let lv_modelname = $("#id_model_name").val();
-                let lv_message_text = 'Model "' + lv_modelname + '" saved';
-                lo_active_side.common_func.Show_message(lv_message_text, 2000);
-
-
-            }
-
-            catch (e) {
-                alert('error send: ' + e.stack);
-            }
-        }
-
 
 
         //////------------------------------------------------------------------------
