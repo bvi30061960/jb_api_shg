@@ -475,7 +475,7 @@ export function CommonFunc() {
         }
         //------------------------------------------------------------------------
         CommonFunc.prototype.on_fillsreenshot = function (pv_url, pv_str_data /*po_united_model_data*/) {
-            
+
             //let lv_url = "/Index?handler=SaveModel";
             //21012025 let lv_str_united_model_data = JSON.stringify(po_united_model_data);
             //21012025 this.send(lv_url, lv_str_united_model_data);
@@ -483,6 +483,76 @@ export function CommonFunc() {
             this.send(pv_url, pv_str_data);
 
         }
+
+
+        //22012025 {
+
+        //------------------------------------------------------------------------
+        CommonFunc.prototype.get_screenshots = function (pv_url, par_elements, po_united_model_data) {
+
+            try {
+
+                let par_screenshots = [];
+
+                par_screenshots[0] = po_united_model_data.screenshot;
+
+                lv_i = 0;
+
+                while (par_elements.length > 0) {
+
+                    this.get_one_screenshot(lv_i, par_elements, par_screenshots);
+
+                }
+
+
+                lv_str_united_model_data = JSON.stringify(po_united_model_data);//21012025
+
+
+            }
+
+            catch (e) {
+
+                alert('error get_screenshots: ' + e.stack);
+
+            }
+
+        }
+
+        //------------------------------------------------------------------------
+        CommonFunc.prototype.get_one_screenshot = function (pv_nstep, par_elements, par_screenshots) {
+
+            try {
+
+                if (par_elements.length > 0) {
+
+                    let lv_element = par_elements.pop();
+
+                    html2canvas(lv_element).then((po_canvas) => {
+
+                        par_screenshots[pv_nstep++] = po_canvas.toDataURL();
+
+                        this.on_fillsreenshot(
+                            this.get_one_screenshot(pv_nstep, par_elements, par_screenshots));
+
+                    });
+
+                }
+            }
+            catch (e) {
+
+                alert('error get_one_screenshot: ' + e.stack);
+
+            }
+        }
+
+
+
+        //22012025 }
+
+
+
+
+
 
 
         //------------------------------------------------------------------------
@@ -1872,7 +1942,7 @@ export function CommonFunc() {
                     let lv_url = "/Index?handler="
                         + Constants.method_save_model_parts_zip_file
                         + "&filename=" + $("#id_model_name").val() //  lv_filename_zip
-                        + "&chdata=" + Math.random().toString(); 
+                        + "&chdata=" + Math.random().toString();
 
 
                     const formData = new FormData();
@@ -1917,7 +1987,7 @@ export function CommonFunc() {
                 $("#id_order_loading_indicator").hide(); // скрывакм индикатор загрузки
 
                 //alert('error read_file_from_server: ' + e.stack);
-                
+
                 go_this.Show_message("Error reading file!", 2000);
             }
 
