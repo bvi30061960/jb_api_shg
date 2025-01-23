@@ -369,7 +369,7 @@ export function CommonFunc() {
         }
 
         //------------------------------------------------------------------------
-        CommonFunc.prototype.save_model = function (po_sides_data, po_scene_mod) {
+        CommonFunc.prototype.save_model = async function (po_sides_data, po_scene_mod) {
 
 
             try {
@@ -407,8 +407,8 @@ export function CommonFunc() {
 
                 //this.get_screenshot(lo_element2, lo_united_model_data);
 
-                let lv_url = "/Index?handler=SaveModel";
-                this.get_screenshots(lv_url, lo_united_model_data);
+                let lv_url = "/Index?handler=SaveModel" + "&chdata=" + Math.random().toString();
+                await this.get_screenshots(lv_url, lo_united_model_data);
                 //22012025 }
 
 
@@ -443,7 +443,7 @@ export function CommonFunc() {
                     //21012025 {
                     //let lv_url = "/Index?handler=SaveModel"; //21012025
                     //let lv_str_united_model_data = JSON.stringify(po_united_model_data);//21012025
-                    lv_url = "/Index?handler=SaveModel"; //21012025
+                    lv_url = "/Index?handler=SaveModel" + "&chdata=" + Math.random().toString();
                     lv_str_united_model_data = JSON.stringify(po_united_model_data);//21012025
                     this.on_fillsreenshot(lv_url, lv_str_united_model_data /*po_united_model_data*/);
                     //21012025 }
@@ -492,7 +492,7 @@ export function CommonFunc() {
         //22012025 {
 
         //------------------------------------------------------------------------
-        CommonFunc.prototype.get_screenshots = function (pv_url,  po_united_model_data) {
+        CommonFunc.prototype.get_screenshots = async function (pv_url,  po_united_model_data) {
 
             try {
 
@@ -504,21 +504,30 @@ export function CommonFunc() {
 
                 let lo_active_side = get_active_side_shape_generator();
 
-                let lo_element1 = document.querySelector(lo_active_side.id_prefix + "id_div_visual_model");
-                let lo_element2 = lo_element1.children[2];
-                lar_screenshot_elements.push(lo_element2);
+                //23012025 {
+                //////let lo_element1 = document.querySelector(lo_active_side.id_prefix + "id_div_visual_model");
+                //////let lo_element2 = lo_element1.children[2];
+                //////lar_screenshot_elements.push(lo_element2);
 
-                lo_element1 = document.querySelector(lo_active_side.id_prefix + "id_shape");
-                lo_element2 = lo_element1.children[2];
-                lar_screenshot_elements.push(lo_element2);
+                //////let lo_element3 = document.querySelector(lo_active_side.id_prefix + "id_shape");
+                //////let lo_element4 = lo_element3.children[2];
+                //////lar_screenshot_elements.push(lo_element4);
 
+                //lar_screenshot_elements.push(lo_active_side.id_prefix_wo_sharp + "id_div_visual_model");
+                //lar_screenshot_elements.push("#up_id_div_visual_model canvas");
+                //lar_screenshot_elements.push(lo_active_side.id_prefix_wo_sharp + "id_shape");
+                //lar_screenshot_elements.push("#up_id_shg_common canvas");
+                lar_screenshot_elements.push("#up_id_shape canvas");
+                lar_screenshot_elements.push("#up_id_div_visual_model canvas");
+
+                //23012025 }
 
 
 
 
 
                 // массив данных screenshots
-                let lar_sreenshot_data = [lar_screenshot_elements.length];
+                let lar_sreenshot_data = [/*lar_screenshot_elements.length*/];
 
 
 
@@ -526,7 +535,7 @@ export function CommonFunc() {
 
                 //while (par_elements.length > 0) {
 
-                this.get_one_screenshot(pv_url,  po_united_model_data, lv_nstep, lar_screenshot_elements, lar_sreenshot_data);
+                await this.get_one_screenshot(pv_url,  po_united_model_data, lv_nstep, lar_screenshot_elements, lar_sreenshot_data);
 
                 //}
 
@@ -551,37 +560,62 @@ export function CommonFunc() {
         }
 
         //------------------------------------------------------------------------
-        CommonFunc.prototype.get_one_screenshot = function (pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data) {
+       CommonFunc.prototype.get_one_screenshot = async function (pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data) {
 
             try {
 
-                if (par_screenshot_elements.length > 0) {
+                //23012025 {
 
-                    let lv_element = par_screenshot_elements.pop();
 
-                    html2canvas(lv_element).then((po_canvas) => {
+               ////if (par_screenshot_elements.length > 0) {
 
-                        par_sreenshot_data[pv_nstep++] = po_canvas.toDataURL();
 
-                        this.on_fillsreenshot(
-                            this.get_one_screenshot(pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data));
 
-                    });
+                    ////let lv_element = par_screenshot_elements.pop();
 
-                }
-                else {
+                    ////html2canvas(lv_element).then((po_canvas) => {
+
+                    ////    par_sreenshot_data[pv_nstep++] = po_canvas.toDataURL('image/png');
+
+                    ////    this.on_fillsreenshot(
+                    ////        this.get_one_screenshot(pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data));
+
+                    ////});
+
+
+
+                    for (let id of par_screenshot_elements) {
+                        //let element = document.getElementById(id /*par_screenshot_elements.pop()*/);
+                        //let element = $("#up_id_shg_common canvas")[0];
+                        //let element = $("#up_id_shape canvas")[0];
+
+                        let element = $(id)[0];
+
+
+                        let canvas = await html2canvas(element);
+                        par_sreenshot_data.push(canvas.toDataURL('image/png'));
+                    }
+
+
+                ////}
+                ////else {
+
+                    //23012025 }
+
+
                     // Конец чтения screenshots
 
                     po_united_model_data.screenshot = par_sreenshot_data[1];
                     po_united_model_data.up_side_screenshot = par_sreenshot_data[0];
 
-                    let lv_str_united_model_data = JSON.stringify(po_united_model_data);
 
+
+                    let lv_str_united_model_data = JSON.stringify(po_united_model_data);
                     this.send(pv_url, lv_str_united_model_data);
 
 
 
-                }
+                ////}
             }
             catch (e) {
 
