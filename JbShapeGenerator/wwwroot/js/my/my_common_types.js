@@ -136,6 +136,7 @@ export function typ_united_model_data() {
     this.sides_data = "";
     this.prev_model = "";
     this.screenshot = null;
+    this.up_side_screenshot = null;//22012025
 
 }
 

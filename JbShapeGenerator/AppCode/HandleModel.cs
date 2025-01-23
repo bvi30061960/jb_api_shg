@@ -61,14 +61,14 @@ namespace JbShapeGenerator.AppCode
                 }
 
 
-                //----------------------------------------------------------------------------------------------------------
                 string? lv_path_and_name_file_wo_extension = HandlePathsAndNames.Get_full_path_with_hashed_filename(united_model_data.model_name, "", true);
 
                 string lv_filename_sides_data = lv_path_and_name_file_wo_extension + UsingFileExtensions.dat;
                 string lv_filename_prev_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.prev;
                 string lv_filename_final_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.stl;
-                string lv_filename_screen_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.scr; // png;
-                string lv_filename_screen_model_graph = lv_path_and_name_file_wo_extension + UsingFileExtensions.png; // png;
+                string lv_filename_screen_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.scr;
+                string lv_filename_screen_model_graph = lv_path_and_name_file_wo_extension + UsingFileExtensions.png;
+                string lv_filename_screen_model_upsite = lv_path_and_name_file_wo_extension + UsingFileExtensions.up;
 
 
 
@@ -109,6 +109,10 @@ namespace JbShapeGenerator.AppCode
                 /////////var lv_format_graph = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
 
 
+                //22012025 {
+                lv_graph = united_model_data.up_side_screenshot.Replace("data:image/png;base64,", "");
+                var lv_sh_upsite = System.Convert.FromBase64String(lv_graph);
+                //22012025 }
 
 
 
@@ -121,6 +125,17 @@ namespace JbShapeGenerator.AppCode
 
                 ProgressStatus.SetPerc(60);
 
+
+                //22012025 {
+                // сохранение файла копии экрана в графическом формате верхней стороны
+
+                using (BinaryWriter writer = new BinaryWriter(File.Open(lv_filename_screen_model_upsite, FileMode.OpenOrCreate)))
+                {
+                    writer.Write(lv_sh_upsite);
+                }
+
+                ProgressStatus.SetPerc(65);
+                //22012025 }
 
 
                 // сохранение фрагмента программы с описанием массива PointsCurves

@@ -397,19 +397,20 @@ export function CommonFunc() {
                 lo_united_model_data.sides_data = lv_str_sides_data;
                 lo_united_model_data.prev_model = lv_str_scene_mod_data;
 
-                //let lo_element = $(lo_active_side.id_prefix + "id_div_visual_model")[0];
-
                 let lo_element1 = document.querySelector(lo_active_side.id_prefix + "id_div_visual_model");
-                //let lo_element = $(lo_active_side.id_prefix + "id_div_visual_model");//24102024
-
                 let lo_element2 = lo_element1.children[2];
-                //lo_united_model_data.screenshot = this.screenshot(lo_element);
-                ////this.screenshot(lo_element, lo_united_model_data);
-                this.get_screenshot(lo_element2, lo_united_model_data);
 
 
-                //let lv_str_united_model_data = JSON.stringify(lo_united_model_data);
-                //this.send(lv_url, lv_str_united_model_data);
+
+
+                //22012025 {
+
+                //this.get_screenshot(lo_element2, lo_united_model_data);
+
+                let lv_url = "/Index?handler=SaveModel";
+                this.get_screenshots(lv_url, lo_united_model_data);
+                //22012025 }
+
 
             }
 
@@ -485,27 +486,58 @@ export function CommonFunc() {
         }
 
 
+
+
+
         //22012025 {
 
         //------------------------------------------------------------------------
-        CommonFunc.prototype.get_screenshots = function (pv_url, par_elements, po_united_model_data) {
+        CommonFunc.prototype.get_screenshots = function (pv_url,  po_united_model_data) {
 
             try {
 
-                let par_screenshots = [];
+                // Заполнение массива экранными элементами
+                let lar_screenshot_elements = [];
 
-                par_screenshots[0] = po_united_model_data.screenshot;
+                //lar_screenshot_elements.push($("#id_div_visual_model")[2]);
+                //lar_screenshot_elements.push($("#id_shape")[2]);
 
-                lv_i = 0;
+                let lo_active_side = get_active_side_shape_generator();
 
-                while (par_elements.length > 0) {
+                let lo_element1 = document.querySelector(lo_active_side.id_prefix + "id_div_visual_model");
+                let lo_element2 = lo_element1.children[2];
+                lar_screenshot_elements.push(lo_element2);
 
-                    this.get_one_screenshot(lv_i, par_elements, par_screenshots);
+                lo_element1 = document.querySelector(lo_active_side.id_prefix + "id_shape");
+                lo_element2 = lo_element1.children[2];
+                lar_screenshot_elements.push(lo_element2);
 
-                }
 
 
-                lv_str_united_model_data = JSON.stringify(po_united_model_data);//21012025
+
+
+
+                // массив данных screenshots
+                let lar_sreenshot_data = [lar_screenshot_elements.length];
+
+
+
+                let lv_nstep = 0;
+
+                //while (par_elements.length > 0) {
+
+                this.get_one_screenshot(pv_url,  po_united_model_data, lv_nstep, lar_screenshot_elements, lar_sreenshot_data);
+
+                //}
+
+                ////po_united_model_data.screenshot = lar_sreenshot_data[0];
+                ////po_united_model_data.up_side_screenshot = lar_sreenshot_data[1];
+
+
+
+                ////let lv_str_united_model_data = JSON.stringify(po_united_model_data);
+
+                ////this.send(pv_url, lv_str_united_model_data);
 
 
             }
@@ -519,22 +551,35 @@ export function CommonFunc() {
         }
 
         //------------------------------------------------------------------------
-        CommonFunc.prototype.get_one_screenshot = function (pv_nstep, par_elements, par_screenshots) {
+        CommonFunc.prototype.get_one_screenshot = function (pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data) {
 
             try {
 
-                if (par_elements.length > 0) {
+                if (par_screenshot_elements.length > 0) {
 
-                    let lv_element = par_elements.pop();
+                    let lv_element = par_screenshot_elements.pop();
 
                     html2canvas(lv_element).then((po_canvas) => {
 
-                        par_screenshots[pv_nstep++] = po_canvas.toDataURL();
+                        par_sreenshot_data[pv_nstep++] = po_canvas.toDataURL();
 
                         this.on_fillsreenshot(
-                            this.get_one_screenshot(pv_nstep, par_elements, par_screenshots));
+                            this.get_one_screenshot(pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data));
 
                     });
+
+                }
+                else {
+                    // Конец чтения screenshots
+
+                    po_united_model_data.screenshot = par_sreenshot_data[1];
+                    po_united_model_data.up_side_screenshot = par_sreenshot_data[0];
+
+                    let lv_str_united_model_data = JSON.stringify(po_united_model_data);
+
+                    this.send(pv_url, lv_str_united_model_data);
+
+
 
                 }
             }
