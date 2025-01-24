@@ -373,6 +373,7 @@ export function CommonFunc() {
 
 
             try {
+                this.showLoadingIndicator('Saving model..');
 
                 let lo_active_side = get_active_side_shape_generator();
 
@@ -527,7 +528,7 @@ export function CommonFunc() {
             }
 
             catch (e) {
-
+                this.hideLoadingIndicator();
                 alert('error get_screenshots: ' + e.stack);
 
             }
@@ -676,8 +677,11 @@ export function CommonFunc() {
 
                 //const message = await response.json();
                 const message = await response.text();
-                let lo_active_side = get_active_side_shape_generator();
 
+
+                this.hideLoadingIndicator();
+
+                let lo_active_side = get_active_side_shape_generator();
 
                 let lv_modelname = $("#id_model_name").val();
                 let lv_message_text = 'Model "' + lv_modelname + '" saved';
@@ -687,6 +691,9 @@ export function CommonFunc() {
             }
 
             catch (e) {
+
+                this.hideLoadingIndicator();
+
                 alert('error send: ' + e.stack);
             }
         }
@@ -2251,7 +2258,48 @@ export function CommonFunc() {
 
         ////}
 
+        //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.showLoadingIndicator = function (pv_message) {
+            //function showLoadingIndicator() {
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.id = 'id_loading-indicator';
 
+            const spinner = document.createElement('div');
+            spinner.className = 'spinner';
+
+            const text = document.createElement('span');
+            //text.textContent = 'Loading...';
+            text.textContent = pv_message;
+
+            loadingIndicator.appendChild(spinner);
+            loadingIndicator.appendChild(text);
+
+            document.body.appendChild(loadingIndicator);
+        }
+
+        //---------------------------------------------------------------------------------------------
+        // Функция для удаления индикатора ожидания
+        //function hideLoadingIndicator() {
+
+        CommonFunc.prototype.hideLoadingIndicator = function () {
+            const loadingIndicator = document.getElementById('id_loading-indicator');
+            if (loadingIndicator) {
+                loadingIndicator.remove();
+            }
+        }
+
+        //// Пример использования
+        //document.getElementById('start-operation').addEventListener('click', () => {
+        //    // Показать индикатор ожидания
+        //    showLoadingIndicator();
+
+        //    // Имитация асинхронной операции
+        //    setTimeout(() => {
+        //        // Убрать индикатор ожидания
+        //        hideLoadingIndicator();
+        //        alert('Operation completed!');
+        //    }, 3000); // 3 секунды ожидания
+        //});
         //======================================================================================
         //======================================================================================
         //======================================================================================
