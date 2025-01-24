@@ -3491,7 +3491,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
         }
         //------------------------------------------------------------------------
-        Shape_generator.prototype.oncomplete_check_file_exist_on_server = function (pv_is_file_exist) {
+        Shape_generator.prototype.oncomplete_check_file_exist_on_server = async function (pv_is_file_exist) {
 
             try {
 
@@ -3501,7 +3501,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     if (lo_active_side.is_ask_about_save_file) {
 
-                        lo_active_side.do_save_model();
+                        await lo_active_side.do_save_model();
 
                     }
 
@@ -3510,9 +3510,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         let lv_question = "File \"" + $("#id_model_name").val() + "\" already exists. Replace it?";
 
                         lo_active_side.common_func.show_question(lv_question,
-                            function () {
 
-                                lo_active_side.do_save_model();
+                            async function () {
+
+                                await lo_active_side.do_save_model();
                                 ////lo_active_side.is_ask_about_save_file = true;
                                 ////lo_active_side.is_model_changed = false;
 
@@ -3529,7 +3530,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 }
                 else {
 
-                    lo_active_side.do_save_model();
+                    await lo_active_side.do_save_model();
 
                 }
 
@@ -3544,7 +3545,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.do_save_model = function () {
+        Shape_generator.prototype.do_save_model = async function () {
 
 
             this.is_ask_about_save_file = true;
@@ -3552,7 +3553,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             let lo_sides_data = this.read_model_sides_data();
             let lo_scene_mod = this.scene_mod;
-            this.common_func.save_model(lo_sides_data, lo_scene_mod);
+            await this.common_func.save_model(lo_sides_data, lo_scene_mod);
 
 
         }

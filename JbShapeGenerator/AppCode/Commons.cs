@@ -90,6 +90,8 @@ namespace JbShapeGenerator.AppCode
         public const string scr = ".scr";       // копия экрана с изображением модели
         public const string zip = ".zip";       // zip файл
         public const string up  = ".up";        // screenshot upsite файл
+        public const string lat  = ".lat";      // screenshot lateral файл
+        public const string end  = ".end";      // screenshot end файл
 
         //    public const string t1c = ".t1c"; // Выход - файл для перевода с двухколоночной таблицей с текстом в одной левой колонке  
         //                                      //public const string t2c = ".t2c"; // Выход - файл с двухколоночной таблицей с переведённым текстом в двух колонках  
@@ -334,6 +336,8 @@ namespace JbShapeGenerator.AppCode
         public string screenshot { set; get; }
 
         public string up_side_screenshot { set; get; }
+        public string lat_side_screenshot { set; get; }
+        public string end_side_screenshot { set; get; }
 
     };
     //========================================================================================

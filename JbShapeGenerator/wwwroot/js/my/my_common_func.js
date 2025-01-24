@@ -422,77 +422,9 @@ export function CommonFunc() {
         }
 
 
-        //------------------------------------------------------------------------
-        CommonFunc.prototype.get_screenshot = function ($pv_element, po_united_model_data) {
-
-            // Select the element that you want to capture
-            //let captureElement = $pv_element;
-
-
-            try {
-
-                //21012025 {
-                let lv_url = null; //21012025
-                let lv_str_united_model_data = null;//21012025
-                //21012025 }
-
-                html2canvas($pv_element).then((po_canvas) => {
-
-                    po_united_model_data.screenshot = po_canvas.toDataURL(/*"image/png"*/);
-
-                    //21012025 {
-                    //let lv_url = "/Index?handler=SaveModel"; //21012025
-                    //let lv_str_united_model_data = JSON.stringify(po_united_model_data);//21012025
-                    lv_url = "/Index?handler=SaveModel" + "&chdata=" + Math.random().toString();
-                    lv_str_united_model_data = JSON.stringify(po_united_model_data);//21012025
-                    this.on_fillsreenshot(lv_url, lv_str_united_model_data /*po_united_model_data*/);
-                    //21012025 }
-
-                });
-
-
-                ////////html2canvas(captureElement/*.children()*/,
-                ////////    {
-                ////////        onrendered: function (canvas) {
-
-                ////////            var lv_image = canvas.toDataURL();
-                ////////            //if (lv_image.length > cv_ModelImage_length)
-                ////////            po_united_model_data.screenshot = lv_image;
-                ////////            this.on_fillsreenshot(po_united_model_data);
-
-                ////////        }
-
-                ////////    }
-                ////////);
-
-            }
-
-            catch (e) {
-
-                alert('error screenshot: ' + e.stack);
-
-            }
-
-        }
-        //------------------------------------------------------------------------
-        CommonFunc.prototype.on_fillsreenshot = function (pv_url, pv_str_data /*po_united_model_data*/) {
-
-            //let lv_url = "/Index?handler=SaveModel";
-            //21012025 let lv_str_united_model_data = JSON.stringify(po_united_model_data);
-            //21012025 this.send(lv_url, lv_str_united_model_data);
-
-            this.send(pv_url, pv_str_data);
-
-        }
-
-
-
-
-
-        //22012025 {
 
         //------------------------------------------------------------------------
-        CommonFunc.prototype.get_screenshots = async function (pv_url,  po_united_model_data) {
+        CommonFunc.prototype.get_screenshots = async function (pv_url, po_united_model_data) {
 
             try {
 
@@ -535,7 +467,7 @@ export function CommonFunc() {
 
                 //while (par_elements.length > 0) {
 
-                await this.get_one_screenshot(pv_url,  po_united_model_data, lv_nstep, lar_screenshot_elements, lar_sreenshot_data);
+                /////////////////////////////await this.get_one_screenshot(pv_url, po_united_model_data, lv_nstep, lar_screenshot_elements, lar_sreenshot_data);
 
                 //}
 
@@ -549,6 +481,49 @@ export function CommonFunc() {
                 ////this.send(pv_url, lv_str_united_model_data);
 
 
+
+
+
+
+
+
+                let lv_dataURL = null;
+                go_up_side_shape_generator.renderer.render(go_up_side_shape_generator.scene, go_up_side_shape_generator.camera);
+                lv_dataURL = go_up_side_shape_generator.renderer.domElement.toDataURL('image/png');
+                po_united_model_data.screenshot = lv_dataURL;
+
+                go_up_side_shape_generator.renderer_mod.render(go_up_side_shape_generator.scene_mod, go_up_side_shape_generator.camera_mod);
+                lv_dataURL = go_up_side_shape_generator.renderer_mod.domElement.toDataURL('image/png');
+                po_united_model_data.up_side_screenshot = lv_dataURL;
+
+                go_lateral_side_shape_generator.renderer.render(go_lateral_side_shape_generator.scene, go_lateral_side_shape_generator.camera);
+                lv_dataURL = go_lateral_side_shape_generator.renderer.domElement.toDataURL('image/png');
+                po_united_model_data.lat_side_screenshot = lv_dataURL;
+
+                go_end_side_shape_generator.renderer.render(go_end_side_shape_generator.scene, go_end_side_shape_generator.camera);
+                lv_dataURL = go_end_side_shape_generator.renderer.domElement.toDataURL('image/png');
+                po_united_model_data.end_side_screenshot = lv_dataURL;
+
+
+
+                //po_united_model_data.screenshot = par_sreenshot_data[1];
+                //po_united_model_data.up_side_screenshot = par_sreenshot_data[0];
+
+
+
+                let lv_str_united_model_data = JSON.stringify(po_united_model_data);
+                this.send(pv_url, lv_str_united_model_data);
+
+
+
+
+
+
+
+
+
+
+
             }
 
             catch (e) {
@@ -559,70 +534,119 @@ export function CommonFunc() {
 
         }
 
-        //------------------------------------------------------------------------
-       CommonFunc.prototype.get_one_screenshot = async function (pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data) {
+        //////------------------------------------------------------------------------
+        ////CommonFunc.prototype.get_one_screenshot = async function (pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data) {
 
-            try {
+        ////    try {
 
-                //23012025 {
-
-
-               ////if (par_screenshot_elements.length > 0) {
+        ////        //23012025 {
 
 
-
-                    ////let lv_element = par_screenshot_elements.pop();
-
-                    ////html2canvas(lv_element).then((po_canvas) => {
-
-                    ////    par_sreenshot_data[pv_nstep++] = po_canvas.toDataURL('image/png');
-
-                    ////    this.on_fillsreenshot(
-                    ////        this.get_one_screenshot(pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data));
-
-                    ////});
+        ////        ////if (par_screenshot_elements.length > 0) {
 
 
 
-                    for (let id of par_screenshot_elements) {
-                        //let element = document.getElementById(id /*par_screenshot_elements.pop()*/);
-                        //let element = $("#up_id_shg_common canvas")[0];
-                        //let element = $("#up_id_shape canvas")[0];
+        ////        ////let lv_element = par_screenshot_elements.pop();
 
-                        let element = $(id)[0];
+        ////        ////html2canvas(lv_element).then((po_canvas) => {
 
+        ////        ////    par_sreenshot_data[pv_nstep++] = po_canvas.toDataURL('image/png');
 
-                        let canvas = await html2canvas(element);
-                        par_sreenshot_data.push(canvas.toDataURL('image/png'));
-                    }
+        ////        ////    this.on_fillsreenshot(
+        ////        ////        this.get_one_screenshot(pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data));
 
-
-                ////}
-                ////else {
-
-                    //23012025 }
-
-
-                    // Конец чтения screenshots
-
-                    po_united_model_data.screenshot = par_sreenshot_data[1];
-                    po_united_model_data.up_side_screenshot = par_sreenshot_data[0];
+        ////        ////});
 
 
 
-                    let lv_str_united_model_data = JSON.stringify(po_united_model_data);
-                    this.send(pv_url, lv_str_united_model_data);
+        ////        ////////requestAnimationFrame(() => {
+        ////        //////for (let id of par_screenshot_elements) {
+
+
+        ////        //////    //let element = document.getElementById(id /*par_screenshot_elements.pop()*/);
+        ////        //////    //let element = $("#up_id_shg_common canvas")[0];
+        ////        //////    //let element = $("#up_id_shape canvas")[0];
+
+        ////        //////    var element = $(id)[0];
+
+        ////        //////    //let canvas = null;
+        ////        //////    //await requestAnimationFrame(() => {
+        ////        //////    //    canvas = /*await*/ html2canvas(element);
+        ////        //////    //    par_sreenshot_data.push(canvas.toDataURL('image/png'));
+        ////        //////    //});
 
 
 
-                ////}
-            }
-            catch (e) {
 
-                alert('error get_one_screenshot: ' + e.stack);
+        ////        //////    ////let canvas = null;
+        ////        //////    //await new Promise(resolve => {
+        ////        //////    //    requestAnimationFrame(async () => {
+        ////        //////    //        let canvas = await html2canvas(element);
+        ////        //////    //        par_sreenshot_data.push(canvas.toDataURL('image/png'));
+        ////        //////    //        resolve();
+        ////        //////    //    });
+        ////        //////    //});
 
-            }
-        }
+
+        ////        //////    //await new Promise(resolve => {
+        ////        //////    //    //requestAnimationFrame(async () => {
+        ////        //////    //    let canvas = await html2canvas(element);
+
+        ////        //////    //    renderer.render(scene, camera);
+        ////        //////    //    const dataURL = renderer.domElement.toDataURL('image/png');
+
+        ////        //////    //        par_sreenshot_data.push(canvas.toDataURL('image/png'));
+        ////        //////    //        resolve();
+        ////        //////    //    //});
+        ////        //////    //});
+
+
+        ////        //////}
+
+        ////        //});
+
+        ////        ////}
+        ////        ////else {
+
+        ////        //23012025 }
+
+
+        ////        // Конец чтения screenshots
+
+
+        ////        let dataURL = null;
+        ////        //requestAnimationFrame(/*async*/() => {
+        ////            go_up_side_shape_generator.renderer.render(go_up_side_shape_generator.scene, go_up_side_shape_generator.camera);
+        ////            dataURL = go_up_side_shape_generator.renderer.domElement.toDataURL('image/png');
+        ////        //});
+        ////        par_sreenshot_data.push(dataURL);
+
+        ////        //requestAnimationFrame(/*async*/() => {
+        ////            go_up_side_shape_generator.renderer_mod.render(go_up_side_shape_generator.scene_mod, go_up_side_shape_generator.camera_mod);
+        ////            dataURL = go_up_side_shape_generator.renderer_mod.domElement.toDataURL('image/png');
+        ////        //});
+        ////        par_sreenshot_data.push(dataURL);
+
+
+
+        ////        po_united_model_data.screenshot = par_sreenshot_data[1];
+        ////        po_united_model_data.up_side_screenshot = par_sreenshot_data[0];
+
+
+
+        ////        let lv_str_united_model_data = JSON.stringify(po_united_model_data);
+        ////        this.send(pv_url, lv_str_united_model_data);
+
+
+
+        ////        ////}
+        ////    }
+        ////    catch (e) {
+
+        ////        alert('error get_one_screenshot: ' + e.stack);
+
+        ////    }
+        ////}
 
 
 
@@ -668,6 +692,82 @@ export function CommonFunc() {
         }
 
 
+
+
+
+
+
+
+        ////////////------------------------------------------------------------------------
+        //////////CommonFunc.prototype.get_screenshot = function ($pv_element, po_united_model_data) {
+
+        //////////    // Select the element that you want to capture
+        //////////    //let captureElement = $pv_element;
+
+
+        //////////    try {
+
+        //////////        //21012025 {
+        //////////        let lv_url = null; //21012025
+        //////////        let lv_str_united_model_data = null;//21012025
+        //////////        //21012025 }
+
+
+
+        //////////        html2canvas($pv_element).then((po_canvas) => {
+
+        //////////            po_united_model_data.screenshot = po_canvas.toDataURL(/*"image/png"*/)
+
+        //////////            //21012025 {
+        //////////            //let lv_url = "/Index?handler=SaveModel"; //21012025
+        //////////            //let lv_str_united_model_data = JSON.stringify(po_united_model_data);//21012025
+        //////////            lv_url = "/Index?handler=SaveModel" + "&chdata=" + Math.random().toString();
+        //////////            lv_str_united_model_data = JSON.stringify(po_united_model_data);//21012025
+        //////////            this.on_fillsreenshot(lv_url, lv_str_united_model_data /*po_united_model_data*/);
+        //////////            //21012025 }
+
+        //////////        });
+
+
+        //////////        ////////html2canvas(captureElement/*.children()*/,
+        //////////        ////////    {
+        //////////        ////////        onrendered: function (canvas) {
+
+        //////////        ////////            var lv_image = canvas.toDataURL();
+        //////////        ////////            //if (lv_image.length > cv_ModelImage_length)
+        //////////        ////////            po_united_model_data.screenshot = lv_image;
+        //////////        ////////            this.on_fillsreenshot(po_united_model_data);
+
+        //////////        ////////        }
+
+        //////////        ////////    }
+        //////////        ////////);
+
+        //////////    }
+
+        //////////    catch (e) {
+
+        //////////        alert('error screenshot: ' + e.stack);
+
+        //////////    }
+
+        //////////}
+        ////////////------------------------------------------------------------------------
+        //////////CommonFunc.prototype.on_fillsreenshot = function (pv_url, pv_str_data /*po_united_model_data*/) {
+
+        //////////    //let lv_url = "/Index?handler=SaveModel";
+        //////////    //21012025 let lv_str_united_model_data = JSON.stringify(po_united_model_data);
+        //////////    //21012025 this.send(lv_url, lv_str_united_model_data);
+
+        //////////    this.send(pv_url, pv_str_data);
+
+        //////////}
+
+
+
+
+
+        //22012025 {
 
 
 

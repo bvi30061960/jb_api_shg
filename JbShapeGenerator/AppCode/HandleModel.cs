@@ -69,6 +69,8 @@ namespace JbShapeGenerator.AppCode
                 string lv_filename_screen_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.scr;
                 string lv_filename_screen_model_graph = lv_path_and_name_file_wo_extension + UsingFileExtensions.png;
                 string lv_filename_screen_model_upsite = lv_path_and_name_file_wo_extension + UsingFileExtensions.up;
+                string lv_filename_screen_model_latsite = lv_path_and_name_file_wo_extension + UsingFileExtensions.lat;
+                string lv_filename_screen_model_endsite = lv_path_and_name_file_wo_extension + UsingFileExtensions.end;
 
 
 
@@ -136,6 +138,35 @@ namespace JbShapeGenerator.AppCode
 
                 ProgressStatus.SetPerc(65);
                 //22012025 }
+
+                //23012025 {
+
+                // сохранение файла копии экрана в графическом формате боковой стороны
+                lv_graph = united_model_data.lat_side_screenshot.Replace("data:image/png;base64,", "");
+                var lv_sh_latsite = System.Convert.FromBase64String(lv_graph);
+
+                using (BinaryWriter writer = new BinaryWriter(File.Open(lv_filename_screen_model_latsite, FileMode.OpenOrCreate)))
+                {
+                    writer.Write(lv_sh_latsite);
+                }
+
+
+                // сохранение файла копии экрана в графическом формате торцовой стороны
+                lv_graph = united_model_data.end_side_screenshot.Replace("data:image/png;base64,", "");
+                var lv_sh_endsite = System.Convert.FromBase64String(lv_graph);
+
+                using (BinaryWriter writer = new BinaryWriter(File.Open(lv_filename_screen_model_endsite, FileMode.OpenOrCreate)))
+                {
+                    writer.Write(lv_sh_endsite);
+                }
+
+                //23012025 }
+
+
+
+
+
+
 
 
                 // сохранение фрагмента программы с описанием массива PointsCurves
