@@ -1770,17 +1770,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                //-------------------------------------------------------------------
-                //14012025 }
-
-
                 //=========================================================================
                 const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
 
                 lo_active_side.group_parts_mod.add(mesh_mod);//14102024
 
 
-                //=========================================================================
 
                 if (lo_active_side.num_loaded_model_parts == lo_active_side.model_numparts)
 
@@ -3552,7 +3547,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             this.is_model_changed = false;
 
             let lo_sides_data = this.read_model_sides_data();
-            let lo_scene_mod = this.scene_mod;
+            //24012025 let lo_scene_mod = this.scene_mod;
+            let lo_scene_mod = go_up_side_shape_generator.scene_mod; //24012025
             await this.common_func.save_model(lo_sides_data, lo_scene_mod);
 
 

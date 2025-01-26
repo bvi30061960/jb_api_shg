@@ -398,10 +398,26 @@ namespace jb_api_shg.AppCode
                 // вертикальные разделители
                 int lv_i_end1 = ls_parameters.sides_data.data1.numCurves;
                 msg3DObject lo_separator1 = null;
+
+                decimal[] lar_coord_for_cols = new decimal[lv_i_end1 + 1]; //25012025 массив начальных координат x кривых
+                lar_coord_for_cols[0] = 0;
+
+
                 for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
                 {
+
+                    lar_coord_for_cols[lv_i + 1] = ls_parameters.sides_data.data1.PointsCurves[lv_i][0][0];
+
                     ls_monitor_status.progress_indicator = (int)(10m + 15m * (decimal.Parse(lv_i.ToString()) / decimal.Parse(lv_i_end1.ToString())));
                     lo_progressMonitor.SetStatus(ls_monitor_status);
+
+                    //25012025 {
+                    // Формирование массива координат начала кривых для определения двумерных номеров деталей
+
+
+
+                    //25012025 }
+
 
                     lv_side = enum_model_side.up_side;
                     lo_separator1 = GetSeparator(
@@ -436,8 +452,14 @@ namespace jb_api_shg.AppCode
 
                 int lv_i_end2 = ls_parameters.sides_data.data2.numCurves;
 
+                decimal[] lar_coord_for_rows = new decimal[lv_i_end2 + 1]; //25012025 массив начальных координат y кривых
+                lar_coord_for_rows[0] = 0;
+
                 for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
                 {
+                    lar_coord_for_rows[lv_i + 1] = ls_parameters.sides_data.data2.PointsCurves[lv_i][0][0];
+
+
                     ls_monitor_status.progress_indicator = (int)(25m + 14m * (decimal.Parse(lv_i.ToString()) / decimal.Parse(lv_i_end2.ToString())));
                     lo_progressMonitor.SetStatus(ls_monitor_status);
 
@@ -496,6 +518,32 @@ namespace jb_api_shg.AppCode
 
                 //25112024 typ_make_model_result_data lv_result_data = do_cutting(lo_scene, bx1, lar_stack_separators);
                 Stack<msg3DObject> lar_parts_stack = do_cutting(lo_scene, bx1, lar_stack_separators);
+
+
+                //05012025 {
+
+                if (lar_stack_separators.Count > 0)
+                {
+
+                    // Присвоение деталям имён с двумерными номерами (ряд, колонка)
+                    SetPartsNames(lar_stack_separators, lar_coord_for_rows, lar_coord_for_cols);
+
+                }
+                else
+                {
+                    // нет результатов разрезания, возврат
+
+                    ls_monitor_status.progress_indicator = 50;
+                    ls_monitor_status.common_outfilename_part = "Making model error";
+                    ls_monitor_status.number_outfiles = 0;
+                    lo_progressMonitor.SetStatus(ls_monitor_status);
+                    return;
+
+                }
+
+
+                //05012025 }
+
 
 
 
@@ -566,13 +614,101 @@ namespace jb_api_shg.AppCode
 
         }
 
+        //--------------------------------------------------------------------------------------------------
+        private void SetPartsNames(Stack<msg3DObject> par_stack_separators, decimal[] par_coord_for_rows, decimal[] par_coord_for_cols)
+        {
+
+            Array.Sort(par_coord_for_rows);
+            Array.Sort(par_coord_for_cols);
+
+
+            foreach (msg3DObject lo_curr_part in par_stack_separators)
+            {
+
+                int lv_nrow, lv_ncol;
+
+                GetRowColIndices(lo_curr_part, par_coord_for_rows, par_coord_for_cols, out lv_nrow, out lv_ncol);
+
+
+                lo_curr_part.SetName(SetNameByRowCol(lv_nrow, lv_ncol));
+                string lv_name = lo_curr_part.GetName();
+
+                string lv_name1 = lv_name;
+
+            }
+
+        }
+
+
+        //--------------------------------------------------------------------------------------------------
+        private string SetNameByRowCol(int lv_nrow, int lv_ncol)
+        {
+            return "Part_" + lv_nrow.ToString() + "_" + lv_ncol.ToString();
+        }
+
+
+        //--------------------------------------------------------------------------------------------------
+        private void GetRowColIndices(msg3DObject po_part, decimal[] par_coord_for_rows, decimal[] par_coord_for_cols, out int pv_nrow, out int pv_ncol)
+        {
+            pv_nrow = 0;
+            pv_ncol = 0;
+
+            //Array.Sort(par_coord_for_rows);
+            //Array.Sort(par_coord_for_cols);
+
+
+            // Определение имен файлов деталей на основе координат деталей
+            msgPointStruct lo_gabarit_part_min = new msgPointStruct();
+            msgPointStruct lo_gabarit_part_max = new msgPointStruct();
+
+            po_part.GetGabarits(lo_gabarit_part_min, lo_gabarit_part_max);
+
+            // вычисление геометрических центров (средних арифметических) деталей
+
+            decimal lv_x_center = (decimal)(lo_gabarit_part_min.x + lo_gabarit_part_max.x) / 2;
+            decimal lv_z_center = (decimal)(lo_gabarit_part_min.z + lo_gabarit_part_max.z) / 2;
+
+            for (int lv_i = 0; lv_i < par_coord_for_rows.Length - 1; lv_i++)
+            {
+                if (lv_z_center > par_coord_for_rows[lv_i])
+                {
+                    pv_nrow = lv_i + 1;
+                    break;
+                }
+
+            }
+
+            if (pv_nrow == 0)
+            {
+                pv_nrow = par_coord_for_rows.Length;
+            }
+
+
+            //---------------------------
+
+            for (int lv_i = 0; lv_i < par_coord_for_cols.Length - 1; lv_i++)
+            {
+                if (lv_x_center > par_coord_for_cols[lv_i])
+                {
+                    pv_ncol = lv_i + 1;
+                    break;
+                }
+
+            }
+
+            if (pv_ncol == 0)
+            {
+                pv_ncol = par_coord_for_cols.Length;
+            }
+
+        }
 
         //--------------------------------------------------------------------------------------------------
         private static msg3DObject GetSeparator(
                 msgScene po_scene,
                 enum_model_side pv_side /*int pv_variant*/,
                 ////int pv_num_separator,
-                decimal[][] par_TestPoints,
+                decimal[][] par_points,
                 double pv_box_length,
                 double pv_box_width,
                 double pv_gap_width
@@ -588,7 +724,7 @@ namespace jb_api_shg.AppCode
             const double cv_extra_size = 5; // 10.0; // Выступ поверхностей за границы модели 
 
             int lv_ibegpoint = 0;
-            int lv_iendpoint = par_TestPoints.Length - 1;
+            int lv_iendpoint = par_points.Length - 1;
 
 
             msgPointStruct ls_tmpPnt = new msgPointStruct();
@@ -599,15 +735,15 @@ namespace jb_api_shg.AppCode
             try
             {
 
-                ls_tmpPnt.x = (double)par_TestPoints[0][0];
-                ls_tmpPnt.y = (double)par_TestPoints[0][1] - cv_extra_size;
+                ls_tmpPnt.x = (double)par_points[0][0];
+                ls_tmpPnt.y = (double)par_points[0][1] - cv_extra_size;
                 ls_tmpPnt.z = 0.0;
                 lo_original_splinestruc.AddKnot(ls_tmpPnt, lv_ind_struc++);
 
                 for (int icurr = lv_ibegpoint; icurr <= lv_iendpoint; icurr++)
                 {
-                    ls_tmpPnt.x = (double)par_TestPoints[icurr][0]; // + lv_curve_shift;
-                    ls_tmpPnt.y = (double)par_TestPoints[icurr][1];
+                    ls_tmpPnt.x = (double)par_points[icurr][0]; // + lv_curve_shift;
+                    ls_tmpPnt.y = (double)par_points[icurr][1];
                     ls_tmpPnt.z = 0.0;
 
                     lo_original_splinestruc.AddKnot(ls_tmpPnt, lv_ind_struc++);
@@ -1054,15 +1190,28 @@ namespace jb_api_shg.AppCode
 
             Commons.create_directory_if_no_exist(lv_path_dir_for_model_parts);
 
-            foreach (msg3DObject lo_curr_res_part in par_output_parts)
+
+            foreach (msg3DObject lo_curr_part in par_output_parts)
             {
-                po_scene.AttachObject(lo_curr_res_part);
+                //    //24012025 {
+                //// Определение имен файлов деталей на основе координат деталей
+                //    msgPointStruct lo_gabarit_part_min = new msgPointStruct();
+                //    msgPointStruct lo_gabarit_part_max = new msgPointStruct();
+
+                //    lo_curr_part.GetGabarits(lo_gabarit_part_min, lo_gabarit_part_max);
+
+                //    //24012025 }
+
+
+
+                po_scene.AttachObject(lo_curr_part);
 
                 //lv_path_file_to_save = Path.Combine(lv_dir_to_save, Path.Combine(lv_common_part_filename, lv_common_part_filename + "_" + lv_i++.ToString() + UsingFileExtensions.stl));
-                lv_path_file_to_save = Path.Combine(lv_path_dir_for_model_parts, lv_common_part_filename + "_" + lv_i++.ToString() + UsingFileExtensions.stl);
+                //25012025 lv_path_file_to_save = Path.Combine(lv_path_dir_for_model_parts, lv_common_part_filename + "_" + lv_i++.ToString() + UsingFileExtensions.stl);
+                lv_path_file_to_save = Path.Combine(lv_path_dir_for_model_parts, lv_common_part_filename + "_" + lo_curr_part.GetName() + UsingFileExtensions.stl); //25012025
 
                 msgFileManager.ExportSTL(po_scene, lv_path_file_to_save);
-                po_scene.DetachObject(lo_curr_res_part);
+                po_scene.DetachObject(lo_curr_part);
             }
 
             //25112024 typ_make_model_result_data lo_result_data = new typ_make_model_result_data();

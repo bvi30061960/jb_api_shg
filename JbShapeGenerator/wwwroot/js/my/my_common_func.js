@@ -404,13 +404,10 @@ export function CommonFunc() {
 
 
 
-                //22012025 {
-
                 //this.get_screenshot(lo_element2, lo_united_model_data);
 
-                let lv_url = "/Index?handler=SaveModel" + "&chdata=" + Math.random().toString();
+                let lv_url = "/Index?handler=SaveModel"; /*+ "&chdata=" + Math.random().toString();*/
                 await this.get_screenshots(lv_url, lo_united_model_data);
-                //22012025 }
 
 
             }
@@ -430,7 +427,7 @@ export function CommonFunc() {
             try {
 
                 // Заполнение массива экранными элементами
-                let lar_screenshot_elements = [];
+                //let lar_screenshot_elements = [];
 
                 //lar_screenshot_elements.push($("#id_div_visual_model")[2]);
                 //lar_screenshot_elements.push($("#id_shape")[2]);
@@ -450,21 +447,15 @@ export function CommonFunc() {
                 //lar_screenshot_elements.push("#up_id_div_visual_model canvas");
                 //lar_screenshot_elements.push(lo_active_side.id_prefix_wo_sharp + "id_shape");
                 //lar_screenshot_elements.push("#up_id_shg_common canvas");
-                lar_screenshot_elements.push("#up_id_shape canvas");
-                lar_screenshot_elements.push("#up_id_div_visual_model canvas");
+                //lar_screenshot_elements.push("#up_id_shape canvas");
+                //lar_screenshot_elements.push("#up_id_div_visual_model canvas");
 
                 //23012025 }
 
-
-
-
-
                 // массив данных screenshots
-                let lar_sreenshot_data = [/*lar_screenshot_elements.length*/];
+                //let lar_sreenshot_data = [/*lar_screenshot_elements.length*/];
 
-
-
-                let lv_nstep = 0;
+                //let lv_nstep = 0;
 
                 //while (par_elements.length > 0) {
 
@@ -475,26 +466,14 @@ export function CommonFunc() {
                 ////po_united_model_data.screenshot = lar_sreenshot_data[0];
                 ////po_united_model_data.up_side_screenshot = lar_sreenshot_data[1];
 
-
-
                 ////let lv_str_united_model_data = JSON.stringify(po_united_model_data);
 
                 ////this.send(pv_url, lv_str_united_model_data);
 
 
-
-
-
-
-
-
                 let lv_dataURL = null;
                 go_up_side_shape_generator.renderer.render(go_up_side_shape_generator.scene, go_up_side_shape_generator.camera);
                 lv_dataURL = go_up_side_shape_generator.renderer.domElement.toDataURL('image/png');
-                po_united_model_data.screenshot = lv_dataURL;
-
-                go_up_side_shape_generator.renderer_mod.render(go_up_side_shape_generator.scene_mod, go_up_side_shape_generator.camera_mod);
-                lv_dataURL = go_up_side_shape_generator.renderer_mod.domElement.toDataURL('image/png');
                 po_united_model_data.up_side_screenshot = lv_dataURL;
 
                 go_lateral_side_shape_generator.renderer.render(go_lateral_side_shape_generator.scene, go_lateral_side_shape_generator.camera);
@@ -505,25 +484,16 @@ export function CommonFunc() {
                 lv_dataURL = go_end_side_shape_generator.renderer.domElement.toDataURL('image/png');
                 po_united_model_data.end_side_screenshot = lv_dataURL;
 
+                go_up_side_shape_generator.renderer_mod.render(go_up_side_shape_generator.scene_mod, go_up_side_shape_generator.camera_mod);
+                lv_dataURL = go_up_side_shape_generator.renderer_mod.domElement.toDataURL('image/png');
+                po_united_model_data.screenshot = lv_dataURL;
 
 
                 //po_united_model_data.screenshot = par_sreenshot_data[1];
                 //po_united_model_data.up_side_screenshot = par_sreenshot_data[0];
 
-
-
                 let lv_str_united_model_data = JSON.stringify(po_united_model_data);
                 this.send(pv_url, lv_str_united_model_data);
-
-
-
-
-
-
-
-
-
-
 
             }
 
@@ -534,6 +504,52 @@ export function CommonFunc() {
             }
 
         }
+
+
+
+        //------------------------------------------------------------------------
+        CommonFunc.prototype.send = async function (pv_url, po_data_to_send/*, po_this*/) {
+
+            try {
+
+                let response = await fetch(pv_url, {
+                    method: "POST",
+                    headers: {
+                        //"Accept": "application/json"
+                        "Content-Type": "application/json"
+                    },
+
+                    body: po_data_to_send
+
+                });
+
+                //const message = await response.json();
+                const message = await response.text();
+
+
+                this.hideLoadingIndicator();
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                let lv_modelname = $("#id_model_name").val();
+                let lv_message_text = 'Model "' + lv_modelname + '" saved';
+                lo_active_side.common_func.Show_message(lv_message_text, 1500);
+
+            }
+
+            catch (e) {
+
+                this.hideLoadingIndicator();
+
+                alert('error send: ' + e.stack);
+            }
+        }
+
+
+
+
+
+
 
         //////------------------------------------------------------------------------
         ////CommonFunc.prototype.get_one_screenshot = async function (pv_url, po_united_model_data, pv_nstep, par_screenshot_elements, par_sreenshot_data) {
@@ -654,49 +670,6 @@ export function CommonFunc() {
         //22012025 }
 
 
-
-
-
-
-
-        //------------------------------------------------------------------------
-        CommonFunc.prototype.send = async function (pv_url, po_data_to_send/*, po_this*/) {
-
-            try {
-
-                let response = await fetch(pv_url, {
-                    method: "POST",
-                    headers: {
-                        //"Accept": "application/json"
-                        "Content-Type": "application/json"
-                    },
-
-                    body: po_data_to_send
-
-                });
-
-                //const message = await response.json();
-                const message = await response.text();
-
-
-                this.hideLoadingIndicator();
-
-                let lo_active_side = get_active_side_shape_generator();
-
-                let lv_modelname = $("#id_model_name").val();
-                let lv_message_text = 'Model "' + lv_modelname + '" saved';
-                lo_active_side.common_func.Show_message(lv_message_text, 2000);
-
-
-            }
-
-            catch (e) {
-
-                this.hideLoadingIndicator();
-
-                alert('error send: ' + e.stack);
-            }
-        }
 
 
 
