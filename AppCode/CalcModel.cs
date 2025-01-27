@@ -400,13 +400,13 @@ namespace jb_api_shg.AppCode
                 msg3DObject lo_separator1 = null;
 
                 decimal[] lar_coord_for_cols = new decimal[lv_i_end1 + 1]; //25012025 массив начальных координат x кривых
-                lar_coord_for_cols[0] = 0;
+                //lar_coord_for_cols[0] = 0;
 
 
                 for (int lv_i = 0; lv_i < lv_i_end1; lv_i++)
                 {
 
-                    lar_coord_for_cols[lv_i + 1] = ls_parameters.sides_data.data1.PointsCurves[lv_i][0][0];
+                    lar_coord_for_cols[lv_i] = ls_parameters.sides_data.data1.PointsCurves[lv_i][0][0];
 
                     ls_monitor_status.progress_indicator = (int)(10m + 15m * (decimal.Parse(lv_i.ToString()) / decimal.Parse(lv_i_end1.ToString())));
                     lo_progressMonitor.SetStatus(ls_monitor_status);
@@ -443,6 +443,9 @@ namespace jb_api_shg.AppCode
 
                     //}
                 }
+                lar_coord_for_cols[lv_i_end1] = (decimal)lv_box_width;
+
+
 
                 ls_monitor_status.progress_indicator = 25;
                 lo_progressMonitor.SetStatus(ls_monitor_status);
@@ -453,11 +456,11 @@ namespace jb_api_shg.AppCode
                 int lv_i_end2 = ls_parameters.sides_data.data2.numCurves;
 
                 decimal[] lar_coord_for_rows = new decimal[lv_i_end2 + 1]; //25012025 массив начальных координат y кривых
-                lar_coord_for_rows[0] = 0;
+                //lar_coord_for_rows[0] = 0;
 
                 for (int lv_i = 0; lv_i < lv_i_end2; lv_i++)
                 {
-                    lar_coord_for_rows[lv_i + 1] = ls_parameters.sides_data.data2.PointsCurves[lv_i][0][0];
+                    lar_coord_for_rows[lv_i] = ls_parameters.sides_data.data2.PointsCurves[lv_i][0][0];
 
 
                     ls_monitor_status.progress_indicator = (int)(25m + 14m * (decimal.Parse(lv_i.ToString()) / decimal.Parse(lv_i_end2.ToString())));
@@ -489,7 +492,7 @@ namespace jb_api_shg.AppCode
 
 
                 }
-
+                lar_coord_for_rows[lv_i_end2] = (decimal)lv_box_height;
 
                 //// substraction
                 //do_sub(lo_scene, bx1, lo_separator1);
@@ -526,7 +529,7 @@ namespace jb_api_shg.AppCode
                 {
 
                     // Присвоение деталям имён с двумерными номерами (ряд, колонка)
-                    SetPartsNames(lar_stack_separators, lar_coord_for_rows, lar_coord_for_cols);
+                    SetNamesToParts(lar_parts_stack, lar_coord_for_rows, lar_coord_for_cols);
 
                 }
                 else
@@ -559,6 +562,9 @@ namespace jb_api_shg.AppCode
                 //ls_result_data.path_result_file             
                 ls_monitor_status.common_outfilename_part = ls_save_parts_data.common_outfilename_part;
                 ls_monitor_status.number_outfiles = ls_save_parts_data.number_outfiles;
+                ls_monitor_status.names_part_files = ls_save_parts_data.names_part_files;
+
+
                 ls_monitor_status.progress_indicator = 50;
                 ls_monitor_status.date_time_changed = DateTime.Now;
 
@@ -615,7 +621,7 @@ namespace jb_api_shg.AppCode
         }
 
         //--------------------------------------------------------------------------------------------------
-        private void SetPartsNames(Stack<msg3DObject> par_stack_separators, decimal[] par_coord_for_rows, decimal[] par_coord_for_cols)
+        private void SetNamesToParts(Stack<msg3DObject> par_stack_separators, decimal[] par_coord_for_rows, decimal[] par_coord_for_cols)
         {
 
             Array.Sort(par_coord_for_rows);
@@ -631,9 +637,9 @@ namespace jb_api_shg.AppCode
 
 
                 lo_curr_part.SetName(SetNameByRowCol(lv_nrow, lv_ncol));
-                string lv_name = lo_curr_part.GetName();
 
-                string lv_name1 = lv_name;
+                //string lv_name = lo_curr_part.GetName();
+                //string lv_name1 = lv_name;
 
             }
 
@@ -668,9 +674,9 @@ namespace jb_api_shg.AppCode
             decimal lv_x_center = (decimal)(lo_gabarit_part_min.x + lo_gabarit_part_max.x) / 2;
             decimal lv_z_center = (decimal)(lo_gabarit_part_min.z + lo_gabarit_part_max.z) / 2;
 
-            for (int lv_i = 0; lv_i < par_coord_for_rows.Length - 1; lv_i++)
+            for (int lv_i = 0; lv_i < par_coord_for_rows.Length; lv_i++)
             {
-                if (lv_z_center > par_coord_for_rows[lv_i])
+                if (lv_z_center <= par_coord_for_rows[lv_i])
                 {
                     pv_nrow = lv_i + 1;
                     break;
@@ -686,9 +692,9 @@ namespace jb_api_shg.AppCode
 
             //---------------------------
 
-            for (int lv_i = 0; lv_i < par_coord_for_cols.Length - 1; lv_i++)
+            for (int lv_i = 0; lv_i < par_coord_for_cols.Length; lv_i++)
             {
-                if (lv_x_center > par_coord_for_cols[lv_i])
+                if (lv_x_center <= par_coord_for_cols[lv_i])
                 {
                     pv_ncol = lv_i + 1;
                     break;
@@ -1170,66 +1176,89 @@ namespace jb_api_shg.AppCode
         private typ_progress_data save_parts_of_model(msgScene po_scene, Stack<msg3DObject> par_output_parts) //25112024
         {
 
-            // сохранение отдельных деталей в папке и zip-файле для чтения
-            // модели в клиенте
-
-            string lv_dir_to_save = Path.Combine(Environment.CurrentDirectory,
-                                                    Path.Combine(CommonConstants.path_AppData,
-                                                        CommonConstants.path_temp_data));
-            Commons.create_directory_if_no_exist(lv_dir_to_save);
-
-
-            string lv_common_part_filename = HandlePathsAndNames.get_random_name();
-
-            string lv_path_file_to_save = "";
-
-            int lv_i = 1;
-
-            // Папка для сохранения файлов деталей модели
-            string lv_path_dir_for_model_parts = Path.Combine(lv_dir_to_save, lv_common_part_filename);
-
-            Commons.create_directory_if_no_exist(lv_path_dir_for_model_parts);
-
-
-            foreach (msg3DObject lo_curr_part in par_output_parts)
-            {
-                //    //24012025 {
-                //// Определение имен файлов деталей на основе координат деталей
-                //    msgPointStruct lo_gabarit_part_min = new msgPointStruct();
-                //    msgPointStruct lo_gabarit_part_max = new msgPointStruct();
-
-                //    lo_curr_part.GetGabarits(lo_gabarit_part_min, lo_gabarit_part_max);
-
-                //    //24012025 }
-
-
-
-                po_scene.AttachObject(lo_curr_part);
-
-                //lv_path_file_to_save = Path.Combine(lv_dir_to_save, Path.Combine(lv_common_part_filename, lv_common_part_filename + "_" + lv_i++.ToString() + UsingFileExtensions.stl));
-                //25012025 lv_path_file_to_save = Path.Combine(lv_path_dir_for_model_parts, lv_common_part_filename + "_" + lv_i++.ToString() + UsingFileExtensions.stl);
-                lv_path_file_to_save = Path.Combine(lv_path_dir_for_model_parts, lv_common_part_filename + "_" + lo_curr_part.GetName() + UsingFileExtensions.stl); //25012025
-
-                msgFileManager.ExportSTL(po_scene, lv_path_file_to_save);
-                po_scene.DetachObject(lo_curr_part);
-            }
-
-            //25112024 typ_make_model_result_data lo_result_data = new typ_make_model_result_data();
             typ_progress_data lo_result_data = new typ_progress_data(); //25112024
 
-            lo_result_data.common_outfilename_part = lv_common_part_filename;
-            lo_result_data.number_outfiles = par_output_parts.Count;
+            try
+            {
+
+                // сохранение отдельных деталей в папке и zip-файле для чтения
+                // модели в клиенте
+
+                string lv_dir_to_save = Path.Combine(Environment.CurrentDirectory,
+                                                        Path.Combine(CommonConstants.path_AppData,
+                                                            CommonConstants.path_temp_data));
+                Commons.create_directory_if_no_exist(lv_dir_to_save);
 
 
-            // создание zip-файла с деталями модели 
+                string lv_common_part_filename = HandlePathsAndNames.get_random_name();
 
-            // Путь до результирующего zip файла
-            string lv_to_save_zipfilename = Path.Combine(lv_dir_to_save, lv_common_part_filename + UsingFileExtensions.zip);
+                string lv_path_file_to_save = "";
 
-            Commons.MakeZipFile(lv_path_dir_for_model_parts, lv_to_save_zipfilename);
+                int lv_i = 1;
 
-            return lo_result_data;
+                // Папка для сохранения файлов деталей модели
+                string lv_path_dir_for_model_parts = Path.Combine(lv_dir_to_save, lv_common_part_filename);
 
+                Commons.create_directory_if_no_exist(lv_path_dir_for_model_parts);
+
+
+                lo_result_data.names_part_files = new string[par_output_parts.Count];
+
+                int lv_nstep = 0;
+
+                foreach (msg3DObject lo_curr_part in par_output_parts)
+                {
+                    //    //24012025 {
+                    //// Определение имен файлов деталей на основе координат деталей
+                    //    msgPointStruct lo_gabarit_part_min = new msgPointStruct();
+                    //    msgPointStruct lo_gabarit_part_max = new msgPointStruct();
+
+                    //    lo_curr_part.GetGabarits(lo_gabarit_part_min, lo_gabarit_part_max);
+
+                    //    //24012025 }
+
+
+
+                    po_scene.AttachObject(lo_curr_part);
+
+                    //lv_path_file_to_save = Path.Combine(lv_dir_to_save, Path.Combine(lv_common_part_filename, lv_common_part_filename + "_" + lv_i++.ToString() + UsingFileExtensions.stl));
+                    //25012025 lv_path_file_to_save = Path.Combine(lv_path_dir_for_model_parts, lv_common_part_filename + "_" + lv_i++.ToString() + UsingFileExtensions.stl);
+
+                    string lv_part_name = lo_curr_part.GetName();
+
+
+                    string lv_part_filename = lv_part_name + UsingFileExtensions.stl;
+                    //26012025 lv_path_file_to_save = Path.Combine(lv_path_dir_for_model_parts, lv_common_part_filename + "_" + lv_part_name + UsingFileExtensions.stl); //25012025
+                    lv_path_file_to_save = Path.Combine(lv_path_dir_for_model_parts, /*lv_common_part_filename + "_" +*/ lv_part_filename); //25012025
+
+                    msgFileManager.ExportSTL(po_scene, lv_path_file_to_save);
+                    po_scene.DetachObject(lo_curr_part);
+
+                    lo_result_data.names_part_files[lv_nstep++] = lv_part_filename;
+
+                }
+
+                //25112024 typ_make_model_result_data lo_result_data = new typ_make_model_result_data();
+                //26012025 typ_progress_data lo_result_data = new typ_progress_data(); //25112024
+
+                lo_result_data.common_outfilename_part = lv_common_part_filename;
+                lo_result_data.number_outfiles = par_output_parts.Count;
+
+
+                // создание zip-файла с деталями модели 
+
+                // Путь до результирующего zip файла
+                string lv_to_save_zipfilename = Path.Combine(lv_dir_to_save, lv_common_part_filename + UsingFileExtensions.zip);
+
+                Commons.MakeZipFile(lv_path_dir_for_model_parts, lv_to_save_zipfilename);
+
+                return lo_result_data;
+            }
+            catch (Exception ex)
+            {
+                return lo_result_data;
+
+            }
 
         }
 

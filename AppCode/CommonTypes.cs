@@ -22,6 +22,9 @@
 
         public const string path_AppData = "AppData";
         public const string path_temp_data = "temp_data";
+
+        public const string data_delimiter = "_@$@_";
+
         //public const string filename_dict_progress = "dict_progress.txt";
 
 
@@ -189,6 +192,8 @@
 
         public int progress_indicator { set; get; }
         public DateTime date_time_changed { set; get; }
+
+        public string[] names_part_files { get; set; }
 
     };
 

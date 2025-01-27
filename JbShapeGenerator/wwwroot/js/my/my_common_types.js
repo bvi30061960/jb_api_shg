@@ -179,9 +179,13 @@ export function typ_progress_data() {
     this.client_id = "";
     this.task_id = "";
     this.path_result_file = "";
+    this.common_outfilename_part = "";
+    this.number_outfiles = "";
+
     this.progress_indicator = "";
     this.date_time_changed = "";
 
+    this.names_part_files = [];//26012025
 };
 
 

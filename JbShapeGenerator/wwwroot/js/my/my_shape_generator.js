@@ -99,7 +99,6 @@ function start() {
         go_active_side_shape_generator = go_up_side_shape_generator;
         go_active_side_shape_generator.init_event_handlers();
 
-        //////////01092024 {
         //go_lateral_side_shape_generator = start_side_shape_generator(gc_id_prefix_lateral, gc_id_prefix_up);
         //go_passive_side_shape_generator = go_lateral_side_shape_generator;
         //go_passive_side_shape_generator.init_event_handlers();
@@ -130,7 +129,6 @@ function start() {
 
         //26112024 начальное обновление модели (сейчас работает загрузка начальной модели) go_up_side_shape_generator.model_params_changed = true;
 
-        //05092024 }
     }
 
     catch (e) {
@@ -175,8 +173,6 @@ function on_tab_side_activate(event, ui) {
             go_active_side_shape_generator = go_end_side_shape_generator;
             go_passive_side_shape_generator = go_up_side_shape_generator;
 
-            //05012025 {
-
             go_end_side_shape_generator.end_shape.redraw_end_shape(
                 null,         //   po_main,
                 null, null,   //   pv_added_spline_num, pv_deleted_spline_num,       
@@ -185,7 +181,6 @@ function on_tab_side_activate(event, ui) {
 
             go_end_side_shape_generator.end_shape.draw_cells_contours();
             go_end_side_shape_generator.end_shape.refresh_end_shapes(); //23122024
-            //05012025 }
 
             break;
 
@@ -385,12 +380,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         shape_width: 70, //50,
         shape_height_beg: 100,
         shape_height: 100,
-        shape_amount_curves: 3, // ;//, //5
-        spline_amount_segments: 3, // ;//,
-        ajust_curves_by_shape: true, // ;//,
-        ajust_shape_by_curves: false, // ;//,
-        distance_between_curves_in_percent_of_width: 10, // ;//,
-        distance_bt_curves: 30, // ;//,
+        shape_amount_curves: 3,
+        spline_amount_segments: 3,
+        ajust_curves_by_shape: true,
+        ajust_shape_by_curves: false,
+        distance_between_curves_in_percent_of_width: 10,
+        distance_bt_curves: 30,
         is_space_adjust: $(this.id_prefix + "id_chb_space_adjust")[0].checked, //false, // ;//,// $("id_chb_space_adjust")[0].checked,
         is_curve_width_adjust: $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked, // ;// // $("id_chb_curve_width_adjust")[0].checked
         color: '#0000ff'
@@ -443,7 +438,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
             // Загрузка данных начальной премодели
-            this.load_initial_model(/*pv_prefix*/ /*30112024*/);//04012025
+            /// 26012025 this.load_initial_model(/*pv_prefix*/ /*30112024*/);
 
 
 
@@ -461,9 +456,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_refresh_premodel, this.read_result_refresh_premodel, lv_end_watching_progress_value);
                 this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
 
-
                 let lv_path_file_initial_premodel = Constants.path_file_initial_premodel;
                 this.grid_select_models.read_model_from_server(lv_path_file_initial_premodel, true);
+
+                this.render();//26012025
 
             }
 
@@ -880,6 +876,87 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             catch (e) {
 
                 alert('error init_three_elements: ' + e.stack);
+
+            }
+
+        }
+
+
+
+
+        //------------------------------------------------------------------------------------------
+        Shape_generator.prototype.clear_model_data = function (po_data) {
+
+            try {
+                //return;
+
+                this.shapes = null;
+                this.splines = null;
+                this.segments = null;
+                //this.end_shape = null;
+
+                this.segment_gabarits = null;
+                this.segment_transform_data = null;
+                //this.controls = null;
+                //this.gui = null;
+
+
+                //return;
+
+                this.group_contours = null;
+                this.group_color_mesh = null;
+
+                this.is_gragging = false;
+
+                this.common_func.clear_group_childrens(this.group_contours);
+                this.common_func.clear_group_childrens(this.group_color_mesh);
+                this.common_func.clear_group_childrens(this.group_end_shape);
+                this.common_func.clear_group_childrens(this.group_end_cells_contours);
+                this.common_func.clear_group_childrens(this.end_group_cells_mesh);
+                this.common_func.clear_group_childrens(this.group_parts_mod);
+
+                this.is_big_window = false;
+
+
+                //return;
+
+
+                //this.resolution = null;
+
+                //this.container_mod;
+                //this.camera_mod;
+                //this.scene_mod;
+
+
+                //this.material_mod = new THREE.MeshPhongMaterial({ color: 0xff5533, specular: 0x111111, shininess: 200 });
+
+                //return;
+
+
+                //this.group_parts_mod = null;
+
+
+                //this.refreshModelInterval = 1000;
+                this.model_params_changed = false;
+                this.is_building_model = false;
+
+
+
+
+
+                this.model_prefix_filename = ""; // префикс имени файлов загружаемых деталей 
+                this.model_numparts = 0; // всего загружаемых деталей модели
+                this.num_loaded_model_parts = 0; //число загруженных деталей модели
+                this.model_parts_positions = []; // new Array();
+                this.rotate_status = 0; // режим вращения модели
+                //this.progress_bar = null;
+                this.is_shape_gragging = false;
+
+            }
+
+            catch (e) {
+
+                alert('error clear_model_data: ' + e.stack);
 
             }
 
@@ -1432,36 +1509,75 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-                let lo_active_side = get_active_side_shape_generator();
-                let lo_passive_side = get_passive_side_shape_generator();
+
+                //26012025 {
 
                 geometry_mod.center();// Объект - в центре вращения
 
-                lo_active_side.progress_bar.set_display_value(70);
 
 
+                ////let lo_active_side = get_active_side_shape_generator();
+                ////let lo_passive_side = get_passive_side_shape_generator();
+
+
+                ////lo_active_side.progress_bar.set_display_value(70);
+
+
+                //////-------------------------------------------------------------------
+                ////const mesh_mod1 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+                ////const mesh_mod2 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+
+
+                ////lo_active_side.group_parts_mod.add(mesh_mod1);
+                ////lo_passive_side.group_parts_mod.add(mesh_mod2);//24112024
+
+                ////lo_active_side.progress_bar.set_display_value(90);
+
+                ////let lv_is_before = false;
+                ////lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                ////lo_active_side.progress_bar.set_display_value(100);
+                ////lo_active_side.progress_bar.stop_progress();
+
+                ////lo_active_side.animate_mod();
+
+                ////lo_active_side.is_building_model = false;
+                ////lo_passive_side.is_building_model = false;
+
+
+
+
+                //let lo_active_side = get_active_side_shape_generator();
+                //let lo_passive_side = get_passive_side_shape_generator();
+
+
+                go_up_side_shape_generator.progress_bar.set_display_value(70);
 
 
                 //-------------------------------------------------------------------
-                const mesh_mod1 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
-                const mesh_mod2 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+                const mesh_mod1 = new THREE.Mesh(geometry_mod, go_up_side_shape_generator.material_mod);
+                const mesh_mod2 = new THREE.Mesh(geometry_mod, go_lateral_side_shape_generator.material_mod);
 
 
-                lo_active_side.group_parts_mod.add(mesh_mod1);
-                lo_passive_side.group_parts_mod.add(mesh_mod2);//24112024
+                go_up_side_shape_generator.group_parts_mod.add(mesh_mod1);
+                go_lateral_side_shape_generator.group_parts_mod.add(mesh_mod2);//24112024
 
-                lo_active_side.progress_bar.set_display_value(90);
+                go_up_side_shape_generator.progress_bar.set_display_value(90);
 
                 let lv_is_before = false;
-                lo_active_side.do_before_after_model_request(lv_is_before, false);
+                go_up_side_shape_generator.do_before_after_model_request(lv_is_before, false);
 
-                lo_active_side.progress_bar.set_display_value(100);
-                lo_active_side.progress_bar.stop_progress();
+                go_up_side_shape_generator.progress_bar.set_display_value(100);
+                go_up_side_shape_generator.progress_bar.stop_progress();
 
-                lo_active_side.animate_mod();
+                go_up_side_shape_generator.animate_mod();
 
-                lo_active_side.is_building_model = false;
-                lo_passive_side.is_building_model = false;
+                go_up_side_shape_generator.is_building_model = false;
+                go_lateral_side_shape_generator.is_building_model = false;
+
+
+
+                //26012025 }
 
             }
 
@@ -1652,11 +1768,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 // Загрузка деталей модели
-                for (let lv_i = 1; lv_i <= po_data.number_outfiles; lv_i++) {
+                //26012025 for (let lv_i = 1; lv_i <= po_data.number_outfiles; lv_i++) {
+                for (let lv_i = 0; lv_i < po_data.names_part_files.length; lv_i++) { //26012025
 
-                    lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString() + Constants.file_model_ext;
+                    //26012025 lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString() + Constants.file_model_ext;
+                    lv_filename = po_data.common_outfilename_part + Constants.data_delimiter + po_data.names_part_files[lv_i]; //26012025 
 
-                    lo_active_side.model_numparts = po_data.number_outfiles;
+                    //26012025 lo_active_side.model_numparts = po_data.number_outfiles;
+                    lo_active_side.model_numparts = po_data.names_part_files.length; //26012025
+
+
+
                     //this.model_curr_numpart = lv_i;
 
                     lo_active_side.load_model_part(lv_filename);
@@ -1927,10 +2049,112 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.do_before_after_model_request = function (pv_is_before, pv_is_build_model) {
 
+
+            //26012025
+            ////try {
+
+            ////    let lo_active_side = get_active_side_shape_generator();
+            ////    let lo_passive_side = get_passive_side_shape_generator();
+
+            ////    if (pv_is_before) {
+
+            ////        $('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+            ////        $('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+
+            ////        $('#up_id_loading_indicator').show();// индикация ожидани
+            ////        $('#lateral_id_loading_indicator').show();// индикация ожидания
+            ////        $('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
+            ////        $('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
+
+
+            ////        lo_active_side.is_building_model = true;
+            ////        lo_passive_side.is_building_model = true;
+
+            ////        lo_active_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+            ////        lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+            ////        $(lo_active_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
+
+            ////        lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
+            ////        lo_active_side.controls_mod.reset();
+
+
+            ////        lo_active_side.progress_bar.div_progressbar.fadeIn();//26112024
+
+
+
+            ////        //24112024 {
+            ////        lo_passive_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+            ////        lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+            ////        $(lo_passive_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
+
+            ////        lo_passive_side.common_func.clear_group_childrens(lo_passive_side.group_parts_mod);
+            ////        lo_passive_side.controls_mod.reset();
+            ////        //24112024 }
+            ////    }
+
+            ////    else {
+
+            ////        // after
+
+            ////        /////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
+
+            ////        $('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+            ////        $('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
+
+            ////        $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+            ////        $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+
+            ////        lo_active_side.model_params_changed = false;
+            ////        lo_passive_side.model_params_changed = false;
+            ////        lo_active_side.is_building_model = false;
+            ////        lo_passive_side.is_building_model = false;
+
+
+            ////        if (pv_is_build_model) {
+            ////            lo_active_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+            ////            lo_active_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+            ////        }
+            ////        else {
+            ////            lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+            ////            lo_active_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
+            ////        }
+
+            ////        lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
+
+            ////        if (lo_active_side.progress_bar.div_progressbar) {
+            ////            lo_active_side.progress_bar.div_progressbar.fadeOut();//26112024
+            ////        }
+
+            ////        //24112024 {
+
+            ////        if (pv_is_build_model) {
+            ////            lo_passive_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+            ////            lo_passive_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+            ////        }
+            ////        else {
+            ////            lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+            ////            lo_passive_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
+            ////        }
+
+            ////        lo_passive_side.common_func.set_group_to_center(lo_passive_side.group_parts_mod);
+            ////        //24112024 }
+
+
+
+            ////    }
+            ////}
+
+
+
+
+
+
+
             try {
 
-                let lo_active_side = get_active_side_shape_generator();
-                let lo_passive_side = get_passive_side_shape_generator();
+                //let lo_active_side = get_active_side_shape_generator();
+                //let lo_passive_side = get_passive_side_shape_generator();
 
                 if (pv_is_before) {
 
@@ -1943,28 +2167,28 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     $('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
 
 
-                    lo_active_side.is_building_model = true;
-                    lo_passive_side.is_building_model = true;
+                    go_up_side_shape_generator.is_building_model = true;
+                    go_lateral_side_shape_generator.is_building_model = true;
 
-                    lo_active_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
-                    lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-                    $(lo_active_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
+                    go_up_side_shape_generator.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+                    go_up_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                    $(go_up_side_shape_generator.id_prefix + 'id_dist_part_slider').slider('value', 0);
 
-                    lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
-                    lo_active_side.controls_mod.reset();
+                    go_up_side_shape_generator.common_func.clear_group_childrens(go_up_side_shape_generator.group_parts_mod);
+                    go_up_side_shape_generator.controls_mod.reset();
 
 
-                    lo_active_side.progress_bar.div_progressbar.fadeIn();//26112024
+                    go_up_side_shape_generator.progress_bar.div_progressbar.fadeIn();//26112024
 
 
 
                     //24112024 {
-                    lo_passive_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
-                    lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-                    $(lo_passive_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
+                    go_lateral_side_shape_generator.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+                    go_lateral_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                    $(go_lateral_side_shape_generator.id_prefix + 'id_dist_part_slider').slider('value', 0);
 
-                    lo_passive_side.common_func.clear_group_childrens(lo_passive_side.group_parts_mod);
-                    lo_passive_side.controls_mod.reset();
+                    go_lateral_side_shape_generator.common_func.clear_group_childrens(go_lateral_side_shape_generator.group_parts_mod);
+                    go_lateral_side_shape_generator.controls_mod.reset();
                     //24112024 }
                 }
 
@@ -1981,45 +2205,53 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
 
 
-                    lo_active_side.model_params_changed = false;
-                    lo_passive_side.model_params_changed = false;
-                    lo_active_side.is_building_model = false;
-                    lo_passive_side.is_building_model = false;
+                    go_up_side_shape_generator.model_params_changed = false;
+                    go_up_side_shape_generator.model_params_changed = false;
+                    go_up_side_shape_generator.is_building_model = false;
+                    go_lateral_side_shape_generator.is_building_model = false;
 
 
                     if (pv_is_build_model) {
-                        lo_active_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
-                        lo_active_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+                        go_up_side_shape_generator.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+                        go_up_side_shape_generator.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
                     }
                     else {
-                        lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-                        lo_active_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
+                        go_up_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                        go_up_side_shape_generator.rotate_status = type_rotate_mode.stop; // выключить вращение модели
                     }
 
-                    lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
+                    go_up_side_shape_generator.common_func.set_group_to_center(go_up_side_shape_generator.group_parts_mod);
 
-                    if (lo_active_side.progress_bar.div_progressbar) {
-                        lo_active_side.progress_bar.div_progressbar.fadeOut();//26112024
+                    if (go_up_side_shape_generator.progress_bar.div_progressbar) {
+                        go_up_side_shape_generator.progress_bar.div_progressbar.fadeOut();//26112024
                     }
 
                     //24112024 {
 
                     if (pv_is_build_model) {
-                        lo_passive_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
-                        lo_passive_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+                        go_lateral_side_shape_generator.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+                        go_lateral_side_shape_generator.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
                     }
                     else {
-                        lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-                        lo_passive_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
+                        go_lateral_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                        go_lateral_side_shape_generator.rotate_status = type_rotate_mode.stop; // выключить вращение модели
                     }
 
-                    lo_passive_side.common_func.set_group_to_center(lo_passive_side.group_parts_mod);
+                    go_lateral_side_shape_generator.common_func.set_group_to_center(go_lateral_side_shape_generator.group_parts_mod);
                     //24112024 }
 
 
 
                 }
             }
+
+
+
+
+
+
+
+            //26012025 }
 
             catch (e) {
 
@@ -2282,6 +2514,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 // очистка обработчиков событий
                 $(this.passive_id_prefix + "id_but_read_model").off("click");
+                $(this.passive_id_prefix + "id_but_new_model").off("click");
                 $(this.passive_id_prefix + "id_but_refresh").off("click");
                 $(this.passive_id_prefix + "id_chb_space_adjust").off("click");
                 $(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
@@ -2451,6 +2684,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 // очистка обработчиков событий
                 $(this.passive_id_prefix + "id_but_read_model").off("click");
+                $(this.passive_id_prefix + "id_but_new_model").off("click");
 
 
                 $(this.passive_id_prefix + "id_but_refresh").off("click");
@@ -2471,6 +2705,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $(this.id_prefix + "id_chb_curve_width_adjust").off("click").click(this.onclick_chb_curve_width_adjust);
 
                 $(this.id_prefix + "id_but_read_model").off("click").click(this.onclick_read_model);
+                $(this.id_prefix + "id_but_new_model").off("click").click(this.onclick_new_model);
 
                 $(this.id_prefix + "id_but_del_spline").off("click").click(this.onclick_del_spline);
                 $(this.id_prefix + "id_but_add_spline").off("click").click(this.onclick_add_spline);
@@ -3412,6 +3647,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
         }
+
+
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_read_model = function () {
 
@@ -3460,6 +3697,24 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
         }
 
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.onclick_new_model = function () {
+
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                lo_active_side.load_initial_model();
+
+            }
+
+            catch (e) {
+
+                alert('error onclick_read_model: ' + e.stack);
+
+            }
+        }
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_save_model = function () {
 

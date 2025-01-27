@@ -1303,12 +1303,8 @@ export function CommonFunc() {
                 return;
             }
 
-            //29102024 let lo_active_side = get_active_side_shape_generator();
-
-
             try {
 
-                //for (var lv_i = 0; lv_i < po_group.children.length; lv_i++) {
                 for (var lv_i = po_group.children.length - 1; lv_i >= 0; lv_i--) {
 
                     this.removeObjectsWithChildren(po_group.children[lv_i], true);

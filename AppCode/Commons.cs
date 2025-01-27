@@ -8,8 +8,10 @@ namespace jb_api_shg.AppCode
 {
 
     ////////******************************************************************************************
-    //////public struct CommonConstants
-    //////{
+    //public struct CommonConstants
+    //{
+    //    public const string data_delimiter = "_@&@_";
+
 
     //////    public const string method_refresh_premodel = "refresh_premodel";
     //////    public const string method_start_refresh_premodel = "start_refresh_premodel";
@@ -129,7 +131,7 @@ namespace jb_api_shg.AppCode
     //////    public int[][] Segments_beg_points_numbers { get; set; } //01112024
     //////    public decimal[][][] PointsCurves { get; set; }
 
-    //////}
+    /////}
 
 
     //////public class typ_model_data

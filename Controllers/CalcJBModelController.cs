@@ -30,6 +30,7 @@ using System.Threading;
 
 
 using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace jb_api.Controllers
 {
@@ -202,20 +203,29 @@ namespace jb_api.Controllers
 
                     //17012025 {
 
-                    //Выделение общего начального префикса (до знака подчёркивания) из имени файла
-                    string lv_targetChar = "_";
+                    //Выделение общего начального префикса (до разделителя) из имени файла
+                    
+                    //26012025 {
+                    //string lv_targetChar = "_";
+                    //string lv_common_prefix = Commons.get_substr_until_last_substr(lv_filename, lv_targetChar);
 
-                    string lv_common_prefix = Commons.get_substr_until_last_substr(lv_filename, lv_targetChar);
+
+                    string [] lar_splited_strings = lv_filename.Split(CommonConstants.data_delimiter);
 
 
                     //lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
-                    //                        Path.Combine(CommonConstants.path_AppData,
-                    //                            Path.Combine(CommonConstants.path_temp_data), lv_filename));
+                    //                       Path.Combine(CommonConstants.path_AppData,
+                    //                         Path.Combine(CommonConstants.path_temp_data,
+                    //                           Path.Combine(lv_common_prefix, lv_filename))));
 
                     lv_path_model_part = Path.Combine(Environment.CurrentDirectory,
-                                           Path.Combine(CommonConstants.path_AppData,
-                                             Path.Combine(CommonConstants.path_temp_data,
-                                               Path.Combine(lv_common_prefix, lv_filename))));
+                       Path.Combine(CommonConstants.path_AppData,
+                         Path.Combine(CommonConstants.path_temp_data,
+                           Path.Combine(lar_splited_strings[0], lar_splited_strings[1]))));
+
+                    //26012025 }
+
+
                     //17012025 }
 
                     return Results.File(lv_path_model_part); //13102024

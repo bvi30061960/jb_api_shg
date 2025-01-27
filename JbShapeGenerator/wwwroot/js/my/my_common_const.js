@@ -30,7 +30,7 @@ export var Constants = {
     file_model_prev: ".prev",
     file_model_graph: ".png",
     file_model_zip: ".zip",
-
+    data_delimiter: "_@$@_",
 
     //Number_of_blocks: 6,
     //SeparatorNameSet_from_data: "_@&@_",
