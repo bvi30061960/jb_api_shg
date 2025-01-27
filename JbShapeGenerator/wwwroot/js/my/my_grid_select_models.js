@@ -549,11 +549,14 @@ export function GridSelectModels(pv_prefix) {
                     ////// Очистка группы с превью
                     ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
 
-                    // Очистка группы с деталями модели
-                    lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
-                    lo_active_side.render_mod();
 
-                    //27112024 
+                    //27012025 {
+                    ////// Очистка группы с деталями модели
+                    ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
+                    ////lo_active_side.render_mod();
+                    //27012025 }
+
+
                     if (!lo_data) {
                         return;
                     }
@@ -595,6 +598,7 @@ export function GridSelectModels(pv_prefix) {
                         }
                         if (lo_data.sides_data) {
                             lo_active_side.draw_shape_by_sides_data(lo_data.sides_data);
+                            //lo_active_side.render();//27012025
                         }
 
                     }, 100);

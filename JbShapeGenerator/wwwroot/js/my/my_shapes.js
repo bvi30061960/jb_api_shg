@@ -169,7 +169,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
     this.material_for_countours = new LineMaterial({
         //color: new THREE.Color("#f00").getHex(),
         vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
-        linewidth: 2, //0.6,  // толщина линии
+        linewidth: 0.8, //2, //0.6,  // толщина линии
         resolution: lo_resolution
         //resolution: this.main.resolution //30072024
     });

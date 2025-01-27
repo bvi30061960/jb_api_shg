@@ -1509,6 +1509,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
+                go_up_side_shape_generator.is_building_model = false;//27012025
+                go_lateral_side_shape_generator.is_building_model = false;//27012025
 
                 //26012025 {
 
@@ -1547,12 +1549,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                //let lo_active_side = get_active_side_shape_generator();
+                let lo_active_side = get_active_side_shape_generator();
                 //let lo_passive_side = get_passive_side_shape_generator();
 
-
-                go_up_side_shape_generator.progress_bar.set_display_value(70);
-
+                if (lo_active_side.progress_bar) { //27012025
+                    lo_active_side.progress_bar.set_display_value(70);
+                }
 
                 //-------------------------------------------------------------------
                 const mesh_mod1 = new THREE.Mesh(geometry_mod, go_up_side_shape_generator.material_mod);
@@ -1562,15 +1564,20 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 go_up_side_shape_generator.group_parts_mod.add(mesh_mod1);
                 go_lateral_side_shape_generator.group_parts_mod.add(mesh_mod2);//24112024
 
-                go_up_side_shape_generator.progress_bar.set_display_value(90);
+                if (lo_active_side.progress_bar) { //27012025
+                    lo_active_side.progress_bar.set_display_value(90);
+                }
 
                 let lv_is_before = false;
-                go_up_side_shape_generator.do_before_after_model_request(lv_is_before, false);
+                lo_active_side.do_before_after_model_request(lv_is_before, false);
 
-                go_up_side_shape_generator.progress_bar.set_display_value(100);
-                go_up_side_shape_generator.progress_bar.stop_progress();
+                if (lo_active_side.progress_bar) { //27012025
+                    lo_active_side.progress_bar.set_display_value(100);
+                    lo_active_side.progress_bar.stop_progress();
+                }
 
-                go_up_side_shape_generator.animate_mod();
+
+                lo_active_side.animate_mod();
 
                 go_up_side_shape_generator.is_building_model = false;
                 go_lateral_side_shape_generator.is_building_model = false;
@@ -1583,7 +1590,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             catch (e) {
 
-                this.model_params_changed = false; //29082024
+                go_up_side_shape_generator.model_params_changed = false; //29082024
+                go_lateral_side_shape_generator.model_params_changed = false; //29082024
 
                 alert('error on_load_model: ' + e.stack);
 
@@ -2153,7 +2161,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-                //let lo_active_side = get_active_side_shape_generator();
+                let lo_active_side = get_active_side_shape_generator();
                 //let lo_passive_side = get_passive_side_shape_generator();
 
                 if (pv_is_before) {
@@ -2177,9 +2185,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     go_up_side_shape_generator.common_func.clear_group_childrens(go_up_side_shape_generator.group_parts_mod);
                     go_up_side_shape_generator.controls_mod.reset();
 
-
-                    go_up_side_shape_generator.progress_bar.div_progressbar.fadeIn();//26112024
-
+                    if (lo_active_side.progress_bar.div_progressbar) {
+                        if (lo_active_side.progress_bar.div_progressbar) {
+                            lo_active_side.progress_bar.div_progressbar.fadeIn();//26112024
+                        }
+                    }
 
 
                     //24112024 {
@@ -2222,8 +2232,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     go_up_side_shape_generator.common_func.set_group_to_center(go_up_side_shape_generator.group_parts_mod);
 
-                    if (go_up_side_shape_generator.progress_bar.div_progressbar) {
-                        go_up_side_shape_generator.progress_bar.div_progressbar.fadeOut();//26112024
+                    if (lo_active_side.progress_bar.div_progressbar) {
+                        if (lo_active_side.progress_bar.div_progressbar) {
+                            lo_active_side.progress_bar.div_progressbar.fadeOut();//26112024
+                        }
                     }
 
                     //24112024 {
@@ -4747,8 +4759,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //131220244 go_lateral_side_shape_generator.render();
 
 
-                //go_end_side_shape_generator.clear_shape_objects(go_end_side_shape_generator);
-                //go_end_side_shape_generator.create_end_shape(true, po_sides_data);
+                go_end_side_shape_generator.clear_shape_objects(go_end_side_shape_generator);//27012025
+                //go_end_side_shape_generator.create_end_shape(true, po_sides_data);//27012025
                 //go_end_side_shape_generator.render();
 
             }
