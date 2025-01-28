@@ -52,9 +52,6 @@ export const cv_segment_name_prefix = "segment";
 
 
 
-export function typ_color_data() {
-    this.ColorParts = new Array();
-}
 export function typ_parameters() {
     //this.is_space_adjust = false;
     //this.is_curve_width_adjust = false;
@@ -116,13 +113,36 @@ export function typ_side_data() {
 
 //};
 
+export function typ_color_data() {
+    //27012025 this.ColorParts = new Array();
+    //this.ColorParts = new typ_color_part(); //27012025
+    this.ColorParts = [][new typ_color_part()]; //27012025
+}
+
+
+export function typ_color_part() {
+    this.right_top = new typ_2dcoord(); // new THREE.Vector2(0, 0);
+    this.left_bottom = new typ_2dcoord(); // new THREE.Vector2(0,0) ;
+    this.cell_color = 0;
+    this.is_contour_visible = false;
+
+};
+
+export function typ_2dcoord() {
+    this.x = null;
+    this.y = null;
+};
+
 export function typ_sides_data() {
     //this.parameters = new typ_parameters();
 
     this.client_id = "0";
     this.task_id = "0";
 
-    this.colorParts = new typ_color_data();
+    //this.colorParts = [][new typ_color_data()];
+    //this.colorParts = new typ_color_data();
+    this.ColorParts = [][new typ_color_part()];
+    //this.colorParts = [][new typ_color_part()];
     this.data1 = new typ_side_data();
     this.data2 = new typ_side_data();
 };
@@ -188,11 +208,3 @@ export function typ_progress_data() {
     this.names_part_files = [];//26012025
 };
 
-
-export function typ_color_part() {
-    this.right_top = null; // new THREE.Vector2(0, 0);
-    this.left_bottom = null; // new THREE.Vector2(0,0) ;
-    this.cell_color = 0;
-    this.is_contour_visible = false;
-
-};

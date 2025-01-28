@@ -1,5 +1,6 @@
 ﻿//using JbShapeGenerator.AppData;
 
+using System.Composition;
 using System.Drawing;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -89,9 +90,9 @@ namespace JbShapeGenerator.AppCode
         public const string png = ".png";       // графический файл копии экрана с изображением модели
         public const string scr = ".scr";       // копия экрана с изображением модели
         public const string zip = ".zip";       // zip файл
-        public const string up  = ".up";        // screenshot upsite файл
-        public const string lat  = ".lat";      // screenshot lateral файл
-        public const string end  = ".end";      // screenshot end файл
+        public const string up = ".up";        // screenshot upsite файл
+        public const string lat = ".lat";      // screenshot lateral файл
+        public const string end = ".end";      // screenshot end файл
 
         //    public const string t1c = ".t1c"; // Выход - файл для перевода с двухколоночной таблицей с текстом в одной левой колонке  
         //                                      //public const string t2c = ".t2c"; // Выход - файл с двухколоночной таблицей с переведённым текстом в двух колонках  
@@ -257,7 +258,8 @@ namespace JbShapeGenerator.AppCode
 
     public class typ_sides_data
     {
-        public typ_color_data ColorParts { set; get; }
+        //public typ_color_data ColorParts { set; get; }
+        public typ_color_part[][] ColorParts { set; get; }
         public typ_side_data data1 { set; get; }
         public typ_side_data data2 { set; get; }
 
@@ -296,10 +298,27 @@ namespace JbShapeGenerator.AppCode
 
 
 
-    public class typ_color_data
+    //public class typ_color_data
+    //{
+    //    public typ_color_part[][] ColorParts { set; get; }
+    //}
+
+    public class typ_color_part
     {
-        public string[][] ColorParts { set; get; }
-    }
+        public typ_2dcoord right_top { get; set; }
+        public typ_2dcoord left_bottom { get; set; }
+        public string cell_color { get; set; }
+        public bool is_contour_visible { get; set; }
+
+    };
+
+    public class typ_2dcoord
+    {
+        public decimal x = 0;
+        public decimal y = 0;
+    };
+
+
 
 
     public class typ_side_data

@@ -53,15 +53,15 @@ namespace JbShapeGenerator.AppCode
                 //15012025 HandlePathsAndNames.Clear_names_and_paths();
                 HandlePathsAndNames.Create_names_and_directories(po_PageContext);
 
-                var united_model_data = await po_Request.ReadFromJsonAsync<typ_united_model_data>();
+                var lo_united_model_data = await po_Request.ReadFromJsonAsync<typ_united_model_data>();
 
-                if (united_model_data == null || united_model_data.model_name == null || united_model_data.model_name == "")
+                if (lo_united_model_data == null || lo_united_model_data.model_name == null || lo_united_model_data.model_name == "")
                 {
                     return new ObjectResult("No data accepted");
                 }
 
 
-                string? lv_path_and_name_file_wo_extension = HandlePathsAndNames.Get_full_path_with_hashed_filename(united_model_data.model_name, "", true);
+                string? lv_path_and_name_file_wo_extension = HandlePathsAndNames.Get_full_path_with_hashed_filename(lo_united_model_data.model_name, "", true);
 
                 string lv_filename_sides_data = lv_path_and_name_file_wo_extension + UsingFileExtensions.dat;
                 string lv_filename_prev_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.prev;
@@ -79,7 +79,7 @@ namespace JbShapeGenerator.AppCode
                 // сохранение файла данных модели
                 using (StreamWriter sw = new StreamWriter(lv_filename_sides_data))
                 {
-                    await sw.WriteAsync(united_model_data.sides_data);
+                    await sw.WriteAsync(lo_united_model_data.sides_data);
                 }
 
                 ProgressStatus.SetPerc(20);
@@ -89,21 +89,21 @@ namespace JbShapeGenerator.AppCode
                 // сохранение файла предварительной модели
                 using (StreamWriter sw = new StreamWriter(lv_filename_prev_model))
                 {
-                    await sw.WriteAsync(united_model_data.prev_model);
+                    await sw.WriteAsync(lo_united_model_data.prev_model);
                 }
                 ProgressStatus.SetPerc(30);
 
                 // сохранение файла копии экрана с изображением модели
                 using (StreamWriter sw = new StreamWriter(lv_filename_screen_model))
                 {
-                    await sw.WriteAsync(united_model_data.screenshot);
+                    await sw.WriteAsync(lo_united_model_data.screenshot);
                 }
                 ProgressStatus.SetPerc(40);
 
 
                 // Преобразование screenshot в формат графического файла
 
-                string lv_graph = united_model_data.screenshot.Replace("data:image/png;base64,", "");
+                string lv_graph = lo_united_model_data.screenshot.Replace("data:image/png;base64,", "");
                 //lv_graph = united_model_data.screenshot.Replace(" ", "+");
                 //lv_graph = united_model_data.screenshot.Replace(" ", "");
 
@@ -112,7 +112,7 @@ namespace JbShapeGenerator.AppCode
 
 
                 //22012025 {
-                lv_graph = united_model_data.up_side_screenshot.Replace("data:image/png;base64,", "");
+                lv_graph = lo_united_model_data.up_side_screenshot.Replace("data:image/png;base64,", "");
                 var lv_sh_upsite = System.Convert.FromBase64String(lv_graph);
                 //22012025 }
 
@@ -142,7 +142,7 @@ namespace JbShapeGenerator.AppCode
                 //23012025 {
 
                 // сохранение файла копии экрана в графическом формате боковой стороны
-                lv_graph = united_model_data.lat_side_screenshot.Replace("data:image/png;base64,", "");
+                lv_graph = lo_united_model_data.lat_side_screenshot.Replace("data:image/png;base64,", "");
                 var lv_sh_latsite = System.Convert.FromBase64String(lv_graph);
 
                 using (BinaryWriter writer = new BinaryWriter(File.Open(lv_filename_screen_model_latsite, FileMode.OpenOrCreate)))
@@ -152,7 +152,7 @@ namespace JbShapeGenerator.AppCode
 
 
                 // сохранение файла копии экрана в графическом формате торцовой стороны
-                lv_graph = united_model_data.end_side_screenshot.Replace("data:image/png;base64,", "");
+                lv_graph = lo_united_model_data.end_side_screenshot.Replace("data:image/png;base64,", "");
                 var lv_sh_endsite = System.Convert.FromBase64String(lv_graph);
 
                 using (BinaryWriter writer = new BinaryWriter(File.Open(lv_filename_screen_model_endsite, FileMode.OpenOrCreate)))
@@ -172,7 +172,7 @@ namespace JbShapeGenerator.AppCode
                 // сохранение фрагмента программы с описанием массива PointsCurves
                 string lv_filename_PointsCurves_array = lv_path_and_name_file_wo_extension + ".txt"; // png;
 
-                typ_sides_data lo_sides_data = JsonConvert.DeserializeObject<typ_sides_data>(united_model_data.sides_data);
+                typ_sides_data lo_sides_data = JsonConvert.DeserializeObject<typ_sides_data>(lo_united_model_data.sides_data);
 
                 using (StreamWriter sw = new StreamWriter(lv_filename_PointsCurves_array))
                 {
@@ -212,7 +212,7 @@ namespace JbShapeGenerator.AppCode
                 gs_ListFiles ls_data_file = new gs_ListFiles();
 
                 ls_data_file.path_file_wo_ext = lv_path_and_name_file_wo_extension;
-                ls_data_file.filename = united_model_data.model_name;
+                ls_data_file.filename = lo_united_model_data.model_name;
                 //ls_data_file.descr = "New file";
                 ////ls_data_file.path_file_sides_data = lv_filename_sides_data;
                 ////ls_data_file.path_file_prev_model = lv_filename_prev_model;

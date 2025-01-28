@@ -470,35 +470,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
         }
 
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.onPassInterval = function (po_this) {
-
-            try {
-
-                let lo_passive_side = get_passive_side_shape_generator();
-
-                if (po_this.model_params_changed) {
-
-                    if (!po_this.is_building_model && !lo_passive_side.is_building_model) {
-
-                        po_this.model_params_changed = false;
-                        ////19102024 po_this.is_building_model = true;
-                        ////19102024 lo_passive_side.is_building_model = true;
-
-
-                        po_this.refreshModel();
-
-                    }
-                }
-
-            }
-
-            catch (e) {
-
-                alert('error onPassInterval: ' + e.stack);
-
-            }
-        }
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.init_containers_and_controls = function (/*pv_prefix*/) {
@@ -2185,7 +2156,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     go_up_side_shape_generator.common_func.clear_group_childrens(go_up_side_shape_generator.group_parts_mod);
                     go_up_side_shape_generator.controls_mod.reset();
 
-                    if (lo_active_side.progress_bar.div_progressbar) {
+                    if (lo_active_side.progress_bar) {
                         if (lo_active_side.progress_bar.div_progressbar) {
                             lo_active_side.progress_bar.div_progressbar.fadeIn();//26112024
                         }
@@ -2232,7 +2203,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     go_up_side_shape_generator.common_func.set_group_to_center(go_up_side_shape_generator.group_parts_mod);
 
-                    if (lo_active_side.progress_bar.div_progressbar) {
+                    if (lo_active_side.progress_bar) {
                         if (lo_active_side.progress_bar.div_progressbar) {
                             lo_active_side.progress_bar.div_progressbar.fadeOut();//26112024
                         }
@@ -4604,10 +4575,20 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.read_color_parts = function () {
 
             let lar_ColorParts = [];
-            return {
-                ColorParts: lar_ColorParts
-            }
-            //};
+
+            //lar_ColorParts = this.end_shape.ColorParts;
+            lar_ColorParts = go_end_side_shape_generator.end_shape.ColorParts;
+
+
+            // 27012025 {
+            //return {
+            //    ColorParts: lar_ColorParts
+            //}
+
+            return lar_ColorParts;
+
+            // 27012025 }
+
         }
         //------------------------------------------------------------------------
         Shape_generator.prototype.get_rectangle_coordinates_by_name = function (pv_name) {
@@ -4747,20 +4728,28 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.draw_shape_by_sides_data = function (po_sides_data) {
 
             try {
-                let sides_data = JSON.parse(po_sides_data);
+                let ls_sides_data = JSON.parse(po_sides_data);
 
                 go_up_side_shape_generator.clear_shape_objects(go_up_side_shape_generator);
-                go_up_side_shape_generator.make_shape(true, sides_data.data1);
+                go_up_side_shape_generator.make_shape(true, ls_sides_data.data1);
                 go_up_side_shape_generator.render();
 
 
                 go_lateral_side_shape_generator.clear_shape_objects(go_lateral_side_shape_generator);
-                go_lateral_side_shape_generator.make_shape(true, sides_data.data2);
+                go_lateral_side_shape_generator.make_shape(true, ls_sides_data.data2);
                 //131220244 go_lateral_side_shape_generator.render();
 
 
                 go_end_side_shape_generator.clear_shape_objects(go_end_side_shape_generator);//27012025
-                //go_end_side_shape_generator.create_end_shape(true, po_sides_data);//27012025
+
+                go_end_side_shape_generator.end_shape.redraw_end_shape(
+                    null, //po_main,
+                    null, //pv_added_spline_num,
+                    null, //pv_deleted_spline_num,
+                    true, //po_is_use_data, 
+                    ls_sides_data
+                );
+
                 //go_end_side_shape_generator.render();
 
             }
@@ -4776,6 +4765,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.clear_shape_objects = function (po_side) {
 
             try {
+
 
                 //this.common_func.clear_group_childrens(po_side.main_curves_group);
                 //this.common_func.clear_group_childrens(po_side.group_contours);
@@ -4820,8 +4810,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     po_side.shapes = null;
                 }
 
-                let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "Mesh"];// /*, "Group"*/14102024
+
+
+                let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "Mesh", "Group"];// /*, "Group"*/14102024
                 this.common_func.clearScene(po_side.scene, lar_no_delete);
+
+
+                //return;
 
                 if (this.rectangle) {
                     this.rectangle.shape.scale.y = 1;
@@ -4831,6 +4826,37 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             catch (e) {
 
                 alert('error clear_shape_objects: ' + e.stack);
+
+            }
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.onPassInterval = function (po_this) {
+
+            try {
+
+                let lo_passive_side = get_passive_side_shape_generator();
+
+                if (po_this.model_params_changed) {
+
+                    if (!po_this.is_building_model && !lo_passive_side.is_building_model) {
+
+                        po_this.model_params_changed = false;
+                        ////19102024 po_this.is_building_model = true;
+                        ////19102024 lo_passive_side.is_building_model = true;
+
+
+                        po_this.refreshModel();
+
+                    }
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error onPassInterval: ' + e.stack);
 
             }
         }
