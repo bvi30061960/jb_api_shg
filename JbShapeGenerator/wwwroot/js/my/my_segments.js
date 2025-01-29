@@ -304,8 +304,17 @@ export function Segments(
 					//lo_node.position.x = this.ar_initial_segment_points[lv_k].x * po_transform_data.kx + po_beg_point.x;
 					//lo_node.position.y = this.ar_initial_segment_points[lv_k].y * po_transform_data.ky + po_beg_point.y;
 
-					lo_node.position.x = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][0] + po_beg_point.x;
-					lo_node.position.y = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][1] + po_beg_point.y;
+					//28012025 {
+					//lo_node.position.x = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][0] + po_beg_point.x;
+					//lo_node.position.y = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][1] + po_beg_point.y;
+					lo_node.position.x = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][0];
+					lo_node.position.y = po_side_data.PointsCurves[pv_curr_spline_number][lv_k][1];
+
+					//28012025 }
+
+
+
+
 
 					//////03112024 {
 					////// Запись максимальной координаты y сплайнов (длина модели)

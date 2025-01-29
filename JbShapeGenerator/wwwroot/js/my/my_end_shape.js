@@ -406,6 +406,19 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 ////this.draw_cells_contours();
                 ////this.refresh_end_shapes(); //23122024
                 //05012025 }
+
+                ////28012025 {
+                this.draw_cells_contours();
+
+                //if (po_is_use_data) {
+                //    this.main.set_meshes_color_by_data();
+                //}
+
+                //this.refresh_end_shapes(); 
+                //this.main.render();
+                //go_end_side_shape_generator.render();
+                ////28012025  }
+
             }
 
             catch (e) {
@@ -751,18 +764,20 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                         if (lo_rectangle_color_cell) {
 
-                            lo_rectangle_color_cell.rectangle.visible = !lo_rectangle_color_cell.rectangle.visible;
+                            if (lo_rectangle_color_cell.rectangle) {
 
-                            let lv_cell_row = lo_rectangle_color_cell.row;
-                            let lv_cell_col = lo_rectangle_color_cell.col;
+                                lo_rectangle_color_cell.rectangle.visible = !lo_rectangle_color_cell.rectangle.visible;
 
-                            // Запоминание состояния видимости контура в массиве ячеек
-                            this.ColorParts[lv_cell_row][lv_cell_col].is_contour_visible = lo_rectangle_color_cell.rectangle.visible;
+                                let lv_cell_row = lo_rectangle_color_cell.row;
+                                let lv_cell_col = lo_rectangle_color_cell.col;
+
+                                // Запоминание состояния видимости контура в массиве ячеек
+                                this.ColorParts[lv_cell_row][lv_cell_col].is_contour_visible = lo_rectangle_color_cell.rectangle.visible;
 
 
-                            // Сброс выделенности всех предыдущих контуров
-                            this.set_visible_all_contours(lo_rectangle_color_cell.rectangle, lv_cell_row, lv_cell_col, false);
-
+                                // Сброс выделенности всех предыдущих контуров
+                                this.set_visible_all_contours(lo_rectangle_color_cell.rectangle, lv_cell_row, lv_cell_col, false);
+                            }
 
                         }
 
@@ -792,7 +807,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
             try {
 
 
-                this.main.group_end_cells_contours
+                //28012025 this.main.group_end_cells_contours
 
                 for (let lo_mesh of this.main.group_end_cells_contours.children) {
 

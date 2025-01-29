@@ -179,9 +179,10 @@ function on_tab_side_activate(event, ui) {
                 null, null    //   po_is_use_data, po_sides_data       
             );
 
+            ////28012025 {
             go_end_side_shape_generator.end_shape.draw_cells_contours();
             go_end_side_shape_generator.end_shape.refresh_end_shapes(); //23122024
-
+            ////28012025 }
             break;
 
         case "tab-4":
@@ -859,7 +860,18 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.clear_model_data = function (po_data) {
 
             try {
+
                 //return;
+
+
+                let lar_no_delete = [];
+
+                if (this.shapes) {
+                    if (this.shapes.scene) {
+                        lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "PerspectiveCamera"];//, "Group"];// "Mesh", 
+                        this.common_func.clearScene(this.shapes.scene, lar_no_delete);
+                    }
+                }
 
                 this.shapes = null;
                 this.splines = null;
@@ -872,7 +884,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //this.gui = null;
 
 
-                //return;
 
                 this.group_contours = null;
                 this.group_color_mesh = null;
@@ -1142,7 +1153,20 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.scene.add(this.group_color_mesh);
 
 
-                    this.shapes.adjust_splines_by_external_shape();//04122024
+
+                    //if (pv_is_use_data) {
+                    //    let lar_splines_order = this.shapes.SortSplinesOrderFromLeftToRight();//28012025
+                    //    this.shapes.redraw_meshes_color(lar_splines_order);//2012025
+                    //}
+                    //else {
+                    //    this.shapes.adjust_splines_by_external_shape();//28012025
+                    //}
+
+
+                    if (!pv_is_use_data) {
+                        this.shapes.adjust_splines_by_external_shape();//28012025
+
+                    }
 
                 }
 
@@ -1175,6 +1199,89 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
 
         }
+
+
+        //-----------------------------------------------------------------
+        // Задание цвета фигур по считанным данным
+        Shape_generator.prototype.set_meshes_color_by_data = function (/*par_splines_order*/) {
+
+            try {
+
+                //this.clear_group_color_mesh();//03082024
+
+                let lar_colorparts = go_end_side_shape_generator.end_shape.ColorParts;
+
+                let lar_splines_order = null;
+
+                let lo_spline_left = null;
+                let lo_spline_right = null;
+                let lv_cell_color = null;
+
+
+                if (this != go_end_side_shape_generator) {
+                    lar_splines_order = this.shapes.SortSplinesOrderFromLeftToRight();
+                }
+
+
+
+                for (let lv_i = 0; lv_i < lar_colorparts.length; lv_i++) {
+
+                    for (let lv_j = 0; lv_j < lar_colorparts[0].length; lv_j++) {
+
+                        if (lar_colorparts[lv_i][lv_j] == null /* 20012025 || !this.ar_shapes_colors[lv_i]*/) {
+                            continue;
+                        }
+
+                        if (!lar_colorparts[lv_i][lv_j].cell_color || typeof lar_colorparts[lv_i][lv_j].cell_color == "undefined") {
+                            continue;
+                        }
+
+                        lv_cell_color = 0x000f0f;// lar_colorparts[lv_i][lv_j].cell_color;
+
+                        if (this == go_end_side_shape_generator) { // Торцовая сторона
+
+                            this.end_shape.set_color_to_rectangle_cell(lv_cell_color, lv_i, lv_j);
+
+                        }
+                        else {
+
+                            if (lv_i == 0) // Верхняя сторона
+                            {
+                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_i);
+                                lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_i + 1);
+                                this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, false, false, true);
+                            }
+
+                            if (lv_i == lar_colorparts.length - 1) // Боковая сторона
+                            {
+                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_j);
+                                lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_j + 1);
+                                this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, false, false, true);
+                            }
+
+
+
+                        }
+
+                        //    let lo_spline_left = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
+                        //    let lo_spline_right = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_right);
+                        //    this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, false, false, true);
+                    }
+                }
+
+
+
+            }
+
+            catch (e) {
+
+                alert('error set_meshes_color_by_data: ' + e.stack);
+
+            }
+        }
+
+
+
         //------------------------------------------------------------------------
         Shape_generator.prototype.reset_gui_parameters = function () {
 
@@ -4750,8 +4857,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     ls_sides_data
                 );
 
-                //go_end_side_shape_generator.render();
 
+                // 29012025 {
+                go_up_side_shape_generator.set_meshes_color_by_data();
+                go_lateral_side_shape_generator.set_meshes_color_by_data();
+                go_end_side_shape_generator.set_meshes_color_by_data();
+
+
+                go_up_side_shape_generator.render();
+                go_lateral_side_shape_generator.render();
+                go_end_side_shape_generator.render();
+                // 29012025 }
             }
 
             catch (e) {
