@@ -1108,6 +1108,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.common_func.guiUpdateDisplay(this.gui);
 
                     this.reset_gui_parameters();
+
+                    //go_end_side_shape_generator.ColorParts = po_side_data.colorParts;
                 }
 
 
@@ -1219,6 +1221,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 if (this != go_end_side_shape_generator) {
+
                     lar_splines_order = this.shapes.SortSplinesOrderFromLeftToRight();
                 }
 
@@ -1228,7 +1231,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     for (let lv_j = 0; lv_j < lar_colorparts[0].length; lv_j++) {
 
-                        if (lar_colorparts[lv_i][lv_j] == null /* 20012025 || !this.ar_shapes_colors[lv_i]*/) {
+                        if (lar_colorparts[lv_i][lv_j] == null || typeof lar_colorparts[lv_i][lv_j] == "undefined") {
                             continue;
                         }
 
@@ -1236,36 +1239,40 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                             continue;
                         }
 
-                        lv_cell_color = 0x00ff00;// lar_colorparts[lv_i][lv_j].cell_color;
+
+                        lv_cell_color = lar_colorparts[lv_i][lv_j].cell_color;
+
 
                         if (this == go_end_side_shape_generator) { // Торцовая сторона
 
                             this.end_shape.set_color_to_rectangle_cell(lv_cell_color, lv_i, lv_j);
 
                         }
-                        else {
 
-                            if (lv_i == 0) // Верхняя сторона
-                            {
-                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_i);
-                                lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_i + 1);
-                                this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, false, false, true);
+                        //else {
+
+                        if (this == go_up_side_shape_generator) { // Верхняя сторона
+
+                            if (lv_i == 0) {
+
+                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_j - 1);
+                                lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_j);
+                                this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, true, false, true);
+
                             }
-
-                            if (lv_i == lar_colorparts.length - 1) // Боковая сторона
-                            {
-                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_j);
-                                lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_j + 1);
-                                this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, false, false, true);
-                            }
-
-
-
                         }
 
-                        //    let lo_spline_left = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
-                        //    let lo_spline_right = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_right);
-                        //    this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, false, false, true);
+                        if (this == go_lateral_side_shape_generator) { // Боковая сторона
+
+                            if (lv_j == lar_colorparts.length - 1) {
+
+                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_i-1);
+                                lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_i);
+                                this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, true, false, true);
+
+                            }
+                        }
+
                     }
                 }
 
@@ -4838,6 +4845,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let ls_sides_data = JSON.parse(po_sides_data);
 
                 go_up_side_shape_generator.clear_shape_objects(go_up_side_shape_generator);
+
+                //go_end_side_shape_generator.ColorParts = ls_sides_data.ColorParts;//29012025
+
                 go_up_side_shape_generator.make_shape(true, ls_sides_data.data1);
                 go_up_side_shape_generator.render();
 
@@ -4918,7 +4928,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                 if (po_side) {
-
                     po_side.segment_transform_data = null;
                     po_side.segment_gabarits = null;
                     po_side.segments = null;

@@ -117,7 +117,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     lv_up_shape_width = po_sides_data.data1.M_Width;
                     lv_lateral_shape_width = po_sides_data.data2.M_Width;
 
-                    this.ColorParts = po_sides_data.colorParts;
+                    this.ColorParts = po_sides_data.ColorParts;//29012025
 
 
                     CommonFunc.prototype.clear_group_childrens(this.main.group_end_shape);
