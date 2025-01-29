@@ -1236,7 +1236,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                             continue;
                         }
 
-                        lv_cell_color = 0x000f0f;// lar_colorparts[lv_i][lv_j].cell_color;
+                        lv_cell_color = 0x00ff00;// lar_colorparts[lv_i][lv_j].cell_color;
 
                         if (this == go_end_side_shape_generator) { // Торцовая сторона
 
