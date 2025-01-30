@@ -795,8 +795,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 let lo_material = new LineMaterial({
                     //color: new THREE.Color("#f00").getHex(),
                     vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
-                    linewidth: 2, //0.6,  // толщина линии
-                    resolution: lo_resolution
+                    linewidth: 7, //30012025 2, //0.6,  // толщина линии
+                    resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
                     //resolution: this.main.resolution //30072024
                 });
                 //20012025 }
@@ -1850,8 +1850,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     let material = new LineMaterial({
                         //color: new Color("#fff").getHex(),
                         vertexColors: 0x00f, //VertexColors,
-                        linewidth: 1, //0.5, //1, //2,
-                        resolution: lo_resolutionm
+                        linewidth: 7, //30012025  1, //0.5, //1, //2,
+                        resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
                     });
 
 
@@ -2378,7 +2378,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 let material = new LineMaterial({
                     //color: new Color("#fff").getHex(),
                     vertexColors: 0xf0f, //VertexColors,
-                    linewidth: 0.5, //1, //2,
+                    linewidth: 7, //30012025  0.5, //1, //2,
                     resolution,
                     //dashed: false, //true,
                     //gapSize: 0.75,

@@ -112,8 +112,8 @@ export function Rectangle(/*po_container, po_camera,*/ po_scene,
                 let material = new LineMaterial({
                     //color: new Color("#fff").getHex(),
                     vertexColors: 0xf0f, //VertexColors,
-                    linewidth: 0.5, //1, //2,
-                    resolution: lo_resolution
+                    linewidth: 7,// 30012025   0.5, //1, //2,
+                    resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
                     //dashed: false, //true,
                     //gapSize: 0.75,
                     //dashScale: 1.5,

@@ -63,8 +63,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
     lo_renderer.getSize(lo_resolution);
 
     this.part_contour_material = new LineMaterial({
-        resolution: lo_resolution,
-        linewidth: 0.7,
+        resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
+        linewidth: 7, //30012025 0.7,
         color: Constants.shape_countour_color
     });
 

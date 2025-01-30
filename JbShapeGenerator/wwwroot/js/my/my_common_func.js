@@ -1757,8 +1757,8 @@ export function CommonFunc() {
                     lo_renderer.getSize(lo_resolution);
 
                     lo_material = new LineMaterial({
-                        resolution: lo_resolution,
-                        linewidth: 0.7,
+                        resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
+                        linewidth: 7, //30012025 0.7,
                         color: lv_color
                     });
                 }
@@ -1826,8 +1826,8 @@ export function CommonFunc() {
                     lo_renderer.getSize(lo_resolution);
 
                     lo_material = new LineMaterial({
-                        resolution: lo_resolution,
-                        linewidth: 0.7,
+                        resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
+                        linewidth: 7, //30012025 0.7,
                         color: lv_color
                     });
                 }

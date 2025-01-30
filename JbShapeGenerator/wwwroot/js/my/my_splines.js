@@ -297,234 +297,111 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
             try {
 
 
-                //let lo_resolution = new THREE.Vector2();
-                //this.main.renderer.getSize(lo_resolution);
 
-                //let lo_material_for_spline_lines = new LineMaterial({
-                //    color: Constants.spline_line_color, //new THREE.Color("#f00").getHex(),
-                //    ////////////vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
-                //    linewidth: 0.8, //2, //0.6,  // толщина линии
-                //    resolution: lo_resolution
-                //    //resolution: this.main.resolution //30072024
-                //});
-
-                //let lo_material_for_spline_lines = new THREE.LineBasicMaterial({
-                //    color: Constants.shape_line_color,
-                //    linewidth: 3
-                //});
-
-
-
-
-
-
-                lo_curve = new THREE.CatmullRomCurve3(par_points);
-
-                //07112024 lo_curve_points = lo_curve.getPoints(200);
+                lo_curve = new THREE.CatmullRomCurve3(par_points, false);
                 lo_curve_points = lo_curve.getPoints(400);//07112024
 
 
-                ////29012025 {
 
-                //// Преобразование из Vector3 в массив по 3 числа
-
-                let lo_curve_points2 = [];
-                let lv_j = 0;
-                for (let lv_i = 0; lv_i < lo_curve_points.length; lv_i++) {
-
-                    lo_curve_points2[lv_j++] = lo_curve_points[lv_i].x;
-                    lo_curve_points2[lv_j++] = lo_curve_points[lv_i].y;
-                    lo_curve_points2[lv_j++] = lo_curve_points[lv_i].z;
-                }
-
-
-                ////29012025 }
+                //let lo_curve2 = new THREE.CatmullRomCurve3(lo_curve_points, false);//!
 
 
 
-                //////////////29012025 lo_geometry = new THREE.BufferGeometry().setFromPoints(lo_curve_points);
-                ////////////let lo_geometry = new LineGeometry().setFromPoints(lo_curve_points);//29012025
+                ////// Преобразование из Vector3 в массив по 3 числа
 
+                //let lo_curve_points2 = [];
+                //let lv_j = 0;
+                //for (let lv_i = 0; lv_i < lo_curve_points.length; lv_i++) {
 
-                //////////////29012025 lo_material = new THREE.LineBasicMaterial({ color: 0xff0000, linewidth: 100 });
-                //////////////lo_material = new THREE.LineBasicMaterial({ color: 0x0000ff });//, linewidth: 1000 });
-                //////////////lo_material = new THREE.LineBasicMaterial({ color: Constants.spline_line_color });//, linewidth: 1000 });
-
-
-                //////////////29012025 lo_result_curve = new THREE.Line(lo_geometry, lo_material);
-                //////////////lo_result_curve = new THREE.Line(lo_geometry, lo_material_for_spline_lines);//29012025
-                ////////////lo_result_curve = new Line2(lo_geometry, lo_material_for_spline_lines);//29012025
-
-
-
-
-
-
-
-                //////////-----------!! {
-                //lo_geometry = new THREE.BufferGeometry().setFromPoints(lo_curve_points);
-                ////lo_geometry = new LineGeometry().setFromPoints(lo_curve_points);
-                //lo_material = new THREE.LineBasicMaterial({ color: 0xff0000 });
-                //lo_result_curve = new THREE.Line(lo_geometry, lo_material);
-                //////////-----------!! }
-
-
-
-                ////let lo_renderer = new THREE.WebGLRenderer({});
-                //let lo_resolution = new THREE.Vector2();
-                //this.renderer.getSize(lo_resolution);
-
-                //lo_material = new LineMaterial({
-                //    resolution: lo_resolution,
-                //    linewidth: 0.7,
-                //    color: Constants.spline_line_color //lv_color
-                //});
-
-
-
-
-
-
-                //let lo_renderer = new THREE.WebGLRenderer({});
-                //let lo_resolution = new THREE.Vector2();
-                //lo_renderer.getSize(lo_resolution);
-                //if (!lo_renderer.capabilities.isWebGL2) {
-                //    alert("WebGL2 не поддерживается");
+                //    lo_curve_points2[lv_j++] = lo_curve_points[lv_i].x;
+                //    lo_curve_points2[lv_j++] = lo_curve_points[lv_i].y;
+                //    lo_curve_points2[lv_j++] = lo_curve_points[lv_i].z;
                 //}
 
 
 
 
-                //lo_material = new LineMaterial({
-                //    resolution: lo_resolution,
-                //    linewidth: 0.7,
-                //    color: Constants.spline_line_color
+                //////////-----------!! {
+
+                lo_geometry = new THREE.BufferGeometry().setFromPoints(lo_curve_points);
+                lo_material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+                lo_result_curve = new THREE.Line(lo_geometry, lo_material);
+
+                //////////-----------!! }
+
+
+
+                //--!! {
+                //let clrs = [];
+                //lo_curve_points2.forEach(() => {
+                //    //clrs.push(0, 0, 255);//!! цвет линии
+                //    clrs.push(0, 255, 0);//!! цвет линии
                 //});
-
-
-                //let lo_geometry = new LineGeometry().setFromPoints(lo_curve_points);
-                //lo_result_curve = new Line2(lo_geometry, lo_material);
-
-
-
-
-                ///*const*/ lo_geometry = new LineGeometry();
-                ////lo_geometry.setFromPoints(lo_curve_points);
-                //lo_geometry.setFromPoints(lo_curve_points2);
-
+                //lo_geometry = new LineGeometry();
+                //lo_geometry.setPositions(lo_curve_points2 );
+                //lo_geometry.setColors(clrs);
                 //lo_material = new LineMaterial({
-                //    color: 0x00ff00,  // Зелёный цвет
+                //    vertexColors: true, //0x001, //0x0f0,//0x00f, //VertexColors,
                 //    linewidth: 5,     // Толщина линии
                 //    resolution: new THREE.Vector2(window.innerWidth, window.innerHeight) // Обязательно
                 //});
-
-                ////lo_material.resolution.set(window.innerWidth, window.innerHeight);
-
-                ////lo_material.needsUpdate = true;
-
-
                 //lo_result_curve = new Line2(lo_geometry, lo_material);
+                //--!! }
 
 
 
 
 
-                //const curve = new THREE.CatmullRomCurve3([
-                //    new THREE.Vector3(-5, 0, 0),
-                //    new THREE.Vector3(0, 5, 0),
-                //    new THREE.Vector3(5, 0, 0)
-                //]);
 
-                //const points = curve.getPoints(50); // Количество сегментов
-
-                ////lo_geometry = new LineGeometry().setFromPoints(lo_curve_points);
-                //lo_geometry = new THREE.BufferGeometry().setFromPoints(lo_curve_points);
-                //lo_material = new THREE.LineBasicMaterial({ color: 0x0000ff }); // Синий цвет
-                //lo_result_curve = new THREE.Line(lo_geometry, lo_material);
+                ////////////////////////lo_geometry = new LineGeometry().setFromPoints(lo_curve_points);
+                ////////////////////lo_geometry = new THREE.BufferGeometry().setFromPoints(lo_curve_points);
+                ////////////////////lo_material = new THREE.LineBasicMaterial({ color: 0x0000ff }); // Синий цвет
+                ////////////////////lo_result_curve = new THREE.Line(lo_geometry, lo_material);
 
 
-                //////lo_geometry = new THREE.TubeGeometry(lo_curve_points, 64, 0.2, 8, false); // 0.2 - толщина
-                ////lo_geometry = new THREE.TubeGeometry(lo_curve, 64, 0.2, 8, false); // 0.2 - толщина
+                //////////lo_geometry = new THREE.TubeGeometry(lo_curve_points, 64, 0.2, 8, false); // 0.2 - толщина
+                ////lo_geometry = new THREE.TubeGeometry(lo_curve2, 64, 0.2, 8, false); // 0.2 - толщина
                 ////lo_material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
                 ////lo_result_curve = new THREE.Mesh(lo_geometry, lo_material);
 
 
 
+                //!! {
+                //////////lo_material = new LineMaterial({
+                //////////    //color: new THREE.Color("#f00").getHex(),
+                //////////    vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
+                //////////    linewidth: 8, //2, //0.6,  // толщина линии
+                //////////    //resolution: lo_resolution
+                //////////    //resolution: this.main.resolution //30072024
+                //////////    resolution: new THREE.Vector2(window.innerWidth, window.innerHeight)
+                //////////});
+                ////////////20012025 }
 
-                //lo_result_curve.computeLineDistances();
+                //////////let clrs = [];
+                ////////////lar_positions.forEach(() => {
+                ////////////lo_curve_points.forEach(() => {
+                ////////////    clrs.push(0, 0, 255);//!! цвет линии
+                ////////////});
 
+                ////////////par_points.forEach(() => {
+                ////////////    clrs.push(0, 0, 255);//!! цвет линии
+                ////////////});
 
+                //////////lo_curve_points2.forEach(() => {
+                //////////    //clrs.push(0, 0, 255);//!! цвет линии
+                //////////    clrs.push(0, 255, 0);//!! цвет линии
+                //////////});
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                //let lo_renderer = new THREE.WebGLRenderer({});
-                //let lo_resolution = new THREE.Vector2();
-                //lo_renderer.getSize(lo_resolution);
-
-
-
-                //let lo_resolution = new THREE.Vector2();
-                //this.main.renderer.getSize(lo_resolution);
-
-
-                lo_material = new LineMaterial({
-                    //color: new THREE.Color("#f00").getHex(),
-                    vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
-                    linewidth: 8, //2, //0.6,  // толщина линии
-                    //resolution: lo_resolution
-                    //resolution: this.main.resolution //30072024
-                    resolution: new THREE.Vector2(window.innerWidth, window.innerHeight)
-                });
-                //20012025 }
-
-                let clrs = [];
-                //lar_positions.forEach(() => {
-                //lo_curve_points.forEach(() => {
-                //    clrs.push(0, 0, 255);//!! цвет линии
-                //});
-
-                //par_points.forEach(() => {
-                //    clrs.push(0, 0, 255);//!! цвет линии
-                //});
-
-                lo_curve_points2.forEach(() => {
-                    //clrs.push(0, 0, 255);//!! цвет линии
-                    clrs.push(0, 255, 0);//!! цвет линии
-                });
-
-                lo_geometry = new LineGeometry();
-                lo_geometry.setPositions(lo_curve_points2 /*par_points *//*lo_curve_points*/);
-                lo_geometry.setColors(clrs);
+                //////////lo_geometry = new LineGeometry();
+                //////////lo_geometry.setPositions(lo_curve_points2 /*par_points *//*lo_curve_points*/);
+                //////////lo_geometry.setColors(clrs);
 
 
-                lo_result_curve = new Line2(lo_geometry, lo_material);//20012025 
-                //29012025 lo_countour_line = new Line2(lo_geometry, this.material_for_countours); //20012025
-                ///lo_result_curve.renderOrder = 3;// 2;
+                //////////lo_result_curve = new Line2(lo_geometry, lo_material);//20012025
+                ////////////29012025 lo_countour_line = new Line2(lo_geometry, this.material_for_countours); //20012025
+                /////////////lo_result_curve.renderOrder = 3;// 2;
 
-
-
-
-
-
-
-
-
-
-
+                //!! }
 
 
 
