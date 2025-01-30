@@ -373,7 +373,7 @@ export function CommonFunc() {
 
 
             try {
-                this.showLoadingIndicator('Saving model..');
+                this.showWaitingIndicator('Saving model..');
 
                 let lo_active_side = get_active_side_shape_generator();
 
@@ -498,7 +498,7 @@ export function CommonFunc() {
             }
 
             catch (e) {
-                this.hideLoadingIndicator();
+                this.hideWaitingIndicator();
                 alert('error get_screenshots: ' + e.stack);
 
             }
@@ -527,7 +527,7 @@ export function CommonFunc() {
                 const message = await response.text();
 
 
-                this.hideLoadingIndicator();
+                this.hideWaitingIndicator();
 
                 let lo_active_side = get_active_side_shape_generator();
 
@@ -539,7 +539,7 @@ export function CommonFunc() {
 
             catch (e) {
 
-                this.hideLoadingIndicator();
+                this.hideWaitingIndicator();
 
                 alert('error send: ' + e.stack);
             }
@@ -1752,7 +1752,7 @@ export function CommonFunc() {
                 }
                 else {
 
-                    lo_renderer = new THREE.WebGLRenderer({});
+                    lo_renderer = new THREE.WebGLRenderer({ antialias: true });
                     let lo_resolution = new THREE.Vector2();
                     lo_renderer.getSize(lo_resolution);
 
@@ -1821,7 +1821,7 @@ export function CommonFunc() {
                 }
                 else {
 
-                    lo_renderer = new THREE.WebGLRenderer({});
+                    lo_renderer = new THREE.WebGLRenderer({ antialias: true });
                     let lo_resolution = new THREE.Vector2();
                     lo_renderer.getSize(lo_resolution);
 
@@ -2228,10 +2228,10 @@ export function CommonFunc() {
         ////}
 
         //---------------------------------------------------------------------------------------------
-        CommonFunc.prototype.showLoadingIndicator = function (pv_message) {
+        CommonFunc.prototype.showWaitingIndicator = function (pv_message) {
             //function showLoadingIndicator() {
-            const loadingIndicator = document.createElement('div');
-            loadingIndicator.id = 'id_loading-indicator';
+            const waitingIndicator = document.createElement('div');
+            waitingIndicator.id = 'id_waiting-indicator';
 
             const spinner = document.createElement('div');
             spinner.className = 'spinner';
@@ -2240,20 +2240,20 @@ export function CommonFunc() {
             //text.textContent = 'Loading...';
             text.textContent = pv_message;
 
-            loadingIndicator.appendChild(spinner);
-            loadingIndicator.appendChild(text);
+            waitingIndicator.appendChild(spinner);
+            waitingIndicator.appendChild(text);
 
-            document.body.appendChild(loadingIndicator);
+            document.body.appendChild(waitingIndicator);
         }
 
         //---------------------------------------------------------------------------------------------
         // Функция для удаления индикатора ожидания
         //function hideLoadingIndicator() {
 
-        CommonFunc.prototype.hideLoadingIndicator = function () {
-            const loadingIndicator = document.getElementById('id_loading-indicator');
-            if (loadingIndicator) {
-                loadingIndicator.remove();
+        CommonFunc.prototype.hideWaitingIndicator = function () {
+            const waitingIndicator = document.getElementById('id_loading-indicator');
+            if (waitingIndicator) {
+                waitingIndicator.remove();
             }
         }
 

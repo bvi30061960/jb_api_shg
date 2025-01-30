@@ -621,7 +621,24 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                    this.renderer = new THREE.WebGLRenderer(/*{ antialias: true }*/);
+                    this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: true });
+
+                    //const canvas = document.createElement("canvas"); // Создаём canvas вручную
+                    //document.body.appendChild(canvas); // Добавляем на страницу
+
+                    //const context = canvas.getContext("webgl2"); // Получаем WebGL2 контекст
+                    //const renderer = new THREE.WebGLRenderer({ canvas, context });
+
+                    //renderer.setSize(window.innerWidth, window.innerHeight);
+
+
+
+
+
+
+
+
+
 
                     //11012025 this.renderer.setSize(this.id_side_shape.clientWidth, this.id_side_shape.clientHeight);// 06052024
 
@@ -4881,6 +4898,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
 
             catch (e) {
+
+                go_up_side_shape_generator.common_func.hideWaitingIndicator();
 
                 alert('error draw_shape_by_sides_data: ' + e.stack);
 

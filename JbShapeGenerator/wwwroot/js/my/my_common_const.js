@@ -75,8 +75,9 @@ export var Constants = {
     background_color: 'c3c3c3', // цвет фона сцены
     shape_countour_color: 0x0000ff, // цвет контура фигур
     shape_line_color: 0xff00ff, // цвет линий разреза
-    path_model_parts_folder: ""
+    path_model_parts_folder: "",
     //calc_jbmodel_server_url: "https://localhost:7095/CalcJBModel" //?method="
+    spline_line_color: 0xff0000, // цвет линии сплайна
 };
 
 

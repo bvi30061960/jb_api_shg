@@ -106,7 +106,7 @@ export function Rectangle(/*po_container, po_camera,*/ po_scene,
                 geometry.setColors(clrs);
 
                 let lo_resolution = new THREE.Vector2();
-                let lo_renderer = new THREE.WebGLRenderer({ /*antialias: true*/ });
+                let lo_renderer = new THREE.WebGLRenderer({ antialias: true });
                 lo_renderer.getSize(lo_resolution);
 
                 let material = new LineMaterial({

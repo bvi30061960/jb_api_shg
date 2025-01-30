@@ -163,16 +163,22 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
     this.ar_shapes_colors = []; // список объектов со сплайнами и цветами фигур, упорядоченных слева направо
 
     //20012025 {
-    let lo_resolution = new THREE.Vector2();
-    this.main.renderer.getSize(lo_resolution);
 
-    this.material_for_countours = new LineMaterial({
-        //color: new THREE.Color("#f00").getHex(),
-        vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
-        linewidth: 0.8, //2, //0.6,  // толщина линии
-        resolution: lo_resolution
-        //resolution: this.main.resolution //30072024
-    });
+    //29012025 {   
+
+    //////let lo_resolution = new THREE.Vector2();
+    //////this.main.renderer.getSize(lo_resolution);
+
+
+    //////this.material_for_countours = new LineMaterial({
+    //////    //color: new THREE.Color("#f00").getHex(),
+    //////    vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
+    //////    linewidth: 0.8, //2, //0.6,  // толщина линии
+    //////    resolution: lo_resolution
+    //////    //resolution: this.main.resolution //30072024
+    //////});
+    //29012025 }
+
     //20012025 }
 
     //=====================================================================
@@ -782,17 +788,17 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                 //20012025 {
-                ////let lo_resolution = new THREE.Vector2();
-                ////this.main.renderer.getSize(lo_resolution);
+                let lo_resolution = new THREE.Vector2();
+                this.main.renderer.getSize(lo_resolution);
 
 
-                ////let lo_material = new LineMaterial({
-                ////    //color: new THREE.Color("#f00").getHex(),
-                ////    vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
-                ////    linewidth: 2, //0.6,  // толщина линии
-                ////    resolution: lo_resolution
-                ////    //resolution: this.main.resolution //30072024
-                ////});
+                let lo_material = new LineMaterial({
+                    //color: new THREE.Color("#f00").getHex(),
+                    vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
+                    linewidth: 2, //0.6,  // толщина линии
+                    resolution: lo_resolution
+                    //resolution: this.main.resolution //30072024
+                });
                 //20012025 }
 
 
@@ -879,14 +885,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 let lv_num_spline_left = this.main.common_func.getNumberBySpline(lar_splines_order, po_spline_left);
                 let lv_num_spline_right = this.main.common_func.getNumberBySpline(lar_splines_order, po_spline_right);
 
-                //20012025 {
-                //let lo_userData = {
-                //    spline_left: po_spline_left,
-                //    spline_right: po_spline_right,
-                //    num_spline_left: lv_num_spline_left,
-                //    num_spline_right: lv_num_spline_right
-
-                //};
                 let lo_userData = null;
 
                 if (pv_remember_contour) {
@@ -917,8 +915,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     lo_geometry.setColors(clrs);
 
 
-                    //20012025 lo_countour_line = new Line2(lo_geometry, lo_material);
-                    lo_countour_line = new Line2(lo_geometry, this.material_for_countours); //20012025
+                    lo_countour_line = new Line2(lo_geometry, lo_material);//20012025 
+                    //29012025 lo_countour_line = new Line2(lo_geometry, this.material_for_countours); //20012025
                     lo_countour_line.renderOrder = 2;
 
                     this.main.group_contours.add(lo_countour_line);
@@ -1846,7 +1844,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                     let lo_resolution = new THREE.Vector2();
-                    let lo_renderer = new THREE.WebGLRenderer({});
+                    let lo_renderer = new THREE.WebGLRenderer({ antialias: true });
                     lo_renderer.getSize(lo_resolution);
 
                     let material = new LineMaterial({
@@ -2374,7 +2372,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 let resolution = new THREE.Vector2();
 
-                let renderer = new THREE.WebGLRenderer({ /*antialias: true*/ });
+                let renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.getSize(resolution);
 
                 let material = new LineMaterial({

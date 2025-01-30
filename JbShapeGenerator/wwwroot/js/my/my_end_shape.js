@@ -58,7 +58,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
 
-    let lo_renderer = new THREE.WebGLRenderer({});
+    let lo_renderer = new THREE.WebGLRenderer({ antialias: true });
     let lo_resolution = new THREE.Vector2();
     lo_renderer.getSize(lo_resolution);
 

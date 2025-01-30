@@ -478,6 +478,9 @@ export function GridSelectModels(pv_prefix) {
         //------------------------------------------------------------------------------------------
         GridSelectModels.prototype.read_model_from_server = function (pv_pathFile, pv_is_initial_load) {
 
+
+            go_up_side_shape_generator.common_func.showWaitingIndicator('Reading model..');
+
             let lv_url = "";
 
 
@@ -502,6 +505,8 @@ export function GridSelectModels(pv_prefix) {
                 }
 
                 catch (e) {
+
+                    go_up_side_shape_generator.common_func.hideWaitingIndicator();
 
                     alert('error get_read_model_from_server: ' + e.stack);
 
@@ -598,6 +603,9 @@ export function GridSelectModels(pv_prefix) {
                         }
                         if (lo_data.sides_data) {
                             lo_active_side.draw_shape_by_sides_data(lo_data.sides_data);
+
+                            go_up_side_shape_generator.common_func.hideWaitingIndicator();
+
                             //lo_active_side.render();//27012025
                         }
 
@@ -622,6 +630,8 @@ export function GridSelectModels(pv_prefix) {
                 }
 
                 catch (e) {
+
+                    go_up_side_shape_generator.common_func.hideWaitingIndicator();
 
                     alert('error oncomplete_read_model_from_server: ' + e.stack);
 
