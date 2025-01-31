@@ -262,6 +262,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 }
 
                 this.main.scene.add(lo_shape_splines_group);
+                //this.main.plane.add(lo_shape_splines_group);//31012025
 
                 this.ar_splines = this.get_splines();
                 this.ar_splines_nodes = this.get_splines_points();
@@ -408,6 +409,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 lo_line_to_left = new THREE.Line(lo_geometry, lo_material);
 
                 lo_active_side_shape_generator.scene.add(lo_line_to_left);/////15072024
+                //lo_active_side_shape_generator.plane.add(lo_line_to_left);/////31012025
 
 
 
@@ -1931,6 +1933,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     //lo_line.position.set(lv_x, lv_y);
 
                     this.scene.add(lo_line);
+                    //this.plane.add(lo_line);//31012025
 
 
 
@@ -1980,6 +1983,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             ////mesh.scale.set(s, s, s);
             ////group.add(mesh);
             this.scene.add(lo_mesh);
+            //this.plane.add(lo_mesh);//31012025
 
 
             // extruded shape
@@ -2397,6 +2401,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 this.group_rect = lo_group;
 
                 this.scene.add(lo_group);
+                //this.plane.add(lo_group);//31012025
 
             }
 

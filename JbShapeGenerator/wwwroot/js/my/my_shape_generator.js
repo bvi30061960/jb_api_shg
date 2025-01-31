@@ -536,16 +536,21 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.container = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape);//20062024);
 
 
-
+                    //31012025 {
                     this.scene = new THREE.Scene();
                     //this.scene.background = new THREE.Color(0xf0f0f0);
                     this.scene.background = new THREE.Color(Constants.background_color);
                     //this.scene.background = new THREE.Color(0xfff000);
 
+
+                    this.scene.matrixAutoUpdate = false; // Запрещает изменять матрицу поворота
+
+
+
                     //const sprite = new THREE.Sprite();/*spriteMaterial*/
                     //sprite.scale.set(2, 3, 1); // Устанавливаем размер
                     //this.scene = sprite;
-
+                    //31012025 }
 
 
 
@@ -620,9 +625,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     //lo_planeGeometry = new THREE.PlaneGeometry(2000, 2000);
                     lo_planeGeometry = new THREE.PlaneGeometry(200, 200);
 
-                    //lo_planeGeometry.position.set(0, 0, 0); //30012025
 
-                    //////////////////////////////////////lo_planeGeometry.rotateX(- Math.PI / 2);
+
+                    //lo_planeGeometry.position.set(0, 0, 0); //30012025
+                    //lo_planeGeometry.rotateX(- Math.PI / 2);
+
+
+
 
                     let lo_planeMaterial;
                     lo_planeMaterial = new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.2 });
@@ -630,7 +639,18 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.plane = new THREE.Mesh(lo_planeGeometry, lo_planeMaterial);
                     this.plane.receiveShadow = true;
 
-                    this.plane.rotation.set(0, 0, 0);
+                    //31012025 {
+
+                    //this.plane.rotation.set(0, 0, 0);
+                    //this.plane.position.set(0, 0, 0);//31012025
+
+
+                    //this.plane.rotation.set(-Math.PI / 2, 0, 0); // Горизонтальная плоскость (XY)
+                    this.plane.matrixAutoUpdate = false; // Запрещает изменять матрицу поворота
+                    //31012025 }
+
+
+
 
                     this.scene.add(this.plane);
 
@@ -667,15 +687,25 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.controls.damping = 0.2;
 
                     this.controls.enableRotate = false;// bvi
-                    this.controls.enablePan = false;// bvi
-                    this.controls.enableZoom = false;// bvi
+                    //this.controls.enablePan = false;// bvi
+                    //this.controls.enableZoom = false;// bvi
+
+
+                    //                    this.camera.position.set(75, 50, 10);//позиционирование фигуры на плоскости
+                    /////////////this.camera.position.set(75, 50, 100);//позиционирование фигуры на плоскости
+                    this.camera.position.set(0, 0, 1);//позиционирование камеры перед плоскостью
+                    //this.camera.lookAt(new THREE.Vector3(0, 0, 0)); //31012025
+                    this.camera.lookAt(0, 0, 0); //31012025
 
 
 
-
-                    this.camera.position.set(75, 50, 10);//позиционирование фигуры на плоскости
-                    //this.camera.position.set(0, 0, 0);//позиционирование фигуры на плоскости
-
+                    this.controls.target.x = 0;
+                    this.controls.target.y = 0;
+                    this.controls.target.z = 0;
+                    this.controls.position = new THREE.Vector3(50, 0, 10);
+                    //this.controls.position.y = 0;
+                    //this.controls.position.z = 0;
+                    this.controls.update();
 
                 }
 
@@ -820,10 +850,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.end_shape = new EndShape(this);
                     //this.group_end_shape.add(this.end_shape);
 
+
+                    //31012025 {
                     this.scene.add(this.group_end_shape);
                     this.scene.add(this.group_end_cells_contours);
                     this.scene.add(this.end_group_cells_mesh);
 
+                    //this.plane.add(this.group_end_shape);
+                    //this.plane.add(this.group_end_cells_contours);
+                    //this.plane.add(this.end_group_cells_mesh);
+                    //31012025  }
                 }
 
 
@@ -875,7 +911,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 this.grid_select_models = new GridSelectModels(this.id_prefix);
 
 
+                //this.scene.children.forEach(obj => obj.lookAt(this.camera.position));//31012025
+
+
                 this.render();
+
+                //this.animate(); //31012025
 
                 //==============================================================================
                 //==============================================================================
@@ -1210,11 +1251,14 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.group_contours = new THREE.Group();
                     this.group_contours.name = cv_name_group_contours;
                     this.scene.add(this.group_contours);
+                    //this.plane.add(this.group_contours);//31012025
 
                     this.group_color_mesh = new THREE.Group();
                     this.group_color_mesh.name = cv_name_group_color_mesh;
-                    this.scene.add(this.group_color_mesh);
 
+
+                    this.scene.add(this.group_color_mesh);
+                    //this.plane.add(this.group_color_mesh);//31012025
 
 
                     //if (pv_is_use_data) {
@@ -1327,7 +1371,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                             if (lv_j == lar_colorparts.length - 1) {
 
-                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_i-1);
+                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_i - 1);
                                 lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_i);
                                 this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, true, false, true);
 
@@ -2517,6 +2561,17 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         //////}
 
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.animate = function () {
+
+            //requestAnimationFrame(this.animate);
+            //this.scene.children.forEach(obj => obj.lookAt(this.camera.position)); // Все объекты смотрят на камеру
+            //this.controls.update();
+            //this.renderer.render(this.scene, this.camera);
+
+        }
 
 
 

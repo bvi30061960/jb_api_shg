@@ -143,6 +143,7 @@ export function Rectangle(/*po_container, po_camera,*/ po_scene,
                 ////this.scene.add(lo_group);
 
                 this.scene.add(this.shape);
+                //this.plane.add(this.shape);//31012025
 
             }
 
