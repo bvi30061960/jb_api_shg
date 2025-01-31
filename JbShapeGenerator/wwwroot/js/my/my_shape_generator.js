@@ -536,36 +536,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.container = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape);//20062024);
 
 
-                    //31012025 {
                     this.scene = new THREE.Scene();
-                    //this.scene.background = new THREE.Color(0xf0f0f0);
                     this.scene.background = new THREE.Color(Constants.background_color);
-                    //this.scene.background = new THREE.Color(0xfff000);
 
 
                     this.scene.matrixAutoUpdate = false; // Запрещает изменять матрицу поворота
 
-
-
-                    //const sprite = new THREE.Sprite();/*spriteMaterial*/
-                    //sprite.scale.set(2, 3, 1); // Устанавливаем размер
-                    //this.scene = sprite;
-                    //31012025 }
-
-
-
-
                     let lo_cameraPersp, lo_cameraOrtho;
-
-
-                    //30012025 {
-
-                    //this.aspect = this.container.clientWidth / this.container.clientHeight;//04022023
-                    //lo_cameraPersp = new THREE.PerspectiveCamera(50, this.aspect, 0.01, 30000);
-                    ////lo_cameraOrtho = new THREE.OrthographicCamera(-30 * this.aspect, 100 * this.aspect, 90 * this.aspect, -15.0 * this.aspect);//, 0,10);
-                    /////lo_cameraOrtho = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
-                    //lo_cameraOrtho = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);//, -0.100 * this.aspect, 20 * this.aspect);
-
 
 
                     let lv_aspect = window.innerWidth / window.innerHeight;
@@ -578,35 +555,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     this.aspect = lv_aspect;
 
-                    //30012025 }
-
-
-
-
-
-
-
-                    //02112024 const frustumSize = 500;
-
                     this.camera = lo_cameraOrtho;
 
-                    //11012025 {
-                    ////if (this.my_prefix == gc_id_prefix_end) {
-
-                    ////    //this.camera = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
-                    ////    //11012025 this.camera = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 30 * this.aspect, -8 * this.aspect);
-                    ////    this.camera = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
-                    ////    //this.camera.position.x = 10;
-                    ////    //this.camera.position.y = -20;
-                    ////    //this.camera.position.z = 2;
-                    ////}
-                    //11012025 }
-
-
-
-                    //04082024 this.camera.position.set(0, 0, 1);
-
-
+                   
                     this.scene.add(new THREE.AmbientLight(0xf0f0f0, 3));
                     //this.scene.add(new THREE.DirectionalLight(0xf0f0f0, 3));
                     const light = new THREE.SpotLight(0xffffff, 4.5);
@@ -627,22 +578,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                    //lo_planeGeometry.position.set(0, 0, 0); //30012025
-                    //lo_planeGeometry.rotateX(- Math.PI / 2);
-
-
-
 
                     let lo_planeMaterial;
                     lo_planeMaterial = new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.2 });
 
                     this.plane = new THREE.Mesh(lo_planeGeometry, lo_planeMaterial);
                     this.plane.receiveShadow = true;
-
-                    //31012025 {
-
-                    //this.plane.rotation.set(0, 0, 0);
-                    //this.plane.position.set(0, 0, 0);//31012025
 
 
                     //this.plane.rotation.set(-Math.PI / 2, 0, 0); // Горизонтальная плоскость (XY)
@@ -656,24 +597,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: true });
 
-                    //const canvas = document.createElement("canvas"); // Создаём canvas вручную
-                    //document.body.appendChild(canvas); // Добавляем на страницу
-
-                    //const context = canvas.getContext("webgl2"); // Получаем WebGL2 контекст
-                    //const renderer = new THREE.WebGLRenderer({ canvas, context });
-
-                    //renderer.setSize(window.innerWidth, window.innerHeight);
-
-
-
-
-
-
-
-
-
-
-                    //11012025 this.renderer.setSize(this.id_side_shape.clientWidth, this.id_side_shape.clientHeight);// 06052024
 
                     ///////////////////////////11012025 this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);// 06052024
 
@@ -687,25 +610,27 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.controls.damping = 0.2;
 
                     this.controls.enableRotate = false;// bvi
-                    //this.controls.enablePan = false;// bvi
-                    //this.controls.enableZoom = false;// bvi
 
 
-                    //                    this.camera.position.set(75, 50, 10);//позиционирование фигуры на плоскости
-                    /////////////this.camera.position.set(75, 50, 100);//позиционирование фигуры на плоскости
                     this.camera.position.set(0, 0, 1);//позиционирование камеры перед плоскостью
-                    //this.camera.lookAt(new THREE.Vector3(0, 0, 0)); //31012025
-                    this.camera.lookAt(0, 0, 0); //31012025
 
 
 
-                    this.controls.target.x = 0;
-                    this.controls.target.y = 0;
-                    this.controls.target.z = 0;
-                    this.controls.position = new THREE.Vector3(50, 0, 10);
-                    //this.controls.position.y = 0;
-                    //this.controls.position.z = 0;
+
+
+                    let lo_center = new THREE.Vector3(75,50,0);
+
+                    let lo_distance = this.camera.position.distanceTo(this.controls.target); // Расстояние от камеры до центра
+                    let lo_direction = new THREE.Vector3().subVectors(this.camera.position, this.controls.target).normalize(); // Направление камеры
+
+                    this.camera.position.copy(lo_center.clone().add(lo_direction.multiplyScalar(lo_distance))); // Сохраняем дистанцию
+                    this.camera.lookAt(lo_center); // Направляем камеру на центр
+
+                    // 3. Обновляем точку фокусировки OrbitControls
+                    this.controls.target.copy(lo_center);
                     this.controls.update();
+
+
 
                 }
 
