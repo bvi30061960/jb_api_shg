@@ -12,6 +12,10 @@ import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 //import { LineGeometry } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/LineGeometry.js';
 
 
+import { Constants } from './my_common_const.js';
+
+import { CommonFunc } from './my_common_func.js';
+
 
 // Class Rectangle
 export function Rectangle(/*po_container, po_camera,*/ po_scene,
@@ -84,18 +88,22 @@ export function Rectangle(/*po_container, po_camera,*/ po_scene,
                 positions.push(0, this.shape_height, 0);
                 positions.push(this.shape_width, this.shape_height, 0);
                 positions.push(this.shape_width, 0, 0);
-
                 positions.push(0, 0, 0);
 
 
                 let lv_color = 0x0040f0;
-                let lv_x = 0; //13032024  pv_distance_bt_curves/2;// / 2; // 0;
-                let lv_y = 0;
+                //let lv_x = 0; //13032024  pv_distance_bt_curves/2;// / 2; // 0;
+                //let lv_y = 0;
 
                 const clrs = [];
 
+                let lo_rgb = CommonFunc.prototype.hexToRgb(Constants.color_shape_countour_str);
+
+
                 positions.forEach(() => {
-                    clrs.push(255, 0, 255);
+                    //clrs.push(255, 0, 255);
+                    clrs.push(lo_rgb.r, lo_rgb.g, lo_rgb.b);
+
                 });
 
 
@@ -105,14 +113,14 @@ export function Rectangle(/*po_container, po_camera,*/ po_scene,
 
                 geometry.setColors(clrs);
 
-                let lo_resolution = new THREE.Vector2();
-                let lo_renderer = new THREE.WebGLRenderer({ antialias: true });
-                lo_renderer.getSize(lo_resolution);
+                ////let lo_resolution = new THREE.Vector2();
+                ////let lo_renderer = new THREE.WebGLRenderer({ antialias: true });
+                ////lo_renderer.getSize(lo_resolution);
 
                 let material = new LineMaterial({
                     //color: new Color("#fff").getHex(),
-                    vertexColors: 0xf0f, //VertexColors,
-                    linewidth: 7,// 30012025   0.5, //1, //2,
+                    vertexColors: true, //0xf0f, //VertexColors,
+                    linewidth: Constants.line_width_shape_contour, // 7,// 30012025   0.5, //1, //2,
                     resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
                     //dashed: false, //true,
                     //gapSize: 0.75,
@@ -128,7 +136,7 @@ export function Rectangle(/*po_container, po_camera,*/ po_scene,
 
                 this.shape.name = this.cv_rectangle_name;
 
-                this.shape.position.set(lv_x, lv_y);//, 0 pv_z - 25);
+                //30012025 this.shape.position.set(lv_x, lv_y);//, 0 pv_z - 25);
 
                 ////lo_group.add(this.shape);
                 ////this.group_rect = lo_group;

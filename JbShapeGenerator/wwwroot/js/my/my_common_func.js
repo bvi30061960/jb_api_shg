@@ -1051,7 +1051,31 @@ export function CommonFunc() {
 
             return pv_return;
         }
+        //-----------------------------------------------------------------------------------
+        // Функция для преобразования RGB в число
+        CommonFunc.prototype.hexToRgb = function (pv_hex) {
 
+            //function hexToRgb(hex) {
+            // Удаляем #, если он есть
+            pv_hex = pv_hex.replace(/^#/, '');
+
+            // Разбираем 3-значные форматы (например, #f0c → #ff00cc)
+            if (pv_hex.length === 3) {
+                pv_hex = pv_hex.split('').map(c => c + c).join('');
+            }
+
+            // Получаем значения R, G, B
+            let r = parseInt(pv_hex.substring(0, 2), 16);
+            let g = parseInt(pv_hex.substring(2, 4), 16);
+            let b = parseInt(pv_hex.substring(4, 6), 16);
+
+            //return `rgb(${r}, ${g}, ${b})`;
+
+
+            return { r, g, b };
+
+
+        }
         //-----------------------------------------------------------------------------------
         // Функция для преобразования RGB в число
         CommonFunc.prototype.rgbToNumber = function (pv_rgb) {
@@ -1743,42 +1767,40 @@ export function CommonFunc() {
                     lv_color = pv_color;
                 }
                 else {
-                    lv_color = Constants.shape_countour_color;
+                    lv_color = Constants.color_shape_countour_str;
                 }
-
 
                 if (po_material) {
                     lo_material = po_material;
                 }
                 else {
 
-                    lo_renderer = new THREE.WebGLRenderer({ antialias: true });
-                    let lo_resolution = new THREE.Vector2();
-                    lo_renderer.getSize(lo_resolution);
-
                     lo_material = new LineMaterial({
-                        resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
-                        linewidth: 7, //30012025 0.7,
-                        color: lv_color
+                        vertexColors: true, //30012025
+                        linewidth: Constants.line_width_shape_contour, //30012025 0.7,
+                        resolution: new THREE.Vector2(window.innerWidth, window.innerHeight) // Обязательно 30012025 lo_resolution,
                     });
                 }
 
-                let lo_geometry = new LineGeometry();
-                lo_geometry.setPositions([
-                    //11012025 {
-                    ////0, 0, 0,
-                    ////0, pv_width, 0,
-                    ////pv_height, pv_width, 0,
-                    ////pv_height, 0, 0,
-                    ////0, 0, 0
+                let lar_positions = [];
+                lar_positions.push(0, 0, 0);
+                lar_positions.push(0, pv_height, 0);
+                lar_positions.push(pv_width, pv_height, 0);
+                lar_positions.push(pv_width, 0, 0);
+                lar_positions.push(0, 0, 0);
 
-                    0, 0, 0,
-                    0, pv_height, 0,
-                    pv_width, pv_height, 0,
-                    pv_width, 0, 0,
-                    0, 0, 0
-                    //11012025 }
-                ]);
+                let lo_rgb = CommonFunc.prototype.hexToRgb(lv_color);
+                const clrs = [];
+                lar_positions.forEach(() => {
+                    clrs.push(lo_rgb.r, lo_rgb.g, lo_rgb.b);
+                });
+
+                let lo_geometry = new LineGeometry();
+                lo_geometry.setPositions(
+                    lar_positions
+                );
+
+                lo_geometry.setColors(clrs);
 
                 lo_result = new Line2(lo_geometry, lo_material);
 
@@ -1787,9 +1809,7 @@ export function CommonFunc() {
             }
 
             catch (e) {
-
                 alert('error get_drawing_rectangle: ' + e.stack);
-
             }
         }
 
@@ -1812,7 +1832,7 @@ export function CommonFunc() {
                     lv_color = pv_color;
                 }
                 else {
-                    lv_color = Constants.shape_countour_color;
+                    lv_color = Constants.color_shape_countour;
                 }
 
 
@@ -1821,13 +1841,13 @@ export function CommonFunc() {
                 }
                 else {
 
-                    lo_renderer = new THREE.WebGLRenderer({ antialias: true });
-                    let lo_resolution = new THREE.Vector2();
-                    lo_renderer.getSize(lo_resolution);
+                    ////lo_renderer = new THREE.WebGLRenderer({ antialias: true });
+                    ////let lo_resolution = new THREE.Vector2();
+                    ////lo_renderer.getSize(lo_resolution);
 
                     lo_material = new LineMaterial({
                         resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
-                        linewidth: 7, //30012025 0.7,
+                        linewidth: Constants.line_width_shape_contour, //7, //30012025 0.7,
                         color: lv_color
                     });
                 }

@@ -12,6 +12,8 @@ import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 //import { LineGeometry } from 'https://unpkg.com/three@v0.149.0/examples/jsm/lines/LineGeometry.js';
 
+import { Constants } from './my_common_const.js';
+
 import {
     struc_gabarits,
     struc_segment_transform_data,
@@ -788,14 +790,13 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                 //20012025 {
-                let lo_resolution = new THREE.Vector2();
-                this.main.renderer.getSize(lo_resolution);
+                ////let lo_resolution = new THREE.Vector2();
+                ////this.main.renderer.getSize(lo_resolution);
 
 
                 let lo_material = new LineMaterial({
-                    //color: new THREE.Color("#f00").getHex(),
-                    vertexColors: 0x001, //0x0f0,//0x00f, //VertexColors,
-                    linewidth: 7, //30012025 2, //0.6,  // толщина линии
+                    vertexColors: true, //0x001, //0x0f0,//0x00f, //VertexColors,
+                    linewidth: Constants.line_width_shape_contour, //7, //30012025 2, //0.6,  // толщина линии
                     resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
                     //resolution: this.main.resolution //30072024
                 });
@@ -1843,9 +1844,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 try {
 
 
-                    let lo_resolution = new THREE.Vector2();
-                    let lo_renderer = new THREE.WebGLRenderer({ antialias: true });
-                    lo_renderer.getSize(lo_resolution);
+                    ////let lo_resolution = new THREE.Vector2();
+                    ////let lo_renderer = new THREE.WebGLRenderer({ antialias: true });
+                    ////lo_renderer.getSize(lo_resolution);
 
                     let material = new LineMaterial({
                         //color: new Color("#fff").getHex(),
@@ -2353,11 +2354,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                 let lv_color = 0x0040f0;
-                let lv_x = 0; //13032024  pv_distance_bt_curves/2;// / 2; // 0;
-                let lv_y = 0;
+                ////let lv_x = 0; //13032024  pv_distance_bt_curves/2;// / 2; // 0;
+                ////let lv_y = 0;
 
                 const clrs = [];
-
                 positions.forEach(() => {
                     clrs.push(255, 0, 255);
                 });
@@ -2370,20 +2370,14 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 geometry.setPositions(positions);/////
                 geometry.setColors(clrs);
 
-                let resolution = new THREE.Vector2();
-
-                let renderer = new THREE.WebGLRenderer({ antialias: true });
-                renderer.getSize(resolution);
+                ////let resolution = new THREE.Vector2();
+                ////let renderer = new THREE.WebGLRenderer({ antialias: true });
+                ////renderer.getSize(resolution);
 
                 let material = new LineMaterial({
-                    //color: new Color("#fff").getHex(),
-                    vertexColors: 0xf0f, //VertexColors,
-                    linewidth: 7, //30012025  0.5, //1, //2,
-                    resolution,
-                    //dashed: false, //true,
-                    //gapSize: 0.75,
-                    //dashScale: 1.5,
-                    //dashSize: 1
+                    vertexColors: true, //0xf0f, //VertexColors,
+                    linewidth: Constants.line_width_shape_contour, //7, //30012025  0.5, //1, //2,
+                    resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // 30012025 Обязательно
                 });
 
                 material.needsUpdate = true;
@@ -2394,7 +2388,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 //lo_line.name = cv_rectangle_name;
 
-                lo_line.position.set(lv_x, lv_y);//, 0 pv_z - 25);
+                ////30012025 lo_line.position.set(lv_x, lv_y);//, 0 pv_z - 25);
 
                 //lo_group.add(lo_line);
 

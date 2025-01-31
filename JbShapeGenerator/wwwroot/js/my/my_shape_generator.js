@@ -449,30 +449,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.load_initial_model = function () {
-
-            try {
-
-                let lv_end_watching_progress_value = 50;
-                this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_refresh_premodel, this.read_result_refresh_premodel, lv_end_watching_progress_value);
-                this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
-
-                let lv_path_file_initial_premodel = Constants.path_file_initial_premodel;
-                this.grid_select_models.read_model_from_server(lv_path_file_initial_premodel, true);
-
-                this.render();//26012025
-
-            }
-
-            catch (e) {
-
-                alert('error load_initial_model: ' + e.stack);
-
-            }
-        }
-
-
-        //------------------------------------------------------------------------
         Shape_generator.prototype.init_containers_and_controls = function (/*pv_prefix*/) {
 
             try {
@@ -558,19 +534,51 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 ) {
 
                     this.container = document.getElementById(this.id_prefix_wo_sharp + this.id_side_shape);//20062024);
+
+
+
                     this.scene = new THREE.Scene();
                     //this.scene.background = new THREE.Color(0xf0f0f0);
                     this.scene.background = new THREE.Color(Constants.background_color);
                     //this.scene.background = new THREE.Color(0xfff000);
 
+                    //const sprite = new THREE.Sprite();/*spriteMaterial*/
+                    //sprite.scale.set(2, 3, 1); // Устанавливаем размер
+                    //this.scene = sprite;
+
+
+
+
+
                     let lo_cameraPersp, lo_cameraOrtho;
 
-                    this.aspect = this.container.clientWidth / this.container.clientHeight;//04022023
 
-                    lo_cameraPersp = new THREE.PerspectiveCamera(50, this.aspect, 0.01, 30000);
-                    //lo_cameraOrtho = new THREE.OrthographicCamera(-30 * this.aspect, 100 * this.aspect, 90 * this.aspect, -15.0 * this.aspect);//, 0,10);
-                    ///lo_cameraOrtho = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
-                    lo_cameraOrtho = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);//, -0.100 * this.aspect, 20 * this.aspect);
+                    //30012025 {
+
+                    //this.aspect = this.container.clientWidth / this.container.clientHeight;//04022023
+                    //lo_cameraPersp = new THREE.PerspectiveCamera(50, this.aspect, 0.01, 30000);
+                    ////lo_cameraOrtho = new THREE.OrthographicCamera(-30 * this.aspect, 100 * this.aspect, 90 * this.aspect, -15.0 * this.aspect);//, 0,10);
+                    /////lo_cameraOrtho = new THREE.OrthographicCamera(-45 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);
+                    //lo_cameraOrtho = new THREE.OrthographicCamera(-15 * this.aspect, 65 * this.aspect, 50 * this.aspect, -8 * this.aspect);//, -0.100 * this.aspect, 20 * this.aspect);
+
+
+
+                    let lv_aspect = window.innerWidth / window.innerHeight;
+                    const lv_frustumSize = 160;
+                    lo_cameraOrtho = new THREE.OrthographicCamera(
+                        -lv_frustumSize * lv_aspect / 2, lv_frustumSize * lv_aspect / 2,
+                        lv_frustumSize / 2, -lv_frustumSize / 2,
+                        0.1, 1000
+                    );
+
+                    this.aspect = lv_aspect;
+
+                    //30012025 }
+
+
+
+
+
 
 
                     //02112024 const frustumSize = 500;
@@ -609,17 +617,22 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.scene.add(light);
 
                     let lo_planeGeometry;
-                    lo_planeGeometry = new THREE.PlaneGeometry(2000, 2000);
-                    lo_planeGeometry.rotateX(- Math.PI / 2);
+                    //lo_planeGeometry = new THREE.PlaneGeometry(2000, 2000);
+                    lo_planeGeometry = new THREE.PlaneGeometry(200, 200);
+
+                    //lo_planeGeometry.position.set(0, 0, 0); //30012025
+
+                    //////////////////////////////////////lo_planeGeometry.rotateX(- Math.PI / 2);
 
                     let lo_planeMaterial;
                     lo_planeMaterial = new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.2 });
 
                     this.plane = new THREE.Mesh(lo_planeGeometry, lo_planeMaterial);
                     this.plane.receiveShadow = true;
+
+                    this.plane.rotation.set(0, 0, 0);
+
                     this.scene.add(this.plane);
-
-
 
                     this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: true });
 
@@ -652,9 +665,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     // Controls
                     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
                     this.controls.damping = 0.2;
-                    this.controls.enableRotate = false;// bvi
 
-                    this.camera.position.set(0, 0, 1);//04082024
+                    this.controls.enableRotate = false;// bvi
+                    this.controls.enablePan = false;// bvi
+                    this.controls.enableZoom = false;// bvi
+
+
+
+
+                    this.camera.position.set(75, 50, 10);//позиционирование фигуры на плоскости
+                    //this.camera.position.set(0, 0, 0);//позиционирование фигуры на плоскости
 
 
                 }
@@ -868,6 +888,30 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
 
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.load_initial_model = function () {
+
+            try {
+
+                let lv_end_watching_progress_value = 50;
+                this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_refresh_premodel, this.read_result_refresh_premodel, lv_end_watching_progress_value);
+                this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
+
+                let lv_path_file_initial_premodel = Constants.path_file_initial_premodel;
+                this.grid_select_models.read_model_from_server(lv_path_file_initial_premodel, true);
+
+                this.render();//26012025
+
+            }
+
+            catch (e) {
+
+                alert('error load_initial_model: ' + e.stack);
+
+            }
         }
 
 

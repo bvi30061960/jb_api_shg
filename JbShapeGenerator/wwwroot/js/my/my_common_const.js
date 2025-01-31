@@ -72,12 +72,21 @@ export var Constants = {
     //initial_topic: "id_tt_choose_text_topic"
     path_file_initial_premodel: "wwwroot/datafiles\\initial_model\\models\\initial_model",
     initial_load: "initial_load",
-    background_color: 'c3c3c3', // цвет фона сцены
-    shape_countour_color: 0x0000ff, // цвет контура фигур
-    shape_line_color: 0xff00ff, // цвет линий разреза
     path_model_parts_folder: "",
     //calc_jbmodel_server_url: "https://localhost:7095/CalcJBModel" //?method="
+
+
+
     spline_line_color: 0xff0000, // цвет линии сплайна
+
+    background_color: 'c3c3c3', // цвет фона сцены
+
+    color_shape_countour: 0x0000ff,// 0x0000ff, // цвет контура фигур
+    color_shape_countour_str: "0000ff",// 0x0000ff, // цвет контура фигур
+    line_width_shape_contour: 4, // ширина линий контура фигур
+
+
+    shape_line_color: 0xff00ff, // цвет линий разреза
 };
 
 

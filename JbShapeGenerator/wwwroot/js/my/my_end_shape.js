@@ -58,14 +58,14 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
 
-    let lo_renderer = new THREE.WebGLRenderer({ antialias: true });
-    let lo_resolution = new THREE.Vector2();
-    lo_renderer.getSize(lo_resolution);
+    ////let lo_renderer = new THREE.WebGLRenderer({ antialias: true });
+    ////let lo_resolution = new THREE.Vector2();
+    ////lo_renderer.getSize(lo_resolution);
 
     this.part_contour_material = new LineMaterial({
         resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // Обязательно 30012025 lo_resolution,
-        linewidth: 7, //30012025 0.7,
-        color: Constants.shape_countour_color
+        linewidth: Constants.line_width_shape_contour, //7, //30012025 0.7,
+        color: Constants.color_shape_countour
     });
 
 
@@ -162,6 +162,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lv_rows = lv_lateral_splines_amount + 1;
 
 
+
+                // Общий контур торцевой стороны
                 let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle(
                     //go_lateral_side_shape_generator.params.shape_width, //11012025
                     //go_up_side_shape_generator.params.shape_width
@@ -476,7 +478,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle_by_points(
                             this.ColorParts[lv_i][lv_j].left_bottom,
                             this.ColorParts[lv_i][lv_j].right_top,
-                            Constants.shape_countour_color, //lv_color,
+                            Constants.color_shape_countour, //lv_color,
                             this.part_contour_material, //27012025 lo_material,
                             lv_delta
                         );
