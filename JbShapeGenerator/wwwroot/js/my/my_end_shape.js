@@ -1084,7 +1084,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     new THREE.Vector2(this.ColorParts[pv_cell_num_row][pv_cell_num_col].left_bottom.x, this.ColorParts[pv_cell_num_row][pv_cell_num_col].left_bottom.y/*, 0*/)
                 );
 
-                this.ColorParts[pv_cell_num_row][pv_cell_num_col].cell_color = pv_color_value; //25122024
+                this.ColorParts[pv_cell_num_row][pv_cell_num_col].cell_color = pv_color_value.toString(); //31012025
 
                 let lo_shape = new THREE.Shape(lar_shape_points);
                 let lo_geometry = new THREE.ShapeGeometry(lo_shape);

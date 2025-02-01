@@ -941,7 +941,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         lo_mesh_color_data.num_spline_left = lv_num_spline_left;
                         lo_mesh_color_data.num_spline_right = lv_num_spline_right;
-                        lo_mesh_color_data.color = pv_color;
+                        lo_mesh_color_data.color = pv_color.toString();//310123025
 
                         // Определение индекса в массиве для сохранения
                         let lv_ar_shapes_colors_idx;

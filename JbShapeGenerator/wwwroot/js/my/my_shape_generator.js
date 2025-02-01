@@ -582,18 +582,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     let lo_planeMaterial;
                     lo_planeMaterial = new THREE.ShadowMaterial({ color: 0x000000, opacity: 0.2 });
 
-                    this.plane = new THREE.Mesh(lo_planeGeometry, lo_planeMaterial);
-                    this.plane.receiveShadow = true;
+                    //this.plane = new THREE.Mesh(lo_planeGeometry, lo_planeMaterial);
+                    //this.plane.receiveShadow = true;
+                    //this.plane.matrixAutoUpdate = false; // Запрещает изменять матрицу поворота
+                    //this.scene.add(this.plane);
 
 
-                    //this.plane.rotation.set(-Math.PI / 2, 0, 0); // Горизонтальная плоскость (XY)
-                    this.plane.matrixAutoUpdate = false; // Запрещает изменять матрицу поворота
-                    //31012025 }
-
-
-
-
-                    this.scene.add(this.plane);
 
                     this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: true });
 
@@ -1470,6 +1464,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     let lv_is_before = false;
                     lo_active_side.do_before_after_model_request(lv_is_before, false);
 
+                    alert("Error updating model!")
+
                     return;
                 }
 
@@ -2289,6 +2285,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     $('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
                     $('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
 
+                    //31012025 {
+                    $('#up_id_id_div_progressbar').show();// индикация ожидани
+                    $('#lateral_id_div_progressbar').show();// индикация ожидания
+                    //31012025 }
+
+
 
                     go_up_side_shape_generator.is_building_model = true;
                     go_lateral_side_shape_generator.is_building_model = true;
@@ -2329,6 +2331,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
                     $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
 
+                    //31012025 {
+                    $('#up_id_id_div_progressbar').hide();// индикация ожидани
+                    $('#lateral_id_div_progressbar').hide();// индикация ожидания
+                    //31012025 }
 
                     go_up_side_shape_generator.model_params_changed = false;
                     go_up_side_shape_generator.model_params_changed = false;

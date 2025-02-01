@@ -352,6 +352,7 @@ namespace jb_api.Controllers
             {
 
                 // получаем данные json
+
                 var lo_sides_data = await Request.ReadFromJsonAsync<typ_sides_data>();
 
                 if (lo_sides_data == null)

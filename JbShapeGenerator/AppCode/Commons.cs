@@ -255,16 +255,66 @@ namespace JbShapeGenerator.AppCode
 
     //******************************************************************************************
 
+    public class typ_united_model_data
+    {
+        public string model_name { set; get; }
+        public string sides_data { set; get; }
+        public string prev_model { set; get; }
+        public string screenshot { set; get; }
+
+        public string up_side_screenshot { set; get; }
+        public string lat_side_screenshot { set; get; }
+        public string end_side_screenshot { set; get; }
+
+    };
 
     public class typ_sides_data
     {
-        //public typ_color_data ColorParts { set; get; }
+        public string client_id { set; get; }
+        public string task_id { set; get; }
         public typ_color_part[][] ColorParts { set; get; }
         public typ_side_data data1 { set; get; }
         public typ_side_data data2 { set; get; }
 
     };
 
+
+    public class typ_color_part
+    {
+        public string cell_color { get; set; }
+        public typ_2dcoord right_top { get; set; }
+        public typ_2dcoord left_bottom { get; set; }
+        public bool is_contour_visible { get; set; }
+
+    };
+
+
+    public class typ_2dcoord
+    {
+        public decimal x = 0;
+        public decimal y = 0;
+    };
+
+
+    public class typ_side_data
+    {
+        public typ_parameters parameters { get; set; }
+        public int numCurves { get; set; }
+        public int idMaterial { get; set; }
+        public int idSize { get; set; }
+        public bool Lockedit { get; set; }
+        public bool Fl_manual_parameters { get; set; }
+        public decimal M_Material { get; set; }
+        public decimal M_Width { get; set; }
+        public decimal M_Height { get; set; }
+        public decimal M_Length { get; set; }
+        public decimal M_Price_rub { get; set; }
+        public decimal Part_gap { get; set; } //01112024
+        public string[] CurveColors { get; set; }
+        public int[][] Segments_beg_points_numbers { get; set; } //01112024
+        public decimal[][][] PointsCurves { get; set; }
+
+    }
 
     public class typ_parameters
     {
@@ -298,67 +348,6 @@ namespace JbShapeGenerator.AppCode
 
 
 
-    //public class typ_color_data
-    //{
-    //    public typ_color_part[][] ColorParts { set; get; }
-    //}
-
-    public class typ_color_part
-    {
-        public typ_2dcoord right_top { get; set; }
-        public typ_2dcoord left_bottom { get; set; }
-        public string cell_color { get; set; }
-        public bool is_contour_visible { get; set; }
-
-    };
-
-    public class typ_2dcoord
-    {
-        public decimal x = 0;
-        public decimal y = 0;
-    };
-
-
-
-
-    public class typ_side_data
-    {
-        public typ_parameters parameters { get; set; }
-        public int numCurves { get; set; }
-        public int idMaterial { get; set; }
-        public int idSize { get; set; }
-
-
-        ////public decimal[][][] PointsCurves { get; set; }
-        ////public string[] CurveColors { get; set; }
-
-        public bool Lockedit { get; set; }
-        public bool Fl_manual_parameters { get; set; }
-        public decimal M_Material { get; set; }
-        public decimal M_Width { get; set; }
-        public decimal M_Height { get; set; }
-        public decimal M_Length { get; set; }
-        public decimal M_Price_rub { get; set; }
-        public decimal Part_gap { get; set; } //01112024
-        public string[] CurveColors { get; set; }
-        public int[][] Segments_beg_points_numbers { get; set; } //01112024
-        public decimal[][][] PointsCurves { get; set; }
-
-    }
-
-    public class typ_united_model_data
-    {
-        //public typ_sides_data sides_data { set; get; }
-        public string model_name { set; get; }
-        public string sides_data { set; get; }
-        public string prev_model { set; get; }
-        public string screenshot { set; get; }
-
-        public string up_side_screenshot { set; get; }
-        public string lat_side_screenshot { set; get; }
-        public string end_side_screenshot { set; get; }
-
-    };
     //========================================================================================
 
     //public enum content_types

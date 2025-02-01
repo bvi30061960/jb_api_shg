@@ -84,76 +84,6 @@
         lateral_side
     }
 
-    public class typ_sides_data
-    {
-        public string client_id { set; get; }
-        public string task_id { set; get; }
-        public typ_color_data ColorParts { set; get; }
-        public typ_side_data data1 { set; get; }
-        public typ_side_data data2 { set; get; }
-
-    };
-
-
-    public class typ_color_data
-    {
-        public string[][] ColorParts { set; get; }
-    }
-
-
-    public class typ_parameters
-    {
-        //public bool is_space_adjust { get; set; }
-        //public bool is_curve_width_adjust { get; set; }
-        //public decimal distance_bt_curves { get; set; }
-        //public decimal distance_bt_curves_in_percent { get; set; }
-        //public decimal shape_height { get; set; }
-        //public decimal shape_width { get; set; }
-
-        public decimal container_width { get; set; }
-        public decimal container_height { get; set; }
-        public decimal shape_width_beg { get; set; }
-        public decimal shape_width { get; set; }
-        public decimal shape_height_beg { get; set; }
-        public decimal shape_height { get; set; }
-        public int shape_amount_curves { get; set; }
-        public int spline_amount_segments { get; set; }
-        public bool ajust_curves_by_shape { get; set; }
-        public bool ajust_shape_by_curves { get; set; }
-        public decimal distance_between_curves_in_percent_of_width { get; set; }
-        public decimal distance_bt_curves { get; set; }
-        public bool is_space_adjust { get; set; }
-        public bool is_curve_width_adjust { get; set; }
-        public /*int*/string color { get; set; }
-        public decimal rectangle_scale_y { get; set; }
-
-    }
-
-    public class typ_side_data
-    {
-        public typ_parameters parameters { get; set; }
-        public int numCurves { get; set; }
-        public int idMaterial { get; set; }
-        public int idSize { get; set; }
-
-
-        //public string[] CurveColors { get; set; }
-        //public decimal[][][] PointsCurves { get; set; }
-        //public int[][] Segments_beg_points_numbers { get; set; } //01112024
-
-        public bool Lockedit { get; set; }
-        public bool Fl_manual_parameters { get; set; }
-        public decimal M_Material { get; set; }
-        public decimal M_Width { get; set; }
-        public decimal M_Height { get; set; }
-        public decimal M_Length { get; set; }
-        public decimal M_Price_rub { get; set; }
-        public decimal Part_gap { get; set; } //01112024
-        public string[] CurveColors { get; set; }
-        public int[][] Segments_beg_points_numbers { get; set; } //01112024
-        public decimal[][][] PointsCurves { get; set; }
-
-    }
 
 
     public class typ_model_data
@@ -187,14 +117,94 @@
 
         public string common_outfilename_part { set; get; }
         public int number_outfiles { set; get; }
-
-
-
         public int progress_indicator { set; get; }
         public DateTime date_time_changed { set; get; }
 
         public string[] names_part_files { get; set; }
 
     };
+
+
+
+
+
+
+    //----------------------------------------------------------------
+    public class typ_sides_data
+    {
+        public string client_id { set; get; }
+        public string task_id { set; get; }
+        public typ_color_part[][] ColorParts { set; get; }
+        public typ_side_data data1 { set; get; }
+        public typ_side_data data2 { set; get; }
+
+
+    };
+
+
+    public class typ_color_part
+    {
+        public string cell_color { get; set; }
+        public typ_2dcoord right_top { get; set; }
+        public typ_2dcoord left_bottom { get; set; }
+        public bool is_contour_visible { get; set; }
+
+    };
+
+    public class typ_2dcoord
+    {
+        public decimal x = 0;
+        public decimal y = 0;
+    };
+
+    public class typ_side_data
+    {
+        public typ_parameters parameters { get; set; }
+        public int numCurves { get; set; }
+        public int idMaterial { get; set; }
+        public int idSize { get; set; }
+        public bool Lockedit { get; set; }
+        public bool Fl_manual_parameters { get; set; }
+        public decimal M_Material { get; set; }
+        public decimal M_Width { get; set; }
+        public decimal M_Height { get; set; }
+        public decimal M_Length { get; set; }
+        public decimal M_Price_rub { get; set; }
+        public decimal Part_gap { get; set; } //01112024
+        public string[] CurveColors { get; set; }
+        public int[][] Segments_beg_points_numbers { get; set; } //01112024
+        public decimal[][][] PointsCurves { get; set; }
+
+    }
+
+
+    public class typ_parameters
+    {
+        //public bool is_space_adjust { get; set; }
+        //public bool is_curve_width_adjust { get; set; }
+        //public decimal distance_bt_curves { get; set; }
+        //public decimal distance_bt_curves_in_percent { get; set; }
+        //public decimal shape_height { get; set; }
+        //public decimal shape_width { get; set; }
+
+        public decimal container_width { get; set; }
+        public decimal container_height { get; set; }
+        public decimal shape_width_beg { get; set; }
+        public decimal shape_width { get; set; }
+        public decimal shape_height_beg { get; set; }
+        public decimal shape_height { get; set; }
+        public int shape_amount_curves { get; set; }
+        public int spline_amount_segments { get; set; }
+        public bool ajust_curves_by_shape { get; set; }
+        public bool ajust_shape_by_curves { get; set; }
+        public decimal distance_between_curves_in_percent_of_width { get; set; }
+        public decimal distance_bt_curves { get; set; }
+        public bool is_space_adjust { get; set; }
+        public bool is_curve_width_adjust { get; set; }
+        public /*int*/string color { get; set; }
+        public decimal rectangle_scale_y { get; set; }
+
+    }
+
 
 }

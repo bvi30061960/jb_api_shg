@@ -84,22 +84,30 @@
     var @lv_path_img_jb = ""; 
 
     var @element_visibility = ""; //21012025
-
+    var @visibility_class = ""; //31012025
     @switch(lv_id_prefix) {
 
         case "up":
             lv_path_img_jb = "/images/jb_up.png";
-            element_visibility = "visible"; //21012025
+            // element_visibility = "visible"; //21012025
+            //element_visibility = "hidden"; //21012025
+            element_visibility = "inline"; //21012025
+            visibility_class = "my_class_visible";
             break;
 
         case "lateral":
             lv_path_img_jb = "/images/jb_lateral.png";
-            element_visibility = "visible"; //21012025
+            // element_visibility = "visible"; //21012025
+            //element_visibility = "hidden"; //21012025
+            element_visibility = "inline"; //21012025
+            visibility_class = "my_class_visible";
             break;
 
         case "end":
             lv_path_img_jb = "/images/jb_end.png";
-            element_visibility = "hidden"; //21012025
+            //element_visibility = "hidden"; //21012025
+            element_visibility = "none"; //21012025
+            visibility_class = "my_class_invisible";
             break;
 
     }
@@ -189,11 +197,6 @@
 
                             <table id=@id_tab_button_bar3>
                                 <tr>
-                                    @*// <td>
-                                //     <button id=@id_but_read_model class="btn" title="Open model list.."> <i class="bi-folder2-open"></i> </button>
-                                // </td>
-                                *@
-
                                     <td>
                                         <button id=@id_but_set_color class="btn" title="Set color"> <i class="bi-palette"></i> </button>
                                     </td>
@@ -207,14 +210,6 @@
                                     <td>
                                         <button id=@id_but_mirror class="btn " title="Mirroring segments"> <i class="bi-symmetry-vertical"></i> </button>
                                     </td>
-                                    @*
-                                // <td>
-                                //     <button id=@id_but_save_model class="btn" title="Save model"> <i class="bi-save2"></i> </button>
-                                // </td>
-                                // <td>
-                                //     <button id=@id_but_make_model class="btn" title="Make model"> <i class="bi-box"></i> </button>
-                                // </td>
-                                *@
 
                                 </tr>
                             </table>
@@ -233,27 +228,28 @@
 
 
                 @* Индикатор ожидания формирования модели *@
-                <img src="~/images/wait.gif" id="@id_loading_indicator" style="visibility:@element_visibility" />
+                <img src="~/images/wait.gif" id="@id_loading_indicator" style="display:none" />@* style="visibility:@element_visibility" *@
 
 
 
 
-                <div id="@id_div_progressbar">
+                <div id="@id_div_progressbar" style="display:none" class=@visibility_class>
                     <label id="@id_label_progress"></label>
                     <progress id="@id_progressbar" value="0" max="100" style="opacity:1;"> </progress>
                 </div>
 
 
-                <div id=@id_div_visual_model style ="visibility:@element_visibility">
+                <div id=@id_div_visual_model>
+                                @* style ="visibility:@element_visibility" *@
 
-                    <div id=@id_dist_part_slider title="Set the distance between parts" style="visibility: hidden">
+                    <div id=@id_dist_part_slider title="Set the distance between parts" style="visibility:hidden">
                         <button id="@id_but_rotate_mode" title="Rotation mode" class="ui-button ui-corner-all">
                             <i class="bi-arrow-clockwise"></i>
                         </button>
                     </div>
 
 
-                    <div id="@id_div_dblclk" style="visibility:@element_visibility"> <label>Double click</label>&nbsp;<i class="bi-arrows-fullscreen"></i> </div>
+                    <div id="@id_div_dblclk" style="display:@element_visibility"> <label>Double click</label>&nbsp;<i class="bi-arrows-fullscreen"></i> </div>
                      
                 </div>
 

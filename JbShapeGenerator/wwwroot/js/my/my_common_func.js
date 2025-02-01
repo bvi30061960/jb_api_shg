@@ -2250,12 +2250,11 @@ export function CommonFunc() {
         //---------------------------------------------------------------------------------------------
         CommonFunc.prototype.showWaitingIndicator = function (pv_message) {
             //function showLoadingIndicator() {
-            const waitingIndicator = document.createElement('div');
+            let waitingIndicator = document.createElement('div');
             waitingIndicator.id = 'id_waiting-indicator';
 
             const spinner = document.createElement('div');
-            spinner.className = 'spinner';
-
+            spinner.className = 'my_spinner';
             const text = document.createElement('span');
             //text.textContent = 'Loading...';
             text.textContent = pv_message;
@@ -2271,7 +2270,7 @@ export function CommonFunc() {
         //function hideLoadingIndicator() {
 
         CommonFunc.prototype.hideWaitingIndicator = function () {
-            const waitingIndicator = document.getElementById('id_loading-indicator');
+            const waitingIndicator = document.getElementById('id_waiting-indicator');
             if (waitingIndicator) {
                 waitingIndicator.remove();
             }
