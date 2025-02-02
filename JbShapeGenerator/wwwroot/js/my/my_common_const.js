@@ -18,13 +18,13 @@ export var Constants = {
     method_save_model_parts_zip_file: "SaveModelPartsZipFile",
     method_read_model_parts_zip_file: "ReadModelPartsZipFile",
     method_save_model_part: "SaveModelPart",
-
+    is_make_order: "is_make_order",
     word_client_id: "client_id",
     word_task_id: "task_id",
     word_task_id: "task_id",
     path_result_file: "path_result_file",
     parameter_folder_for_model_parts_zip: "folder_for_model_parts_zip",
-
+    downloaded_filename: "jb_puzzle_parts.zip", // суффикс файла при выгрузке заказа
     file_model_ext: ".stl",
     file_model_screenshot: ".scr",
     file_model_prev: ".prev",

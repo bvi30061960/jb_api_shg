@@ -25,11 +25,26 @@
 
 <div id="id_center" class="center">
 
-    <div id="id_div_model_name">
-        <label for="id_model_name">Model name:</label>
-        <input type="text" id="id_model_name" value="New model" style="text-align:center">
-    </div>
 
+    @* <form id="id_mainForm"> *@
+
+        <div id="id_div_model_name">
+
+            @* 
+        <label for="id_model_name">Model name:</label>
+        <input type="text" id="id_model_name" value="New model" style="text-align:center"
+               required pattern="[A-Za-z0-9_ ]{3,80}" >
+ *@
+
+            <label for="id_model_name">Model name:</label>
+            <input type="text" id="id_model_name" name="modelname" value="New model" style="width: 20vw;"
+               placeholder="Only letters, numbers, spaces, and underscores allowed"
+               title="Only letters, numbers, spaces, and underscores allowed, length from 3 to 80 characters">
+            <label id="id_lb_model_name_error_message" class="my_error_message"></label>
+            @* <button id="id_submit" type="submit">Отправить</button> *@
+        </div>
+
+   @*  </form> *@
 
     <div id="id_tab_sides">
 
@@ -52,14 +67,14 @@
 
         <div id="tab-3">
             <vc:side-shape-generator id_prefix="end" />
-       </div> @* tabs-3 *@
+        </div> @* tabs-3 *@
 
         <div id="tab-4">
             @await Html.PartialAsync("Partials/_Orders")
         </div> @* tabs-3 *@
 
     </div>
-    
+
 
 </div>@* center *@
 

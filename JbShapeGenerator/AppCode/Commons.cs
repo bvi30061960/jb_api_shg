@@ -79,6 +79,7 @@ namespace JbShapeGenerator.AppCode
         public const string Separator_lines_crlf = "\r\n";
         public const string session_username = "session_username";
         public const string word_taskId = "taskId";
+        public const string is_make_order = "is_make_order";
     }
     //******************************************************************************************
     public struct UsingFileExtensions
@@ -421,12 +422,6 @@ namespace JbShapeGenerator.AppCode
 
 
 
-
-    //=== class Commons ====================================================={
-    public class Commons
-    {
-    }
-
     //=== class Commons =====================================================}
 
 
@@ -699,6 +694,24 @@ namespace JbShapeGenerator.AppCode
 
             return lv_answer;
         }
+
+
+        //---------------------------------------------------------------------------------------------------
+        public static string[] GetListFilesByDirectoryAndNameMask(string pv_user_file_directory, string pv_mask)
+        {
+            string[] lv_arr_files = Directory.GetFiles(pv_user_file_directory, pv_mask);
+
+            return lv_arr_files;
+
+        }
+
+        public static bool CreateZipFileByListFiles(string[] lv_files_to_order, string lv_path_and_name_zip_file)
+        {
+            bool lv_result = false;
+
+            return lv_result;
+        }
+
 
         //---------------------------------------------------------------------------------------------------
 

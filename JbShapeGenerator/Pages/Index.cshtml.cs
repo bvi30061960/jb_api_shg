@@ -234,15 +234,33 @@ namespace JbShapeGenerator.Pages
 
                 HandlePathsAndNames.Create_names_and_directories(PageContext);
 
-                string? lv_filename_zip = Request.Query["filename"];
+                string? lv_filename = Request.Query["filename"];
 
-                string? lv_path_and_name_zip_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename_zip, UsingFileExtensions.zip, true);
+                bool lv_is_make_order = false;
+
+
+                try
+                {
+                    lv_is_make_order = bool.Parse(Request.Query[CommonConstants.is_make_order]);
+                }
+                catch (Exception ex)
+                {
+                    lv_is_make_order = false;
+                }
+
+                string? lv_path_and_name_zip_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename, UsingFileExtensions.zip, true);
 
                 //19012025 lv_path_filename = Path.Combine(HandlePathsAndNames.av_unic_user_models_dir, lv_filename_zip);
 
                 //19012025 lv_result = await HandleModel.ReadBinaryFile(lv_path_filename);
-                lv_result = await HandleModel.ReadBinaryFile(lv_path_and_name_zip_file);//19012025 
 
+                if (lv_is_make_order)
+                {
+                    lv_result = await HandleModel.MakeAndReadOrderZipFile(lv_path_and_name_zip_file, lv_filename);
+                }
+                else {
+                    lv_result = await HandleModel.ReadBinaryFile(lv_path_and_name_zip_file);//19012025 
+                }
 
             }
             catch (Exception ex)

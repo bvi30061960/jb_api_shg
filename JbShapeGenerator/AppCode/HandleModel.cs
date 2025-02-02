@@ -36,10 +36,10 @@ namespace JbShapeGenerator.AppCode
 
 
     }
-        //******************************************************************************************************************
+    //******************************************************************************************************************
 
 
-        public static class HandleModel
+    public static class HandleModel
     {
 
 
@@ -188,7 +188,7 @@ namespace JbShapeGenerator.AppCode
                     {
                         lv_to_write = "lar_TestPoints[" + lv_num_item.ToString()
                                                     + "] = new decimal[2] {"
-                                                    + Math.Round(lv_item[0], 2, MidpointRounding.AwayFromZero).ToString() + "M," 
+                                                    + Math.Round(lv_item[0], 2, MidpointRounding.AwayFromZero).ToString() + "M,"
                                                     + Math.Round(lv_item[1], 2, MidpointRounding.AwayFromZero).ToString() + "M};";
 
                         await sw.WriteLineAsync(lv_to_write);
@@ -614,7 +614,7 @@ namespace JbShapeGenerator.AppCode
         }
 
         //-------------------------------------------------------------------------------------------------------
-        internal static async Task<IActionResult> SaveModelPartsZipFile(HttpRequest po_Request, PageContext po_PageContext, IFormFile po_file )
+        internal static async Task<IActionResult> SaveModelPartsZipFile(HttpRequest po_Request, PageContext po_PageContext, IFormFile po_file)
         //internal static async Task<IActionResult> SaveModelPartsZipFile([FromForm] IFormFile file)
         {
 
@@ -634,7 +634,7 @@ namespace JbShapeGenerator.AppCode
 
                 //ProgressStatus.SetPerc(0);
 
-                HandlePathsAndNames.Create_names_and_directories( po_PageContext);
+                HandlePathsAndNames.Create_names_and_directories(po_PageContext);
 
                 //var united_model_data = await po_Request.ReadFromJsonAsync<typ_united_model_data>();
 
@@ -782,6 +782,61 @@ namespace JbShapeGenerator.AppCode
             }
 
             return new ObjectResult("my username");
+        }
+
+        //----------------------------------------------------------------------------------------------------------
+        internal static async Task<byte[]> MakeAndReadOrderZipFile(string? pv_path_and_name_zip_file, string pv_filename)
+        {
+
+            byte[] lv_result = null;
+
+
+            string lv_path_files = Path.GetDirectoryName(pv_path_and_name_zip_file);
+
+            string lv_prefix_filename = Path.GetFileName(pv_path_and_name_zip_file);
+
+            string[] lv_files = CommonMethods.GetListFilesByDirectoryAndNameMask(lv_path_files, lv_prefix_filename);
+
+
+
+            string[] lv_files_to_order = new string[4];
+
+            // Формирование списка файлов заказа для архивирования
+            foreach (string lv_file in lv_files)
+            {
+
+
+
+                string lv_ext = Path.GetExtension(lv_file);
+
+                switch (lv_ext)
+                {
+                    case UsingFileExtensions.zip:
+                    case UsingFileExtensions.up:
+                    case UsingFileExtensions.lat:
+                    case UsingFileExtensions.end:
+
+                        lv_files_to_order.Append(lv_file);
+                        break;
+
+                    default:
+                        continue;
+                }
+                if (lv_files_to_order.Length <= 0)
+                {
+                    return lv_result;
+                }
+            }
+
+            // создание архивного файла заказа
+            string lv_path_and_name_zip_file = Path.Combine(lv_path_files, lv_prefix_filename + UsingFileExtensions.zip);
+
+            if (CommonMethods.CreateZipFileByListFiles(lv_files_to_order, lv_path_and_name_zip_file))
+            {
+                lv_result = await File.ReadAllBytesAsync(lv_path_and_name_zip_file);
+            }
+
+            return lv_result;
         }
 
         //-------------------- class  ----------------------------------------------

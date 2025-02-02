@@ -52,6 +52,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/css/ui.jqgrid.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/free-jqgrid/4.15.5/jquery.jqgrid.min.js"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script> @* 01022025 *@
 
 
 
@@ -90,7 +91,7 @@
 
 
 
-
+    <script src="~/js/my/my_validation.js"></script>
 
     <script type="module" src="~/js/my/my_common_const.js"></script>
     <script type="module" src="~/js/my/my_shape_generator.js"></script>
@@ -112,6 +113,7 @@
 </head>
 
 <body>
+    
 
     @*  <header> *@
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -150,10 +152,10 @@
 
 
 
-
+    <form id="id_mainForm">
     @RenderBody()
 
-
+    </form>
 
 
 
@@ -177,7 +179,10 @@
     @* <script src="~/js/jquery/jquery.colorpicker.min.js"></script> *@ 
     <script src="~/js/jquery/jquery.colorpicker.js"></script>
 
+
+
     @await RenderSectionAsync("Scripts", required: false)
 
+   
 </body>
 </html>
