@@ -197,14 +197,14 @@ namespace jb_api.Controllers
                                                              //  подчёркивание плюс номер детали + расширение ".stl"
 
 
-
+                    lv_filename = HttpUtility.HtmlEncode(lv_filename);// 01022025 очистка ввода
 
 
 
                     //17012025 {
 
                     //Выделение общего начального префикса (до разделителя) из имени файла
-                    
+
                     //26012025 {
                     //string lv_targetChar = "_";
                     //string lv_common_prefix = Commons.get_substr_until_last_substr(lv_filename, lv_targetChar);
@@ -272,14 +272,16 @@ namespace jb_api.Controllers
 
                     break;
 
-
+                    
                 case CommonConstants.method_read_model_parts_zip_file_from_api:
 
-                    string zip_filename = Request.Query["filename"];// + UsingFileExtensions.zip;
+                    string lv_zip_filename = Request.Query["filename"];// + UsingFileExtensions.zip;
+
+                    lv_zip_filename = HttpUtility.HtmlEncode(lv_zip_filename);// 01022025 очистка ввода
 
                     string lv_path_zip_file = Path.Combine(Environment.CurrentDirectory,
                                             Path.Combine(CommonConstants.path_AppData,
-                                            Path.Combine(CommonConstants.path_temp_data, zip_filename)));
+                                            Path.Combine(CommonConstants.path_temp_data, lv_zip_filename)));
 
 
                     byte[] lv_result = null;

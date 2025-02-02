@@ -3,6 +3,7 @@ using System.IO.Compression;
 
 
 using System.IO.Compression;
+using System.Web;
 
 namespace jb_api_shg.AppCode
 {
@@ -270,10 +271,12 @@ namespace jb_api_shg.AppCode
         //----------------------------------------------------------------------------------
         internal static void Delete_model_parts(HttpRequest po_request)
         {
+            
 
             try
             {
                 string lv_common_filenames_prefix = po_request.Query["filename"];
+                lv_common_filenames_prefix = HttpUtility.HtmlEncode(lv_common_filenames_prefix);// 01022025 очистка ввода
 
 
                 //17012025 {

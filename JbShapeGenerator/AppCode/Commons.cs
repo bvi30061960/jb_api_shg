@@ -80,6 +80,9 @@ namespace JbShapeGenerator.AppCode
         public const string session_username = "session_username";
         public const string word_taskId = "taskId";
         public const string is_make_order = "is_make_order";
+        public const string name_order_jb_puzzle = "Order_JB_Puzzle"; // префикс zip-файла заказа
+
+
     }
     //******************************************************************************************
     public struct UsingFileExtensions

@@ -31,6 +31,7 @@ export var Constants = {
     file_model_graph: ".png",
     file_model_zip: ".zip",
     data_delimiter: "_@$@_",
+    order_jb_puzzle: "Order JB Puzzle", // префикс zip-файла заказа
 
     //Number_of_blocks: 6,
     //SeparatorNameSet_from_data: "_@&@_",

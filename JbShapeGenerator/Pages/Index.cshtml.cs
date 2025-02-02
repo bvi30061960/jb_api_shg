@@ -11,8 +11,10 @@ using NuGet.Protocol.Plugins;
 using System;
 
 using System.IO;
+using System.Net.NetworkInformation;
 using System.Text.Json;
 using System.Text.Json.Serialization.Metadata;
+using System.Web;
 
 namespace JbShapeGenerator.Pages
 {
@@ -95,6 +97,9 @@ namespace JbShapeGenerator.Pages
             try
             {
                 lv_filename = Request.Query["filename"];
+                lv_filename = HttpUtility.HtmlEncode(lv_filename);// 01022025 очистка ввода
+
+
                 if (lv_filename != null && lv_filename != "")
                 {
 
@@ -235,6 +240,8 @@ namespace JbShapeGenerator.Pages
                 HandlePathsAndNames.Create_names_and_directories(PageContext);
 
                 string? lv_filename = Request.Query["filename"];
+                lv_filename = HttpUtility.HtmlEncode(lv_filename);// 01022025 очистка ввода
+
 
                 bool lv_is_make_order = false;
 

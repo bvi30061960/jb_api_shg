@@ -6,6 +6,7 @@ using System.IO;
 using Microsoft.CodeAnalysis.Elfie.Serialization;
 
 using Newtonsoft.Json;
+using System.Web;
 
 namespace JbShapeGenerator.AppCode
 {
@@ -627,9 +628,9 @@ namespace JbShapeGenerator.AppCode
                     return new ObjectResult("No file uploaded");
                 }
 
-
+                
                 string lv_filename_zip = po_Request.Query["filename"];
-
+                lv_filename_zip = HttpUtility.HtmlEncode(lv_filename_zip);// 01022025 очистка ввода
 
 
                 //ProgressStatus.SetPerc(0);
@@ -805,8 +806,6 @@ namespace JbShapeGenerator.AppCode
             foreach (string lv_file in lv_files)
             {
 
-
-
                 string lv_ext = Path.GetExtension(lv_file);
 
                 switch (lv_ext)
@@ -829,11 +828,11 @@ namespace JbShapeGenerator.AppCode
             }
 
             // создание архивного файла заказа
-            string lv_path_and_name_zip_file = Path.Combine(lv_path_files, lv_prefix_filename + UsingFileExtensions.zip);
+            string lv_path_and_name_order_zip_file = Path.Combine(lv_path_files, pv_filename + "_" + CommonConstants.name_order_jb_puzzle + UsingFileExtensions.zip);
 
-            if (CommonMethods.CreateZipFileByListFiles(lv_files_to_order, lv_path_and_name_zip_file))
+            if (CommonMethods.CreateZipFileByListFiles(lv_files_to_order, lv_path_and_name_order_zip_file))
             {
-                lv_result = await File.ReadAllBytesAsync(lv_path_and_name_zip_file);
+                lv_result = await File.ReadAllBytesAsync(lv_path_and_name_order_zip_file);
             }
 
             return lv_result;
