@@ -11,6 +11,12 @@ import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 
 
 
+import { Text } from 'troika-three-text';
+
+
+
+
+
 
 import { Constants } from './my_common_const.js';
 import { CommonFunc } from './my_common_func.js';
@@ -76,6 +82,32 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
     this.ColorParts = null; // new Array(10);
+
+
+
+    //this.fontLoader = new FontLoader();
+    //this.fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
+
+    //    function (font) {
+    //        const textGeometry = new TextGeometry('3D Text!',
+    //            {
+    //                font: font,
+    //                size: 1,
+    //                height: 0.2,
+    //                curveSegments: 12,
+    //                bevelEnabled: true,
+    //                bevelThickness: 0.03,
+    //                bevelSize: 0.02,
+    //                bevelSegments: 5
+    //            });
+
+
+    //        const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+    //        const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+    //        textMesh.position.set(-2, 1, 0); // Устанавливаем позицию
+    //        scene.add(textMesh);
+    //    });
+
 
     //=====================================================================
 
@@ -226,15 +258,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                         //координаты начальной точки текущей кривой
                         lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
-                        //27012025 lv_line_position = go_lateral_side_shape_generator.params.shape_width - lv_spline_position;
                         lv_line_position = lv_lateral_shape_width - lv_spline_position;
 
-                        //27012025 lv_cell_position = go_lateral_side_shape_generator.params.shape_width;
                         lv_cell_position = lv_lateral_shape_width;
 
 
-                        //if (this.ColorParts[0].length > 0) { //27012025 
-                        //if (typeof this.ColorParts[0].length !== "undefined") { //27012025 
                         if (this.ColorParts) { //27012025 
                             if (this.ColorParts[0]) { //27012025 
 
@@ -257,7 +285,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                             lv_cell_position = 0; // go_lateral_side_shape_generator.params.shape_width;;
 
-                            //if (this.ColorParts[0].length > 0) { //27012025 
                             if (this.ColorParts) { //27012025 
                                 if (this.ColorParts[0]) { //27012025 
 
@@ -269,7 +296,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                                         this.ColorParts[lv_i][lv_j].right_top.y = lv_prev_line_position; // go_lateral_side_shape_generator.params.shape_width;
 
                                     }
-                                } //27012025 }
+                                }
                             }
                         }
 
@@ -279,7 +306,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                             //координаты начальной точки текущей кривой
                             lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
-                            //27012025 lv_line_position = go_lateral_side_shape_generator.params.shape_width - lv_spline_position;
                             lv_line_position = lv_lateral_shape_width - lv_spline_position;
 
 
@@ -316,10 +342,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
 
                     lo_line_curr = lo_line_vert.clone();
-
-                    //lo_line_curr.name = lo_line_curr.name + "_" + lv_i.toString();
-
-
 
                     if (lv_i == 0) {
                         //координаты начальной точки текущей кривой
@@ -484,10 +506,39 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         );
 
                         lo_rectangle.visible = this.ColorParts[lv_i][lv_j].is_contour_visible;
-
                         lo_rectangle.name = lv_i.toString() + "_" + lv_j.toString();
 
-                        this.main.group_end_cells_contours.add(lo_rectangle);
+
+                        // 03022025 {
+                        //////// Присвоение текстовых меток контурам деталей
+                        //////let lv_text = (lv_i + 1).toString() + "_" + (lv_j + 1).toString();
+
+
+                        //////// удаление предыдущего объекта текста
+                        //////let lv_name_text = "text_" + lv_text;
+
+                        //////let lo_to_remove = this.main.scene.getObjectByName(lv_name_text);
+                        //////if (lo_to_remove) {
+                        //////    this.main.scene.remove(lo_to_remove);
+                        //////}
+                        //////CommonFunc.prototype.removeObjectsWithChildren(lo_to_remove, true);
+
+                        //////let lo_text_mesh = CommonFunc.prototype.create_text_mesh(
+                        //////    //go_up_side_shape_generator.textfont,
+                        //////    this.main.scene,
+                        //////    lv_text,
+                        //////    this.ColorParts[lv_i][lv_j].left_bottom,
+                        //////    this.ColorParts[lv_i][lv_j].right_top
+                        //////);
+
+                        ////////??? this.ColorParts[lv_i][lv_j].text_mesh = lo_text_mesh;
+
+                        //////this.main.group_end_cells_contours.add(lo_rectangle);
+                        //////////////////////////////////////this.main.scene.add(lo_text_mesh);
+                        // 03022025 }
+
+
+
 
 
 
@@ -505,6 +556,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         ////lo_sphere_curr.position.z = 0;
                         ////this.main.group_end_cells_contours.add(lo_sphere_curr);
 
+
+                        //if (go_end_side_shape_generator) {
+                        //    go_end_side_shape_generator.render();
+                        //}
                     }
                 }
 
@@ -713,6 +768,14 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         lar_array[lv_i][lv_j].left_bottom = new THREE.Vector2(0, 0);
                         lar_array[lv_i][lv_j].right_top = new THREE.Vector2(0, 0);
                         lar_array[lv_i][lv_j].cell_color = Constants.background_color;
+
+                        //let lv_part_label_text = lv_i.toString() + "_" + lv_j.toString();
+                        //lar_array[lv_i][lv_j].text_mesh
+                        //    = CommonFunc.prototype.create_text_mesh(
+                        //        this.main.textfont,
+                        //        lv_part_label_text,
+                        //        lar_array[lv_i][lv_j].text_mesh);
+                        //lar_array[lv_i][lv_j].text_mesh.name = lv_part_label_text;
                     }
 
                 }

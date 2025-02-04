@@ -125,7 +125,7 @@ export function Tab_orders(/*po_container, po_camera,po_scene,*/
                 let lv_url = "/Index?handler=" + Constants.method_read_model_parts_zip_file
                     + "&"
                     + "filename" + "=" + lv_filename_zip
-                    + "&" + Constants.is_make_order + "=yes"
+                    + "&" + Constants.is_make_order + "=true"
                     + "&chdata=" + Math.random().toString(); 
 
                 let lv_is_download_to_downloads_folder = true;// сохранение в папку "Загрузки"

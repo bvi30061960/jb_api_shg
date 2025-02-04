@@ -2,6 +2,7 @@
 
 using System.Composition;
 using System.Drawing;
+using System.IO.Compression;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace JbShapeGenerator.AppCode
@@ -82,10 +83,14 @@ namespace JbShapeGenerator.AppCode
         public const string is_make_order = "is_make_order";
         public const string name_order_jb_puzzle = "Order_JB_Puzzle"; // префикс zip-файла заказа
 
+        public const string file_name_top_view = "Top_view";
+        public const string file_name_side_view = "Side_view";
+        public const string file_name_end_side_view = "End_side_view";
+        public const string file_name_zip_with_parts = "jb_model_parts";
 
     }
     //******************************************************************************************
-    public struct UsingFileExtensions
+    public struct FileExtensions
     {
 
         public const string stl = ".stl";       // Файлы stl
@@ -708,9 +713,67 @@ namespace JbShapeGenerator.AppCode
 
         }
 
-        public static bool CreateZipFileByListFiles(string[] lv_files_to_order, string lv_path_and_name_zip_file)
+        //---------------------------------------------------------------------------------------------------
+        public static bool CreateZipFileByListFiles(/*string[]*/List<string> par_list_files_to_zip, string pv_path_and_name_zip_file)
         {
             bool lv_result = false;
+
+            try
+            {
+
+                string lv_ext = "";
+                string lv_filename = "";
+
+                if (File.Exists(pv_path_and_name_zip_file))
+                {
+                    File.Delete(pv_path_and_name_zip_file);
+                }
+
+
+                using (var zipStream = new FileStream(pv_path_and_name_zip_file, FileMode.Create))
+                {
+                    using (var archive = new ZipArchive(zipStream, ZipArchiveMode.Create))
+                    {
+                        foreach (string lv_curr_file_path in par_list_files_to_zip)
+                        {
+                            lv_ext = Path.GetExtension(lv_curr_file_path);
+                            switch (lv_ext)
+                            {
+                                case FileExtensions.up:
+                                    lv_filename = CommonConstants.file_name_top_view + FileExtensions.png;
+                                    archive.CreateEntryFromFile(lv_curr_file_path, lv_filename);
+                                    break;
+                                case FileExtensions.lat:
+                                    lv_filename = CommonConstants.file_name_side_view + FileExtensions.png;
+                                    archive.CreateEntryFromFile(lv_curr_file_path, lv_filename);
+                                    break;
+                                case FileExtensions.end:
+                                    lv_filename = CommonConstants.file_name_end_side_view + FileExtensions.png;
+                                    archive.CreateEntryFromFile(lv_curr_file_path, lv_filename);
+                                    break;
+                                case FileExtensions.zip:
+                                    lv_filename = CommonConstants.file_name_zip_with_parts + FileExtensions.zip;
+                                    archive.CreateEntryFromFile(lv_curr_file_path, lv_filename);
+                                    break;
+
+                                    //default:
+                            }
+
+                        }
+                    }
+                }
+
+
+                lv_result = true;
+
+            }
+            catch (Exception ex)
+            {
+
+                return lv_result;
+
+            }
+
 
             return lv_result;
         }

@@ -64,14 +64,14 @@ namespace JbShapeGenerator.AppCode
 
                 string? lv_path_and_name_file_wo_extension = HandlePathsAndNames.Get_full_path_with_hashed_filename(lo_united_model_data.model_name, "", true);
 
-                string lv_filename_sides_data = lv_path_and_name_file_wo_extension + UsingFileExtensions.dat;
-                string lv_filename_prev_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.prev;
-                string lv_filename_final_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.stl;
-                string lv_filename_screen_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.scr;
-                string lv_filename_screen_model_graph = lv_path_and_name_file_wo_extension + UsingFileExtensions.png;
-                string lv_filename_screen_model_upsite = lv_path_and_name_file_wo_extension + UsingFileExtensions.up;
-                string lv_filename_screen_model_latsite = lv_path_and_name_file_wo_extension + UsingFileExtensions.lat;
-                string lv_filename_screen_model_endsite = lv_path_and_name_file_wo_extension + UsingFileExtensions.end;
+                string lv_filename_sides_data = lv_path_and_name_file_wo_extension + FileExtensions.dat;
+                string lv_filename_prev_model = lv_path_and_name_file_wo_extension + FileExtensions.prev;
+                string lv_filename_final_model = lv_path_and_name_file_wo_extension + FileExtensions.stl;
+                string lv_filename_screen_model = lv_path_and_name_file_wo_extension + FileExtensions.scr;
+                string lv_filename_screen_model_graph = lv_path_and_name_file_wo_extension + FileExtensions.png;
+                string lv_filename_screen_model_upsite = lv_path_and_name_file_wo_extension + FileExtensions.up;
+                string lv_filename_screen_model_latsite = lv_path_and_name_file_wo_extension + FileExtensions.lat;
+                string lv_filename_screen_model_endsite = lv_path_and_name_file_wo_extension + FileExtensions.end;
 
 
 
@@ -279,11 +279,11 @@ namespace JbShapeGenerator.AppCode
 
                 string? lv_path_and_name_file_wo_extension = HandlePathsAndNames.Get_full_path_with_hashed_filename(united_model_data.model_name, "", true);
 
-                string lv_filename_sides_data = lv_path_and_name_file_wo_extension + UsingFileExtensions.dat;
-                string lv_filename_prev_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.prev;
-                string lv_filename_final_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.stl;
-                string lv_filename_screen_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.scr; // png;
-                string lv_filename_screen_model_graph = lv_path_and_name_file_wo_extension + UsingFileExtensions.png; // png;
+                string lv_filename_sides_data = lv_path_and_name_file_wo_extension + FileExtensions.dat;
+                string lv_filename_prev_model = lv_path_and_name_file_wo_extension + FileExtensions.prev;
+                string lv_filename_final_model = lv_path_and_name_file_wo_extension + FileExtensions.stl;
+                string lv_filename_screen_model = lv_path_and_name_file_wo_extension + FileExtensions.scr; // png;
+                string lv_filename_screen_model_graph = lv_path_and_name_file_wo_extension + FileExtensions.png; // png;
 
 
 
@@ -516,11 +516,11 @@ namespace JbShapeGenerator.AppCode
                 //----------------------------------------------------------------------------------------------------------
                 //string? lv_path_and_name_file_wo_extension = HandlePathsAndNames.Get_full_path_with_hashed_filename(united_model_data.model_name, "");
 
-                string lv_filename_sides_data = lv_path_model + UsingFileExtensions.dat;
-                string lv_filename_prev_model = lv_path_model + UsingFileExtensions.prev;
-                string lv_filename_final_model = lv_path_model + UsingFileExtensions.stl;
-                string lv_filename_screen_model = lv_path_model + UsingFileExtensions.scr;
-                string lv_filename_screen_model_graph = lv_path_model + UsingFileExtensions.png;
+                string lv_filename_sides_data = lv_path_model + FileExtensions.dat;
+                string lv_filename_prev_model = lv_path_model + FileExtensions.prev;
+                string lv_filename_final_model = lv_path_model + FileExtensions.stl;
+                string lv_filename_screen_model = lv_path_model + FileExtensions.scr;
+                string lv_filename_screen_model_graph = lv_path_model + FileExtensions.png;
 
 
                 // чтение файла данных модели
@@ -628,7 +628,7 @@ namespace JbShapeGenerator.AppCode
                     return new ObjectResult("No file uploaded");
                 }
 
-                
+
                 string lv_filename_zip = po_Request.Query["filename"];
                 lv_filename_zip = HttpUtility.HtmlEncode(lv_filename_zip);// 01022025 очистка ввода
 
@@ -645,7 +645,7 @@ namespace JbShapeGenerator.AppCode
                 //}
 
 
-                string? lv_path_and_name_zip_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename_zip, UsingFileExtensions.zip, true);
+                string? lv_path_and_name_zip_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename_zip, FileExtensions.zip, true);
 
                 //string lv_filename_zip_file = lv_path_and_name_file_wo_extension + UsingFileExtensions.zip;
                 //string lv_filename_prev_model = lv_path_and_name_file_wo_extension + UsingFileExtensions.prev;
@@ -794,13 +794,14 @@ namespace JbShapeGenerator.AppCode
 
             string lv_path_files = Path.GetDirectoryName(pv_path_and_name_zip_file);
 
-            string lv_prefix_filename = Path.GetFileName(pv_path_and_name_zip_file);
+            string lv_prefix_filename = Path.GetFileNameWithoutExtension(pv_path_and_name_zip_file);
 
-            string[] lv_files = CommonMethods.GetListFilesByDirectoryAndNameMask(lv_path_files, lv_prefix_filename);
+            string[] lv_files = CommonMethods.GetListFilesByDirectoryAndNameMask(lv_path_files, lv_prefix_filename + "*");
 
 
 
-            string[] lv_files_to_order = new string[4];
+            //string[] lv_files_to_order = new string[4];
+            List<string> lar_files_to_order = new List<string> ();
 
             // Формирование списка файлов заказа для архивирования
             foreach (string lv_file in lv_files)
@@ -810,27 +811,30 @@ namespace JbShapeGenerator.AppCode
 
                 switch (lv_ext)
                 {
-                    case UsingFileExtensions.zip:
-                    case UsingFileExtensions.up:
-                    case UsingFileExtensions.lat:
-                    case UsingFileExtensions.end:
+                    case FileExtensions.zip:
+                    case FileExtensions.up:
+                    case FileExtensions.lat:
+                    case FileExtensions.end:
 
-                        lv_files_to_order.Append(lv_file);
+                        lar_files_to_order.Add(lv_file);
                         break;
 
                     default:
                         continue;
                 }
-                if (lv_files_to_order.Length <= 0)
-                {
-                    return lv_result;
-                }
+                
             }
 
-            // создание архивного файла заказа
-            string lv_path_and_name_order_zip_file = Path.Combine(lv_path_files, pv_filename + "_" + CommonConstants.name_order_jb_puzzle + UsingFileExtensions.zip);
+            if (lar_files_to_order.Count <= 0)
+            {
+                return lv_result;
+            }
 
-            if (CommonMethods.CreateZipFileByListFiles(lv_files_to_order, lv_path_and_name_order_zip_file))
+
+            // создание архивного файла заказа
+            string lv_path_and_name_order_zip_file = Path.Combine(lv_path_files, pv_filename + "_" + CommonConstants.name_order_jb_puzzle + FileExtensions.zip);
+
+            if (CommonMethods.CreateZipFileByListFiles(lar_files_to_order, lv_path_and_name_order_zip_file))
             {
                 lv_result = await File.ReadAllBytesAsync(lv_path_and_name_order_zip_file);
             }

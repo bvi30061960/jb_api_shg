@@ -1,4 +1,6 @@
-﻿import * as THREE from 'three';
+﻿/// <reference path="my_progress_dialog.js" />
+/// <reference path="my_rectangle.js" />
+import * as THREE from 'three';
 //import * as THREE from "https://unpkg.com/three@v0.149.0/build/three.module.js"
 //import { THREE } from "https://unpkg.com/three@v0.149.0/build/three.module.js"
 
@@ -17,6 +19,66 @@ import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 
 import { STLExporter } from 'three/addons/exporters/STLExporter.js';
 //import { STLExporter } from 'https://unpkg.com/three@v0.149.0/examples/jsm/exporters/STLExporter.js';
+
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+
+
+import { Text } from 'troika-three-text';
+
+//import { Text } from '../../node_modules/troika-three-text/dist/troika-three-text.umd.min.js';
+//import { Text } from 'https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js';
+//import { Text } from '../../node_modules/troika-three-text/dist/troika-three-text.esm.js';
+
+//import { Text } from 'https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js';
+//import { Text } from './node_modules/troika-three-text/dist/troika-three-text.esm.js';
+
+
+
+//import { Text } from 'https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js';
+//import 'https://cdn.jsdelivr.net/npm/troika-worker-utils@latest/dist/troika-worker-utils.esm.js';
+
+
+//// Указываем путь к worker-utils вручную
+//self.TROIKA_WORKER_MODULE = 'https://cdn.jsdelivr.net/npm/troika-worker-utils@latest/dist/troika-worker-utils.esm.js';
+
+//import { Text } from 'https://unpkg.com/troika-three-text@latest/dist/troika-three-text.esm.js';
+//import 'https://unpkg.com/troika-worker-utils@latest/dist/troika-worker-utils.esm.js';
+
+//import 'https://cdn.jsdelivr.net/npm/troika-three-utils@latest/dist/troika-three-utils.esm.js';
+//import 'https://cdn.jsdelivr.net/npm/troika-worker-utils@latest/dist/troika-worker-utils.esm.js';
+//import 'https://cdn.jsdelivr.net/npm/webgl-sdf-generator@latest/dist/webgl-sdf-generator.esm.js';
+//import 'https://cdn.jsdelivr.net/npm/bidi-js@latest/dist/bidi-js.esm.js';
+//import { Text } from 'https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js';
+
+
+//import 'https://unpkg.com/troika-three-utils@latest/dist/troika-three-utils.esm.js';
+//import 'https://unpkg.com/troika-worker-utils@latest/dist/troika-worker-utils.esm.js';
+//import 'https://unpkg.com/webgl-sdf-generator@latest/dist/webgl-sdf-generator.esm.js';
+//import 'https://unpkg.com/bidi-js@latest/dist/bidi-js.esm.js';
+//import { Text } from 'https://unpkg.com/troika-three-text@latest/dist/troika-three-text.esm.js';
+
+
+//import { Text } from 'https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js';
+//import 'https://cdn.jsdelivr.net/npm/troika-three-utils@latest';
+//import 'https://cdn.jsdelivr.net/npm/troika-worker-utils@latest';
+//import 'https://cdn.jsdelivr.net/npm/webgl-sdf-generator@latest';
+//import 'https://cdn.jsdelivr.net/npm/bidi-js@latest';
+
+
+
+/*import { Text } from 'troika-three-text';*/
+
+
+
+//import { Text } from './../node_modules/troika-three-text/dist/troika-three-text.esm.js';
+
+
+
+
+
+
+
 
 
 
@@ -224,11 +286,21 @@ export function CommonFunc() {
 
         CommonFunc.prototype.removeObjectsWithChildren = function (po_obj, pv_is_removeFromParent) {
 
-            if (po_obj.children.length > 0) {
-                for (var x = po_obj.children.length - 1; x >= 0; x--) {
-                    this.removeObjectsWithChildren(po_obj.children[x], true);
+            //03022025 {
+            if (po_obj == null) {
+                return;
+            }
+            //03022025 }
+
+            if (po_obj.children) { //03022025 
+
+                if (po_obj.children.length > 0) {
+                    for (var x = po_obj.children.length - 1; x >= 0; x--) {
+                        this.removeObjectsWithChildren(po_obj.children[x], true);
+                    }
                 }
             }
+
 
             if (po_obj.geometry) {
                 po_obj.geometry.dispose();
@@ -261,8 +333,17 @@ export function CommonFunc() {
                 }
             }
 
+
+
             if (pv_is_removeFromParent) {
-                po_obj.removeFromParent();
+
+                if (po_obj.parent) {
+                    po_obj.parent.remove(po_obj);
+                    //if (po_obj.removeFromParent) {
+                    //    po_obj.removeFromParent();
+                    //}
+                }
+
             }
 
             po_obj = null;
@@ -2291,6 +2372,162 @@ export function CommonFunc() {
         //======================================================================================
         //======================================================================================
         //======================================================================================
+
+
+        //-----------------------------------------------------------------
+        CommonFunc.prototype.create_text_mesh = function (
+            //po_font,
+            po_scene,
+            pv_text,
+            po_left_bottom,
+            po_right_top
+            //po_textmesh
+        ) {
+
+            //return;
+
+
+            try {
+
+
+                //if (!po_font) {
+
+                //    return null;
+                //}
+
+                ////if (po_textmesh) {
+                ////    go_this.removeObjectsWithChildren(po_textmesh,true);
+                ////    po_textmesh.geometry.dispose();
+                ////}
+
+                ////// Создаём новую геометрию с обновлённым текстом
+                ////let lo_textGeometry = new TextGeometry(pv_text, {
+                ////    font: po_font,  // Используем загруженный шрифт
+                ////    size: 2, //1,
+                ////    height: 0.2,
+                ////    curveSegments: 12,
+                ////    bevelEnabled: true,
+                ////    bevelThickness: 0.03,
+                ////    bevelSize: 0.02,
+                ////    bevelSegments: 5
+                ////});
+
+                ////// Создаём материал и объект Mesh
+                //////let lo_textMaterial = new THREE.MeshBasicMaterial({ color: Constants.color_text /*0xffffff*/ });
+                ////let lo_textMaterial = go_up_side_shape_generator.text_material; //   new THREE.MeshBasicMaterial({ color: Constants.color_text /*0xffffff*/ });
+                ////po_textmesh = new THREE.Mesh(lo_textGeometry, lo_textMaterial);
+
+                ////// позиция текста
+                ////let lv_x = (po_right_top.x + po_left_bottom.x) / 2;
+                ////let lv_y = (po_right_top.y + po_left_bottom.y) / 2;
+
+                ////po_textmesh.position.set(lv_x, lv_y, 0);
+
+                ////// Добавляем в сцену
+                //////scene.add(textMesh);
+
+
+
+                //return;
+
+                //if (po_textmesh) {
+                //    go_this.removeObjectsWithChildren(po_textmesh, true);
+                //    if (po_textmesh.geometry) {
+                //        po_textmesh.geometry.dispose();
+                //    }
+                //}
+
+
+                let po_textmesh = new Text();
+                //po_textmesh.font = po_font;
+
+                po_textmesh.text = pv_text;
+                po_textmesh.fontSize = 4;
+                po_textmesh.color = Constants.color_text; // 0x0000ff;
+                po_textmesh.name = "text_" + pv_text;
+
+                //po_textmesh.renderOrder = 5;
+
+                // позиция текста
+                //let lv_x = (po_right_top.x + po_left_bottom.x) / 2 - 5;
+                //let lv_y = (po_right_top.y + po_left_bottom.y) / 2 + 5;
+
+                let lv_x = po_left_bottom.x + 2;
+                let lv_y = po_right_top.y - 2;
+
+
+
+                //po_textmesh.clipRect = null;  // Отключить ограничение
+                //po_textmesh.letterSpacing = 0.2;///
+
+                po_textmesh.position.set(lv_x, lv_y, 0);
+                //po_textmesh.sync();
+
+
+                po_textmesh.sync(() => {
+                    //console.log("Текст успешно сгенерирован!");
+
+
+                    po_scene.add(po_textmesh);
+                });
+
+                //po_textmesh.sync(() => {
+                //    // console.log('Text mesh ready');
+                //    go_up_side_shape_generator.scene.add(po_textmesh);
+                //});
+
+
+                //go_up_side_shape_generator.scene.add(po_textmesh)
+                //return po_textmesh;
+
+
+
+                // Добавляем текст в сцену
+                //go_up_side_shape_generator.scene.add(po_textmesh);
+
+                //// Ожидаем рендеринг геометрии текста
+                //po_textmesh.sync(() => {
+                //    console.log('Text mesh готов!', po_textmesh);
+                //});
+
+
+
+
+
+                ////const textMesh = new Text();
+                ////textMesh.text = "This is a text!";
+                ////textMesh.fontSize = 4;
+                ////textMesh.color = 0x0000ff;
+                ////textMesh.position.set(0, 0, 0);
+
+                ////// Добавляем в сцену
+                ////if (go_up_side_shape_generator) {
+                ////    go_up_side_shape_generator.scene.add(textMesh);
+                ////}
+
+                ////if (go_end_side_shape_generator) {
+                ////    go_end_side_shape_generator.scene.add(textMesh);
+                ////}
+                /*//textMesh.sync();*/
+
+
+
+
+
+
+
+
+                return po_textmesh;
+
+            }
+
+            catch (e) {
+
+                alert('error create_text_mesh: ' + e.stack);
+
+            }
+
+        }
 
     }  // if (typeof this.create_rectangle !== "function")
 

@@ -55,6 +55,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script> @* 01022025 *@
 
 
+    @* <script src="https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js"></script> *@@* 03022025 *@
 
 
     <link href="~/css/jquery/colorpicker.css" rel="stylesheet" />
@@ -74,20 +75,17 @@
     <script type="importmap">
         {
           "imports": {
-              "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
-              "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/"
+                "three": "https://unpkg.com/three@v0.149.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@v0.149.0/examples/jsm/",
+                "troika-three-text": "https://unpkg.com/troika-three-text@latest/dist/troika-three-text.esm.js",
+                "troika-three-utils": "https://unpkg.com/troika-three-utils@latest/dist/troika-three-utils.esm.js",
+                "troika-worker-utils": "https://unpkg.com/troika-worker-utils@latest/dist/troika-worker-utils.esm.js",
+                "webgl-sdf-generator": "https://unpkg.com/webgl-sdf-generator@latest/dist/webgl-sdf-generator.mjs",
+                "bidi-js":             "https://unpkg.com/bidi-js@latest/dist/bidi.mjs"
             }
         }
     </script>
 
-   @*  <script type="importmap">
-        {
-            "imports": {
-                "three": "https://cdn.jsdelivr.net/npm/three@0.172.0/build/three.module.js",
-                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.172.0/examples/jsm/"
-            }
-        }
-    </script> *@
 
 
 
@@ -113,7 +111,7 @@
 </head>
 
 <body>
-    
+
 
     @*  <header> *@
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -152,10 +150,10 @@
 
 
 
-    <form id="id_mainForm">
+    @* <form id="id_mainForm"> *@
     @RenderBody()
 
-    </form>
+    @* </form> *@
 
 
 
@@ -183,6 +181,6 @@
 
     @await RenderSectionAsync("Scripts", required: false)
 
-   
+
 </body>
 </html>

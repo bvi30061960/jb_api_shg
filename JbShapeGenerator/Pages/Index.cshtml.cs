@@ -106,7 +106,7 @@ namespace JbShapeGenerator.Pages
                     HandlePathsAndNames.Create_names_and_directories(PageContext);
 
 
-                    string lv_path_and_name_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename, UsingFileExtensions.dat, true);
+                    string lv_path_and_name_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename, FileExtensions.dat, true);
                     lv_result = await CommonMethods.CheckFileExist(lv_path_and_name_file);
                 }
 
@@ -248,14 +248,15 @@ namespace JbShapeGenerator.Pages
 
                 try
                 {
-                    lv_is_make_order = bool.Parse(Request.Query[CommonConstants.is_make_order]);
+                    string lv_is_make_order_str = Request.Query[CommonConstants.is_make_order];
+                    lv_is_make_order = bool.Parse(lv_is_make_order_str);
                 }
                 catch (Exception ex)
                 {
                     lv_is_make_order = false;
                 }
 
-                string? lv_path_and_name_zip_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename, UsingFileExtensions.zip, true);
+                string? lv_path_and_name_zip_file = HandlePathsAndNames.Get_full_path_with_hashed_filename(lv_filename, FileExtensions.zip, true);
 
                 //19012025 lv_path_filename = Path.Combine(HandlePathsAndNames.av_unic_user_models_dir, lv_filename_zip);
 

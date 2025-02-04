@@ -932,7 +932,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     lo_shape2 = new THREE.Shape(lar_shape_positions);
                     lo_geometry2 = new THREE.ShapeGeometry(lo_shape2);
-                    lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshBasicMaterial({ color: pv_color/*, side: THREE.DoubleSide*/ }));
+                    lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshBasicMaterial({ color: pv_color /* , side: THREE.DoubleSide */}));
 
                     if (pv_remember_color) {
 
@@ -965,7 +965,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         this.ar_shapes_colors[lv_ar_shapes_colors_idx] = lo_mesh_color_data;
                     }
 
-                    lo_mesh2.renderOrder = 1;
+                    lo_mesh2.renderOrder = 1;//04022025
 
                     this.main.group_color_mesh.add(lo_mesh2);
 
@@ -1441,7 +1441,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                             let lo_spline_left = this.main.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_left);
                             let lo_spline_right = this.main.common_func.getSplineByNumber(lar_splines_order, lv_num_spline_right);
 
-                            this.draw_contour_and_shape(0x0f0, lo_spline_left, lo_spline_right, true, false, true, false/*, true*/);
+                            //03022025 this.draw_contour_and_shape(0x0f0, lo_spline_left, lo_spline_right, true, false, true, false/*, true*/);
+                            this.draw_contour_and_shape(0x0f0, lo_spline_left, lo_spline_right, true, false, true, false/*, true*/);//03022025 
                         }
                     }
                     //298072024 }
@@ -1522,10 +1523,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     }
                     let lo_spline_left = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
                     let lo_spline_right = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_right);
-                    this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, false, false, true);
+                    //03022025 this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, false, false, true);
+                    this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, false, false, true);//03022025
                 }
-
-
 
             }
 

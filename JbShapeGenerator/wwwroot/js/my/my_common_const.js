@@ -88,6 +88,7 @@ export var Constants = {
 
 
     shape_line_color: 0xff00ff, // цвет линий разреза
+    color_text: 0x0000ff // 0x9966FF // 0x0000ff // цвет текста
 };
 
 

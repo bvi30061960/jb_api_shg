@@ -127,6 +127,7 @@ export function typ_color_part() {
     this.right_top = new typ_2dcoord(); // new THREE.Vector2(0, 0);
     this.left_bottom = new typ_2dcoord(); // new THREE.Vector2(0,0) ;
     this.is_contour_visible = false;
+    this.text_mesh = null;
 
 };
 

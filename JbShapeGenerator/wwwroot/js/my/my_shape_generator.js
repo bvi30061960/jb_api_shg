@@ -9,6 +9,8 @@ import { LineMaterial } from 'three/addons/lines/LineMaterial.js';//04122024
 
 import { STLLoader } from 'three/addons/loaders/STLLoader.js';//20082024
 
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+//import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 
 //////import { Line2 } from 'three/addons/lines/Line2.js';
@@ -418,6 +420,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
     this.progress_bar = null;
     this.is_shape_gragging = false;
+    this.textfont = null; // шрифт для текстовых объектов
+    this.text_material = null; // материал для текстовых объектов
     //--------------------------------------------------------------------------------
 
 
@@ -557,7 +561,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     this.camera = lo_cameraOrtho;
 
-                   
+
                     this.scene.add(new THREE.AmbientLight(0xf0f0f0, 3));
                     //this.scene.add(new THREE.DirectionalLight(0xf0f0f0, 3));
                     const light = new THREE.SpotLight(0xffffff, 4.5);
@@ -612,7 +616,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                    let lo_center = new THREE.Vector3(75,50,0);
+                    let lo_center = new THREE.Vector3(75, 50, 0);
 
                     let lo_distance = this.camera.position.distanceTo(this.controls.target); // Расстояние от камеры до центра
                     let lo_direction = new THREE.Vector3().subVectors(this.camera.position, this.controls.target).normalize(); // Направление камеры
@@ -624,7 +628,36 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.controls.target.copy(lo_center);
                     this.controls.update();
 
+                    this.text_material = new THREE.MeshBasicMaterial({ color: Constants.color_text /*0xffffff*/ });
+                    
+                    // Загружаем шрифт
+                    if (go_up_side_shape_generator) {
 
+                        if (!go_up_side_shape_generator.textfont) {
+
+                            let fontLoader = new FontLoader();
+                            fontLoader.load("./three_fonts/optimer_regular.typeface.json",
+                                //fontLoader.load("https://threejs.org/examples/fonts/helvetiker_regular.typeface.json",
+
+                                function (po_font) {
+
+                                    try {
+
+                                        //let lo_active_side = get_active_side_shape_generator();//14072024 
+
+                                        //lo_active_side.textfont = po_font;  // Сохраняем шрифт
+                                        go_up_side_shape_generator.textfont = po_font;  // Сохраняем шрифт
+
+                                        ////    //createText("Hello, World!");  // Создаём первый текст
+                                    }
+                                    catch (e) {
+
+                                        console.error("Шрифт ещё не загружен!");
+                                    }
+
+                                });
+                        }
+                    }
 
                 }
 
