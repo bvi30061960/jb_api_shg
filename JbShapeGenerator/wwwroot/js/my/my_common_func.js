@@ -24,57 +24,7 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 
 
-import { Text } from 'troika-three-text';
-
-//import { Text } from '../../node_modules/troika-three-text/dist/troika-three-text.umd.min.js';
-//import { Text } from 'https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js';
-//import { Text } from '../../node_modules/troika-three-text/dist/troika-three-text.esm.js';
-
-//import { Text } from 'https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js';
-//import { Text } from './node_modules/troika-three-text/dist/troika-three-text.esm.js';
-
-
-
-//import { Text } from 'https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js';
-//import 'https://cdn.jsdelivr.net/npm/troika-worker-utils@latest/dist/troika-worker-utils.esm.js';
-
-
-//// Указываем путь к worker-utils вручную
-//self.TROIKA_WORKER_MODULE = 'https://cdn.jsdelivr.net/npm/troika-worker-utils@latest/dist/troika-worker-utils.esm.js';
-
-//import { Text } from 'https://unpkg.com/troika-three-text@latest/dist/troika-three-text.esm.js';
-//import 'https://unpkg.com/troika-worker-utils@latest/dist/troika-worker-utils.esm.js';
-
-//import 'https://cdn.jsdelivr.net/npm/troika-three-utils@latest/dist/troika-three-utils.esm.js';
-//import 'https://cdn.jsdelivr.net/npm/troika-worker-utils@latest/dist/troika-worker-utils.esm.js';
-//import 'https://cdn.jsdelivr.net/npm/webgl-sdf-generator@latest/dist/webgl-sdf-generator.esm.js';
-//import 'https://cdn.jsdelivr.net/npm/bidi-js@latest/dist/bidi-js.esm.js';
-//import { Text } from 'https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js';
-
-
-//import 'https://unpkg.com/troika-three-utils@latest/dist/troika-three-utils.esm.js';
-//import 'https://unpkg.com/troika-worker-utils@latest/dist/troika-worker-utils.esm.js';
-//import 'https://unpkg.com/webgl-sdf-generator@latest/dist/webgl-sdf-generator.esm.js';
-//import 'https://unpkg.com/bidi-js@latest/dist/bidi-js.esm.js';
-//import { Text } from 'https://unpkg.com/troika-three-text@latest/dist/troika-three-text.esm.js';
-
-
-//import { Text } from 'https://cdn.jsdelivr.net/npm/troika-three-text@latest/dist/troika-three-text.esm.js';
-//import 'https://cdn.jsdelivr.net/npm/troika-three-utils@latest';
-//import 'https://cdn.jsdelivr.net/npm/troika-worker-utils@latest';
-//import 'https://cdn.jsdelivr.net/npm/webgl-sdf-generator@latest';
-//import 'https://cdn.jsdelivr.net/npm/bidi-js@latest';
-
-
-
-/*import { Text } from 'troika-three-text';*/
-
-
-
-//import { Text } from './../node_modules/troika-three-text/dist/troika-three-text.esm.js';
-
-
-
+/* 04022025 import { Text } from 'troika-three-text';*/
 
 
 
@@ -1172,6 +1122,15 @@ export function CommonFunc() {
             return lv_result;
         }
 
+        //-----------------------------------------------------------------------------------
+        // преобразование десятичного числа цвета в строку - три группы по два шестнадцатиричных числа (#aabbcc)
+        CommonFunc.prototype.decimalToHexColor = function (decimalColor) {
+            
+                return '#' + decimalColor.toString(16).padStart(6, '0');
+            
+            }
+
+           
         //-----------------------------------------------------------------------------------
         // Извлечение трёх чисел из строки "rgb(a,b,c)"
         CommonFunc.prototype.extractRGBComponents = function (rgbString) {

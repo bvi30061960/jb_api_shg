@@ -337,7 +337,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 if (this.main.group_color_mesh) { //03122024 
                     if (this.main.group_color_mesh.children) { //03122024 
                         if (this.main.group_color_mesh.children.length > 0) { //03122024 
-                            //for (let lv_i = 0; lv_i < this.main.group_color_mesh.children.length; lv_i++) {
                             for (let lv_i = this.main.group_color_mesh.children.length - 1; lv_i >= 0; lv_i--) {
                                 this.main.common_func.removeObjectsWithChildren(this.main.group_color_mesh.children[lv_i], true);
                             }
@@ -932,51 +931,67 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     lo_shape2 = new THREE.Shape(lar_shape_positions);
                     lo_geometry2 = new THREE.ShapeGeometry(lo_shape2);
-                    lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshBasicMaterial({ color: pv_color /* , side: THREE.DoubleSide */}));
+                    lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshBasicMaterial(/*{ color: pv_color  , side: THREE.DoubleSide  }*/));
+                    let lv_hex = this.main.common_func.decimalToHexColor(+pv_color); // "плюс" - перевод аргумента в числовой тип
+                    lo_mesh2.material.color.set(lv_hex);
 
-                    if (pv_remember_color) {
+                    //04022025 if (pv_remember_color) {
+                    //04022025 // Запоминание в массиве цвета фигуры
 
-                        // Запоминание в массиве цвета фигуры
-                        let lo_mesh_color_data = new typ_mesh_colors();
+                    let lo_mesh_color_data = new typ_mesh_colors();
 
-                        lo_mesh_color_data.num_spline_left = lv_num_spline_left;
-                        lo_mesh_color_data.num_spline_right = lv_num_spline_right;
-                        lo_mesh_color_data.color = pv_color.toString();//310123025
-
-                        // Определение индекса в массиве для сохранения
-                        let lv_ar_shapes_colors_idx;
-
-                        if (lo_mesh_color_data.num_spline_left == null && lo_mesh_color_data.num_spline_right !== null) {
-                            // крайняя левая фигура
-                            lv_ar_shapes_colors_idx = 0;
-                        }
-
-                        if (lo_mesh_color_data.num_spline_left !== null && lo_mesh_color_data.num_spline_right !== null) {
-                            //средняя фигура
-                            lv_ar_shapes_colors_idx = lo_mesh_color_data.num_spline_left + 1;
-                        }
-
-                        if (lo_mesh_color_data.num_spline_left !== null && lo_mesh_color_data.num_spline_right == null) {
-                            // крайняя правая фигура
-                            lv_ar_shapes_colors_idx = lo_mesh_color_data.num_spline_left + 2;
-                        }
+                    lo_mesh_color_data.num_spline_left = lv_num_spline_left;
+                    lo_mesh_color_data.num_spline_right = lv_num_spline_right;
+                    lo_mesh_color_data.color = pv_color.toString();//310123025
 
 
+                    let lv_mesh_color_name = "mesh_color_";
+                    let lv_name_left_part = "|";
+                    let lv_name_right_part = "|";
+
+                    // Определение индекса в массиве для сохранения
+                    let lv_ar_shapes_colors_idx;
+
+                    if (lo_mesh_color_data.num_spline_left == null && lo_mesh_color_data.num_spline_right !== null) {
+                        // крайняя левая фигура
+                        lv_ar_shapes_colors_idx = 0;
+                        lv_name_right_part = lo_mesh_color_data.num_spline_right.toString();
+                    }
+
+                    if (lo_mesh_color_data.num_spline_left !== null && lo_mesh_color_data.num_spline_right !== null) {
+                        //средняя фигура
+                        lv_ar_shapes_colors_idx = lo_mesh_color_data.num_spline_left + 1;
+                        lv_name_left_part = lo_mesh_color_data.num_spline_left.toString();
+                        lv_name_right_part = lo_mesh_color_data.num_spline_right.toString();
+                    }
+
+                    if (lo_mesh_color_data.num_spline_left !== null && lo_mesh_color_data.num_spline_right == null) {
+                        // крайняя правая фигура
+                        lv_ar_shapes_colors_idx = lo_mesh_color_data.num_spline_left + 2;
+                        lv_name_left_part = lo_mesh_color_data.num_spline_left.toString();
+
+                    }
+
+                    if (pv_remember_color) { //04022025
+                        // Запоминание в массиве цвета фигуры //04022025
                         this.ar_shapes_colors[lv_ar_shapes_colors_idx] = lo_mesh_color_data;
                     }
 
-                    lo_mesh2.renderOrder = 1;//04022025
+                    lo_mesh2.renderOrder = 1;
+                    
+                    //04022025 {
+                    lv_mesh_color_name = lv_mesh_color_name + lv_name_left_part + "_" + lv_name_right_part;
+                    lo_mesh2.name = lv_mesh_color_name;
+
+                    let lo_found_object = this.main.group_color_mesh.getObjectByName(lo_mesh2.name);
+                    if (lo_found_object) {
+                        this.main.common_func.removeObjectsWithChildren(lo_found_object, true);
+                    }
+                    //04022025 }
 
                     this.main.group_color_mesh.add(lo_mesh2);
 
                 }
-
-
-                //document.removeEventListener('pointerdown', this.onPointerDown);
-
-
-
-
 
 
                 //30072024 leaks {
@@ -1518,7 +1533,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 for (let lv_i = 0; lv_i < this.ar_shapes_colors.length; lv_i++) {
 
-                    if (this.ar_shapes_colors[lv_i] == null /* 20012025 || !this.ar_shapes_colors[lv_i]*/ ) {
+                    if (this.ar_shapes_colors[lv_i] == null /* 20012025 || !this.ar_shapes_colors[lv_i]*/) {
                         continue;
                     }
                     let lo_spline_left = this.main.common_func.getSplineByNumber(par_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);

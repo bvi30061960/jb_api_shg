@@ -11,7 +11,7 @@ import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 
 
 
-import { Text } from 'troika-three-text';
+/* 04022025 import { Text } from 'troika-three-text'; */
 
 
 
