@@ -156,8 +156,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 }
                 else {
-                    lv_up_splines_amount = go_up_side_shape_generator.params.shape_amount_curves;
-                    lv_lateral_splines_amount = go_lateral_side_shape_generator.params.shape_amount_curves;
+                    //lv_up_splines_amount = go_up_side_shape_generator.params.shape_amount_curves;
+                    //lv_lateral_splines_amount = go_lateral_side_shape_generator.params.shape_amount_curves;
+                    lv_up_splines_amount = go_up_side_shape_generator.shapes.ar_splines.length;
+                    lv_lateral_splines_amount = go_lateral_side_shape_generator.shapes.ar_splines.length;
 
 
                     lv_up_shape_width = go_up_side_shape_generator.params.shape_width;
@@ -533,10 +535,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                         ////////??? this.ColorParts[lv_i][lv_j].text_mesh = lo_text_mesh;
 
-                        //////this.main.group_end_cells_contours.add(lo_rectangle);
                         //////////////////////////////////////this.main.scene.add(lo_text_mesh);
                         // 03022025 }
 
+                        this.main.group_end_cells_contours.add(lo_rectangle);
 
 
 
@@ -759,6 +761,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lv_rows = pv_lateral_splines_amount + 1;
 
                 lar_array = new Array(lv_cols);
+
+                //05022025 let lo_color = new THREE.Color(+Constants.background_color); 
+                let lo_color = new THREE.Color(Constants.background_color); //05022025
+
+
                 for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
 
                     lar_array[lv_i] = new Array(lv_rows);
@@ -767,7 +774,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         lar_array[lv_i][lv_j] = new typ_color_part();
                         lar_array[lv_i][lv_j].left_bottom = new THREE.Vector2(0, 0);
                         lar_array[lv_i][lv_j].right_top = new THREE.Vector2(0, 0);
-                        lar_array[lv_i][lv_j].cell_color = Constants.background_color;
+                        lar_array[lv_i][lv_j].cell_color = lo_color;// +Constants.background_color;
 
                         //let lv_part_label_text = lv_i.toString() + "_" + lv_j.toString();
                         //lar_array[lv_i][lv_j].text_mesh
@@ -1111,7 +1118,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
         //------------------------------------------------------------------------
-        EndShape.prototype.set_color_to_rectangle_cell = function (pv_color_value, pv_cell_num_row, pv_cell_num_col) {
+        EndShape.prototype.set_color_to_rectangle_cell = function (po_color, pv_cell_num_row, pv_cell_num_col) {
 
             try {
 
@@ -1147,11 +1154,27 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     new THREE.Vector2(this.ColorParts[pv_cell_num_row][pv_cell_num_col].left_bottom.x, this.ColorParts[pv_cell_num_row][pv_cell_num_col].left_bottom.y/*, 0*/)
                 );
 
-                this.ColorParts[pv_cell_num_row][pv_cell_num_col].cell_color = pv_color_value.toString(); //31012025
+                //this.ColorParts[pv_cell_num_row][pv_cell_num_col].cell_color = pv_color_value.toString(); //31012025
+                //this.ColorParts[pv_cell_num_row][pv_cell_num_col].cell_color = +po_color; //05022025 "+" - для представление в виде числа, а не строки
+                this.ColorParts[pv_cell_num_row][pv_cell_num_col].cell_color = po_color; //05022025 "+" - для представление в виде числа, а не строки
 
                 let lo_shape = new THREE.Shape(lar_shape_points);
                 let lo_geometry = new THREE.ShapeGeometry(lo_shape);
-                let lo_mesh = new THREE.Mesh(lo_geometry, new THREE.MeshBasicMaterial({ color: pv_color_value/*, side: THREE.DoubleSide*/ }));
+
+                let lo_material = new THREE.MeshBasicMaterial({color:po_color});//05022025
+
+                //let lo_rgb = CommonFunc.prototype.decimalToRGB(+pv_color_value);
+                //let lo_rgb = CommonFunc.prototype.convertToRGB(pv_color_value);
+
+                //05022025 lo_material.color.set(+po_color);
+                ///lo_material.color.set(po_color); //05022025
+
+                //lo_material.color = po_color;
+                //lo_material.color.setRGB(lo_rgb.r, lo_rgb.g, lo_rgb.b);
+
+
+                //let lo_mesh = new THREE.Mesh(lo_geometry, new THREE.MeshBasicMaterial({ color: pv_color_value/*, side: THREE.DoubleSide*/ }));
+                let lo_mesh = new THREE.Mesh(lo_geometry, lo_material);
                 lo_mesh.name = lv_cell_name;
 
 

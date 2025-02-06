@@ -1082,6 +1082,55 @@ export function CommonFunc() {
 
             return pv_return;
         }
+
+        //-----------------------------------------------------------------------------------
+        // Функция для преобразования десятичного значения цвета в RGB 
+        CommonFunc.prototype.decimalToRGB = function (pv_decimalColor) {
+
+                const r = (pv_decimalColor >> 16) & 255; // Извлекаем красный (старший байт)
+                const g = (pv_decimalColor >> 8) & 255;  // Извлекаем зелёный (средний байт)
+                const b = pv_decimalColor & 255;         // Извлекаем синий (младший байт)
+
+            //return `rgb(${r}, ${g}, ${b})`;
+            let lv_str = `rgb(${r}, ${g}, ${b})`;
+
+            return this.extractRGBComponents(lv_str);
+
+        }
+
+        //-----------------------------------------------------------------------------------
+        // Функция преобразования цвета в RGB 
+        CommonFunc.prototype.convertToRGB = function (pv_value) {
+
+            if (typeof pv_value === "number")
+            {
+                // числовое значение
+                let lv_str = this.decimalToHexColor(pv_value);
+                return this.hexToRgb(lv_str);
+
+                //return this.decimalToRGB(pv_value);
+
+            }
+
+            if (typeof pv_value === "string") {
+                if (/^0x[0-9A-Fa-f]+$/.test(pv_value)) {
+                    //return "Шестнадцатеричная строка";
+
+                    
+                }
+                if (/^[0-9]+$/.test(pv_value)) {
+                    //return "Десятичная строка";
+                    return this.decimalToRGB(pv_value);
+                }
+
+                return null; // "Обычная строка";
+            }
+
+
+        }
+
+
+
         //-----------------------------------------------------------------------------------
         // Функция для преобразования RGB в число
         CommonFunc.prototype.hexToRgb = function (pv_hex) {
@@ -1795,19 +1844,21 @@ export function CommonFunc() {
 
 
         //---------------------------------------------------------------------------------------------
-        CommonFunc.prototype.get_drawing_rectangle = function (pv_width, pv_height, pv_color, po_material) {
+        CommonFunc.prototype.get_drawing_rectangle = function (pv_width, pv_height, po_color, po_material) {
 
             let lo_result = null;
             let lo_renderer = null;
             let lo_material = null;
-            let lv_color = null;
+
+            let lo_color = null;
 
             try {
-                if (pv_color) {
-                    lv_color = pv_color;
+                if (po_color) {
+                    lo_color = po_color;//05022025
                 }
                 else {
-                    lv_color = Constants.color_shape_countour_str;
+                    //lv_color = +Constants.color_shape_countour_str; //05022025
+                    lo_color = new THREE.Color(Constants.color_shape_countour); //05022025
                 }
 
                 if (po_material) {
@@ -1829,11 +1880,29 @@ export function CommonFunc() {
                 lar_positions.push(pv_width, 0, 0);
                 lar_positions.push(0, 0, 0);
 
-                let lo_rgb = CommonFunc.prototype.hexToRgb(lv_color);
+
+                //06022025 {
+                //////05022025 let lo_rgb = CommonFunc.prototype.hexToRgb(lv_color);
+                ////let lo_rgb = CommonFunc.prototype.decimalToRGB(lo_color);//02052025
+
+
+                ////const clrs = [];
+                ////lar_positions.forEach(() => {
+                ////    clrs.push(lo_rgb.r, lo_rgb.g, lo_rgb.b);
+                ////});
+
+
                 const clrs = [];
                 lar_positions.forEach(() => {
-                    clrs.push(lo_rgb.r, lo_rgb.g, lo_rgb.b);
+                    clrs.push(lo_color.r, lo_color.g, lo_color.b);
                 });
+
+
+                //06022025 }
+
+
+
+
 
                 let lo_geometry = new LineGeometry();
                 lo_geometry.setPositions(
@@ -1869,10 +1938,10 @@ export function CommonFunc() {
 
             try {
                 if (pv_color) {
-                    lv_color = pv_color;
+                    lv_color = pv_color;//02052025
                 }
                 else {
-                    lv_color = Constants.color_shape_countour;
+                    lv_color = Constants.color_shape_countour; //02052025
                 }
 
 
@@ -2402,7 +2471,7 @@ export function CommonFunc() {
 
                 po_textmesh.text = pv_text;
                 po_textmesh.fontSize = 4;
-                po_textmesh.color = Constants.color_text; // 0x0000ff;
+                po_textmesh.color = +Constants.color_text; // 0x0000ff;//02052025
                 po_textmesh.name = "text_" + pv_text;
 
                 //po_textmesh.renderOrder = 5;

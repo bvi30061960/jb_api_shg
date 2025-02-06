@@ -765,7 +765,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
         //------------------------------------------------------------------------
-        Shapes.prototype.draw_contour_and_shape = function (pv_color, po_spline_left, po_spline_right, pv_remember_contour, pv_remember_color, pv_draw_contour, pv_draw_shape) {
+        Shapes.prototype.draw_contour_and_shape = function (po_color_rgb, po_spline_left, po_spline_right, pv_remember_contour, pv_remember_color, pv_draw_contour, pv_draw_shape) {
 
 
             try {
@@ -932,8 +932,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     lo_shape2 = new THREE.Shape(lar_shape_positions);
                     lo_geometry2 = new THREE.ShapeGeometry(lo_shape2);
                     lo_mesh2 = new THREE.Mesh(lo_geometry2, new THREE.MeshBasicMaterial(/*{ color: pv_color  , side: THREE.DoubleSide  }*/));
-                    let lv_hex = this.main.common_func.decimalToHexColor(+pv_color); // "плюс" - перевод аргумента в числовой тип
-                    lo_mesh2.material.color.set(lv_hex);
+                    //////let lv_hex = this.main.common_func.decimalToHexColor(+pv_color); // "плюс" - перевод аргумента в числовой тип
+                    //////lo_mesh2.material.color.set(lv_hex);
+
+                    //05022025 lo_mesh2.material.color.set(+po_color_rgb);//05022025 "плюс" - перевод аргумента из строкового в числовой тип
+
+                    lo_mesh2.material.color.setRGB(po_color_rgb.r, po_color_rgb.g, po_color_rgb.b); //05022025
 
                     //04022025 if (pv_remember_color) {
                     //04022025 // Запоминание в массиве цвета фигуры
@@ -942,7 +946,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     lo_mesh_color_data.num_spline_left = lv_num_spline_left;
                     lo_mesh_color_data.num_spline_right = lv_num_spline_right;
-                    lo_mesh_color_data.color = pv_color.toString();//310123025
+                    //02052025 lo_mesh_color_data.color = pv_color.toString();//310123025
+                    lo_mesh_color_data.color = po_color_rgb;// 02052025
 
 
                     let lv_mesh_color_name = "mesh_color_";

@@ -179,7 +179,7 @@ export function typ_parameters() {
     this.distance_bt_curves = 0;
     this.is_space_adjust = false;
     this.is_curve_width_adjust = false;
-    this.color = '#0000ff';
+    this.color = +'#0000ff';//02052025
     this.rectangle_scale_y = 0;
 }
 

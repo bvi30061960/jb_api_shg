@@ -80,9 +80,10 @@ export var Constants = {
 
     spline_line_color: 0xff0000, // цвет линии сплайна
 
-    background_color: 'c3c3c3', // цвет фона сцены
+    //background_color: 0xc3c3c3, // цвет фона сцены
+    background_color: 0xffffff, // цвет фона сцены
 
-    color_shape_countour: 0x0000ff,// 0x0000ff, // цвет контура фигур
+    color_shape_countour: "#0000ff", //0x0000ff,// 0x0000ff, // цвет контура фигур
     color_shape_countour_str: "0000ff",// 0x0000ff, // цвет контура фигур
     line_width_shape_contour: 4, // ширина линий контура фигур
 
