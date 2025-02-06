@@ -11,7 +11,7 @@ import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 
 
 
-/* 04022025 import { Text } from 'troika-three-text'; */
+import { Text } from 'troika-three-text';//06022025
 
 
 
@@ -511,37 +511,60 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         lo_rectangle.name = lv_i.toString() + "_" + lv_j.toString();
 
 
+                        //06022025 {
                         // 03022025 {
-                        //////// Присвоение текстовых меток контурам деталей
-                        //////let lv_text = (lv_i + 1).toString() + "_" + (lv_j + 1).toString();
+                        // Присвоение текстовых меток контурам деталей
+                        let lv_text = (lv_i + 1).toString() + "_" + (lv_j + 1).toString();
 
 
-                        //////// удаление предыдущего объекта текста
-                        //////let lv_name_text = "text_" + lv_text;
+                        // удаление предыдущего объекта текста
+                        let lv_name_text = "text_" + lv_text;
 
-                        //////let lo_to_remove = this.main.scene.getObjectByName(lv_name_text);
-                        //////if (lo_to_remove) {
-                        //////    this.main.scene.remove(lo_to_remove);
-                        //////}
-                        //////CommonFunc.prototype.removeObjectsWithChildren(lo_to_remove, true);
+                        let lo_to_remove = this.main.scene.getObjectByName(lv_name_text);
+                        if (lo_to_remove) {
+                            this.main.scene.remove(lo_to_remove);
+                        }
+                        CommonFunc.prototype.removeObjectsWithChildren(lo_to_remove, true);
 
-                        //////let lo_text_mesh = CommonFunc.prototype.create_text_mesh(
-                        //////    //go_up_side_shape_generator.textfont,
-                        //////    this.main.scene,
-                        //////    lv_text,
-                        //////    this.ColorParts[lv_i][lv_j].left_bottom,
-                        //////    this.ColorParts[lv_i][lv_j].right_top
-                        //////);
+                        let lo_text_mesh = CommonFunc.prototype.create_text_mesh(
+                            //go_up_side_shape_generator.textfont,
+                            this.main.scene,
+                            lv_text,
+                            this.ColorParts[lv_i][lv_j].left_bottom,
+                            this.ColorParts[lv_i][lv_j].right_top
+                        );
 
-                        ////////??? this.ColorParts[lv_i][lv_j].text_mesh = lo_text_mesh;
+                        lo_text_mesh.sync(() => {
+                            this.main.scene.add(lo_text_mesh);
+                        });
+
+
+
+
+
+
+
+
+                        //??? this.ColorParts[lv_i][lv_j].text_mesh = lo_text_mesh;
 
                         //////////////////////////////////////this.main.scene.add(lo_text_mesh);
                         // 03022025 }
+                        //06022025 }
+
+                        //this.main.scene.add(lo_text_mesh);
+
+                        //if (go_end_side_shape_generator) {
+                        //    go_end_side_shape_generator.scene.add(lo_text_mesh);
+                        //}
+
+
+                        //this.main.group_end_cells_contours.add(lo_text_mesh);
+                        //this.main.group_end_cells_contours.updateMatrix();
+                        //this.main.group_end_cells_contours.updateWorldMatrix();
+                        //this.main.group_end_cells_contours.updateMatrixWorld();
+
 
                         this.main.group_end_cells_contours.add(lo_rectangle);
-
-
-
 
 
 

@@ -593,8 +593,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                    this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: true });
-
+                    //06022025 this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance", alpha: true });
+                    //06022025 this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "low-power", alpha: true }); //06022025
+                    this.renderer = new THREE.WebGLRenderer({ antialias: true, webgl1: true }); //06022025
+                    //this.renderer.context.getExtension("WEBGL_lose_context").loseContext();//06022025 
 
                     ///////////////////////////11012025 this.renderer.setSize(this.container.clientWidth, this.container.clientHeight);// 06052024
 
@@ -744,8 +746,14 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-                    this.renderer_mod = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+                    //06022025 this.renderer_mod = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+
                     //////////////his.renderer_mod.setSize(this.id_side_shape_mod.clientWidth, this.id_side_shape_mod.clientHeight);// 06052024
+
+                    //06022025 this.renderer_mod = new THREE.WebGLRenderer({ antialias: true, powerPreference: "low-power", alpha: true }); //06022025
+                    this.renderer_mod = new THREE.WebGLRenderer({ antialias: true, webgl1: true }); //06022025
+                    //this.renderer_mod.context.getExtension("WEBGL_lose_context").loseContext();//06022025 
+
                     this.container_mod.appendChild(this.renderer_mod.domElement);
 
 

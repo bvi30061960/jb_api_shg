@@ -20,11 +20,11 @@ import { LineGeometry } from 'three/addons/lines/LineGeometry.js';
 import { STLExporter } from 'three/addons/exporters/STLExporter.js';
 //import { STLExporter } from 'https://unpkg.com/three@v0.149.0/examples/jsm/exporters/STLExporter.js';
 
-import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+//import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 
 
-/* 04022025 import { Text } from 'troika-three-text';*/
+ import { Text } from 'troika-three-text'; //06022025
 
 
 
@@ -2466,84 +2466,47 @@ export function CommonFunc() {
                 //}
 
 
-                let po_textmesh = new Text();
-                //po_textmesh.font = po_font;
+                //let lo_color = new THREE.Color(+Constants.color_text);
 
-                po_textmesh.text = pv_text;
+
+                fetch("/fonts/OpenSans-Regular.ttf")
+                    .then(response => console.log("Шрифт Ок " + response.status))
+                    .catch(error => console.error("Ошибка загрузки шрифта", error));
+
+
+
+                let po_textmesh = new Text();
+
+                //po_textmesh.font = "../fonts/Roboto-Regular.ttf"; // po_font;
+                //po_textmesh.font = "E:/MyProjects/jb_api_shg/JbShapeGenerator/wwwroot/fonts/Roboto-Regular.ttf";
+                po_textmesh.font = "/fonts/OpenSans-Regular.ttf";
+                //po_textmesh.font = "https://fonts.gstatic.com/s/roboto/v30/KFOmCnqEu92Fr1Mu4mxK.woff";
+                //po_textmesh.font = "https://yourserver.com/fonts/Roboto-Regular.ttf";
+                po_textmesh.text = "mytext";// pv_text;
                 po_textmesh.fontSize = 4;
-                po_textmesh.color = +Constants.color_text; // 0x0000ff;//02052025
+                po_textmesh.color = Constants.color_text; // 0x0000ff;//02052025
                 po_textmesh.name = "text_" + pv_text;
+
+
+                po_textmesh.maxWidth = 100;
+                po_textmesh.clipRect = null;
+                po_textmesh.scale.set(1, 1, 1);
+                po_textmesh.whiteSpace = "normal";
+                po_textmesh.overflowWrap = "break-word";
+                po_textmesh.letterSpacing = 0;// 0.2;
 
                 //po_textmesh.renderOrder = 5;
 
                 // позиция текста
-                //let lv_x = (po_right_top.x + po_left_bottom.x) / 2 - 5;
-                //let lv_y = (po_right_top.y + po_left_bottom.y) / 2 + 5;
-
                 let lv_x = po_left_bottom.x + 2;
                 let lv_y = po_right_top.y - 2;
 
-
-
-                //po_textmesh.clipRect = null;  // Отключить ограничение
-                //po_textmesh.letterSpacing = 0.2;///
-
                 po_textmesh.position.set(lv_x, lv_y, 0);
-                //po_textmesh.sync();
 
-
-                po_textmesh.sync(() => {
-                    //console.log("Текст успешно сгенерирован!");
-
-
-                    po_scene.add(po_textmesh);
-                });
-
-                //po_textmesh.sync(() => {
-                //    // console.log('Text mesh ready');
-                //    go_up_side_shape_generator.scene.add(po_textmesh);
-                //});
-
-
-                //go_up_side_shape_generator.scene.add(po_textmesh)
-                //return po_textmesh;
-
-
-
-                // Добавляем текст в сцену
-                //go_up_side_shape_generator.scene.add(po_textmesh);
-
-                //// Ожидаем рендеринг геометрии текста
-                //po_textmesh.sync(() => {
-                //    console.log('Text mesh готов!', po_textmesh);
-                //});
-
-
-
-
-
-                ////const textMesh = new Text();
-                ////textMesh.text = "This is a text!";
-                ////textMesh.fontSize = 4;
-                ////textMesh.color = 0x0000ff;
-                ////textMesh.position.set(0, 0, 0);
-
-                ////// Добавляем в сцену
-                ////if (go_up_side_shape_generator) {
-                ////    go_up_side_shape_generator.scene.add(textMesh);
-                ////}
-
-                ////if (go_end_side_shape_generator) {
-                ////    go_end_side_shape_generator.scene.add(textMesh);
-                ////}
-                /*//textMesh.sync();*/
-
-
-
-
-
-
-
+                ////po_textmesh.sync(() => {
+                ////    //console.log("Текст успешно сгенерирован!");
+                ////    po_scene.add(po_textmesh);
+                ////});
 
                 return po_textmesh;
 
