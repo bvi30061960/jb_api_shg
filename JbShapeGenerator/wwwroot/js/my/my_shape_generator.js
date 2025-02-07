@@ -541,7 +541,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                     this.scene = new THREE.Scene();
-                    this.scene.background = new THREE.Color(Constants.background_color);
+                    this.scene.background = new THREE.Color(+Constants.background_color);
 
 
                     this.scene.matrixAutoUpdate = false; // Запрещает изменять матрицу поворота

@@ -14,6 +14,10 @@ import { LineMaterial } from 'three/addons/lines/LineMaterial.js';
 import { Text } from 'troika-three-text';//06022025
 
 
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
+
+//import { Font } from 'three/addons/loaders/FontLoader.js';
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
 
 
 
@@ -83,7 +87,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
     this.ColorParts = null; // new Array(10);
 
+    this.cell_text_font = null;
 
+    this.cell_text_geometry = null;
+
+    this.cell_text_material = new THREE.MeshPhongMaterial({ color: Constants.cell_text_color, flatShading: true });
 
     //this.fontLoader = new FontLoader();
     //this.fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
@@ -164,6 +172,10 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     lv_up_shape_width = go_up_side_shape_generator.params.shape_width;
                     lv_lateral_shape_width = go_lateral_side_shape_generator.params.shape_width;
+
+
+                    this.loadFont();
+
 
                 }
                 //27012025 }
@@ -534,9 +546,9 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             this.ColorParts[lv_i][lv_j].right_top
                         );
 
-                        lo_text_mesh.sync(() => {
-                            this.main.scene.add(lo_text_mesh);
-                        });
+                        //lo_text_mesh.sync(() => {
+                        //    this.main.scene.add(lo_text_mesh);
+                        //});
 
 
 
@@ -1184,7 +1196,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lo_shape = new THREE.Shape(lar_shape_points);
                 let lo_geometry = new THREE.ShapeGeometry(lo_shape);
 
-                let lo_material = new THREE.MeshBasicMaterial({color:po_color});//05022025
+                let lo_material = new THREE.MeshBasicMaterial({ color: po_color });//05022025
 
                 //let lo_rgb = CommonFunc.prototype.decimalToRGB(+pv_color_value);
                 //let lo_rgb = CommonFunc.prototype.convertToRGB(pv_color_value);
@@ -1213,6 +1225,47 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
             }
 
+        }
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.loadFont = function () {
+
+            try {
+
+                const loader = new FontLoader();
+                loader.load('fonts/optimer_regular.typeface.json',
+
+                    function (response) {
+
+                        go_end_side_shape_generator.cell_text_font = response;
+                        console.warn("font загружен");
+
+
+                        go_end_side_shape_generator.cell_text_geometry = new TextGeometry(
+                            "", //text,
+                            {
+                                font: go_end_side_shape_generator.cell_text_font,
+                                size: Constants.cell_text_size
+
+                                //depth: depth,
+                                //curveSegments: curveSegments,
+
+                                //bevelThickness: bevelThickness,
+                                //bevelSize: bevelSize,
+                                //bevelEnabled: bevelEnabled
+
+                            }
+
+                        );
+
+                });
+            }
+
+            catch (e) {
+
+                alert('error set_color_to_rectangle_cell: ' + e.stack);
+
+            }
         }
 
 
