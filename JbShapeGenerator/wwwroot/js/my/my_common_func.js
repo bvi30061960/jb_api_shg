@@ -2417,6 +2417,43 @@ export function CommonFunc() {
         //======================================================================================
         //======================================================================================
 
+        //-----------------------------------------------------------------
+        CommonFunc.prototype.disposeTextMesh = function (po_textMesh) {
+
+
+            if (!po_textMesh) return;
+
+            // Удаление из родительской группы или сцены
+            //if (po_textMesh.parent) {
+            //    po_textMesh.parent.remove(po_textMesh);
+            //}
+
+            // Очистка геометрии
+            if (po_textMesh.geometry) {
+
+
+                if (Array.isArray(po_textMesh.geometry)) {
+                    po_textMesh.geometry.forEach(mat => mat.dispose());
+                } else {
+                    po_textMesh.geometry.dispose();
+                }
+
+            }
+
+            // Очистка материала (учитываем, что материал может быть массивом)
+            if (po_textMesh.material) {
+                if (Array.isArray(po_textMesh.material)) {
+                    po_textMesh.material.forEach(mat => mat.dispose());
+                } else {
+                    po_textMesh.material.dispose();
+                }
+            }
+
+            // Очистка ссылок
+            po_textMesh = null;
+
+        }
+
 
         //-----------------------------------------------------------------
         CommonFunc.prototype.create_text_mesh = function (
@@ -2448,6 +2485,8 @@ export function CommonFunc() {
                 }
 
 
+                
+
                 //this.clear_group_childrens(go_end_side_shape_generator.group_cell_texts);
 
                 //this.removeObjectsWithChildren(go_end_side_shape_generator.end_shape.cell_text_geometry, true);
@@ -2457,9 +2496,17 @@ export function CommonFunc() {
 
                 //lo_cell_text_geometry = go_end_side_shape_generator.cell_text_geometry.clone();
 
-                go_end_side_shape_generator.end_shape.cell_text_geometry.dispose();
 
-                go_end_side_shape_generator.end_shape.cell_text_geometry = new TextGeometry(
+
+
+
+                //go_end_side_shape_generator.end_shape.cell_text_geometry.dispose();
+
+
+
+
+                //08022025 go_end_side_shape_generator.end_shape.cell_text_geometry = new TextGeometry(
+                let lo_text_geometry = new TextGeometry(  //08022025 
                     pv_text,
                     {
                         font: go_end_side_shape_generator.end_shape.cell_text_font,
@@ -2488,7 +2535,10 @@ export function CommonFunc() {
 
 
 
-                lo_cell_text_mesh = new THREE.Mesh(go_end_side_shape_generator.end_shape.cell_text_geometry, lo_cell_text_material);
+                //08022025 lo_cell_text_mesh = new THREE.Mesh(go_end_side_shape_generator.end_shape.cell_text_geometry, lo_cell_text_material);
+                lo_cell_text_mesh = new THREE.Mesh(lo_text_geometry, lo_cell_text_material);//08022025
+
+
                 //go_end_side_shape_generator.end_shape.cell_text_mesh = new THREE.Mesh(go_end_side_shape_generator.end_shape.cell_text_geometry, lo_cell_text_material);
 
                 // позиция текста
@@ -2599,7 +2649,7 @@ export function CommonFunc() {
                 //06022025 }
 
 
-                go_end_side_shape_generator.group_cell_texts.add(lo_cell_text_mesh);//07022025
+                //08022025 go_end_side_shape_generator.group_cell_texts.add(lo_cell_text_mesh);//07022025
 
                 //07022025 po_scene.add(lo_cell_text_mesh);
 

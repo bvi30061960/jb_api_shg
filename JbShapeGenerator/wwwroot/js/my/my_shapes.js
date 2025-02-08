@@ -1321,7 +1321,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     //    go_lateral_side_shape_generator.shapes.shape_amount_curves,
                     //    null, lv_numspline
                     //);
-                    EndShape.prototype.redefine_arr_color_parts(
+
+                    //02082025 EndShape.prototype.redefine_arr_color_parts(
+
+                    go_end_side_shape_generator.end_shape.redefine_arr_color_parts( //02082025
                         this.main, //12122024
                         //07022025 {
                         //go_up_side_shape_generator.shapes.shape_amount_curves,
