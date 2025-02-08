@@ -57,7 +57,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
     //this.is_use_data = po_is_use_data;
     //this.sides_data = po_sides_data;
 
-    this.scene = null; // = po_scene;
+    //07022025 this.scene = null; // = po_scene;
     this.shape_width = null; // = pv_shape_width;
     this.shape_height = null; // = pv_shape_height;
 
@@ -92,6 +92,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
     this.cell_text_geometry = null;
 
     this.cell_text_material = new THREE.MeshPhongMaterial({ color: Constants.cell_text_color, flatShading: true });
+
+    //this.cell_text_mesh = null; //07022025
+
+
+
 
     //this.fontLoader = new FontLoader();
     //this.fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json',
@@ -174,7 +179,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     lv_lateral_shape_width = go_lateral_side_shape_generator.params.shape_width;
 
 
-                    this.loadFont();
+                    //this.loadFont();
 
 
                 }
@@ -446,7 +451,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 //05012025 }
 
                 ////28012025 {
-                this.draw_cells_contours();
+
+                //////////////////////07022025!!this.draw_cells_contours(); 
 
                 //if (po_is_use_data) {
                 //    this.main.set_meshes_color_by_data();
@@ -508,6 +514,15 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 //let lv_delta_y = 0;
 
 
+                if (go_end_side_shape_generator) {
+                    CommonFunc.prototype.clear_group_childrens(go_end_side_shape_generator.group_cell_texts, true, true);
+
+                    //    go_end_side_shape_generator.group_cell_texts.updateMatrix();
+                    //    go_end_side_shape_generator.group_cell_texts.updateMatrixWorld();
+                    //    go_end_side_shape_generator.group_cell_texts.updateWorldMatrix();
+                }
+
+
                 for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {
                     for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {
 
@@ -529,14 +544,14 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         let lv_text = (lv_i + 1).toString() + "_" + (lv_j + 1).toString();
 
 
-                        // удаление предыдущего объекта текста
-                        let lv_name_text = "text_" + lv_text;
+                        ////// удаление предыдущего объекта текста
+                        ////let lv_name_text = "text_" + lv_text;
 
-                        let lo_to_remove = this.main.scene.getObjectByName(lv_name_text);
-                        if (lo_to_remove) {
-                            this.main.scene.remove(lo_to_remove);
-                        }
-                        CommonFunc.prototype.removeObjectsWithChildren(lo_to_remove, true);
+                        ////let lo_to_remove = this.main.scene.getObjectByName(lv_name_text);
+                        ////if (lo_to_remove) {
+                        ////    this.main.scene.remove(lo_to_remove);
+                        ////}
+                        ////CommonFunc.prototype.removeObjectsWithChildren(lo_to_remove, true);
 
                         let lo_text_mesh = CommonFunc.prototype.create_text_mesh(
                             //go_up_side_shape_generator.textfont,
@@ -600,6 +615,12 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                     }
                 }
 
+
+                //if (go_end_side_shape_generator) {
+                //    go_end_side_shape_generator.render();
+                //}
+
+
             }
 
             catch (e) {
@@ -628,17 +649,27 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
             try {
 
-
+                //08022025 {
                 //27012025 {
-                if (!this.ColorParts) {
+                //if (!this.ColorParts) {
+                //    this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
+                //    return;
+                //}
 
-                    this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
+                if (go_end_side_shape_generator) {
+
+                    if (!go_end_side_shape_generator.end_shape.ColorParts) {
+                        this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
+                        return;
+                    }
+                }
+                else {
 
                     return;
-
                 }
-                //27012025 }
 
+                //27012025 }
+                //08022025 }
 
                 switch (po_main) {
 
@@ -688,7 +719,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lv_is_changed = false;
 
                 // добавление строки
-                if (lv_lateral_added_spline_num) {
+                //if (typeof lv_lateral_added_spline_num !== "undefined"
+                //    && typeof lv_lateral_added_spline_num !== null
+                //)
+
+                if (typeof lv_lateral_added_spline_num === "number") { //07022025
 
                     if (lv_lateral_added_spline_num >= 0) {
 
@@ -714,19 +749,18 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                         //3012024 }
 
-
-
-
-
-
                         lv_is_changed = true;
                     }
                 }
 
 
                 // удаление строки
-                if (lv_lateral_deleted_spline_num) {
+                //07022025 if (lv_lateral_deleted_spline_num) {
+                //if (typeof lv_lateral_deleted_spline_num !== "undefined"
+                //    && typeof lv_lateral_deleted_spline_num !== null
+                //) {
 
+                if (typeof lv_lateral_deleted_spline_num === "number") {
                     if (lv_lateral_deleted_spline_num >= 0) {
                         lar_cop_color_parts.splice(lv_lateral_deleted_spline_num, 1); // Удаляем строку с индексом pv_deleted_up_spline_num
                         lv_is_changed = true;
@@ -738,7 +772,14 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                 // добавление столбца
-                if (lv_up_added_spline_num) {
+                //07022025 if (lv_up_added_spline_num) {
+                //if (typeof lv_up_added_spline_num !== "undefined"
+                //    && typeof lv_up_added_spline_num !== null
+
+                //)
+
+
+                if (typeof lv_up_added_spline_num === "number") { //07022025
                     if (lv_up_added_spline_num >= 0) {
 
 
@@ -759,7 +800,14 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                 // удаление столбца
-                if (lv_up_deleted_spline_num) {
+                //07022025 if (lv_up_deleted_spline_num) {
+                //if (typeof lv_up_deleted_spline_num !== "undefined"
+                //    && typeof lv_up_deleted_spline_num !== null
+
+                //)
+
+                if (typeof lv_up_deleted_spline_num === "number") { //07022025
+
                     if (lv_up_deleted_spline_num >= 0) {
 
                         for (let lar_row of lar_cop_color_parts) {
@@ -773,6 +821,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 if (lv_is_changed) {
                     this.ColorParts = lar_cop_color_parts;
                 }
+
             }
 
             catch (e) {
@@ -822,8 +871,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                 }
 
-                this.ColorParts = lar_array;
-
+                //08022025 this.ColorParts = lar_array;
+                go_end_side_shape_generator.end_shape.ColorParts = lar_array;//08022025
             }
 
             catch (e) {
@@ -1237,14 +1286,14 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     function (response) {
 
-                        go_end_side_shape_generator.cell_text_font = response;
+                        go_end_side_shape_generator.end_shape.cell_text_font = response;
                         console.warn("font загружен");
 
 
-                        go_end_side_shape_generator.cell_text_geometry = new TextGeometry(
+                        go_end_side_shape_generator.end_shape.cell_text_geometry = new TextGeometry(
                             "", //text,
                             {
-                                font: go_end_side_shape_generator.cell_text_font,
+                                font: go_end_side_shape_generator.end_shape.cell_text_font,
                                 size: Constants.cell_text_size
 
                                 //depth: depth,
@@ -1258,7 +1307,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                         );
 
-                });
+                    });
             }
 
             catch (e) {
@@ -1324,6 +1373,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
     //====================================================================
 
+    this.loadFont();// Загрузка шрифта
 
 
     this.redraw_end_shape(

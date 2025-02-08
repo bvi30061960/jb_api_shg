@@ -630,7 +630,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     this.controls.target.copy(lo_center);
                     this.controls.update();
 
-                    this.text_material = new THREE.MeshBasicMaterial({ color: Constants.color_text /*0xffffff*/ });
+
+                    //07022025 this.text_material = new THREE.MeshBasicMaterial({ color: Constants.color_text /*0xffffff*/ });
+                    //07022025 this.cell_text_mesh = null; //07022025
 
 
                     //06022025 {
@@ -823,6 +825,14 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     //this.plane.add(this.group_end_cells_contours);
                     //this.plane.add(this.end_group_cells_mesh);
                     //31012025  }
+
+
+                    //07022025 {
+                    this.group_cell_texts = new THREE.Group(); 
+                    this.scene.add(this.group_cell_texts); 
+                    //07022025 }
+
+
                 }
 
 

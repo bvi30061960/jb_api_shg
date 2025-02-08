@@ -24,7 +24,7 @@ import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
 
 
- import { Text } from 'troika-three-text'; //06022025
+import { Text } from 'troika-three-text'; //06022025
 
 
 import { Font } from 'three/addons/loaders/FontLoader.js';
@@ -1087,9 +1087,9 @@ export function CommonFunc() {
         // Функция для преобразования десятичного значения цвета в RGB 
         CommonFunc.prototype.decimalToRGB = function (pv_decimalColor) {
 
-                const r = (pv_decimalColor >> 16) & 255; // Извлекаем красный (старший байт)
-                const g = (pv_decimalColor >> 8) & 255;  // Извлекаем зелёный (средний байт)
-                const b = pv_decimalColor & 255;         // Извлекаем синий (младший байт)
+            const r = (pv_decimalColor >> 16) & 255; // Извлекаем красный (старший байт)
+            const g = (pv_decimalColor >> 8) & 255;  // Извлекаем зелёный (средний байт)
+            const b = pv_decimalColor & 255;         // Извлекаем синий (младший байт)
 
             //return `rgb(${r}, ${g}, ${b})`;
             let lv_str = `rgb(${r}, ${g}, ${b})`;
@@ -1102,8 +1102,7 @@ export function CommonFunc() {
         // Функция преобразования цвета в RGB 
         CommonFunc.prototype.convertToRGB = function (pv_value) {
 
-            if (typeof pv_value === "number")
-            {
+            if (typeof pv_value === "number") {
                 // числовое значение
                 let lv_str = this.decimalToHexColor(pv_value);
                 return this.hexToRgb(lv_str);
@@ -1116,7 +1115,7 @@ export function CommonFunc() {
                 if (/^0x[0-9A-Fa-f]+$/.test(pv_value)) {
                     //return "Шестнадцатеричная строка";
 
-                    
+
                 }
                 if (/^[0-9]+$/.test(pv_value)) {
                     //return "Десятичная строка";
@@ -1174,12 +1173,12 @@ export function CommonFunc() {
         //-----------------------------------------------------------------------------------
         // преобразование десятичного числа цвета в строку - три группы по два шестнадцатиричных числа (#aabbcc)
         CommonFunc.prototype.decimalToHexColor = function (decimalColor) {
-            
-                return '#' + decimalColor.toString(16).padStart(6, '0');
-            
-            }
 
-           
+            return '#' + decimalColor.toString(16).padStart(6, '0');
+
+        }
+
+
         //-----------------------------------------------------------------------------------
         // Извлечение трёх чисел из строки "rgb(a,b,c)"
         CommonFunc.prototype.extractRGBComponents = function (rgbString) {
@@ -1410,7 +1409,7 @@ export function CommonFunc() {
 
 
         //------------------------------------------------------------------------
-        CommonFunc.prototype.clear_group_childrens = function (po_group) {
+        CommonFunc.prototype.clear_group_childrens = function (po_group, pv_is_remove_geometry, pv_is_remove_material) {
 
             if (!po_group) {
                 return;
@@ -1419,6 +1418,23 @@ export function CommonFunc() {
             try {
 
                 for (var lv_i = po_group.children.length - 1; lv_i >= 0; lv_i--) {
+
+                    if (pv_is_remove_geometry) {
+
+                        if (po_group.children[lv_i].geometry) {
+                            po_group.children[lv_i].geometry.dispose();
+                        }
+                    }
+
+
+                    if (pv_is_remove_material) {
+                        if (po_group.children[lv_i].material) {
+                            po_group.children[lv_i].material.dispose();
+                        }
+
+                    }
+
+
 
                     this.removeObjectsWithChildren(po_group.children[lv_i], true);
 
@@ -2427,21 +2443,60 @@ export function CommonFunc() {
                 if (!go_end_side_shape_generator) {
                     return null;
                 }
-                if (!go_end_side_shape_generator.cell_text_geometry) {
+                if (!go_end_side_shape_generator.end_shape.cell_text_geometry) {
                     return null;
                 }
 
-                lo_cell_text_geometry = go_end_side_shape_generator.cell_text_geometry.clone();
 
-                lo_cell_text_geometry.text.set(pv_text);
+                //this.clear_group_childrens(go_end_side_shape_generator.group_cell_texts);
 
-                lo_cell_text_material = go_end_side_shape_generator.cell_text_material.clone();
+                //this.removeObjectsWithChildren(go_end_side_shape_generator.end_shape.cell_text_geometry, true);
+                //po_scene.remove(go_end_side_shape_generator.end_shape.cell_text_geometry);
+                //go_end_side_shape_generator.end_shape.cell_text_geometry = null;
 
 
-                lo_cell_text_mesh = new THREE.Mesh(lo_cell_text_geometry, lo_cell_text_material);
+                //lo_cell_text_geometry = go_end_side_shape_generator.cell_text_geometry.clone();
 
+                go_end_side_shape_generator.end_shape.cell_text_geometry.dispose();
+
+                go_end_side_shape_generator.end_shape.cell_text_geometry = new TextGeometry(
+                    pv_text,
+                    {
+                        font: go_end_side_shape_generator.end_shape.cell_text_font,
+                        size: Constants.cell_text_size,
+
+                        height: 0.2
+                        //curveSegments: 12,
+                        //bevelEnabled: true,
+                        //bevelThickness: 0.03,
+                        //bevelSize: 0.02,
+                        //bevelSegments: 5
+
+                    }
+                );
+
+
+
+                //lo_cell_text_geometry.text.set(pv_text);
+
+                lo_cell_text_material = go_end_side_shape_generator.end_shape.cell_text_material.clone();
+
+
+                //if (go_end_side_shape_generator.end_shape.cell_text_mesh) {
+                //    go_end_side_shape_generator.end_shape.cell_text_mesh.dispose();
+                //}
+
+
+
+                lo_cell_text_mesh = new THREE.Mesh(go_end_side_shape_generator.end_shape.cell_text_geometry, lo_cell_text_material);
+                //go_end_side_shape_generator.end_shape.cell_text_mesh = new THREE.Mesh(go_end_side_shape_generator.end_shape.cell_text_geometry, lo_cell_text_material);
+
+                // позиция текста
+                let lv_x = po_left_bottom.x + 2;
+                let lv_y = po_right_top.y - 5;
 
                 lo_cell_text_mesh.position.set(lv_x, lv_y, 0);
+                //go_end_side_shape_generator.end_shape.cell_text_mesh.position.set(lv_x, lv_y, 0);
 
 
 
@@ -2544,8 +2599,9 @@ export function CommonFunc() {
                 //06022025 }
 
 
+                go_end_side_shape_generator.group_cell_texts.add(lo_cell_text_mesh);//07022025
 
-                po_scene.add(lo_cell_text_mesh);
+                //07022025 po_scene.add(lo_cell_text_mesh);
 
                 return lo_cell_text_mesh;
 

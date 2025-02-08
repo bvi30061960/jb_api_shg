@@ -983,7 +983,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     }
 
                     lo_mesh2.renderOrder = 1;
-                    
+
                     //04022025 {
                     lv_mesh_color_name = lv_mesh_color_name + lv_name_left_part + "_" + lv_name_right_part;
                     lo_mesh2.name = lv_mesh_color_name;
@@ -1205,6 +1205,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             let lo_parent;
             let lo_parent_parent;
+            let lv_deleted_spline_num = null;
 
             for (let lv_i = this.ar_selected_segments.length - 1; lv_i >= 0; lv_i--) {
 
@@ -1216,13 +1217,32 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         let lo_parent_parent = this.ar_selected_segments[lv_i].parent.parent;
 
 
+
+
+                        ////08022025 {
+                        //// Удаление сплайна из списка
+                        //for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+                        //    //for (let lv_i = this.ar_splines.length-1; lv_i >= 0; lv_i--) { //11122024
+
+                        //    if (this.ar_splines[lv_i] == lo_parent_parent) {
+
+                        //        this.ar_splines.splice(lv_i, 1);
+                        //        lv_deleted_spline_num = lv_i; //07022025
+                        //    }
+
+                        //}
+                        ////08022025 }
+
+
+
+
                         this.do_delete_spline(lo_parent_parent);
 
                         if (this.shape_amount_curves > 0) {
                             this.shape_amount_curves--; //06122024
                         }
 
-
+                        //08022025 {
                         // Удаление сплайна из списка
                         for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
                             //for (let lv_i = this.ar_splines.length-1; lv_i >= 0; lv_i--) { //11122024
@@ -1230,10 +1250,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                             if (this.ar_splines[lv_i] == lo_parent_parent) {
 
                                 this.ar_splines.splice(lv_i, 1);
+                                lv_deleted_spline_num = lv_i; //07022025
                             }
 
                         }
-
+                        //08022025 }
 
                         // удаление удалённых узлов из списка
                         for (let lv_i = this.ar_splines_nodes.length - 1; lv_i >= 0; lv_i--) {
@@ -1269,8 +1290,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
             go_end_side_shape_generator.end_shape.redraw_end_shape(
-                null,       //this.main,
-                null, null, //pv_added_spline_num, pv_deleted_spline_num,
+                null, //this.main, //07022025 null,       //this.main,
+                null, null,//lv_deleted_spline_num, //pv_added_spline_num, pv_deleted_spline_num,
                 null, null  //po_is_use_data, po_sides_data
             );
 
@@ -1302,8 +1323,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     //);
                     EndShape.prototype.redefine_arr_color_parts(
                         this.main, //12122024
-                        go_up_side_shape_generator.shapes.shape_amount_curves,
-                        go_lateral_side_shape_generator.shapes.shape_amount_curves,
+                        //07022025 {
+                        //go_up_side_shape_generator.shapes.shape_amount_curves,
+                        //go_lateral_side_shape_generator.shapes.shape_amount_curves,
+                        go_up_side_shape_generator.shapes.ar_splines.length,
+                        go_lateral_side_shape_generator.shapes.ar_splines.length,
+                        //07022025 }
                         null, lv_numspline
                     );
                 }
