@@ -131,6 +131,764 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
         //----------------------------------------------------------
 
 
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.draw_cells_contours = function () {
+
+            try {
+
+                //27012025 {
+                ////let lo_renderer = new THREE.WebGLRenderer({});
+                ////let lo_resolution = new THREE.Vector2();
+                ////lo_renderer.getSize(lo_resolution);
+                //27012025 }
+
+                //this.main.renderer.getSize(lo_resolution); //05012025
+
+                //27012025 let lv_color = Constants.shape_countour_color;
+
+                //27012025 {
+                //let lo_material = new LineMaterial({
+                //    resolution: lo_resolution,
+                //    linewidth: 0.7,
+                //    color: lv_color
+                //});
+                //27012025 }
+
+
+                CommonFunc.prototype.clear_group_childrens(this.main.group_end_cells_contours);
+
+
+                //24122024 {
+                //////const geometry = new THREE.SphereGeometry(3);
+                //////const material = new THREE.MeshBasicMaterial({ mcolor: 0xff000f, side: THREE.BackSide });
+                //////let sphere = new THREE.Mesh(geometry, material);
+                //////let lo_sphere_curr = null;
+                //24122024 }
+
+
+                let lv_delta = 0.5;
+                //let lv_delta_y = 0;
+
+
+                if (go_end_side_shape_generator) {
+                    CommonFunc.prototype.clear_group_childrens(go_end_side_shape_generator.group_cell_texts, true, true);
+
+                    //    go_end_side_shape_generator.group_cell_texts.updateMatrix();
+                    //    go_end_side_shape_generator.group_cell_texts.updateMatrixWorld();
+                    //    go_end_side_shape_generator.group_cell_texts.updateWorldMatrix();
+                }
+
+
+                for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {
+                    for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {
+
+                        let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle_by_points(
+                            this.ColorParts[lv_i][lv_j].left_bottom,
+                            this.ColorParts[lv_i][lv_j].right_top,
+                            Constants.color_shape_countour, //lv_color,
+                            this.part_contour_material, //27012025 lo_material,
+                            lv_delta
+                        );
+
+                        lo_rectangle.visible = this.ColorParts[lv_i][lv_j].is_contour_visible;
+                        lo_rectangle.name = lv_i.toString() + "_" + lv_j.toString();
+
+
+                        //06022025 {
+                        // 03022025 {
+                        // Присвоение текстовых меток контурам деталей
+                        let lv_text = (lv_i + 1).toString() + "_" + (lv_j + 1).toString();
+
+
+                        ////// удаление предыдущего объекта текста
+                        ////let lv_name_text = "text_" + lv_text;
+
+                        ////let lo_to_remove = this.main.scene.getObjectByName(lv_name_text);
+                        ////if (lo_to_remove) {
+                        ////    this.main.scene.remove(lo_to_remove);
+                        ////}
+                        ////CommonFunc.prototype.removeObjectsWithChildren(lo_to_remove, true);
+
+
+
+                        if (this.ColorParts[lv_i][lv_j].text_mesh) {
+                            CommonFunc.prototype.disposeTextMesh(this.ColorParts[lv_i][lv_j].text_mesh);
+                        }
+
+
+                        let lo_cell_text_mesh = CommonFunc.prototype.create_text_mesh(
+                            //08022025 this.ColorParts[lv_i][lv_j].text_mesh = CommonFunc.prototype.create_text_mesh(  //08022025
+                            //go_up_side_shape_generator.textfont,
+                            this.main.scene,
+                            lv_text,
+                            this.ColorParts[lv_i][lv_j].left_bottom,
+                            this.ColorParts[lv_i][lv_j].right_top
+                        );
+
+
+                        this.ColorParts[lv_i][lv_j].text_mesh = lo_cell_text_mesh;//08022025 
+
+                        go_end_side_shape_generator.group_cell_texts.add(lo_cell_text_mesh);//07022025
+
+
+
+                        ////08022025 {
+                        //// запоминание в ячейке адреса текстового элемента
+                        //this.ColorParts[lv_i][lv_j].text_mesh = lo_text_mesh;
+
+                        ////08022025 }
+
+
+
+                        //lo_text_mesh.sync(() => {
+                        //    this.main.scene.add(lo_text_mesh);
+                        //});
+
+
+
+
+
+
+
+
+                        //??? this.ColorParts[lv_i][lv_j].text_mesh = lo_text_mesh;
+
+                        //////////////////////////////////////this.main.scene.add(lo_text_mesh);
+                        // 03022025 }
+                        //06022025 }
+
+                        //this.main.scene.add(lo_text_mesh);
+
+                        //if (go_end_side_shape_generator) {
+                        //    go_end_side_shape_generator.scene.add(lo_text_mesh);
+                        //}
+
+
+                        //this.main.group_end_cells_contours.add(lo_text_mesh);
+                        //this.main.group_end_cells_contours.updateMatrix();
+                        //this.main.group_end_cells_contours.updateWorldMatrix();
+                        //this.main.group_end_cells_contours.updateMatrixWorld();
+
+
+                        this.main.group_end_cells_contours.add(lo_rectangle);
+
+
+
+                        ////lo_sphere_curr = sphere.clone();
+                        ////lo_sphere_curr.position.x = this.ColorParts[lv_i][lv_j].left_bottom.x;
+                        ////lo_sphere_curr.position.y = this.ColorParts[lv_i][lv_j].left_bottom.y;
+                        ////lo_sphere_curr.position.z = 0;
+                        ////this.main.group_end_cells_contours.add(lo_sphere_curr);
+
+
+                        ////lo_sphere_curr = sphere.clone();
+                        ////lo_sphere_curr.position.x = this.ColorParts[lv_i][lv_j].right_top.x;
+                        ////lo_sphere_curr.position.y = this.ColorParts[lv_i][lv_j].right_top.y;
+                        ////lo_sphere_curr.position.z = 0;
+                        ////this.main.group_end_cells_contours.add(lo_sphere_curr);
+
+
+                        //if (go_end_side_shape_generator) {
+                        //    go_end_side_shape_generator.render();
+                        //}
+                    }
+                }
+
+
+                //if (go_end_side_shape_generator) {
+                //    go_end_side_shape_generator.render();
+                //}
+
+
+            }
+
+            catch (e) {
+
+                alert('error draw_cells_contours: ' + e.stack);
+
+            }
+
+        }
+        //------------------------------------------------------------------------
+        EndShape.prototype.handle_click_on_end_side = function (po_event) {
+
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+
+
+                while (true) {
+
+                    let { top, left, width, height } = lo_active_side.container.getBoundingClientRect();//07052024
+
+                    let lv_clickMouse = new THREE.Vector2();
+                    lv_clickMouse.x = ((po_event.clientX - left) / width) * 2 - 1;
+                    lv_clickMouse.y = - ((po_event.clientY - top) / height) * 2 + 1;
+
+                    // Определение - щелчок внутри фигуры, или нет
+                    let lo_rectangle = this.main.group_end_shape.children[0];
+
+                    if (lo_rectangle && lo_rectangle.name == cv_rectangle_name) {
+
+                        let lv_isInside = lo_active_side.common_func.IsInsideRectangle(po_event, lo_rectangle /*lo_active_side.rectangle*/)
+
+                        if (!lv_isInside) {
+                            return;
+                        }
+
+                        //// Сброс выделенности всех контуров
+                        //this.set_visible_all_contours(false);
+
+
+                        let lo_rectangle_color_cell = this.get_rectangle_color_cell(po_event);
+
+                        if (lo_rectangle_color_cell) {
+
+                            if (lo_rectangle_color_cell.rectangle) {
+
+                                lo_rectangle_color_cell.rectangle.visible = !lo_rectangle_color_cell.rectangle.visible;
+
+                                let lv_cell_row = lo_rectangle_color_cell.row;
+                                let lv_cell_col = lo_rectangle_color_cell.col;
+
+                                // Запоминание состояния видимости контура в массиве ячеек
+                                this.ColorParts[lv_cell_row][lv_cell_col].is_contour_visible = lo_rectangle_color_cell.rectangle.visible;
+
+
+                                // Сброс выделенности всех предыдущих контуров
+                                this.set_visible_all_contours(lo_rectangle_color_cell.rectangle, lv_cell_row, lv_cell_col, false);
+                            }
+
+                        }
+
+
+
+                    }
+
+
+                    break;
+                }// while
+
+
+                lo_active_side.render();
+
+
+            }
+
+            catch (e) {
+
+                alert('error handle_click_on_end_side: ' + e.stack);
+
+            }
+        }
+
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.init_color_parts = function (pv_up_splines_amount, pv_lateral_splines_amount) {
+
+
+            try {
+
+
+                let lar_array;
+
+                let lv_cols = pv_up_splines_amount + 1;
+                let lv_rows = pv_lateral_splines_amount + 1;
+
+                lar_array = new Array(lv_cols);
+
+                //05022025 let lo_color = new THREE.Color(+Constants.background_color); 
+                let lo_color = new THREE.Color(Constants.background_color); //05022025
+
+
+                for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
+
+                    lar_array[lv_i] = new Array(lv_rows);
+
+                    for (let lv_j = 0; lv_j < lv_rows; lv_j++) {
+                        lar_array[lv_i][lv_j] = new typ_color_part();
+                        lar_array[lv_i][lv_j].left_bottom = new THREE.Vector2(0, 0);
+                        lar_array[lv_i][lv_j].right_top = new THREE.Vector2(0, 0);
+                        lar_array[lv_i][lv_j].cell_color = lo_color;// +Constants.background_color;
+
+                        //let lv_part_label_text = lv_i.toString() + "_" + lv_j.toString();
+                        //lar_array[lv_i][lv_j].text_mesh
+                        //    = CommonFunc.prototype.create_text_mesh(
+                        //        this.main.textfont,
+                        //        lv_part_label_text,
+                        //        lar_array[lv_i][lv_j].text_mesh);
+                        //lar_array[lv_i][lv_j].text_mesh.name = lv_part_label_text;
+                    }
+
+                }
+
+                //08022025 this.ColorParts = lar_array;
+
+                this.ColorParts = JSON.parse(JSON.stringify(lar_array)); // копирование в новую область памяти
+
+                //go_end_side_shape_generator.end_shape.ColorParts = lar_array;//08022025
+            }
+
+            catch (e) {
+
+                alert('error init_color_parts: ' + e.stack);
+
+            }
+
+        }
+
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.get_spline_position_by_side_and_num_spline = function (po_side, pv_num_spline) {
+
+            let lv_result = null;
+
+
+            try {
+
+                if (!po_side) {
+
+                    return lv_result;
+                }
+
+                if (pv_num_spline == null || pv_num_spline < 0) {
+
+                    return lv_result;
+                }
+
+                if (po_side.shapes
+                    && po_side.shapes.ar_splines[pv_num_spline]
+                    && po_side.shapes.ar_splines[pv_num_spline].children[0]
+                    && po_side.shapes.ar_splines[pv_num_spline].children[0].children[0]
+                    && po_side.shapes.ar_splines[pv_num_spline].children[0].children[0].position.x
+                ) {
+                    lv_result = po_side.shapes.ar_splines[pv_num_spline].children[0].children[0].position.x;
+                }
+                else {
+
+                    return lv_result;
+                }
+
+            }
+
+
+            catch (e) {
+
+                alert('error get_spline_position: ' + e.stack);
+
+            }
+
+            return lv_result;
+
+        }
+
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.get_rectangle_color_cell = function (po_event) {
+
+            //let lo_result = null;
+            let lo_result_rectangle = null;
+
+            let lo_pos = null;
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                let lo_container = lo_active_side.container;
+
+                let lo_click_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
+
+                let lv_rows = go_lateral_side_shape_generator.shapes.ar_splines.length + 1;
+                let lv_cols = go_up_side_shape_generator.shapes.ar_splines.length + 1;
+
+
+                let lv_spline_position;
+
+                let lv_prev_spline_position = 0;
+
+                let lv_cell_num_column = null;
+                let lv_cell_num_row = null;
+
+
+
+                for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
+
+                    //координата начальной точки текущей кривой
+                    if (lv_i == lv_rows - 1) {
+                        lv_spline_position = 0;
+                    }
+                    else {
+                        lv_spline_position = go_lateral_side_shape_generator.params.shape_width
+                            - this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
+                    }
+
+                    if (lo_click_pos.y >= lv_spline_position) {
+
+                        lv_cell_num_row = lv_i;
+
+                        break;
+                    }
+                }
+
+                if (lv_cell_num_row == null) {
+                    return null;
+                }
+
+                //----------
+
+                for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
+
+                    //координата начальной точки текущей кривой
+
+                    if (lv_i == lv_cols - 1) {
+                        lv_spline_position = go_up_side_shape_generator.params.shape_width;
+                    }
+                    else {
+                        lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_up_side_shape_generator, lv_i);
+                    }
+
+
+                    if (lo_click_pos.x <= lv_spline_position) {
+
+                        lv_cell_num_column = lv_i;
+                        break;
+                    }
+                }
+
+                if (lv_cell_num_column == null) {
+                    return null;
+                }
+
+                // Формирование имени контура по номеру строки и столбца
+
+                let lv_rectangle_name = this.main.common_func.get_name_by_numrow_numcol(lv_cell_num_row, lv_cell_num_column);
+
+                // Чтение объекта контура по имени
+                if (lv_rectangle_name) {
+
+                    lo_result_rectangle = this.main.group_end_cells_contours.getObjectByName(lv_rectangle_name);
+                }
+
+                return { rectangle: lo_result_rectangle, row: lv_cell_num_row, col: lv_cell_num_column }
+            }
+
+            catch (e) {
+
+                alert('error get_rectangle_color_cell: ' + e.stack);
+
+            }
+        }
+
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.loadFont = function () {
+
+            try {
+
+                const loader = new FontLoader();
+                loader.load('fonts/optimer_regular.typeface.json',
+
+                    function (response) {
+
+                        go_end_side_shape_generator.end_shape.cell_text_font = response;
+                        console.warn("font загружен");
+
+
+                        go_end_side_shape_generator.end_shape.cell_text_geometry = new TextGeometry(
+                            "", //text,
+                            {
+                                font: go_end_side_shape_generator.end_shape.cell_text_font,
+                                size: Constants.cell_text_size
+
+                                //depth: depth,
+                                //curveSegments: curveSegments,
+
+                                //bevelThickness: bevelThickness,
+                                //bevelSize: bevelSize,
+                                //bevelEnabled: bevelEnabled
+
+                            }
+
+                        );
+
+                    });
+            }
+
+            catch (e) {
+
+                alert('error set_color_to_rectangle_cell: ' + e.stack);
+
+            }
+        }
+
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.refresh_end_shapes = function () {
+
+            try {
+
+                if (!this.ColorParts || !this.ColorParts[0]) { //27012025 
+                    return;
+                }
+
+                let lv_nrows = this.ColorParts.length;
+                let lv_ncols = this.ColorParts[0].length;
+                let lv_color = null;
+
+                CommonFunc.prototype.clear_group_childrens(this.main.end_group_cells_mesh);
+
+
+                for (let lv_i = 0; lv_i < lv_nrows; lv_i++) {
+
+                    for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
+
+                        //if (this.ColorParts[lv_i][lv_j].is_contour_visible) {
+
+                        lv_color = this.ColorParts[lv_i][lv_j].cell_color;
+                        this.set_color_to_rectangle_cell(lv_color, lv_i, lv_j);
+                        //}
+
+                    }
+
+                }
+            }
+
+            catch (e) {
+
+                alert('error refresh_end_shapes: ' + e.stack);
+
+            }
+        }
+
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.redefine_arr_color_parts = function (
+            po_main,
+            pv_up_splines_amount, pv_lateral_splines_amount,
+            pv_added_spline_num, pv_deleted_spline_num
+
+        ) {
+
+
+            let lv_up_added_spline_num = null;
+            let lv_up_deleted_spline_num = null;
+            let lv_lateral_added_spline_num = null;
+            let lv_lateral_deleted_spline_num = null;
+
+
+
+            try {
+
+                //08022025 {
+                //27012025 {
+                //if (!this.ColorParts) {
+                //    this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
+                //    return;
+                //}
+
+                //08022025 if (go_end_side_shape_generator) {
+
+                //08022025  if (!go_end_side_shape_generator.end_shape.ColorParts) {
+                if (!this.ColorParts) {  //02082025
+                    this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
+                    return;
+                }
+                //}
+                //else {
+
+                //    return;
+                //}
+
+                //27012025 }
+                //08022025 }
+
+                switch (po_main) {
+
+                    case go_up_side_shape_generator:
+                        lv_up_added_spline_num = pv_added_spline_num;
+                        lv_up_deleted_spline_num = pv_deleted_spline_num;
+                        break;
+
+                    case go_lateral_side_shape_generator:
+                        lv_lateral_added_spline_num = pv_added_spline_num;
+                        lv_lateral_deleted_spline_num = pv_deleted_spline_num;
+                        break;
+
+                    default:
+                        return;
+                        break;
+                }
+
+                //27012025 {
+                ////if (!this.ColorParts) {
+
+                ////    this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
+
+                ////    return;
+
+                ////}
+                //27012025 }
+
+
+                let lv_shape_up_parts_amount = pv_up_splines_amount + 1;
+                let lv_shape_lateral_parts_amount = pv_lateral_splines_amount + 1;
+
+                let lv_color_up_parts_amount = this.ColorParts[0].length;
+                let lv_color_lateral_parts_amount = this.ColorParts.length;
+
+                let lar_newRow = null;
+
+
+
+                //29122024 let lar_cop_color_parts = Array.from(this.ColorParts, row => [...row]);//@@@ need correct
+
+                let lar_cop_color_parts = JSON.parse(JSON.stringify(this.ColorParts));//29122024
+
+
+
+
+                let lv_is_changed = false;
+
+                // добавление строки
+                //if (typeof lv_lateral_added_spline_num !== "undefined"
+                //    && typeof lv_lateral_added_spline_num !== null
+                //)
+
+                if (typeof lv_lateral_added_spline_num === "number") { //07022025
+
+                    if (lv_lateral_added_spline_num >= 0) {
+
+                        // 30122024 {
+                        //lar_newRow = lar_cop_color_parts[lv_lateral_added_spline_num];
+                        //lar_cop_color_parts.splice(lv_lateral_added_spline_num, 0, lar_newRow);
+
+                        //lar_newRow = lar_cop_color_parts[lv_lateral_added_spline_num].slice();
+                        ////lar_cop_color_parts[lv_lateral_added_spline_num + 1] = lar_newRow;
+                        //lar_cop_color_parts[lar_cop_color_parts.length] = lar_newRow;
+
+
+
+
+                        //lar_newRow = lar_cop_color_parts[lv_lateral_added_spline_num].map(item => item);
+                        //lar_cop_color_parts[lar_cop_color_parts.length] = lar_newRow;
+
+
+                        lar_newRow = JSON.parse(JSON.stringify(lar_cop_color_parts[lv_lateral_added_spline_num]));
+                        lar_cop_color_parts[lar_cop_color_parts.length] = lar_newRow;
+
+
+
+                        //3012024 }
+
+                        lv_is_changed = true;
+                    }
+                }
+
+
+                // удаление строки
+                //07022025 if (lv_lateral_deleted_spline_num) {
+                //if (typeof lv_lateral_deleted_spline_num !== "undefined"
+                //    && typeof lv_lateral_deleted_spline_num !== null
+                //) {
+
+                if (typeof lv_lateral_deleted_spline_num === "number") {
+                    if (lv_lateral_deleted_spline_num >= 0) {
+
+                        for (let lv_j = 0; lv_j < lar_cop_color_parts.length; lv_j++) {
+                            // Удаляем текстовые элементы из удаляемой строки
+                            //this.main.common_func.removeObjectsWithChildren(lar_cop_color_parts[lv_lateral_deleted_spline_num][lv_j].text_mesh, true);
+
+                            this.main.common_func.disposeTextMesh(lar_cop_color_parts[lv_lateral_deleted_spline_num][lv_j].text_mesh, true);
+
+                        }
+
+
+                        lar_cop_color_parts.splice(lv_lateral_deleted_spline_num, 1); // Удаляем строку с индексом pv_deleted_up_spline_num
+                        lv_is_changed = true;
+
+                    }
+                }
+
+
+
+
+                // добавление столбца
+                //07022025 if (lv_up_added_spline_num) {
+                //if (typeof lv_up_added_spline_num !== "undefined"
+                //    && typeof lv_up_added_spline_num !== null
+
+                //)
+
+
+                if (typeof lv_up_added_spline_num === "number") { //07022025
+                    if (lv_up_added_spline_num >= 0) {
+
+
+                        // копирование столбца
+                        //29122024 let lar_column = lar_cop_color_parts.map(row => row[lv_up_added_spline_num]);
+
+                        let lar_column = lar_cop_color_parts.map(row => JSON.parse(JSON.stringify(row[lv_up_added_spline_num]))); //29122024
+
+                        // добавление
+                        for (let lv_i = 0; lv_i < lar_cop_color_parts.length; lv_i++) {
+                            lar_cop_color_parts[lv_i].splice(lv_up_added_spline_num, 0, lar_column[lv_i]);
+
+                        }
+                        lv_is_changed = true;
+
+                    }
+                }
+
+
+                // удаление столбца
+                //07022025 if (lv_up_deleted_spline_num) {
+                //if (typeof lv_up_deleted_spline_num !== "undefined"
+                //    && typeof lv_up_deleted_spline_num !== null
+
+                //)
+
+                if (typeof lv_up_deleted_spline_num === "number") { //07022025
+
+                    if (lv_up_deleted_spline_num >= 0) {
+
+
+                        //let lv_i = 0;
+
+                        for (let lar_row of lar_cop_color_parts) {
+
+                            // Удаляем текстовый элемент из удаляемого столбца
+                            //this.main.common_func.removeObjectsWithChildren(lar_row[lv_up_deleted_spline_num].text_mesh, true);
+                            this.main.common_func.disposeTextMesh(lar_row[lv_up_deleted_spline_num].text_mesh, true);
+
+                            lar_row.splice(lv_up_deleted_spline_num, 1); // Удаляем элемент из каждой строки
+
+                            //lv_i++;
+                        }
+                        lv_is_changed = true;
+
+                    }
+                }
+
+                if (lv_is_changed) {
+                    //08022025 this.ColorParts = lar_cop_color_parts;
+
+                    this.ColorParts = JSON.parse(JSON.stringify(lar_cop_color_parts));//08022025
+
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error redefine_arr_color_parts: ' + e.stack);
+
+            }
+
+        }
+
         //------------------------------------------------------------------------
         EndShape.prototype.redraw_end_shape = function (
             po_main,
@@ -358,6 +1116,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 // Задание вертикальных линий по x
                 //------------------------------------------------------------------------------------
 
+
                 for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
 
                     lo_line_curr = lo_line_vert.clone();
@@ -370,12 +1129,24 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                         lv_cell_position = 0;// go_up_side_shape_generator.params.shape_width;
 
+
                         if (this.ColorParts) { //27012025 
-                            if (this.ColorParts[0]) { //27012025 
+                            if (this.ColorParts[0]) { //27012025
+
+
+                                //08022025 {
+                                //for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {  //30122024
+                                //    this.ColorParts[lv_i][lv_j].left_bottom.x = lv_cell_position;
+                                //}
 
                                 for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {  //30122024
-                                    this.ColorParts[lv_i][lv_j].left_bottom.x = lv_cell_position;
+                                    this.ColorParts[lv_j][lv_i].left_bottom.x = lv_cell_position;
                                 }
+
+
+                                //08022025 }
+
+
                             }
                         }
 
@@ -390,7 +1161,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         if (lv_i == lv_cols - 1) {
 
                             if (this.ColorParts) { //27012025 
-                                if (this.ColorParts[0]) { //27012025 
+                                if (this.ColorParts[0]) { //27012025
+
 
                                     for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
 
@@ -424,11 +1196,9 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                                     for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
 
-                                        this.ColorParts[lv_j][lv_i - 1].right_top.x = lv_prev_line_position; // lv_line_position;
-
+                                        this.ColorParts[lv_j][lv_i - 1].right_top.x = lv_prev_line_position; 
                                         this.ColorParts[lv_j][lv_i].right_top.x = lv_line_position;
                                         this.ColorParts[lv_j][lv_i].left_bottom.x = lv_prev_line_position;
-
 
                                     }
                                 }
@@ -473,771 +1243,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
         }
 
-
-
-        //------------------------------------------------------------------------
-        EndShape.prototype.draw_cells_contours = function () {
-
-            try {
-
-                //27012025 {
-                ////let lo_renderer = new THREE.WebGLRenderer({});
-                ////let lo_resolution = new THREE.Vector2();
-                ////lo_renderer.getSize(lo_resolution);
-                //27012025 }
-
-                //this.main.renderer.getSize(lo_resolution); //05012025
-
-                //27012025 let lv_color = Constants.shape_countour_color;
-
-                //27012025 {
-                //let lo_material = new LineMaterial({
-                //    resolution: lo_resolution,
-                //    linewidth: 0.7,
-                //    color: lv_color
-                //});
-                //27012025 }
-
-
-                CommonFunc.prototype.clear_group_childrens(this.main.group_end_cells_contours);
-
-
-                //24122024 {
-                //////const geometry = new THREE.SphereGeometry(3);
-                //////const material = new THREE.MeshBasicMaterial({ mcolor: 0xff000f, side: THREE.BackSide });
-                //////let sphere = new THREE.Mesh(geometry, material);
-                //////let lo_sphere_curr = null;
-                //24122024 }
-
-
-                let lv_delta = 0.5;
-                //let lv_delta_y = 0;
-
-
-                if (go_end_side_shape_generator) {
-                    CommonFunc.prototype.clear_group_childrens(go_end_side_shape_generator.group_cell_texts, true, true);
-
-                    //    go_end_side_shape_generator.group_cell_texts.updateMatrix();
-                    //    go_end_side_shape_generator.group_cell_texts.updateMatrixWorld();
-                    //    go_end_side_shape_generator.group_cell_texts.updateWorldMatrix();
-                }
-
-
-                for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {
-                    for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {
-
-                        let lo_rectangle = CommonFunc.prototype.get_drawing_rectangle_by_points(
-                            this.ColorParts[lv_i][lv_j].left_bottom,
-                            this.ColorParts[lv_i][lv_j].right_top,
-                            Constants.color_shape_countour, //lv_color,
-                            this.part_contour_material, //27012025 lo_material,
-                            lv_delta
-                        );
-
-                        lo_rectangle.visible = this.ColorParts[lv_i][lv_j].is_contour_visible;
-                        lo_rectangle.name = lv_i.toString() + "_" + lv_j.toString();
-
-
-                        //06022025 {
-                        // 03022025 {
-                        // Присвоение текстовых меток контурам деталей
-                        let lv_text = (lv_i + 1).toString() + "_" + (lv_j + 1).toString();
-
-
-                        ////// удаление предыдущего объекта текста
-                        ////let lv_name_text = "text_" + lv_text;
-
-                        ////let lo_to_remove = this.main.scene.getObjectByName(lv_name_text);
-                        ////if (lo_to_remove) {
-                        ////    this.main.scene.remove(lo_to_remove);
-                        ////}
-                        ////CommonFunc.prototype.removeObjectsWithChildren(lo_to_remove, true);
-
-
-
-                        if (this.ColorParts[lv_i][lv_j].text_mesh) {
-                            CommonFunc.prototype.disposeTextMesh(this.ColorParts[lv_i][lv_j].text_mesh);
-                        }
-
-
-                        let lo_cell_text_mesh = CommonFunc.prototype.create_text_mesh(
-                        //08022025 this.ColorParts[lv_i][lv_j].text_mesh = CommonFunc.prototype.create_text_mesh(  //08022025
-                            //go_up_side_shape_generator.textfont,
-                            this.main.scene,
-                            lv_text,
-                            this.ColorParts[lv_i][lv_j].left_bottom,
-                            this.ColorParts[lv_i][lv_j].right_top
-                        );
-
-
-                        this.ColorParts[lv_i][lv_j].text_mesh = lo_cell_text_mesh;//08022025 
-
-                        go_end_side_shape_generator.group_cell_texts.add(lo_cell_text_mesh);//07022025
-
-
-
-                        ////08022025 {
-                        //// запоминание в ячейке адреса текстового элемента
-                        //this.ColorParts[lv_i][lv_j].text_mesh = lo_text_mesh;
-
-                        ////08022025 }
-
-
-
-                        //lo_text_mesh.sync(() => {
-                        //    this.main.scene.add(lo_text_mesh);
-                        //});
-
-
-
-
-
-
-
-
-                        //??? this.ColorParts[lv_i][lv_j].text_mesh = lo_text_mesh;
-
-                        //////////////////////////////////////this.main.scene.add(lo_text_mesh);
-                        // 03022025 }
-                        //06022025 }
-
-                        //this.main.scene.add(lo_text_mesh);
-
-                        //if (go_end_side_shape_generator) {
-                        //    go_end_side_shape_generator.scene.add(lo_text_mesh);
-                        //}
-
-
-                        //this.main.group_end_cells_contours.add(lo_text_mesh);
-                        //this.main.group_end_cells_contours.updateMatrix();
-                        //this.main.group_end_cells_contours.updateWorldMatrix();
-                        //this.main.group_end_cells_contours.updateMatrixWorld();
-
-
-                        this.main.group_end_cells_contours.add(lo_rectangle);
-
-
-
-                        ////lo_sphere_curr = sphere.clone();
-                        ////lo_sphere_curr.position.x = this.ColorParts[lv_i][lv_j].left_bottom.x;
-                        ////lo_sphere_curr.position.y = this.ColorParts[lv_i][lv_j].left_bottom.y;
-                        ////lo_sphere_curr.position.z = 0;
-                        ////this.main.group_end_cells_contours.add(lo_sphere_curr);
-
-
-                        ////lo_sphere_curr = sphere.clone();
-                        ////lo_sphere_curr.position.x = this.ColorParts[lv_i][lv_j].right_top.x;
-                        ////lo_sphere_curr.position.y = this.ColorParts[lv_i][lv_j].right_top.y;
-                        ////lo_sphere_curr.position.z = 0;
-                        ////this.main.group_end_cells_contours.add(lo_sphere_curr);
-
-
-                        //if (go_end_side_shape_generator) {
-                        //    go_end_side_shape_generator.render();
-                        //}
-                    }
-                }
-
-
-                //if (go_end_side_shape_generator) {
-                //    go_end_side_shape_generator.render();
-                //}
-
-
-            }
-
-            catch (e) {
-
-                alert('error draw_cells_contours: ' + e.stack);
-
-            }
-
-        }
-
-        //------------------------------------------------------------------------
-        EndShape.prototype.redefine_arr_color_parts = function (
-            po_main,
-            pv_up_splines_amount, pv_lateral_splines_amount,
-            pv_added_spline_num, pv_deleted_spline_num
-
-        ) {
-
-
-            let lv_up_added_spline_num = null;
-            let lv_up_deleted_spline_num = null;
-            let lv_lateral_added_spline_num = null;
-            let lv_lateral_deleted_spline_num = null;
-
-
-
-            try {
-
-                //08022025 {
-                //27012025 {
-                //if (!this.ColorParts) {
-                //    this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
-                //    return;
-                //}
-
-                //08022025 if (go_end_side_shape_generator) {
-
-                    //08022025  if (!go_end_side_shape_generator.end_shape.ColorParts) {
-                    if (!this.ColorParts) {  //02082025
-                        this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
-                        return;
-                    }
-                //}
-                //else {
-
-                //    return;
-                //}
-
-                //27012025 }
-                //08022025 }
-
-                switch (po_main) {
-
-                    case go_up_side_shape_generator:
-                        lv_up_added_spline_num = pv_added_spline_num;
-                        lv_up_deleted_spline_num = pv_deleted_spline_num;
-                        break;
-
-                    case go_lateral_side_shape_generator:
-                        lv_lateral_added_spline_num = pv_added_spline_num;
-                        lv_lateral_deleted_spline_num = pv_deleted_spline_num;
-                        break;
-
-                    default:
-                        return;
-                        break;
-                }
-
-                //27012025 {
-                ////if (!this.ColorParts) {
-
-                ////    this.init_color_parts(pv_up_splines_amount, pv_lateral_splines_amount);
-
-                ////    return;
-
-                ////}
-                //27012025 }
-
-
-                let lv_shape_up_parts_amount = pv_up_splines_amount + 1;
-                let lv_shape_lateral_parts_amount = pv_lateral_splines_amount + 1;
-
-                let lv_color_up_parts_amount = this.ColorParts[0].length;
-                let lv_color_lateral_parts_amount = this.ColorParts.length;
-
-                let lar_newRow = null;
-
-
-
-                //29122024 let lar_cop_color_parts = Array.from(this.ColorParts, row => [...row]);//@@@ need correct
-
-                let lar_cop_color_parts = JSON.parse(JSON.stringify(this.ColorParts));//29122024
-
-
-
-
-                let lv_is_changed = false;
-
-                // добавление строки
-                //if (typeof lv_lateral_added_spline_num !== "undefined"
-                //    && typeof lv_lateral_added_spline_num !== null
-                //)
-
-                if (typeof lv_lateral_added_spline_num === "number") { //07022025
-
-                    if (lv_lateral_added_spline_num >= 0) {
-
-                        // 30122024 {
-                        //lar_newRow = lar_cop_color_parts[lv_lateral_added_spline_num];
-                        //lar_cop_color_parts.splice(lv_lateral_added_spline_num, 0, lar_newRow);
-
-                        //lar_newRow = lar_cop_color_parts[lv_lateral_added_spline_num].slice();
-                        ////lar_cop_color_parts[lv_lateral_added_spline_num + 1] = lar_newRow;
-                        //lar_cop_color_parts[lar_cop_color_parts.length] = lar_newRow;
-
-
-
-
-                        //lar_newRow = lar_cop_color_parts[lv_lateral_added_spline_num].map(item => item);
-                        //lar_cop_color_parts[lar_cop_color_parts.length] = lar_newRow;
-
-
-                        lar_newRow = JSON.parse(JSON.stringify(lar_cop_color_parts[lv_lateral_added_spline_num]));
-                        lar_cop_color_parts[lar_cop_color_parts.length] = lar_newRow;
-
-
-
-                        //3012024 }
-
-                        lv_is_changed = true;
-                    }
-                }
-
-
-                // удаление строки
-                //07022025 if (lv_lateral_deleted_spline_num) {
-                //if (typeof lv_lateral_deleted_spline_num !== "undefined"
-                //    && typeof lv_lateral_deleted_spline_num !== null
-                //) {
-
-                if (typeof lv_lateral_deleted_spline_num === "number") {
-                    if (lv_lateral_deleted_spline_num >= 0) {
-                        lar_cop_color_parts.splice(lv_lateral_deleted_spline_num, 1); // Удаляем строку с индексом pv_deleted_up_spline_num
-                        lv_is_changed = true;
-
-                    }
-                }
-
-
-
-
-                // добавление столбца
-                //07022025 if (lv_up_added_spline_num) {
-                //if (typeof lv_up_added_spline_num !== "undefined"
-                //    && typeof lv_up_added_spline_num !== null
-
-                //)
-
-
-                if (typeof lv_up_added_spline_num === "number") { //07022025
-                    if (lv_up_added_spline_num >= 0) {
-
-
-                        // копирование столбца
-                        //29122024 let lar_column = lar_cop_color_parts.map(row => row[lv_up_added_spline_num]);
-
-                        let lar_column = lar_cop_color_parts.map(row => JSON.parse(JSON.stringify(row[lv_up_added_spline_num]))); //29122024
-
-                        // добавление
-                        for (let lv_i = 0; lv_i < lar_cop_color_parts.length; lv_i++) {
-                            lar_cop_color_parts[lv_i].splice(lv_up_added_spline_num, 0, lar_column[lv_i]);
-                            
-                        }
-                        lv_is_changed = true;
-
-                    }
-                }
-
-
-                // удаление столбца
-                //07022025 if (lv_up_deleted_spline_num) {
-                //if (typeof lv_up_deleted_spline_num !== "undefined"
-                //    && typeof lv_up_deleted_spline_num !== null
-
-                //)
-
-                if (typeof lv_up_deleted_spline_num === "number") { //07022025
-
-                    if (lv_up_deleted_spline_num >= 0) {
-
-
-                        //let lv_i = 0;
-                        
-                        for (let lar_row of lar_cop_color_parts) {
-
-                            // Удаляем текстовый элемент из удаляемого столбца
-                            this.main.common_func.removeObjectsWithChildren(lar_row[lv_up_deleted_spline_num].text_mesh, true);
-
-                            lar_row.splice(lv_up_deleted_spline_num, 1); // Удаляем элемент из каждой строки
-
-                            //lv_i++;
-                        }
-                        lv_is_changed = true;
-
-                    }
-                }
-
-                if (lv_is_changed) {
-                    //08022025 this.ColorParts = lar_cop_color_parts;
-
-                    this.ColorParts = JSON.parse(JSON.stringify(lar_cop_color_parts));//08022025
-
-                }
-
-            }
-
-            catch (e) {
-
-                alert('error redefine_arr_color_parts: ' + e.stack);
-
-            }
-
-        }
-
-        //------------------------------------------------------------------------
-        EndShape.prototype.init_color_parts = function (pv_up_splines_amount, pv_lateral_splines_amount) {
-
-
-            try {
-
-
-                let lar_array;
-
-                let lv_cols = pv_up_splines_amount + 1;
-                let lv_rows = pv_lateral_splines_amount + 1;
-
-                lar_array = new Array(lv_cols);
-
-                //05022025 let lo_color = new THREE.Color(+Constants.background_color); 
-                let lo_color = new THREE.Color(Constants.background_color); //05022025
-
-
-                for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
-
-                    lar_array[lv_i] = new Array(lv_rows);
-
-                    for (let lv_j = 0; lv_j < lv_rows; lv_j++) {
-                        lar_array[lv_i][lv_j] = new typ_color_part();
-                        lar_array[lv_i][lv_j].left_bottom = new THREE.Vector2(0, 0);
-                        lar_array[lv_i][lv_j].right_top = new THREE.Vector2(0, 0);
-                        lar_array[lv_i][lv_j].cell_color = lo_color;// +Constants.background_color;
-
-                        //let lv_part_label_text = lv_i.toString() + "_" + lv_j.toString();
-                        //lar_array[lv_i][lv_j].text_mesh
-                        //    = CommonFunc.prototype.create_text_mesh(
-                        //        this.main.textfont,
-                        //        lv_part_label_text,
-                        //        lar_array[lv_i][lv_j].text_mesh);
-                        //lar_array[lv_i][lv_j].text_mesh.name = lv_part_label_text;
-                    }
-
-                }
-
-                //08022025 this.ColorParts = lar_array;
-
-                this.ColorParts = JSON.parse(JSON.stringify(lar_array)); // копирование в новую область памяти
-
-                //go_end_side_shape_generator.end_shape.ColorParts = lar_array;//08022025
-            }
-
-            catch (e) {
-
-                alert('error init_color_parts: ' + e.stack);
-
-            }
-
-        }
-
-        //------------------------------------------------------------------------
-        EndShape.prototype.handle_click_on_end_side = function (po_event) {
-
-
-            try {
-
-                let lo_active_side = get_active_side_shape_generator();
-
-
-
-                while (true) {
-
-                    let { top, left, width, height } = lo_active_side.container.getBoundingClientRect();//07052024
-
-                    let lv_clickMouse = new THREE.Vector2();
-                    lv_clickMouse.x = ((po_event.clientX - left) / width) * 2 - 1;
-                    lv_clickMouse.y = - ((po_event.clientY - top) / height) * 2 + 1;
-
-                    // Определение - щелчок внутри фигуры, или нет
-                    let lo_rectangle = this.main.group_end_shape.children[0];
-
-                    if (lo_rectangle && lo_rectangle.name == cv_rectangle_name) {
-
-                        let lv_isInside = lo_active_side.common_func.IsInsideRectangle(po_event, lo_rectangle /*lo_active_side.rectangle*/)
-
-                        if (!lv_isInside) {
-                            return;
-                        }
-
-                        //// Сброс выделенности всех контуров
-                        //this.set_visible_all_contours(false);
-
-
-                        let lo_rectangle_color_cell = this.get_rectangle_color_cell(po_event);
-
-                        if (lo_rectangle_color_cell) {
-
-                            if (lo_rectangle_color_cell.rectangle) {
-
-                                lo_rectangle_color_cell.rectangle.visible = !lo_rectangle_color_cell.rectangle.visible;
-
-                                let lv_cell_row = lo_rectangle_color_cell.row;
-                                let lv_cell_col = lo_rectangle_color_cell.col;
-
-                                // Запоминание состояния видимости контура в массиве ячеек
-                                this.ColorParts[lv_cell_row][lv_cell_col].is_contour_visible = lo_rectangle_color_cell.rectangle.visible;
-
-
-                                // Сброс выделенности всех предыдущих контуров
-                                this.set_visible_all_contours(lo_rectangle_color_cell.rectangle, lv_cell_row, lv_cell_col, false);
-                            }
-
-                        }
-
-
-
-                    }
-
-
-                    break;
-                }// while
-
-
-                lo_active_side.render();
-
-
-            }
-
-            catch (e) {
-
-                alert('error handle_click_on_end_side: ' + e.stack);
-
-            }
-        }
-        //------------------------------------------------------------------------
-        EndShape.prototype.set_visible_all_contours = function (po_rectangle, pv_cell_row, pv_cell_col, pv_is_visible) {
-
-            try {
-
-
-                //28012025 this.main.group_end_cells_contours
-
-                for (let lo_mesh of this.main.group_end_cells_contours.children) {
-
-
-                    if (lo_mesh.type == "Line2") {
-
-                        if (lo_mesh !== po_rectangle) {
-
-                            lo_mesh.visible = pv_is_visible;
-                        }
-                    }
-
-                }
-
-                this.set_visible_all_color_cells(pv_cell_row, pv_cell_col, pv_is_visible, pv_is_visible);
-
-            }
-
-            catch (e) {
-
-                alert('error reset_all_contours: ' + e.stack);
-
-            }
-        }
-
-
-        //------------------------------------------------------------------------
-        EndShape.prototype.set_visible_all_color_cells = function (pv_cell_row, pv_cell_col, pv_is_visible) {
-
-            try {
-
-                let lv_nrows = this.ColorParts.length;
-                let lv_ncols = this.ColorParts[0].length;
-
-                for (let lv_i = 0; lv_i < lv_nrows; lv_i++) {
-
-                    for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
-
-                        if (lv_i !== pv_cell_row || lv_j !== pv_cell_col) {
-
-                            this.ColorParts[lv_i][lv_j].is_contour_visible = pv_is_visible;
-                        }
-                    }
-                }
-            }
-
-            catch (e) {
-
-                alert('error set_visible_all_color_cells: ' + e.stack);
-
-            }
-        }
-
-        //------------------------------------------------------------------------
-        EndShape.prototype.get_rectangle_color_cell = function (po_event) {
-
-            //let lo_result = null;
-            let lo_result_rectangle = null;
-
-            let lo_pos = null;
-            try {
-
-                let lo_active_side = get_active_side_shape_generator();
-
-                let lo_container = lo_active_side.container;
-
-                let lo_click_pos = this.main.common_func.recalc_coord_event2world(this.main.camera, lo_container, po_event.clientX, po_event.clientY); //06052024
-
-                let lv_rows = go_lateral_side_shape_generator.shapes.ar_splines.length + 1;
-                let lv_cols = go_up_side_shape_generator.shapes.ar_splines.length + 1;
-
-
-                let lv_spline_position;
-
-                let lv_prev_spline_position = 0;
-
-                let lv_cell_num_column = null;
-                let lv_cell_num_row = null;
-
-
-
-                for (let lv_i = 0; lv_i < lv_rows; lv_i++) {
-
-                    //координата начальной точки текущей кривой
-                    if (lv_i == lv_rows - 1) {
-                        lv_spline_position = 0;
-                    }
-                    else {
-                        lv_spline_position = go_lateral_side_shape_generator.params.shape_width
-                            - this.get_spline_position_by_side_and_num_spline(go_lateral_side_shape_generator, lv_i);
-                    }
-
-                    if (lo_click_pos.y >= lv_spline_position) {
-
-                        lv_cell_num_row = lv_i;
-
-                        break;
-                    }
-                }
-
-                if (lv_cell_num_row == null) {
-                    return null;
-                }
-
-                //----------
-
-                for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
-
-                    //координата начальной точки текущей кривой
-
-                    if (lv_i == lv_cols - 1) {
-                        lv_spline_position = go_up_side_shape_generator.params.shape_width;
-                    }
-                    else {
-                        lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_up_side_shape_generator, lv_i);
-                    }
-
-
-                    if (lo_click_pos.x <= lv_spline_position) {
-
-                        lv_cell_num_column = lv_i;
-                        break;
-                    }
-                }
-
-                if (lv_cell_num_column == null) {
-                    return null;
-                }
-
-                // Формирование имени контура по номеру строки и столбца
-
-                let lv_rectangle_name = this.main.common_func.get_name_by_numrow_numcol(lv_cell_num_row, lv_cell_num_column);
-
-                // Чтение объекта контура по имени
-                if (lv_rectangle_name) {
-
-                    lo_result_rectangle = this.main.group_end_cells_contours.getObjectByName(lv_rectangle_name);
-                }
-
-                return { rectangle: lo_result_rectangle, row: lv_cell_num_row, col: lv_cell_num_column }
-            }
-
-            catch (e) {
-
-                alert('error get_rectangle_color_cell: ' + e.stack);
-
-            }
-        }
-
-        //------------------------------------------------------------------------
-        EndShape.prototype.refresh_end_shapes = function () {
-
-            try {
-
-                if (!this.ColorParts || !this.ColorParts[0]) { //27012025 
-                    return;
-                }
-
-                let lv_nrows = this.ColorParts.length;
-                let lv_ncols = this.ColorParts[0].length;
-                let lv_color = null;
-
-                CommonFunc.prototype.clear_group_childrens(this.main.end_group_cells_mesh);
-
-
-                for (let lv_i = 0; lv_i < lv_nrows; lv_i++) {
-
-                    for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
-
-                        //if (this.ColorParts[lv_i][lv_j].is_contour_visible) {
-
-                        lv_color = this.ColorParts[lv_i][lv_j].cell_color;
-                        this.set_color_to_rectangle_cell(lv_color, lv_i, lv_j);
-                        //}
-
-                    }
-
-                }
-            }
-
-            catch (e) {
-
-                alert('error refresh_end_shapes: ' + e.stack);
-
-            }
-        }
-
-
-        //------------------------------------------------------------------------
-        EndShape.prototype.set_color_to_selected_rectangle_cells = function (pv_color_value) {
-
-            let lv_i_result = null;
-            let lv_j_result = null;
-
-            try {
-
-
-                let lv_nrows = this.ColorParts.length;
-                let lv_ncols = this.ColorParts[0].length;
-
-                let lv_is_break = false;
-
-                for (let lv_i = 0; lv_i < lv_nrows; lv_i++) {
-                    for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
-
-                        if (this.ColorParts[lv_i][lv_j].is_contour_visible) {
-                            this.set_color_to_rectangle_cell(pv_color_value, lv_i, lv_j);
-                            lv_i_result = lv_i;
-                            lv_j_result = lv_j;
-                            lv_is_break = true;
-                            break;
-                        }
-
-                    }
-                    if (lv_is_break) {
-                        break;
-                    }
-                }
-
-
-
-            }
-
-            catch (e) {
-
-                alert('error set_color_to_selected_rectangle_cells: ' + e.stack);
-
-            }
-
-            return {
-                cell_num_row: lv_i_result,
-                cell_num_col: lv_j_result
-            }
-
-        }
 
 
         //------------------------------------------------------------------------
@@ -1315,90 +1320,116 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
         }
 
+
+
         //------------------------------------------------------------------------
-        EndShape.prototype.loadFont = function () {
+        EndShape.prototype.set_color_to_selected_rectangle_cells = function (pv_color_value) {
+
+            let lv_i_result = null;
+            let lv_j_result = null;
 
             try {
 
-                const loader = new FontLoader();
-                loader.load('fonts/optimer_regular.typeface.json',
 
-                    function (response) {
+                let lv_nrows = this.ColorParts.length;
+                let lv_ncols = this.ColorParts[0].length;
 
-                        go_end_side_shape_generator.end_shape.cell_text_font = response;
-                        console.warn("font загружен");
+                let lv_is_break = false;
+
+                for (let lv_i = 0; lv_i < lv_nrows; lv_i++) {
+                    for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
+
+                        if (this.ColorParts[lv_i][lv_j].is_contour_visible) {
+                            this.set_color_to_rectangle_cell(pv_color_value, lv_i, lv_j);
+                            lv_i_result = lv_i;
+                            lv_j_result = lv_j;
+                            lv_is_break = true;
+                            break;
+                        }
+
+                    }
+                    if (lv_is_break) {
+                        break;
+                    }
+                }
 
 
-                        go_end_side_shape_generator.end_shape.cell_text_geometry = new TextGeometry(
-                            "", //text,
-                            {
-                                font: go_end_side_shape_generator.end_shape.cell_text_font,
-                                size: Constants.cell_text_size
 
-                                //depth: depth,
-                                //curveSegments: curveSegments,
-
-                                //bevelThickness: bevelThickness,
-                                //bevelSize: bevelSize,
-                                //bevelEnabled: bevelEnabled
-
-                            }
-
-                        );
-
-                    });
             }
 
             catch (e) {
 
-                alert('error set_color_to_rectangle_cell: ' + e.stack);
+                alert('error set_color_to_selected_rectangle_cells: ' + e.stack);
+
+            }
+
+            return {
+                cell_num_row: lv_i_result,
+                cell_num_col: lv_j_result
+            }
+
+        }
+
+
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.set_visible_all_contours = function (po_rectangle, pv_cell_row, pv_cell_col, pv_is_visible) {
+
+            try {
+
+
+                //28012025 this.main.group_end_cells_contours
+
+                for (let lo_mesh of this.main.group_end_cells_contours.children) {
+
+
+                    if (lo_mesh.type == "Line2") {
+
+                        if (lo_mesh !== po_rectangle) {
+
+                            lo_mesh.visible = pv_is_visible;
+                        }
+                    }
+
+                }
+
+                this.set_visible_all_color_cells(pv_cell_row, pv_cell_col, pv_is_visible, pv_is_visible);
+
+            }
+
+            catch (e) {
+
+                alert('error reset_all_contours: ' + e.stack);
 
             }
         }
 
 
         //------------------------------------------------------------------------
-        EndShape.prototype.get_spline_position_by_side_and_num_spline = function (po_side, pv_num_spline) {
-
-            let lv_result = null;
-
+        EndShape.prototype.set_visible_all_color_cells = function (pv_cell_row, pv_cell_col, pv_is_visible) {
 
             try {
 
-                if (!po_side) {
+                let lv_nrows = this.ColorParts.length;
+                let lv_ncols = this.ColorParts[0].length;
 
-                    return lv_result;
+                for (let lv_i = 0; lv_i < lv_nrows; lv_i++) {
+
+                    for (let lv_j = 0; lv_j < lv_ncols; lv_j++) {
+
+                        if (lv_i !== pv_cell_row || lv_j !== pv_cell_col) {
+
+                            this.ColorParts[lv_i][lv_j].is_contour_visible = pv_is_visible;
+                        }
+                    }
                 }
-
-                if (pv_num_spline == null || pv_num_spline < 0) {
-
-                    return lv_result;
-                }
-
-                if (po_side.shapes
-                    && po_side.shapes.ar_splines[pv_num_spline]
-                    && po_side.shapes.ar_splines[pv_num_spline].children[0]
-                    && po_side.shapes.ar_splines[pv_num_spline].children[0].children[0]
-                    && po_side.shapes.ar_splines[pv_num_spline].children[0].children[0].position.x
-                ) {
-                    lv_result = po_side.shapes.ar_splines[pv_num_spline].children[0].children[0].position.x;
-                }
-                else {
-
-                    return lv_result;
-                }
-
             }
-
 
             catch (e) {
 
-                alert('error get_spline_position: ' + e.stack);
+                alert('error set_visible_all_color_cells: ' + e.stack);
 
             }
-
-            return lv_result;
-
         }
 
 

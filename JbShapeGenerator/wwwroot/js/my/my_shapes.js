@@ -1291,7 +1291,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             go_end_side_shape_generator.end_shape.redraw_end_shape(
                 null, //this.main, //07022025 null,       //this.main,
-                null, null,//lv_deleted_spline_num, //pv_added_spline_num, pv_deleted_spline_num,
+                null, lv_deleted_spline_num, //08022025 pv_added_spline_num, pv_deleted_spline_num,
                 null, null  //po_is_use_data, po_sides_data
             );
 
