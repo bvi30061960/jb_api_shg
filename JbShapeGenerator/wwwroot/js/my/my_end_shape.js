@@ -1117,14 +1117,17 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 //------------------------------------------------------------------------------------
 
 
-                for (let lv_i = 0; lv_i < lv_cols; lv_i++) {
+                for (let lv_j = 0; lv_j < lv_cols; lv_j++) {
 
                     lo_line_curr = lo_line_vert.clone();
 
-                    if (lv_i == 0) {
+                    if (lv_j == 0) {
+
+                        // первый столбец
+
                         //координаты начальной точки текущей кривой
 
-                        lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_up_side_shape_generator, lv_i);
+                        lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_up_side_shape_generator, lv_j);
                         lv_line_position = /*go_up_side_shape_generator.params.shape_width -*/ lv_spline_position;
 
                         lv_cell_position = 0;// go_up_side_shape_generator.params.shape_width;
@@ -1135,13 +1138,15 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                                 //08022025 {
-                                for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {  //30122024
-                                    this.ColorParts[lv_i][lv_j].left_bottom.x = lv_cell_position;
-                                }
-
-                                //for (let lv_j = 0; lv_j < this.ColorParts[0].length; lv_j++) {  //30122024
+                                //for (let lv_i = 0; lv_i < this.ColorParts[0].length; lv_i++) {  //30122024
                                 //    this.ColorParts[lv_j][lv_i].left_bottom.x = lv_cell_position;
                                 //}
+
+
+                                //09022025 for (let lv_i = 0; lv_i < this.ColorParts[0].length; lv_i++) {  
+                                for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {  //09022025
+                                    this.ColorParts[lv_i][lv_j].left_bottom.x = lv_cell_position;
+                                }
 
 
                                 //08022025 }
@@ -1157,29 +1162,31 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                     }
                     else {
+                        // последний столбец
 
-                        if (lv_i == lv_cols - 1) {
+                        if (lv_j == lv_cols - 1) {
 
                             if (this.ColorParts) { //27012025 
                                 if (this.ColorParts[0]) { //27012025
 
 
-                                    for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
+                                    for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {
 
-                                        this.ColorParts[lv_j][lv_i - 1].right_top.x = lv_prev_line_position; // 29122024
+                                        this.ColorParts[lv_i][lv_j - 1].right_top.x = lv_prev_line_position; // 29122024
 
-                                        //27012025 this.ColorParts[lv_j][lv_i].right_top.x = go_up_side_shape_generator.params.shape_width;
-                                        this.ColorParts[lv_j][lv_i].right_top.x = lv_up_shape_width;
+                                        //27012025 this.ColorParts[lv_i][lv_j].right_top.x = go_up_side_shape_generator.params.shape_width;
+                                        this.ColorParts[lv_i][lv_j].right_top.x = lv_up_shape_width;
 
                                         //08022025 {
-                                        if (lv_j == 0) {
-                                            this.ColorParts[lv_j][lv_i].left_bottom.x = 0;
-                                        }
-                                        else
-                                        {
-                                            this.ColorParts[lv_j][lv_i].left_bottom.x = lv_prev_line_position; //25122024
-                                        }
-                                        //08022025 this.ColorParts[lv_j][lv_i].left_bottom.x = lv_prev_line_position; //25122024
+                                        ////if (lv_i == 0) {
+                                        ////    this.ColorParts[lv_i][lv_j].left_bottom.x = 0;
+                                        ////}
+                                        ////else
+                                        ////{
+                                        ////    this.ColorParts[lv_i][lv_j].left_bottom.x = lv_prev_line_position; //25122024
+                                        ////}
+
+                                        this.ColorParts[lv_i][lv_j].left_bottom.x = lv_prev_line_position; //25122024
                                         //08022025 }
                                     }
                                 }
@@ -1190,7 +1197,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
                             lo_line_curr = lo_line_vert.clone();
 
-                            lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_up_side_shape_generator, lv_i);
+                            lv_spline_position = this.get_spline_position_by_side_and_num_spline(go_up_side_shape_generator, lv_j);
                             lv_line_position = lv_spline_position;
                             lo_line_curr.position.x = lv_line_position;
 
@@ -1200,11 +1207,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             if (this.ColorParts) { //27012025 
                                 if (this.ColorParts[0]) { //27012025 
 
-                                    for (let lv_j = 0; lv_j < this.ColorParts.length; lv_j++) {
+                                    for (let lv_i = 0; lv_i < this.ColorParts.length; lv_i++) {
 
-                                        this.ColorParts[lv_j][lv_i - 1].right_top.x = lv_prev_line_position; 
-                                        this.ColorParts[lv_j][lv_i].right_top.x = lv_line_position;
-                                        this.ColorParts[lv_j][lv_i].left_bottom.x = lv_prev_line_position;
+                                        this.ColorParts[lv_i][lv_j - 1].right_top.x = lv_prev_line_position; 
+                                        this.ColorParts[lv_i][lv_j].right_top.x = lv_line_position;
+                                        this.ColorParts[lv_i][lv_j].left_bottom.x = lv_prev_line_position;
 
                                     }
                                 }
