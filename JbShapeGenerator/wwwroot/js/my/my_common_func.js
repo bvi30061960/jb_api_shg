@@ -2512,12 +2512,28 @@ export function CommonFunc() {
                         font: go_end_side_shape_generator.end_shape.cell_text_font,
                         size: Constants.cell_text_size,
 
-                        height: 0.2
+                        //height: 0.5,
+                        //curveSegments: 12,
+                        ////bevelEnabled: true,
+                        ////bevelThickness: 0.03,
+                        ////bevelSize: 0.02,
+                        ////bevelSegments: 5
+
+                        //dept: 5, //20,
                         //curveSegments: 12,
                         //bevelEnabled: true,
-                        //bevelThickness: 0.03,
-                        //bevelSize: 0.02,
+                        //bevelThicknes: 0.01,
+                        //bevelSize: 0.001,
                         //bevelSegments: 5
+
+
+                        //size: 2,
+                        height: 0.5,
+                        bevelEnabled: true,
+                        bevelThickness: 0.1,  // Увеличиваем толщину фаски
+                        bevelSize: 0.05,      // Делаем фаску заметнее
+                        bevelSegments: 5      // Добавляем больше сегментов для сглаживания
+
 
                     }
                 );

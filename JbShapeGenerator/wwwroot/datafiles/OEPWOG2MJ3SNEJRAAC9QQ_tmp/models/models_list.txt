@@ -1,0 +1,1 @@
+{"wwwroot/datafiles\\OEPWOG2MJ3SNEJRAAC9QQ_tmp\\models\\AWL22IQHSWFK9OFB78QTEQ":{"path_file_wo_ext":"wwwroot/datafiles\\OEPWOG2MJ3SNEJRAAC9QQ_tmp\\models\\AWL22IQHSWFK9OFB78QTEQ","filename":"New model","picture":null,"wide_model_type":1,"price":"0","change_datetime":"09-Feb-25 12:30:09"}}

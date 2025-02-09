@@ -797,7 +797,8 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 if (typeof lv_lateral_deleted_spline_num === "number") {
                     if (lv_lateral_deleted_spline_num >= 0) {
 
-                        for (let lv_j = 0; lv_j < lar_cop_color_parts.length; lv_j++) {
+                        //09022025 for (let lv_j = 0; lv_j < lar_cop_color_parts.length; lv_j++) {
+                        for (let lv_j = 0; lv_j < lar_cop_color_parts[0].length; lv_j++) {  //09022025
                             // Удаляем текстовые элементы из удаляемой строки
                             //this.main.common_func.removeObjectsWithChildren(lar_cop_color_parts[lv_lateral_deleted_spline_num][lv_j].text_mesh, true);
 
