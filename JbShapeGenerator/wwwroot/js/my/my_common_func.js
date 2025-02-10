@@ -2520,7 +2520,7 @@ export function CommonFunc() {
                         ////bevelSegments: 5
 
                         //dept: 5, //20,
-                        //curveSegments: 12,
+                        curveSegments: 6, //12,
                         //bevelEnabled: true,
                         //bevelThicknes: 0.01,
                         //bevelSize: 0.001,
@@ -2530,9 +2530,9 @@ export function CommonFunc() {
                         //size: 2,
                         height: 0.5,
                         bevelEnabled: true,
-                        bevelThickness: 0.1,  // Увеличиваем толщину фаски
-                        bevelSize: 0.05,      // Делаем фаску заметнее
-                        bevelSegments: 5      // Добавляем больше сегментов для сглаживания
+                        bevelThickness: 0.05,  //0.1  Увеличиваем толщину фаски
+                        bevelSize: 0.02,      //0.05 Делаем фаску заметнее
+                        bevelSegments: 3      //5 Добавляем больше сегментов для сглаживания
 
 
                     }

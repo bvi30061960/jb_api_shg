@@ -1384,7 +1384,20 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
         }
 
+        //------------------------------------------------------------------------
+        EndShape.prototype.set_show_text_labels = function (pv_value) {
 
+            try {
+
+                alert("set_show_text_labels: " + pv_value.toString());
+            }
+
+            catch (e) {
+
+                alert('error set_show_text_labels: ' + e.stack);
+
+            }
+        }
 
         //------------------------------------------------------------------------
         EndShape.prototype.set_visible_all_contours = function (po_rectangle, pv_cell_row, pv_cell_col, pv_is_visible) {

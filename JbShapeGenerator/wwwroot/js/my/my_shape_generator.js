@@ -391,6 +391,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         distance_bt_curves: 30,
         is_space_adjust: $(this.id_prefix + "id_chb_space_adjust")[0].checked, //false, // ;//,// $("id_chb_space_adjust")[0].checked,
         is_curve_width_adjust: $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked, // ;// // $("id_chb_curve_width_adjust")[0].checked
+        is_show_text_labels: $(this.id_prefix + "id_chb_show_text_labels")[0].checked,
+
         color: '#0000ff'
 
     };
@@ -828,8 +830,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
                     //07022025 {
-                    this.group_cell_texts = new THREE.Group(); 
-                    this.scene.add(this.group_cell_texts); 
+                    this.group_cell_texts = new THREE.Group();
+                    this.scene.add(this.group_cell_texts);
                     //07022025 }
 
 
@@ -2889,6 +2891,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 $(this.passive_id_prefix + "id_chb_space_adjust").off("click");
                 $(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
+                $(this.passive_id_prefix + "id_chb_show_text_labels").off("click");
+
+
                 $(this.passive_id_prefix + "id_but_del_spline").off("click");
                 $(this.passive_id_prefix + "id_but_add_spline").off("click");
                 $(this.passive_id_prefix + "id_but_save_model").off("click");
@@ -2901,6 +2906,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 $(this.id_prefix + "id_chb_space_adjust").off("click").click(this.onclick_chb_space_adjust);
                 $(this.id_prefix + "id_chb_curve_width_adjust").off("click").click(this.onclick_chb_curve_width_adjust);
+                $(this.id_prefix + "id_chb_show_text_labels").off("click").click(this.onclick_chb_show_text_labels);
 
                 $(this.id_prefix + "id_but_read_model").off("click").click(this.onclick_read_model);
                 $(this.id_prefix + "id_but_new_model").off("click").click(this.onclick_new_model);
@@ -3831,6 +3837,30 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         }
 
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.onclick_chb_show_text_labels = function (po_event, pv_value) {
+
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                lo_active_side.params.is_show_text_labels = $(lo_active_side.id_prefix + "id_chb_show_text_labels")[0].checked;//08052024
+
+                lo_active_side.end_shape.set_show_text_labels(pv_value);
+
+                //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
+                lo_active_side.render(); //13122024
+
+            }
+
+            catch (e) {
+
+                alert('error onclick_chb_show_text_labels: ' + e.stack);
+
+            }
+
+        }
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_add_spline = function () {
 
@@ -4930,6 +4960,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 ls_parameters.spline_amount_segments = this.params.spline_amount_segments;
                 ls_parameters.ajust_curves_by_shape = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.ajust_curves_by_shape;  
                 ls_parameters.ajust_shape_by_curves = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.ajust_shape_by_curves;
+
+                ls_parameters.is_show_text_labels = $(this.id_prefix + "id_chb_show_text_labels")[0].checked; //this.params.ajust_shape_by_curves;//09022025
+
                 ls_parameters.distance_between_curves_in_percent_of_width = this.params.distance_between_curves_in_percent_of_width;
                 ls_parameters.distance_bt_curves = this.params.distance_bt_curves;
                 ls_parameters.is_space_adjust = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.is_space_adjust;       
