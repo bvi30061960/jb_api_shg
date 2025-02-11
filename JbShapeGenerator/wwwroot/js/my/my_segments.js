@@ -99,7 +99,10 @@ export function Segments(
 		new THREE.Vector3(-5.14, 29.46, 0),		// 19
 		new THREE.Vector3(-0.81, 27.57, 0),		// 20
 		new THREE.Vector3(0.81, 29.73, 0),		// 21
-		new THREE.Vector3(-0.68, 31.76, 0),		// 22
+
+		//11022025 new THREE.Vector3(-0.68, 31.76, 0),		// 22
+		new THREE.Vector3(0.68, 31.76, 0),					// 22 11022025
+
 		new THREE.Vector3(0, 33.78, 0)			// 23		
 
 	];
@@ -165,9 +168,6 @@ export function Segments(
 
 				let lv_k_end = this.ar_initial_segment_points.length;
 
-				//let lo_point = new THREE.Vector2();
-
-				//for (let lv_k = 0; lv_k < lv_k_end; lv_k++) {
 				for (let lv_k = lv_k_beg; lv_k < lv_k_end; lv_k++) { //22042024
 
     				////lo_point.draggable = true;
@@ -229,6 +229,7 @@ export function Segments(
 					}
 
 					lo_node.renderOrder = 3;//04082024
+					
 
 					po_parent.add(lo_node);
 					//17042024 lar_points.push(new THREE.Vector2(lo_node.position.x, lo_node.position.y));
@@ -277,16 +278,13 @@ export function Segments(
 				let lv_k_beg;
 
 				if (pv_is_first_segment) {
-					//lv_k_beg = 0;
 					lv_k_beg = pv_beg_segment_node_numb;
 
 				}
 				else {
-					//lv_k_beg = 1;
 					lv_k_beg = pv_beg_segment_node_numb + 1;
 				}
 
-				//01112024 let lv_k_end = this.ar_initial_segment_points.length;
 				let lv_k_end = pv_end_segment_node_numb;
 
 				for (let lv_k = lv_k_beg; lv_k <= lv_k_end; lv_k++) { //22042024
@@ -370,7 +368,6 @@ export function Segments(
 
 		//-----------------------------------------------------------------
 
-		//Segment.prototype.create_segment_nodes = function (po_spline) {
 		Segments.prototype.create_segment_nodes = function (
 			po_parent,
 			po_beg_point,
@@ -407,8 +404,6 @@ export function Segments(
 			}
 
 			let lv_k_end = this.ar_initial_segment_points.length;
-
-
 
 			for (let lv_k = 0; lv_k < this.ar_initial_segment_points.length; lv_k++) {
 

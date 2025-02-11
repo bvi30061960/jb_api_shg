@@ -2992,6 +2992,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $(this.id_prefix + this.id_side_shape).off("click").on("click", this.onclick_shape);//17072024 
 
                 $(this.id_prefix + "id_but_mirror").off("click").on("click", this.but_mirror_onclick);
+                $(this.id_prefix + "id_but_random").off("click").on("click", this.but_make_random_onclick);
 
 
                 //this.render();//05052024
@@ -3436,6 +3437,19 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
 
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.but_make_random_onclick = function () {
+
+            // Сделать для выделенных сегментов случайные размеры
+            let lo_active_side = get_active_side_shape_generator();
+            lo_active_side.shapes.make_random_selected_segments();
+
+            lo_active_side.shapes.adjust_splines_by_external_shape();
+
+            lo_active_side.render();
+
+        }
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.adjust_splines_by_shape_in_side = function (po_side, pv_value) {

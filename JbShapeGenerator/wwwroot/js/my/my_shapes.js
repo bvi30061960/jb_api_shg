@@ -2145,6 +2145,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         }
 
 
+
         //-----------------------------------------------------------------
         // Сделать зеркальное отражение выделенных сегментов
         Shapes.prototype.make_mirror_selected_segments = function () {
@@ -2166,6 +2167,79 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         let lo_parent_parent = lo_selected_segment.parent.parent;
 
                         this.ar_selected_segments[lv_i] = this.make_mirror_segment(lo_selected_segment);//23042024
+
+                        lar_selected_spline_groups.push(lo_parent_parent);
+                    }
+                }
+
+
+                for (let lv_i = 0; lv_i < lar_selected_spline_groups.length; lv_i++) {
+
+                    let lar_spline_points = [];
+
+                    let lar_segments_groups = lar_selected_spline_groups[lv_i].children;
+
+                    for (let lv_j = 0; lv_j < lar_segments_groups.length; lv_j++) {
+
+                        let lar_segments_nodes = lar_segments_groups[lv_j];
+
+                        if (lar_segments_nodes.type == "Group") {
+
+                            for (let lv_k = 0; lv_k < lar_segments_nodes.children.length; lv_k++) {
+
+                                if (lar_segments_nodes.children[lv_k].type == "Mesh") {
+                                    lar_spline_points.push(lar_segments_nodes.children[lv_k].position);
+                                }
+                            }
+                        }
+
+                        if (lar_segments_nodes.type == "Line") {
+
+                            this.main.common_func.removeObjectsWithChildren(lar_segments_nodes, true);//22042024
+
+                        }
+
+
+                    }
+
+                    lo_segment = this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//25042024
+
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error make_mirror_selected_segments: ' + e.stack);
+
+            }
+
+            return lo_segment;
+        }
+
+
+        //-----------------------------------------------------------------
+        // Сделать случайные размеры выделенных сегментов
+        Shapes.prototype.make_random_selected_segments = function () {
+
+            let lar_selected_spline_groups = [];
+
+
+            let lo_segment;//23042024
+
+            try {
+
+
+                for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
+
+                    let lo_selected_segment = this.ar_selected_segments[lv_i];
+
+                    if (lo_selected_segment.parent) {
+
+                        let lo_parent_parent = lo_selected_segment.parent.parent;
+
+                        //this.ar_selected_segments[lv_i] = this.make_mirror_segment(lo_selected_segment);
+                        this.ar_selected_segments[lv_i] = this.make_random_segment(lo_selected_segment);
 
                         lar_selected_spline_groups.push(lo_parent_parent);
                     }
@@ -2275,6 +2349,67 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
         }
 
+        //-----------------------------------------------------------------
+        // Сделать для выделенного сегмента случайные размеры
+        Shapes.prototype.make_random_segment = function (po_segment) {
+
+
+            let lar_new_segment_points = [];
+
+            let lo_segment_point;
+
+            let lv_base_x = 0;
+            let lv_base_y = 0; //1102205
+
+            let lo_segment;
+
+            try {
+
+                //11022025 for (let lv_i = 0; lv_i < po_segment.parent.children.length - 1; lv_i++) {
+                for (let lv_i = 0; lv_i < po_segment.parent.children.length/* - 1*/; lv_i++) {
+
+                    lo_segment_point = po_segment.parent.children[lv_i];
+
+                    if (lv_i == 0) {
+                        lv_base_x = lo_segment_point.position.x;
+                        lv_base_y = lo_segment_point.position.y;//11022025 
+                    }
+                    //11022025 let lv_delta = lv_base_x - lo_segment_point.position.x;
+                    let lv_delta_x = lv_base_x + lo_segment_point.position.x;
+                    let lv_delta_y = lv_base_y - lo_segment_point.position.y;
+
+
+
+                    //11022025 lo_segment_point.position.x = lv_base_x + lv_delta;
+                    lo_segment_point.position.x = lv_base_x - lv_delta_x + Math.random() * 3; //11022025
+                    lo_segment_point.position.y = lv_base_y - lv_delta_y + Math.random() * 3; //11022025
+
+
+                    lar_new_segment_points.push(lo_segment_point.position);
+
+                }
+
+
+                // Удаление предыдущих линий
+                let lo_parent = po_segment.parent;
+                let lar_lines = this.main.shapes.get_lines_in_group(po_segment.parent);
+                for (let lv_i = 0; lv_i < lar_lines.length; lv_i++) {
+                    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], true);
+                }
+
+                lo_segment = this.main.splines.draw_curve(lo_parent, lar_new_segment_points, cv_segment_name_prefix, false);//05082024
+
+            }
+
+            catch (e) {
+
+                alert('error make_random_segment: ' + e.stack);
+
+            }
+
+            return lo_segment;
+
+        }
         //-----------------------------------------------------------------
 
         Shapes.prototype.get_lines_in_group = function (po_group) {
