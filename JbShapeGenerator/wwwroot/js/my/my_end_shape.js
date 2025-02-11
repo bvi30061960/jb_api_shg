@@ -184,7 +184,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                             {
                                 font: go_end_side_shape_generator.end_shape.cell_text_font,
                                 size: Constants.cell_text_size,
-                                curveSegments: 6, 
+                                curveSegments: 6,
                                 height: 0.5,
                                 bevelEnabled: true,
                                 bevelThickness: 0.05,
@@ -285,7 +285,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
         }
         //------------------------------------------------------------------------
-        EndShape.prototype.draw_cells_contours = function () {
+        EndShape.prototype.draw_cells_contours_and_texts = function () {
 
 
             let lo_cell_text_mesh = null;
@@ -386,20 +386,24 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         //09022025 go_end_side_shape_generator.group_cell_texts.add(lo_cell_text_mesh);//07022025
 
 
-                        if (this.texts_array.length > 0) {
+                        //10022025 {
+                        if (go_end_side_shape_generator.params.is_show_text_labels) {
+                            if (this.texts_array.length > 0) {
 
-                            let lv_x = this.ColorParts[lv_i][lv_j].left_bottom.x + 2;
-                            let lv_y = this.ColorParts[lv_i][lv_j].right_top.y - 5;
 
+                                // считывание text_mesh из массива подготовленных текстов
+                                lo_cell_text_mesh = this.texts_array[lv_i][lv_j];
 
-                            lo_cell_text_mesh = this.texts_array[lv_i][lv_j];
-                            lo_cell_text_mesh.position.set(lv_x, lv_y, 0);
+                                let lv_x = this.ColorParts[lv_i][lv_j].left_bottom.x + 2;
+                                let lv_y = this.ColorParts[lv_i][lv_j].right_top.y - 5;
+                                lo_cell_text_mesh.position.set(lv_x, lv_y, 0);
 
-                            this.ColorParts[lv_i][lv_j].text_mesh = lo_cell_text_mesh; //09022025 
+                                this.ColorParts[lv_i][lv_j].text_mesh = lo_cell_text_mesh; //09022025 
 
-                            go_end_side_shape_generator.group_cell_texts.add(lo_cell_text_mesh);//07022025
-                        }
+                                go_end_side_shape_generator.group_cell_texts.add(lo_cell_text_mesh);//07022025
+                            }
 
+                        } //10022025 }
 
                         /////////go_end_side_shape_generator.group_cell_texts.add(lo_cell_text_mesh);//07022025
 
@@ -474,7 +478,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
             catch (e) {
 
-                alert('error draw_cells_contours: ' + e.stack);
+                alert('error draw_cells_contours_and_texts: ' + e.stack);
 
             }
 
@@ -1403,13 +1407,13 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                 //05012025 {
-                ////this.draw_cells_contours();
+                ////this.draw_cells_contours_and_texts();
                 ////this.refresh_end_shapes(); //23122024
                 //05012025 }
 
                 ////28012025 {
 
-                //////////////////////07022025!!this.draw_cells_contours(); 
+                //////////////////////07022025!!this.draw_cells_contours_and_texts();
 
                 //if (po_is_use_data) {
                 //    this.main.set_meshes_color_by_data();
@@ -1562,7 +1566,7 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
             try {
 
-                alert("set_show_text_labels: " + pv_value.toString());
+                this.draw_cells_contours_and_texts();
             }
 
             catch (e) {

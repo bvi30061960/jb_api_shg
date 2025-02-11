@@ -182,7 +182,7 @@ function on_tab_side_activate(event, ui) {
             );
 
             ////28012025 {
-            go_end_side_shape_generator.end_shape.draw_cells_contours();
+            go_end_side_shape_generator.end_shape.draw_cells_contours_and_texts();
             go_end_side_shape_generator.end_shape.refresh_end_shapes(); //23122024
             ////28012025 }
             break;
@@ -3844,9 +3844,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 let lo_active_side = get_active_side_shape_generator();
 
-                lo_active_side.params.is_show_text_labels = $(lo_active_side.id_prefix + "id_chb_show_text_labels")[0].checked;//08052024
+                let lv_is_show_text_labels = $(lo_active_side.id_prefix + "id_chb_show_text_labels")[0].checked;//08052024
 
-                lo_active_side.end_shape.set_show_text_labels(pv_value);
+                lo_active_side.params.is_show_text_labels = lv_is_show_text_labels;
+
+                go_end_side_shape_generator.end_shape.set_show_text_labels(lv_is_show_text_labels);
 
                 //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
                 lo_active_side.render(); //13122024
@@ -3865,7 +3867,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-
                 let lo_active_side = get_active_side_shape_generator();
                 lo_active_side.shapes.add_spline();
 
@@ -3877,7 +3878,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
-                go_end_side_shape_generator.end_shape.appending_texts_array(lo_active_side.shapes.shape_amount_curves + 1);
+                go_end_side_shape_generator.end_shape.appending_texts_array(lo_active_side.shapes.shape_amount_curves + 1);//10022025
 
                 lo_active_side.render(); //28122024
 
