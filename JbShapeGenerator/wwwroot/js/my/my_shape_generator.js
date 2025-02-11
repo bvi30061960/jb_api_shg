@@ -3877,6 +3877,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
+                go_end_side_shape_generator.end_shape.appending_texts_array(lo_active_side.shapes.shape_amount_curves + 1);
+
                 lo_active_side.render(); //28122024
 
             }

@@ -131,14 +131,100 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
         // Методы
         //----------------------------------------------------------
 
+
+        //------------------------------------------------------------------------
+        EndShape.prototype.appending_texts_array = function (pv_required_dimension) {
+
+
+            let lo_cell_text_material = null;
+            let lv_cell_text_label = "";
+            let lv_name_text_mesh = "";
+
+            try {
+
+                let lv_length_prev = this.texts_array.length;
+
+                if (pv_required_dimension <= lv_length_prev) {
+
+                    return;
+                }
+
+                let lv_i_beg = this.texts_array.length;
+                let lv_j_beg = lv_i_beg;
+
+                // Создаём пустые строки
+                for (let lv_i = lv_i_beg; lv_i < pv_required_dimension; lv_i++) {
+                    this.texts_array[lv_i] = [];
+                }
+
+                for (let lv_i = 0 /*lv_i_beg*/; lv_i < pv_required_dimension; lv_i++) {
+
+                    if (lv_i < lv_i_beg) {
+                        // предыдущие строки массива, заполняем только новые столбцы
+
+                        lv_j_beg = lv_length_prev;
+                    }
+                    else {
+                        // новые строки массива, заполняем все столбцы
+
+                        lv_j_beg = 0;
+
+                    }
+
+
+                    for (let lv_j = lv_j_beg; lv_j < pv_required_dimension; lv_j++) {
+
+                        lv_cell_text_label = this.main.common_func.get_cell_text_label(lv_i, lv_j);
+                        lv_name_text_mesh = this.main.common_func.get_textmesh_name(lv_i, lv_j);
+
+                        let lo_text_geometry = new TextGeometry(
+
+                            lv_cell_text_label,
+
+                            {
+                                font: go_end_side_shape_generator.end_shape.cell_text_font,
+                                size: Constants.cell_text_size,
+                                curveSegments: 6, 
+                                height: 0.5,
+                                bevelEnabled: true,
+                                bevelThickness: 0.05,
+                                bevelSize: 0.02,
+                                bevelSegments: 3
+                            }
+                        );
+
+                        lo_cell_text_material = this.cell_text_material.clone();
+
+                        let lo_meshtext = new THREE.Mesh(lo_text_geometry, lo_cell_text_material);
+
+                        lo_meshtext.name = lv_name_text_mesh;
+
+                        this.texts_array[lv_i][lv_j] = lo_meshtext;
+
+                    }
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error appending_texts_array: ' + e.stack);
+
+            }
+
+        }
         //------------------------------------------------------------------------
         EndShape.prototype.create_texts_array = function (pv_dimension) {
 
             try {
 
-                let lv_text = "";
-                let lv_name_text_mesh = "";
                 let lo_cell_text_material = null;
+                let lv_cell_text_label = "";
+                let lv_name_text_mesh = "";
+
+
+                // очистка массива
+                this.texts_array.splice(0, this.texts_array.length);
 
 
 
@@ -152,11 +238,19 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 for (let lv_i = 0; lv_i < pv_dimension; lv_i++) {
                     for (let lv_j = 0; lv_j < pv_dimension; lv_j++) {
 
-                        lv_text = lv_i.toString() + "_" + lv_j.toString();
-                        lv_name_text_mesh = "text_mesh_" + lv_text;
+                        //10022025 {
+                        //lv_text = (lv_i + 1).toString() + "_" + (lv_j+1).toString();
+                        //lv_name_text_mesh = "text_mesh_" + lv_text;
+                        //10022025 }
+
+
+                        lv_cell_text_label = this.main.common_func.get_cell_text_label(lv_i, lv_j);
+                        lv_name_text_mesh = this.main.common_func.get_textmesh_name(lv_i, lv_j);
 
                         let lo_text_geometry = new TextGeometry(
-                            lv_text,
+
+                            lv_cell_text_label,
+
                             {
                                 font: go_end_side_shape_generator.end_shape.cell_text_font,
                                 size: Constants.cell_text_size,
@@ -293,16 +387,16 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
 
 
                         if (this.texts_array.length > 0) {
-                            lo_cell_text_mesh = this.texts_array[lv_i][lv_j];
 
                             let lv_x = this.ColorParts[lv_i][lv_j].left_bottom.x + 2;
                             let lv_y = this.ColorParts[lv_i][lv_j].right_top.y - 5;
 
+
+                            lo_cell_text_mesh = this.texts_array[lv_i][lv_j];
                             lo_cell_text_mesh.position.set(lv_x, lv_y, 0);
 
-
-
                             this.ColorParts[lv_i][lv_j].text_mesh = lo_cell_text_mesh; //09022025 
+
                             go_end_side_shape_generator.group_cell_texts.add(lo_cell_text_mesh);//07022025
                         }
 
@@ -322,9 +416,6 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                         //lo_text_mesh.sync(() => {
                         //    this.main.scene.add(lo_text_mesh);
                         //});
-
-
-
 
 
 

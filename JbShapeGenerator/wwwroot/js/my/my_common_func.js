@@ -2045,6 +2045,43 @@ export function CommonFunc() {
 
             }
         }
+
+        //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.get_cell_text_label = function (pv_nrow, pv_ncol) {
+
+            let lv_result = "";
+
+            try {
+
+                lv_result = (pv_nrow + 1).toString() + "_" + (pv_ncol + 1).toString();
+            }
+
+            catch (e) {
+
+                alert('error get_cell_text_label: ' + e.stack);
+
+            }
+
+            return lv_result;
+        }
+ //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.get_textmesh_name = function (pv_nrow, pv_ncol) {
+
+            let lv_result = "";
+
+            try {
+
+                lv_result = "text_mesh_" + this.get_cell_text_label(pv_nrow, pv_ncol);
+            }
+
+            catch (e) {
+
+                alert('error get_textmesh_name: ' + e.stack);
+
+            }
+
+            return lv_result;
+        }
         //---------------------------------------------------------------------------------------------
         CommonFunc.prototype.Create2DArray = function (pv_rows, pv_cols, pv_init_value) {
 
@@ -2485,7 +2522,7 @@ export function CommonFunc() {
                 }
 
 
-                
+
 
                 //this.clear_group_childrens(go_end_side_shape_generator.group_cell_texts);
 
