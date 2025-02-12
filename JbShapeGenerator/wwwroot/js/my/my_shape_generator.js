@@ -384,7 +384,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         shape_height_beg: 100,
         shape_height: 100,
         shape_amount_curves: 3,
-        spline_amount_segments: 3,
+        spline_amount_segments: 3, //5, //11022025 3,
         ajust_curves_by_shape: true,
         ajust_shape_by_curves: false,
         distance_between_curves_in_percent_of_width: 10,
@@ -2723,6 +2723,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $(this.passive_id_prefix + "id_but_make_model").off("click");
                 $(this.passive_id_prefix + "id_but_set_color").off("click");
                 $(this.passive_id_prefix + "id_but_rotate_mode").off("click");
+                $(this.passive_id_prefix + "id_but_ch_nsegm").off("click");
 
 
 
@@ -2900,6 +2901,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $(this.passive_id_prefix + "id_but_set_color").off("click");
 
                 $(this.passive_id_prefix + "id_but_rotate_mode").off("click");
+                $(this.passive_id_prefix + "id_but_ch_nsegm").off("click");
 
 
 
@@ -2916,6 +2918,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $(this.id_prefix + "id_but_make_model").off("click").click(this.onclick_make_model);
                 $(this.id_prefix + "id_but_set_color").off("click").click(this.onclick_id_but_set_color);
                 $(this.id_prefix + "id_but_rotate_mode").off("click").click(this.onclick_id_but_rotate_mode);
+                $(this.id_prefix + "id_but_ch_nsegm").off("click").click(this.onclick_but_ch_nsegm);
 
                 $(this.id_prefix + "id_but_refresh").off("click").click(this.onclick_refresh_model);
 
@@ -3875,6 +3878,39 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
 
+        }
+
+        //------------------------------------------------------------------------
+        // Изменение количества сегментов в выделенной кривой
+        Shape_generator.prototype.onclick_but_ch_nsegm = function () {
+
+            try {
+
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                lo_active_side.shapes.do_delete_splines();
+
+                lo_active_side.shapes.add_spline();
+
+
+
+
+                go_end_side_shape_generator.end_shape.redraw_end_shape(
+                    lo_active_side,
+                    lo_active_side.shapes.shape_amount_curves - 1, null,    //pv_added_spline_num, pv_deleted_spline_num,
+                    null, null                                              //po_is_use_data, po_sides_data
+                );
+
+                //go_end_side_shape_generator.end_shape.appending_texts_array(lo_active_side.shapes.shape_amount_curves + 1);
+
+                lo_active_side.render(); 
+            }
+            catch (e) {
+
+                alert('error onclick_add_spline: ' + e.stack);
+
+            }
         }
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_add_spline = function () {

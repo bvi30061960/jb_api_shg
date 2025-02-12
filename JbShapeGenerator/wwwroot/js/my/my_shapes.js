@@ -1189,9 +1189,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             this.main.common_func.show_question(lv_question,
                 function () {
 
-                    let lo_active_side_shape_generator = get_active_side_shape_generator();
+                    let lo_active_side = get_active_side_shape_generator();
 
-                    lo_active_side_shape_generator.shapes.do_delete_splines();
+                    lo_active_side.shapes.do_delete_splines();
+                    lo_active_side.render();//11022025 
 
                     $(this).dialog("close");
                 },
@@ -1206,6 +1207,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             let lo_parent;
             let lo_parent_parent;
             let lv_deleted_spline_num = null;
+
+            //let lv_was_action = false;
 
             for (let lv_i = this.ar_selected_segments.length - 1; lv_i >= 0; lv_i--) {
 
@@ -1232,7 +1235,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         //}
                         ////08022025 }
-
 
 
 
@@ -1267,7 +1269,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         lo_parent_parent.removeFromParent();
 
-
+                        //lv_was_action = true;
                     }
 
 
@@ -1300,11 +1302,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             // очистка списка выделенных сегментов
             this.ar_selected_segments = [];
 
-            this.main.render();
+            ////11022025 this.main.render();
 
-            //let lo_active_side = get_active_side_shape_generator();
-            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
-
+            return {
+                //was_action: lv_was_action
+                // надо массив первых координат удалённых сплайнов
+            };
         }
         //------------------------------------------------------------------------
         Shapes.prototype.do_delete_spline = function (po_spline_group) {
@@ -2238,7 +2241,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         let lo_parent_parent = lo_selected_segment.parent.parent;
 
-                        //this.ar_selected_segments[lv_i] = this.make_mirror_segment(lo_selected_segment);
                         this.ar_selected_segments[lv_i] = this.make_random_segment(lo_selected_segment);
 
                         lar_selected_spline_groups.push(lo_parent_parent);
@@ -2275,15 +2277,26 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     }
 
+
+
+
+                    
                     lo_segment = this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//25042024
 
+                    //////11022025 {
+                    //lo_segment.scale.x = 0.5;
+                    //lo_segment.scale.у = 0.5;
+                    //lo_segment.updateMatrix();
+                    //lo_segment.updateMatrixWorld();
+                    //lo_segment.updateWorldMatrix();
+                    //////11022025 }
                 }
 
             }
 
             catch (e) {
 
-                alert('error make_mirror_selected_segments: ' + e.stack);
+                alert('error make_random_selected_segments: ' + e.stack);
 
             }
 
@@ -2353,14 +2366,14 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         // Сделать для выделенного сегмента случайные размеры
         Shapes.prototype.make_random_segment = function (po_segment) {
 
-
             let lar_new_segment_points = [];
 
             let lo_segment_point;
 
             let lv_base_x = 0;
-            let lv_base_y = 0; //1102205
+            //let lv_base_y = 0; //1102205
 
+            let lv_delta = 0;
             let lo_segment;
 
             try {
@@ -2372,17 +2385,22 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     if (lv_i == 0) {
                         lv_base_x = lo_segment_point.position.x;
-                        lv_base_y = lo_segment_point.position.y;//11022025 
+                        //lv_base_y = lo_segment_point.position.y;//11022025 
                     }
-                    //11022025 let lv_delta = lv_base_x - lo_segment_point.position.x;
-                    let lv_delta_x = lv_base_x + lo_segment_point.position.x;
-                    let lv_delta_y = lv_base_y - lo_segment_point.position.y;
+
+                    lv_delta = lv_base_x - lo_segment_point.position.x;
+                    //let lv_delta_x = lv_base_x + lo_segment_point.position.x;
+                    //let lv_delta_y = lv_base_y - lo_segment_point.position.y;
 
 
 
-                    //11022025 lo_segment_point.position.x = lv_base_x + lv_delta;
-                    lo_segment_point.position.x = lv_base_x - lv_delta_x + Math.random() * 3; //11022025
-                    lo_segment_point.position.y = lv_base_y - lv_delta_y + Math.random() * 3; //11022025
+                    lo_segment_point.position.x = lv_base_x + lv_delta;
+
+                    //lo_segment_point.position.x = lv_base_x - lv_delta_x + Math.random() * 3; //11022025
+                    //lo_segment_point.position.y = lv_base_y - lv_delta_y + Math.random() * 3; //11022025
+
+
+
 
 
                     lar_new_segment_points.push(lo_segment_point.position);

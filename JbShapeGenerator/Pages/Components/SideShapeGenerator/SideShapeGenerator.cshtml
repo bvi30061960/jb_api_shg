@@ -36,6 +36,8 @@
 
     var @id_but_refresh = @lv_id_prefix + "_" + "id_but_refresh";
 
+    var @id_but_ch_nsegm = @lv_id_prefix + "_" + "id_but_ch_nsegm";
+
     var @id_but_set_color = @lv_id_prefix + "_" + "id_but_set_color";
     var @id_but_del_spline = @lv_id_prefix + "_" + "id_but_del_spline";
 
@@ -206,8 +208,9 @@
                             <table id=@id_tab_button_bar3>
                                 <tr>
                                     <td>
-                                        <button id=@id_but_set_color class="btn" title="Set color"> <i class="bi-palette"></i> </button>
+                                        <button id=@id_but_ch_nsegm class="btn" title="Change segments number"> <i class="bi-recycle"></i> </button>
                                     </td>
+
                                     <td>
                                         <button id=@id_but_del_spline class="btn" title="Delete selected curve"> <i class="bi-dash-circle"></i> </button>
                                     </td>
@@ -222,7 +225,9 @@
                                     <td>
                                         <button id=@id_but_random class="btn " title="Segments with random sizes"> <i class="bi-shuffle"></i> </button>
                                     </td>
-
+                                    <td>
+                                        <button id=@id_but_set_color class="btn" title="Set color"> <i class="bi-palette"></i> </button>
+                                    </td>
                                 </tr>
                             </table>
 
