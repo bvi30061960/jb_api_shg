@@ -394,7 +394,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         is_show_text_labels: $(this.id_prefix + "id_chb_show_text_labels")[0].checked,
 
         color: '#0000ff'
-
     };
 
     this.is_big_window = false;
@@ -424,6 +423,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.is_shape_gragging = false;
     this.textfont = null; // шрифт для текстовых объектов
     this.text_material = null; // материал для текстовых объектов
+
+    this.spline_segments_amount = params.spline_amount_segments; // количество сегментов в каждом создаваемом сплайне
     //--------------------------------------------------------------------------------
 
 
@@ -2918,7 +2919,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $(this.id_prefix + "id_but_make_model").off("click").click(this.onclick_make_model);
                 $(this.id_prefix + "id_but_set_color").off("click").click(this.onclick_id_but_set_color);
                 $(this.id_prefix + "id_but_rotate_mode").off("click").click(this.onclick_id_but_rotate_mode);
-                $(this.id_prefix + "id_but_ch_nsegm").off("click").click(this.onclick_but_ch_nsegm);
+                $(this.id_prefix + "id_but_ch_nsegm").off("click").click(this.onclick_but_change_segments_amount);
 
                 $(this.id_prefix + "id_but_refresh").off("click").click(this.onclick_refresh_model);
 
@@ -3882,17 +3883,23 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         //------------------------------------------------------------------------
         // Изменение количества сегментов в выделенной кривой
-        Shape_generator.prototype.onclick_but_ch_nsegm = function () {
+        Shape_generator.prototype.onclick_but_change_segments_amount = function () {
 
             try {
 
 
                 let lo_active_side = get_active_side_shape_generator();
 
-                lo_active_side.shapes.do_delete_splines();
+                let lar_deleted_splines_beg_x = lo_active_side.shapes.do_delete_splines();
 
-                lo_active_side.shapes.add_spline();
+                let lv_is_random_segmets = false; // признак формирования случайных сегментов
 
+
+                let lv_segments_amount = this.get_spline_segments_amount();
+
+                for (lv_i = 0; lv_i < lar_deleted_splines_beg_x.length; lv_i++ ) {
+                    lo_active_side.shapes.add_spline(lar_deleted_splines_beg_x[lv_i], lv_segments_amount, lv_is_random_segmets);
+                }
 
 
 
@@ -3912,6 +3919,28 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
         }
+
+        //------------------------------------------------------------------------
+        // Формирование количества сегментов в создаваемых сплайнах
+        Shape_generator.prototype.get_spline_segments_amount = function () {
+
+            try {
+
+                if (this.spline_segments_amount++ > Constants.spline_segments_amount_max) {
+                    this.spline_segments_amount = 1;
+                }
+                
+            }
+
+            catch (e) {
+
+                alert('error get_spline_segments_amount: ' + e.stack);
+
+            }
+
+            return this.spline_segments_amount;
+        }
+
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_add_spline = function () {
 

@@ -91,7 +91,9 @@ export var Constants = {
     shape_line_color: 0xff00ff, // цвет линий разреза
     cell_text_color: 0x0000ff, // 0x9966FF // 0x0000ff // цвет текста
     cell_text_size: 2, //2 // Размер текста ячеек
-    texts_array_start_dimension: 5 // начальный размер массива текстовых меток деталей
+    texts_array_start_dimension: 5, // начальный размер массива текстовых меток деталей
+    spline_segments_amount_max = 15 // максимальное количество сегментов в каждом из создаваемых сплайнах
+
 };
 
 

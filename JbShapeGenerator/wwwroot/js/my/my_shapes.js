@@ -1206,7 +1206,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             let lo_parent;
             let lo_parent_parent;
-            let lv_deleted_spline_num = null;
+            let lv_deleted_splines_beg_x = null;
+
+            let lar_deleted_splines_beg_x = []; //12022025  начальные координаты x удалённых сплайнов
 
             //let lv_was_action = false;
 
@@ -1238,7 +1240,13 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
-                        this.do_delete_spline(lo_parent_parent);
+                        lv_deleted_splines_beg_x = this.do_delete_spline(lo_parent_parent);
+
+                        if (lv_deleted_splines_beg_x) {
+
+                            lar_deleted_splines_beg_x.push(lv_deleted_splines_beg_x);
+                        }
+
 
                         if (this.shape_amount_curves > 0) {
                             this.shape_amount_curves--; //06122024
@@ -1304,13 +1312,13 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             ////11022025 this.main.render();
 
-            return {
-                //was_action: lv_was_action
-                // надо массив первых координат удалённых сплайнов
-            };
+            return lar_deleted_splines_beg_x;
         }
         //------------------------------------------------------------------------
         Shapes.prototype.do_delete_spline = function (po_spline_group) {
+
+
+            let lv_deleted_splines_beg_x = null; //12022025  начальная координата x удаляемого сплайна
 
             for (let lv_i = po_spline_group.children.length - 1; lv_i >= 0; lv_i--) {
 
@@ -1318,7 +1326,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 if (lo_object.type == "Line") {
 
-                    let lv_numspline = this.main.common_func.get_numspline_from_left_to_right(lo_object);//11122024
+                    lv_deleted_splines_beg_x = lo_object[0];
+
+
+                    let lv_deleting_numspline = this.main.common_func.get_numspline_from_left_to_right(lo_object);//11122024
                     //go_end_side_shape_generator.prototype.redefine_arr_color_parts(
                     //    go_up_side_shape_generator.shapes.shape_amount_curves,
                     //    go_lateral_side_shape_generator.shapes.shape_amount_curves,
@@ -1335,7 +1346,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         go_up_side_shape_generator.shapes.ar_splines.length,
                         go_lateral_side_shape_generator.shapes.ar_splines.length,
                         //07022025 }
-                        null, lv_numspline
+                        null, lv_deleting_numspline
+
+
                     );
                 }
 
@@ -1343,10 +1356,13 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             }
 
+            return lv_deleted_splines_beg_x; // начальная координата x удаляемого сплайна
         }
 
         //------------------------------------------------------------------------
-        Shapes.prototype.add_spline = function () {
+        //12022025 Shapes.prototype.add_spline = function () {
+        Shapes.prototype.add_spline = function (pv_spline_offset_x, pv_nsegments, pv_is_random_segmets) //12022025 
+        {
 
             let lv_spline_distance = this.segment_transform_data.distance_bt_x;
             let lv_spline_offset_x;
