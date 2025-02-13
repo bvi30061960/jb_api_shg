@@ -424,7 +424,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
     this.textfont = null; // шрифт для текстовых объектов
     this.text_material = null; // материал для текстовых объектов
 
-    this.spline_segments_amount = params.spline_amount_segments; // количество сегментов в каждом создаваемом сплайне
+    this.spline_segments_amount = this.params.spline_amount_segments; // количество сегментов в каждом создаваемом сплайне
     //--------------------------------------------------------------------------------
 
 
@@ -3895,10 +3895,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lv_is_random_segmets = false; // признак формирования случайных сегментов
 
 
-                let lv_segments_amount = this.get_spline_segments_amount();
+                let lv_needed_segments_amount = lo_active_side.get_spline_segments_amount();
 
-                for (lv_i = 0; lv_i < lar_deleted_splines_beg_x.length; lv_i++ ) {
-                    lo_active_side.shapes.add_spline(lar_deleted_splines_beg_x[lv_i], lv_segments_amount, lv_is_random_segmets);
+                for (let lv_i = 0; lv_i < lar_deleted_splines_beg_x.length; lv_i++ ) {
+                    lo_active_side.shapes.add_spline(lar_deleted_splines_beg_x[lv_i], lv_needed_segments_amount, lv_is_random_segmets);
                 }
 
 

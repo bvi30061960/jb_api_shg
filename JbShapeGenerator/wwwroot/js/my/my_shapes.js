@@ -1207,6 +1207,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             let lo_parent;
             let lo_parent_parent;
             let lv_deleted_splines_beg_x = null;
+            let lv_deleted_spline_num = null;
+
 
             let lar_deleted_splines_beg_x = []; //12022025  начальные координаты x удалённых сплайнов
 
@@ -1220,8 +1222,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         let lo_parent = this.ar_selected_segments[lv_i].parent;
                         let lo_parent_parent = this.ar_selected_segments[lv_i].parent.parent;
-
-
 
 
                         ////08022025 {
@@ -1238,14 +1238,15 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         //}
                         ////08022025 }
 
+                        if (lo_parent.children[0].position) {
 
-
-                        lv_deleted_splines_beg_x = this.do_delete_spline(lo_parent_parent);
-
-                        if (lv_deleted_splines_beg_x) {
-
+                            lv_deleted_splines_beg_x = lo_parent.children[0].position.x;
                             lar_deleted_splines_beg_x.push(lv_deleted_splines_beg_x);
                         }
+
+                        //lv_deleted_splines_beg_x = this.do_delete_spline(lo_parent_parent);
+                        this.do_delete_spline(lo_parent_parent);
+
 
 
                         if (this.shape_amount_curves > 0) {
@@ -1284,10 +1285,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 }
 
 
-
-
-
-
             }
 
             //14012025 {
@@ -1318,7 +1315,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         Shapes.prototype.do_delete_spline = function (po_spline_group) {
 
 
-            let lv_deleted_splines_beg_x = null; //12022025  начальная координата x удаляемого сплайна
+            //let lv_deleted_splines_beg_x = null; //12022025  начальная координата x удаляемого сплайна
 
             for (let lv_i = po_spline_group.children.length - 1; lv_i >= 0; lv_i--) {
 
@@ -1326,7 +1323,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 if (lo_object.type == "Line") {
 
-                    lv_deleted_splines_beg_x = lo_object[0];
+                    //lv_deleted_splines_beg_x = lo_object[0];
 
 
                     let lv_deleting_numspline = this.main.common_func.get_numspline_from_left_to_right(lo_object);//11122024
@@ -1356,7 +1353,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             }
 
-            return lv_deleted_splines_beg_x; // начальная координата x удаляемого сплайна
+            //return lv_deleted_splines_beg_x; // начальная координата x удаляемого сплайна
         }
 
         //------------------------------------------------------------------------
