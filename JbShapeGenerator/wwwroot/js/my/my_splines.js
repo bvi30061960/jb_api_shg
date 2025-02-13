@@ -90,7 +90,7 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 
         //----------------------------------------------------------
 
-        Splines.prototype.create_spline = function (po_parent, pv_spline_offset_x, ps_segment_transform_data /*, pv_height_koef*/) {
+        Splines.prototype.create_spline = function (po_parent, pv_spline_offset_x, ps_segment_transform_data /*, pv_height_koef*/, pv_segments_in_spline) {
 
             //31102024 var ARC_SEGMENTS = 400;//11062024
 
@@ -106,7 +106,10 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
 
                 let lo_segment_data;
                 let lar_spline_points = [];
-                for (let lv_i = 0; lv_i < this.main.params.spline_amount_segments; lv_i++) {
+
+
+                //12022025 for (let lv_i = 0; lv_i < this.main.params.spline_amount_segments; lv_i++) {
+                for (let lv_i = 0; lv_i < pv_segments_in_spline; lv_i++) {
 
                     let lo_segment_group = new THREE.Group();
                     lo_segment_group.name = this.main.common_func.get_object_name(cv_segment_group_name_prefix, lo_segment_group);

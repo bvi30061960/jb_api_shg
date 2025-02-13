@@ -255,7 +255,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
                             + lv_spline_distance * lv_i;
 
-                        this.main.splines.create_spline(lo_shape_splines_group, lv_spline_offset_x, this.segment_transform_data);
+                        this.main.splines.create_spline(lo_shape_splines_group, lv_spline_offset_x, this.segment_transform_data, this.main.params.spline_amount_segments);
 
                     }
 
@@ -1361,11 +1361,23 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         Shapes.prototype.add_spline = function (pv_spline_offset_x, pv_nsegments, pv_is_random_segmets) //12022025 
         {
 
-            let lv_spline_distance = this.segment_transform_data.distance_bt_x;
-            let lv_spline_offset_x;
-            lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
-                + lv_spline_distance * this.ar_splines.length;
+            let lv_spline_distance = 0;
+            let lv_spline_offset_x = 0;
+            let lv_segments_in_spline = 0;
 
+            if (typeof pv_spline_offset_x == "undefined") {
+
+                lv_spline_distance = this.segment_transform_data.distance_bt_x;
+                lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
+                    + lv_spline_distance * this.ar_splines.length;
+
+                lv_segments_in_spline = this.main.params.spline_amount_segments;
+            }
+            else {
+
+                lv_spline_offset_x = pv_spline_offset_x;
+                lv_segments_in_spline = pv_nsegments;
+            }
 
 
             ////let lo_spline_group = new THREE.Group();
@@ -1380,7 +1392,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             ///04112024 this.height_koef_previous
 
-            this.main.splines.create_spline(lo_main_curves_group, lv_spline_offset_x, /*this.height_koef_previous,*/ this.segment_transform_data);//30042024
+            this.main.splines.create_spline(lo_main_curves_group, lv_spline_offset_x, /*this.height_koef_previous,*/ this.segment_transform_data, lv_segments_in_spline);//30042024
 
             this.shape_amount_curves++; //06122024
 
