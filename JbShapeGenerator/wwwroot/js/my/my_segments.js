@@ -510,24 +510,16 @@ export function Segments(
 		}
 
 		//------------------------------------------------------------------------
-		Segments.prototype.get_segment_transform_data = function (/*po_segment_size,*/ pv_ajust_curves_by_shape) {
+		//13022025 Segments.prototype.get_segment_transform_data = function (pv_ajust_curves_by_shape) {
+		Segments.prototype.get_segment_transform_data = function (pv_ajust_curves_by_shape, pv_spline_amount_segments) //13022025
+		{
 
 			let lo_segment_size;
 			let lo_segment;
 			let lo_segment_transform_data;
 
 			try {
-				//02112024 {
-				//////if (typeof (po_segment_size) == "undefined") {
-				//////	po_segment_size = new Segments(1, 1, 1, 0, [0, 0]);
-
 				lo_segment_size = this.get_segment_size();
-				//////}
-				//////else {
-
-				//////	lo_segment_size = po_segment_size;
-				//////}
-				// 02112024 }
 
 				lo_segment_transform_data = new struc_segment_transform_data();
 
@@ -537,12 +529,13 @@ export function Segments(
 					lo_segment_transform_data.kx = this.params.shape_width / ((lo_segment_size.width + this.params.shape_width * this.params.distance_between_curves_in_percent_of_width / 100) * this.params.shape_amount_curves);
 
 					// y
-					lo_segment_transform_data.ky = this.params.shape_height / (lo_segment_size.height * this.params.spline_amount_segments);
+					//13022025 lo_segment_transform_data.ky = this.params.shape_height / (lo_segment_size.height * this.params.spline_amount_segments);
+					lo_segment_transform_data.ky = this.params.shape_height / (lo_segment_size.height * pv_spline_amount_segments);//13022025
 
 
 					// distance
 					let lv_total_curves_width = lo_segment_size.width * lo_segment_transform_data.kx * this.params.shape_amount_curves;
-					lo_segment_transform_data.distance_bt_x = this.params.distance_bt_curves;//12082024
+					lo_segment_transform_data.distance_bt_x = this.params.distance_bt_curves;
 
 					if (lo_segment_transform_data.distance_bt_x < 0) {
 						lo_segment_transform_data.distance_bt_x = 0;
@@ -560,9 +553,6 @@ export function Segments(
 
 			return lo_segment_transform_data;
 		}
-
-
-
 
 
 	} //if (typeof this.redraw_segment !== "function")

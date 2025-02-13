@@ -1212,7 +1212,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     //02112024 if (!pv_is_use_data) {
                     this.segment_gabarits = this.segments.get_segment_size();
-                    this.segment_transform_data = this.segments.get_segment_transform_data(/*this.segment_gabarits,*/ this.params.ajust_curves_by_shape);
+                    //13022025 this.segment_transform_data = this.segments.get_segment_transform_data(/*this.segment_gabarits,*/ this.params.ajust_curves_by_shape);
+                    this.segment_transform_data = this.segments.get_segment_transform_data(/*this.segment_gabarits,*/ this.params.ajust_curves_by_shape, this.params.spline_amount_segments);//13022025
                     //02112024 }
 
                     this.shapes.create_shapes(pv_is_use_data, po_side_data);
@@ -3474,7 +3475,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             po_side.segment_transform_data = po_side.segments.get_segment_transform_data(
                 /* po_side.segment_gabarits, 02112024 */
-                po_side.params.ajust_curves_by_shape);
+                //13022025 po_side.params.ajust_curves_by_shape);
+                po_side.params.ajust_curves_by_shape, this.params.spline_amount_segments);//13022025
 
 
             if (po_side.params.is_space_adjust) {
@@ -3898,7 +3900,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lv_needed_segments_amount = lo_active_side.get_spline_segments_amount();
 
                 for (let lv_i = 0; lv_i < lar_deleted_splines_beg_x.length; lv_i++ ) {
-                    lo_active_side.shapes.add_spline(lar_deleted_splines_beg_x[lv_i], lv_needed_segments_amount, lv_is_random_segmets);
+                    lo_active_side.shapes.add_spline(this.segment_transform_data, lar_deleted_splines_beg_x[lv_i], lv_needed_segments_amount, lv_is_random_segmets);
                 }
 
 
@@ -3947,7 +3949,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             try {
 
                 let lo_active_side = get_active_side_shape_generator();
-                lo_active_side.shapes.add_spline();
+                lo_active_side.shapes.add_spline(lo_active_side.segment_transform_data);
 
                 go_end_side_shape_generator.end_shape.redraw_end_shape(
                     lo_active_side,

@@ -1358,16 +1358,34 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
         //------------------------------------------------------------------------
         //12022025 Shapes.prototype.add_spline = function () {
-        Shapes.prototype.add_spline = function (pv_spline_offset_x, pv_nsegments, pv_is_random_segmets) //12022025 
+        //13022025 Shapes.prototype.add_spline = function (pv_spline_offset_x, pv_nsegments, pv_is_random_segmets) //12022025 
+        Shapes.prototype.add_spline = function (po_segment_transform_data, pv_spline_offset_x, pv_nsegments, pv_is_random_segmets) //13022025 
         {
 
             let lv_spline_distance = 0;
             let lv_spline_offset_x = 0;
             let lv_segments_in_spline = 0;
 
+
+            //13022025 {
+            ////if (typeof pv_spline_offset_x == "undefined") {
+
+            ////    lv_spline_distance = this.segment_transform_data.distance_bt_x;
+            ////    lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
+            ////        + lv_spline_distance * this.ar_splines.length;
+
+            ////    lv_segments_in_spline = this.main.params.spline_amount_segments;
+            ////}
+            ////else {
+
+            ////    lv_spline_offset_x = pv_spline_offset_x;
+            ////    lv_segments_in_spline = pv_nsegments;
+            ////}
+
+
             if (typeof pv_spline_offset_x == "undefined") {
 
-                lv_spline_distance = this.segment_transform_data.distance_bt_x;
+                lv_spline_distance = po_segment_transform_data.distance_bt_x;
                 lv_spline_offset_x = (lv_spline_distance / 2) + Math.abs(this.segment_gabarits.min.x)
                     + lv_spline_distance * this.ar_splines.length;
 
@@ -1379,10 +1397,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 lv_segments_in_spline = pv_nsegments;
             }
 
+            //13022025 }
 
-            ////let lo_spline_group = new THREE.Group();
-            //////lo_group_shape.name = this.main.common_func.get_object_name(this.shape_name_group_prefix, lo_group_shape);
-            ////lo_spline_group.name = this.main.common_func.get_object_name(cv_spline_group_name_prefix, lo_spline_group);
+
+
+
 
             // группа всех кривых
             let lo_main_curves_group = this.main.scene.getObjectByName(this.main_curves_group_prefix);
@@ -1392,22 +1411,29 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             ///04112024 this.height_koef_previous
 
-            this.main.splines.create_spline(lo_main_curves_group, lv_spline_offset_x, /*this.height_koef_previous,*/ this.segment_transform_data, lv_segments_in_spline);//30042024
+
+
+
+
+
+            //13022025 this.main.splines.create_spline(lo_main_curves_group, lv_spline_offset_x, /*this.height_koef_previous,*/ this.segment_transform_data, lv_segments_in_spline);
+            this.main.splines.create_spline(lo_main_curves_group, lv_spline_offset_x, /*this.height_koef_previous,*/ po_segment_transform_data, lv_segments_in_spline);//13022025
+
+
+
+
+
 
             this.shape_amount_curves++; //06122024
 
             this.ar_splines = this.get_splines();
             this.ar_splines_nodes = this.get_splines_points();
 
-            //13122024 this.main.render();
-
 
             if (this.params.is_space_adjust) {
 
                 this.adjust_splines_by_external_shape();
             }
-
-            //28122024 this.main.render();
 
         }
 
