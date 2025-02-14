@@ -1430,10 +1430,14 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             this.ar_splines_nodes = this.get_splines_points();
 
 
+
+            //this.main.render();//отладка!! Удалить!! 13022025
+
             if (this.params.is_space_adjust) {
 
                 this.adjust_splines_by_external_shape();
             }
+            //this.main.render();//отладка!! Удалить!! 13022025
 
         }
 
@@ -2879,12 +2883,20 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         //------------------------------------------------------------------------
         Shapes.prototype.adjust_segments_nodes_by_external_shape = function (po_spline_group, pv_spline_offset_x/*pv_delta_x*/, pv_height_koef_relative) {
 
-            let lar_segments_points = [];//
+            let lar_segments_points = [];
 
             try {
 
                 let lo_segment_group;
                 let lv_delta_x;
+
+                //13022025 {
+
+                let lv_height_koef_relative = 0;
+
+                let lar_spline_positions_array = po_spline_group.children[po_spline_group.children.length - 1].geometry.attributes.position.array;
+                let lv_spline_height = lar_spline_positions_array[lar_spline_positions_array.length - 2]; // наибольшая координата y
+                //13022025 }
 
                 for (let lv_i = 0; lv_i < po_spline_group.children.length; lv_i++) {
 
@@ -2910,7 +2922,32 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                     // двигаем всю кривую (сплайн)
                                     lo_segment_points.children[lv_k].position.x = lo_segment_points.children[lv_k].position.x + lv_delta_x;
 
+
+
+
                                     // растягиваем кривые по высоте
+
+                                    //13022025 {
+
+                                    let lv_splines_height = this.get_current_splines_height();
+
+                                    //if (lv_splines_height !== 0) {
+                                    //    lv_height_koef_relative = this.params.shape_height / lv_splines_height;
+                                    //}
+                                    //else {
+                                    //    lv_height_koef_relative = 1;
+
+                                    //}
+                                    if (lv_spline_height !== 0) {
+                                        lv_height_koef_relative = this.params.shape_height / lv_spline_height;
+                                    }
+                                    else {
+                                        lv_height_koef_relative = 1;
+
+                                    }
+                                    //13022025 }
+
+
                                     lo_segment_points.children[lv_k].position.y = lo_segment_points.children[lv_k].position.y * pv_height_koef_relative;
 
 
