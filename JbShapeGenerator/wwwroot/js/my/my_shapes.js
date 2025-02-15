@@ -1169,7 +1169,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             if (this.ar_selected_segments.length == 0) {
 
-                this.main.common_func.Show_message("Right click to select curves to delete", 3000);
+                this.main.common_func.Show_message("Right click to select curves to delete", 2500);
 
                 return;
             }
@@ -1308,6 +1308,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             this.ar_selected_segments = [];
 
             ////11022025 this.main.render();
+
+            //14022025 
+            // Оставляем в массиве смещений сплайнов только неповторяющиеся (уникальные) значения
+            lar_deleted_splines_beg_x = [...new Set(lar_deleted_splines_beg_x)];
 
             return lar_deleted_splines_beg_x;
         }
@@ -1464,15 +1468,16 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 //////    lv_height_koef_relative = 1;
                 //////}
 
-                let lv_splines_height = this.get_current_splines_height();
+                //14022025 let lv_splines_height = this.get_current_splines_height();
+                //let lv_splines_height = this.get_splines_height_max();
 
-                if (lv_splines_height !== 0) {
-                    lv_height_koef_relative = this.params.shape_height / lv_splines_height;
-                }
-                else {
-                    lv_height_koef_relative = 1;
+                //if (lv_splines_height !== 0) {
+                //    lv_height_koef_relative = this.params.shape_height / lv_splines_height;
+                //}
+                //else {
+                //    lv_height_koef_relative = 1;
 
-                }
+                //}
 
 
                 let lv_spline_distance = this.params.shape_width / this.ar_splines.length;
@@ -1484,6 +1489,15 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     let lv_spline_offset_x;
 
                     lv_spline_offset_x = lv_spline_distance * (0.5 + lv_i);
+
+                    //let lv_splines_height = this.get_spline_height_max(this.ar_splines[lv_i]);//14022025
+                    let lv_spline_height = this.get_spline_height(this.ar_splines[lv_i]);//14022025
+                    if (lv_spline_height !== 0) {
+                        lv_height_koef_relative = this.params.shape_height / lv_spline_height;
+                    }
+                    else {
+                        lv_height_koef_relative = 1;
+                    }
 
                     this.adjust_segments_nodes_by_external_shape(this.ar_splines[lv_i], lv_spline_offset_x, lv_height_koef_relative);
 
@@ -1511,18 +1525,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 //04112024 this.height_koef_previous = lv_height_koef;
 
-
-
-
-
-                //298072024 {
-                //////27072024 {
-                ////if (this.main.prev_selected_splines.spline_left !== null
-                ////	|| this.main.prev_selected_splines.spline_left !== null
-                ////) {
-                ////	this.select_shape_contour(this.main.prev_selected_splines);
-                ////}
-                //////27072024 }
 
 
                 // Восстановление выделенного контура
@@ -1554,27 +1556,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     //298072024 }
                 }
 
-                //03082024 {
-                // Восстановление цвета фигур
-                ////////////this.clear_group_color_mesh();//03082024
-                ////////////this.main.render();
-
-                //////////for (let lv_i = 0; lv_i < this.ar_shapes_colors.length; lv_i++) {
-
-                //////////	if (this.ar_shapes_colors[lv_i] == null || !this.ar_shapes_colors[lv_i]) {
-                //////////		continue;
-                //////////	}
-                //////////	let lo_spline_left = this.main.common_func.getSplineByNumber(lar_splines_order, this.ar_shapes_colors[lv_i].num_spline_left);
-                //////////	let lo_spline_right = this.main.common_func.getSplineByNumber(lar_splines_order, this.ar_shapes_colors[lv_i].num_spline_right);
-                //////////	this.draw_contour_and_shape(this.ar_shapes_colors[lv_i].color, lo_spline_left, lo_spline_right, false, true);
-                //////////}
-
                 this.redraw_meshes_color(lar_splines_order);
-
-                //03082024 }
-
-
-                //13122024 this.main.render();
 
             }
 
@@ -1614,6 +1596,66 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         }
 
 
+        //-----------------------------------------------------------------
+        // получение максимальной высоты (длины) кривых
+        Shapes.prototype.get_spline_height = function (po_spline_group) {
+
+            let lv_result = 0;
+
+            try {
+                let lar_spline_positions_array = po_spline_group.children[po_spline_group.children.length - 1].geometry.attributes.position.array;
+                lv_result = Math.abs(lar_spline_positions_array[lar_spline_positions_array.length - 2]); // наибольшая координата y
+
+            }
+
+            catch (e) {
+
+                alert('error get_spline_height: ' + e.stack);
+
+            }
+
+            return lv_result;
+        }
+
+        //-----------------------------------------------------------------
+        // получение максимальной высоты (длины) кривых
+        Shapes.prototype.get_splines_height_max = function () {
+
+            let lv_result = 1;
+
+
+            let lv_y_max = -1000;
+            let lv_y_curr = 0;
+
+            let lv_attr_length = 0;
+
+            try {
+
+                for (let lv_i = 0; lv_i < this.main.shapes.ar_splines.length; lv_i++) {
+
+                    lv_attr_length = this.main.shapes.ar_splines[lv_i].children[this.main.shapes.ar_splines[lv_i].children.length - 1].geometry.attributes.position.array.length;
+
+                    lv_y_curr = this.main.shapes.ar_splines[lv_i].children[this.main.shapes.ar_splines[lv_i].children.length - 1].geometry.attributes.position.array[lv_attr_length - 2];
+
+                    if (lv_y_curr > lv_y_max) {
+
+                        lv_y_max = lv_y_curr;
+                    }
+                }
+
+                lv_result = lv_y_max;
+
+            }
+
+            catch (e) {
+
+                alert('error get_current_splines_height: ' + e.stack);
+
+            }
+
+            return lv_result;
+
+        }
         //-----------------------------------------------------------------
         // Восстановление цвета фигур
         Shapes.prototype.redraw_meshes_color = function (par_splines_order) {
@@ -2335,7 +2377,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
-                    
+
                     lo_segment = this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//25042024
 
                     //////11022025 {
@@ -2892,15 +2934,23 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 //13022025 {
 
-                let lv_height_koef_relative = 0;
+                //let lv_height_koef_relative = 0;
 
-                let lar_spline_positions_array = po_spline_group.children[po_spline_group.children.length - 1].geometry.attributes.position.array;
-                let lv_spline_height = lar_spline_positions_array[lar_spline_positions_array.length - 2]; // наибольшая координата y
+                //let lar_spline_positions_array = po_spline_group.children[po_spline_group.children.length - 1].geometry.attributes.position.array;
+                //let lv_spline_height = lar_spline_positions_array[lar_spline_positions_array.length - 2]; // наибольшая координата y
+
+                //let lv_spline_height = this.get_splines_height_max(po_spline_group);//14022025
+
+
+                let lv_spline_height = this.get_spline_height(po_spline_group);//14022025
+
                 //13022025 }
 
                 for (let lv_i = 0; lv_i < po_spline_group.children.length; lv_i++) {
 
                     if (po_spline_group.children[lv_i] instanceof THREE.Group) {
+
+
 
                         let lo_segment_points = po_spline_group.children[lv_i];
 
@@ -2929,7 +2979,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                                     //13022025 {
 
-                                    let lv_splines_height = this.get_current_splines_height();
+                                    //////////let lv_splines_height = this.get_current_splines_height();
 
                                     //if (lv_splines_height !== 0) {
                                     //    lv_height_koef_relative = this.params.shape_height / lv_splines_height;
@@ -2938,13 +2988,14 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                     //    lv_height_koef_relative = 1;
 
                                     //}
-                                    if (lv_spline_height !== 0) {
-                                        lv_height_koef_relative = this.params.shape_height / lv_spline_height;
-                                    }
-                                    else {
-                                        lv_height_koef_relative = 1;
 
-                                    }
+                                    ////////if (lv_spline_height !== 0) {
+                                    ////////    lv_height_koef_relative = this.params.shape_height / lv_spline_height;
+                                    ////////}
+                                    ////////else {
+                                    ////////    lv_height_koef_relative = 1;
+
+                                    ////////}
                                     //13022025 }
 
 
@@ -2974,7 +3025,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                 this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
 
                                 // Создание нового сегмента
-                                //06082024 this.main.splines.draw_curve(lo_segment_points, lar_segment_points, cv_segment_name_prefix, false);
                                 let lo_segment = this.main.splines.draw_curve(lo_segment_points, lar_segment_points, cv_segment_name_prefix, false);
 
                                 if (this.clear_selected_segments_with_null_parents()) {
@@ -3004,7 +3054,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             }
 
-            //return lar_segments_points;
+            //return lar_segments_points;//14022025 
 
         }
 

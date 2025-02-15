@@ -3890,44 +3890,23 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             try {
 
 
-                ////////let lo_active_side = get_active_side_shape_generator();
-
-                ////////let lar_deleted_splines_beg_x = lo_active_side.shapes.do_delete_splines();
-
-                ////////let lv_is_random_segmets = false; // признак формирования случайных сегментов
+                let lo_active_side = get_active_side_shape_generator();
 
 
-                ////////let lv_needed_segments_amount = lo_active_side.inc_spline_segments_amount();
+                let lar_deleted_splines_beg_x = lo_active_side.shapes.do_delete_splines();
 
-
-                //////////let lo_segment_transform_data = lo_active_side.segments.get_segment_transform_data(lo_active_side.params.ajust_curves_by_shape, lo_active_side.spline_segments_amount);
-                ////////let lo_segment_transform_data = lo_active_side.segments.get_segment_transform_data(lo_active_side.params.ajust_curves_by_shape, lo_active_side.params.spline_amount_segments);
-                ////////for (let lv_i = 0; lv_i < lar_deleted_splines_beg_x.length; lv_i++ ) {
-                ////////    lo_active_side.shapes.add_spline(lo_segment_transform_data, lar_deleted_splines_beg_x[lv_i], lv_needed_segments_amount, lv_is_random_segmets);
-                ////////}
-
-                ////////go_end_side_shape_generator.end_shape.redraw_end_shape(
-                ////////    lo_active_side,
-                ////////    lo_active_side.shapes.shape_amount_curves - 1, null,    //pv_added_spline_num, pv_deleted_spline_num,
-                ////////    null, null                                              //po_is_use_data, po_sides_data
-                ////////);
-
-                //////////go_end_side_shape_generator.end_shape.appending_texts_array(lo_active_side.shapes.shape_amount_curves + 1);
-
-                ////////lo_active_side.render();
 
 
                 let lv_is_random_segmets = false; // признак формирования случайных сегментов
-
-                let lo_active_side = get_active_side_shape_generator();
-
                 let lv_needed_segments_amount = lo_active_side.inc_spline_segments_amount();// увеличение количества создаваемых сегментов
-
                 let lo_segment_transform_data = lo_active_side.segments.get_segment_transform_data(lo_active_side.params.ajust_curves_by_shape, lv_needed_segments_amount);
 
-                lo_active_side.shapes.add_spline(lo_segment_transform_data, pv_spline_offset_x, lv_needed_segments_amount, lv_is_random_segmets);
 
+                for (let lv_spline_offset_x of lar_deleted_splines_beg_x) {
 
+                    lo_active_side.shapes.add_spline(lo_segment_transform_data, lv_spline_offset_x, lv_needed_segments_amount, lv_is_random_segmets);
+
+                }
 
                 go_end_side_shape_generator.end_shape.redraw_end_shape(
                     lo_active_side,
