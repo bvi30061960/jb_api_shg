@@ -395,8 +395,7 @@ opacity: 1;
 }
 
 
-#up_id_loading_indicator, #lateral_id_loading_indicator, #end_id_loading_indicator
-{
+#up_id_loading_indicator, #lateral_id_loading_indicator, #end_id_loading_indicator {
     width: 40px;
     height: 40px;
     position: absolute;
@@ -406,8 +405,7 @@ opacity: 1;
     /*z-index:10;*/ /*15112024*/
 }
 
-#id_order_loading_indicator 
-{
+#id_order_loading_indicator {
     width: 20px;
     height: 20px;
     /*position: absolute;
@@ -530,24 +528,23 @@ th.ui-th-column {
 /********************** tab orders ***************************************************/
 
 #id_div_orders table {
-   /* margin-left: auto;
+    /* margin-left: auto;
     margin-right: auto;*/
 }
 
 #id_but_model_download,
-#id_but_go_to_amazon 
-{
+#id_but_go_to_amazon {
     font-size: 1em;
     border-radius: 12px;
     height: 2em;
 }
 
 #id_but_model_download {
-    width: 15vw; 
+    width: 15vw;
 }
 
 #id_but_go_to_amazon {
-    width: 22vw; 
+    width: 22vw;
 }
 
 /* ---- динамический индикатор ожидания ----- */
@@ -607,6 +604,41 @@ my_class_invisible {
     display: none;
 }
 
+/*#up_id_tab_button_bar3,
+#lateral_id_tab_button_bar3,
+#end_id_tab_button_bar3 {
+    border-spacing: 0 50px;
+}
+*/
+/*
+#up_id_div_button_bar3 table,
+#lateral_id_div_button_bar3 table,
+#end_id_div_button_bar3 table {
+    border-spacing: 0 50px;
+}*/
+
+/*#up_id_tab_button_bar3 tr,
+    #lateral_id_tab_button_bar3 tr,
+    #end_id_tab_button_bar3 tr {
+        display: block;
+        margin-bottom: 3px;*/ /* Отступ между строками */
+/*}*/
+
+/*#up_id_tab_button_bar3 td,
+#lateral_id_tab_button_bar3 td,
+#end_id_tab_button_bar3 td {
+    padding: 1px 0;
+}*/
+
+
+/* кнопки toolbar */
+.btn {
+    /*padding: 2px 5px;*/ /* Уменьшаем внутренние отступы */
+    padding: 2px 5px 2px 5px; /* top right bottom left  */
+    font-size: 12px; /* Уменьшаем размер шрифта */
+    line-height: 1; /* Сжимаем высоту кнопки */
+    margin: 2px 5px 2px 5px;
+}
 
 /*================================ отладка ===============================*/
 /*  * {   border: 1px solid red; } */

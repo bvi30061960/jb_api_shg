@@ -87,11 +87,21 @@
     var @id_img_jb = @lv_id_prefix + "_" + "id_img_jb";
 
 
-    var @lv_path_img_jb = ""; 
+
+
+
+    var @id_but_del_segment = @lv_id_prefix + "_" + "id_but_del_segment";
+    var @id_but_add_segment = @lv_id_prefix + "_" + "id_but_add_segment";
+
+
+
+
+    var @lv_path_img_jb = "";
 
     var @element_visibility = ""; //21012025
     var @visibility_class = ""; //31012025
-    @switch(lv_id_prefix) {
+    @switch (lv_id_prefix)
+    {
 
         case "up":
             lv_path_img_jb = "/images/jb_up.png";
@@ -136,10 +146,10 @@
 
             <div id=@id_shg_right>
 
-                <div id=@id_shg_right_top >
+                <div id=@id_shg_right_top>
 
 
-                    <div id=@id_pos_color_picker style="display:none"></div> 
+                    <div id=@id_pos_color_picker style="display:none"></div>
 
                     <div id=@id_my_gui_1>
                         <div>
@@ -166,10 +176,10 @@
                             <table id=@id_tab_button_bar2>
                                 <tr>
                                     <td>
-                                        <button id=@id_but_read_model class="btn" title="Open model list.."> <i class="bi-list-task"></i> </button>
+                                        <button id=@id_but_read_model class="btn btn-sm  btn-primary" title="Open model list.."> <i class="bi-list-task"></i> </button>
                                     </td>
                                     <td>
-                                        <button id=@id_but_new_model class="btn" title="Create new model"> <i class="bi-plus-square-dotted"></i> </button>
+                                        <button id=@id_but_new_model class="btn btn-sm  btn-primary" title="Create new model"> <i class="bi-plus-square-dotted"></i> </button>
                                     </td>
 
                                     @*// <td>
@@ -182,14 +192,14 @@
                                 // <td>
                                 //     <button id=@id_but_add_spline class="btn" title="Add curve"> <i class="bi-plus-square"></i> </button>
                                 // </td>*@
-                                 <td>
-                                        <button id=@id_but_refresh class="btn " title="Refresh model preview"> <i class=" bi-arrow-clockwise"></i> </button>
-                                 </td> 
                                     <td>
-                                        <button id=@id_but_save_model class="btn" title="Save model"> <i class="bi-save2"></i> </button>
+                                        <button id=@id_but_refresh class="btn  btn-sm  btn-primary" title="Refresh model preview"> <i class=" bi-arrow-clockwise"></i> </button>
                                     </td>
                                     <td>
-                                        <button id=@id_but_make_model class="btn" title="Make model"> <i class="bi-box"></i> </button>
+                                        <button id=@id_but_save_model class="btn btn-sm  btn-primary" title="Save model"> <i class="bi-save2"></i> </button>
+                                    </td>
+                                    <td>
+                                        <button id=@id_but_make_model class="btn btn-sm  btn-primary" title="Make model"> <i class="bi-box"></i> </button>
                                     </td>
                                 </tr>
                             </table>
@@ -206,28 +216,39 @@
                         <div id=@id_div_button_bar3>
 
                             <table id=@id_tab_button_bar3>
+                                @*style="border-spacing: 0 5px; border-collapse:unset" *@
                                 <tr>
                                     <td>
-                                        <button id=@id_but_ch_nsegm class="btn" title="Change segments number"> <i class="bi-recycle"></i> </button>
+                                        <button id=@id_but_ch_nsegm class="btn btn-sm  btn-primary" title="Change segments number"> <i class="bi-recycle"></i> </button>
                                     </td>
 
                                     <td>
-                                        <button id=@id_but_del_spline class="btn" title="Delete selected curve"> <i class="bi-dash-circle"></i> </button>
+                                        <button id=@id_but_mirror class="btn btn-sm btn-primary " title="Mirroring segments"> <i class="bi-symmetry-vertical"></i> </button>
+                                    </td>
+                                    <td>
+                                        <button id=@id_but_random class="btn btn-sm  btn-primary " title="Segments with random sizes"> <i class="bi-shuffle"></i> </button>
+                                    </td>
+                                    <td>
+                                        <button id=@id_but_set_color class="btn btn-sm  btn-primary " title="Set color"> <i class="bi-palette"></i> </button>
                                     </td>
 
                                     <td>
-                                        <button id=@id_but_add_spline class="btn" title="Add curve"> <i class="bi-plus-circle"></i> </button>
+                                        <button id=@id_but_del_segment class="btn btn-sm  btn-primary " title="Delete selected segment"> <i class="bi-node-minus"></i> </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <button id=@id_but_add_segment class="btn btn-sm btn-primary btn-toolbar" title="Add above selected segment"> <i class="bi-node-plus"></i> </button>
+                                    </td>
+                                    <td>
+                                        <button id=@id_but_del_spline class="btn btn-sm btn-primary btn-toolbar" title="Delete selected curve"> <i class="bi-journal-minus"></i> </button>
                                     </td>
 
                                     <td>
-                                        <button id=@id_but_mirror class="btn " title="Mirroring segments"> <i class="bi-symmetry-vertical"></i> </button>
+                                        <button id=@id_but_add_spline class="btn btn-sm  btn-group-sm btn-primary " title="Add curve"> <i class="bi-journal-plus"></i> </button>
                                     </td>
-                                    <td>
-                                        <button id=@id_but_random class="btn " title="Segments with random sizes"> <i class="bi-shuffle"></i> </button>
-                                    </td>
-                                    <td>
-                                        <button id=@id_but_set_color class="btn" title="Set color"> <i class="bi-palette"></i> </button>
-                                    </td>
+
+
                                 </tr>
                             </table>
 
@@ -257,7 +278,7 @@
 
 
                 <div id=@id_div_visual_model>
-                                @* style ="visibility:@element_visibility" *@
+                    @* style ="visibility:@element_visibility" *@
 
                     <div id=@id_dist_part_slider title="Set the distance between parts" style="visibility:hidden">
                         <button id="@id_but_rotate_mode" title="Rotation mode" class="ui-button ui-corner-all">
@@ -267,7 +288,7 @@
 
 
                     <div id="@id_div_dblclk" style="display:@element_visibility"> <label>Double click</label>&nbsp;<i class="bi-arrows-fullscreen"></i> </div>
-                     
+
                 </div>
 
             </div>
