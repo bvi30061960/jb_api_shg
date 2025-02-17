@@ -462,7 +462,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 $.fn.colorPicker.defaults.colors = [
                     //'ffffff',
-                    'f0f0f0', //Constants.background_color
+                    //'f0f0f0', //Constants.background_color
+                    'ffffff',
                     'fa0d00',
                     'fa6e00',
                     'faf100',
@@ -3000,7 +3001,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 $(this.id_prefix + "id_but_mirror").off("click").on("click", this.but_mirror_onclick);
                 $(this.id_prefix + "id_but_del_segment").off("click").on("click", this.but_del_segment_onclick);
-                $(this.id_prefix + "id_but_add_segment").off("click").on("click", this.but_add_segment_onclick);
+                $(this.id_prefix + "id_but_add_segment").off("click").on("click", this.but_insert_segment_onclick);
                 $(this.id_prefix + "id_but_random").off("click").on("click", this.but_make_random_onclick);
 
 
@@ -3408,13 +3409,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.but_add_segment_onclick = function () {
+        Shape_generator.prototype.but_insert_segment_onclick = function () {
 
             // добавить к сплайну сегмент перед выделенным
             let lo_active_side = get_active_side_shape_generator();
 
             try {
-                lo_active_side.shapes.make_add_segment_above_selected_segment();
+                lo_active_side.shapes.make_insert_segment_above_selected_segment();
 
                 lo_active_side.shapes.adjust_splines_by_external_shape();
 
@@ -3424,7 +3425,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             catch (e) {
 
-                alert('error ondblclick_id_shape: ' + e.stack);
+                alert('error but_insert_segment_onclick: ' + e.stack);
 
             }
         }
