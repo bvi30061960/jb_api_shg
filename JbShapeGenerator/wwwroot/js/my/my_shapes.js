@@ -202,6 +202,40 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         Shapes.prototype.insert_segment_above_selected = function (po_segment) {
 
 
+            if (!po_segment) {
+
+                return;
+            }
+
+            if (!po_segment.parent) {
+
+                return;
+
+            }
+
+
+            let lo_parent_parent = null;
+
+            // группа, включающая группу сегментов сплайна с выделенным сегментом
+            let lo_spline_group = lo_selected_segment.parent.parent;
+
+            let lv_segment_index = -1; // индекс выделенного сегмента
+
+            lv_segment_index = this.get_spline_group_index_of_selected_segment(lo_selected_segment);
+
+
+
+
+            let lo_new_segment_group = this.main.segment.create_segment_group_points_curve();
+
+
+
+
+
+
+
+
+
             let lar_new_segment_points = [];
 
             let lo_segment_point;
@@ -252,8 +286,42 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             return lo_segment;
 
         }
+        //------------------------------------------------------------------------------------------------------------------
+        Shapes.prototype.get_spline_group_index_of_selected_segment = function (po_selected_segment) {
 
-//------------------------------------------------------------------------------------------------------------------
+            try {
+
+                let lv_result = -1;
+
+                if (!po_selected_segment) {
+                    return lv_result;
+                }
+
+                let lineElement = null;
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+
+                    lineElement = this.ar_splines[lv_i].children.find(item => item instanceof THREE.Line);
+
+                    if (po_selected_segment == lineElement) {
+                        lv_result = lv_i;
+                    }
+
+                }
+            }
+
+            catch (e) {
+
+                alert('error get_spline_group_index_of_selected_segment: ' + e.stack);
+
+            }
+
+            return lv_result;
+        }
+
+
+
+
+        //------------------------------------------------------------------------------------------------------------------
         Shapes.prototype.addShape = function (po_shape,/* extrudeSettings,*/ pv_color/*, x, y, z, rx, ry, rz, s*/) {
 
             // flat shape with texture
@@ -2378,6 +2446,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     if (lo_selected_segment.parent) {
 
+
+                        // группа групп сегментов сплайна с выделенным сегментом
                         let lo_parent_parent = lo_selected_segment.parent.parent;
 
                         // Создание нового сегмента
