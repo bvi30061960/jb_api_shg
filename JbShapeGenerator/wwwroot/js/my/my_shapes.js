@@ -199,34 +199,57 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         // Добавление сегмента над выделенным сегментом
         ////Shapes.prototype.make_mirror_segment = function (po_segment) {
 
-        Shapes.prototype.insert_segment_above_selected = function (po_segment) {
+        Shapes.prototype.insert_segment_above_selected = function (po_selected_segment) {
 
 
-            if (!po_segment) {
+            if (!po_selected_segment) {
 
                 return;
             }
 
-            if (!po_segment.parent) {
+            if (!po_selected_segment.parent) {
 
                 return;
 
             }
+
 
 
             let lo_parent_parent = null;
 
             // группа, включающая группу сегментов сплайна с выделенным сегментом
-            let lo_spline_group = lo_selected_segment.parent.parent;
+            let lo_spline_group = po_selected_segment.parent.parent;
 
             let lv_segment_index = -1; // индекс выделенного сегмента
 
-            lv_segment_index = this.get_spline_group_index_of_selected_segment(lo_selected_segment);
+            lv_segment_index = this.get_spline_group_index_of_selected_segment(po_selected_segment);
+
+            let lo_beg_point_position = po_selected_segment.parent.parent.children[lv_segment_index].children[0].position;
+
+            let lo_segment_beg_point = new THREE.Vector2(lo_beg_point_position.x, lo_beg_point_position.y);
 
 
 
+            let lv_is_first_segment;
+            let lv_is_last_segment;
 
-            let lo_new_segment_group = this.main.segment.create_segment_group_points_curve();
+            if (lv_segment_index == 0) {
+                lv_is_first_segment = true;
+            }
+            else {
+                lv_is_first_segment = false;
+            }
+
+            if (lv_segment_index == lo_spline_group.length - 2) {
+                lv_is_last_segment = true;
+            }
+            else {
+                lv_is_last_segment = false;
+            }
+
+
+
+            let lo_new_segment_group = this.main.segments.create_segment_group_points_curve(lv_is_first_segment, lv_is_last_segment, lo_segment_beg_point);
 
 
 
@@ -289,23 +312,43 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         //------------------------------------------------------------------------------------------------------------------
         Shapes.prototype.get_spline_group_index_of_selected_segment = function (po_selected_segment) {
 
+            let lv_result = -1;
+
             try {
-
-                let lv_result = -1;
-
                 if (!po_selected_segment) {
                     return lv_result;
                 }
 
                 let lineElement = null;
+                let lv_is_founded = false;
+
                 for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
-                    lineElement = this.ar_splines[lv_i].children.find(item => item instanceof THREE.Line);
 
-                    if (po_selected_segment == lineElement) {
-                        lv_result = lv_i;
+                    if (po_selected_segment.parent.parent == this.ar_splines[lv_i]) {
+
+                        for (let lv_j = 0; lv_j < this.ar_splines[lv_i].children.length; lv_j++) {
+
+                            if (this.ar_splines[lv_i].children[lv_j] instanceof THREE.Group) {
+
+                                lineElement = this.ar_splines[lv_i].children[lv_j].children.find(item => item instanceof THREE.Line);
+                                if (po_selected_segment == lineElement) {
+                                    lv_result = lv_j;
+                                    break;
+                                }
+                            }
+
+                            //lineElement = this.ar_splines[lv_i].children[lv_j].find(item => item instanceof THREE.Line);
+                            //if (po_selected_segment == lineElement) {
+                            //    lv_result = lv_i;
+                            //}
+
+                        }
                     }
 
+                    if (lv_result >= 0) {
+                        break;
+                    }
                 }
             }
 

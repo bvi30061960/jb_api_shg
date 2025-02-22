@@ -12,12 +12,27 @@ import {
     get_passive_side_shape_generator
 } from './my_shape_generator.js';
 
+//import {
+//    struc_gabarits,
+//    struc_segment_transform_data,
+//    cv_spline_name_prefix,
+//    cv_segment_name_prefix
+//} from "./my_common_types.js";
+
+
 import {
     struc_gabarits,
     struc_segment_transform_data,
+    cv_spline_group_name_prefix,
     cv_spline_name_prefix,
-    cv_segment_name_prefix
+    cv_segment_group_name_prefix,
+    cv_segment_name_prefix,
+    typ_mesh_colors
+
 } from "./my_common_types.js";
+
+
+
 
 import { CommonFunc } from './my_common_func.js';
 
@@ -135,11 +150,12 @@ export function Segments(
 
 
         //----------------------------------------------------------
-        Segments.prototype.create_segment_group_points_curve = function (pv_is_firs_segment, pv_is_last_segment) {
+        Segments.prototype.create_segment_group_points_curve = function (pv_is_first_segment, pv_is_last_segment, po_segment_beg_point) {
+
+
+            let lo_segment_beg_point = null;
+
             try {
-
-
-
 
                 let lo_segment_group = new THREE.Group();
                 lo_segment_group.name = this.main.common_func.get_object_name(cv_segment_group_name_prefix, lo_segment_group);
@@ -163,27 +179,21 @@ export function Segments(
                 //}
 
 
-                lo_segment_data = this.main.segments.create_segment(
+                let lo_segment_data = this.main.segments.create_segment(
                     lo_segment_group,
                     this.main.segment_transform_data,
                     lv_segment_id,// номер сегмента
-                    lo_segment_beg_point,
-                    pv_is_firs_segment, // признак первого сегмента
+                    po_segment_beg_point,
+                    pv_is_first_segment, // признак первого сегмента
                     pv_is_last_segment  // признак последнего сегмента
                 );
 
                 lo_segment_beg_point = lo_segment_data.segment_beg_point;
-
-
-                this.draw_curve(lo_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);
+                this.main.splines.draw_curve(lo_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);
 
 
                 lar_spline_points.push(...lo_segment_data.points);
                 lo_spline_group.add(lo_segment_group);
-
-
-
-
 
             }
 
@@ -194,8 +204,9 @@ export function Segments(
             }
 
             return {
-                segment_beg_point: lo_segment_beg_point,
-                points: lar_points
+                spline_group: lo_spline_group,
+                points: lar_points,
+                segment_beg_point: lo_segment_beg_point
             }
         }
 
