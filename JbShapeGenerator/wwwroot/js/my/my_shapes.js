@@ -215,6 +215,24 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
+            //22022025 {
+            let lo_spline_group = new THREE.Group();
+            lo_spline_group.name = this.main.common_func.get_object_name(cv_spline_group_name_prefix, lo_spline_group);
+
+            //let lo_segment_data;
+            let lar_spline_points = [];
+            //22022025 ]
+
+
+
+
+
+
+
+
+
+
+
             let lo_parent_parent = null;
 
             // группа, включающая группу сегментов сплайна с выделенным сегментом
@@ -249,9 +267,22 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
-            let lo_new_segment_group = this.main.segments.create_segment_group_points_curve(lv_is_first_segment, lv_is_last_segment, lo_segment_beg_point);
+            let lo_new_segment_data = this.main.segments.create_segment_group_points_curve(lv_is_first_segment, lv_is_last_segment, lo_segment_beg_point);
 
 
+            //segment_group: lo_segment_group,
+            //points: lo_segment_data.points,
+            //segment_beg_point: lo_segment_beg_point,
+            //segment_data: lo_segment_data
+
+
+
+
+            // 22022025 {
+            lar_spline_points.push(...lo_new_segment_data.points);
+            lo_spline_group.add(lo_new_segment_data.segment_group);
+
+            // 22022025 }
 
 
 

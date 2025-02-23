@@ -191,9 +191,10 @@ export function Segments(
                 lo_segment_beg_point = lo_segment_data.segment_beg_point;
                 this.main.splines.draw_curve(lo_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);
 
-
-                lar_spline_points.push(...lo_segment_data.points);
-                lo_spline_group.add(lo_segment_group);
+                //22022025 {
+                ////lar_spline_points.push(...lo_segment_data.points);
+                ////lo_spline_group.add(lo_segment_group);
+                //22022025 }
 
             }
 
@@ -204,9 +205,10 @@ export function Segments(
             }
 
             return {
-                spline_group: lo_spline_group,
-                points: lar_points,
-                segment_beg_point: lo_segment_beg_point
+                segment_group: lo_segment_group,
+                points: lo_segment_data.points,
+                segment_beg_point: lo_segment_beg_point,
+                segment_data: lo_segment_data
             }
         }
 

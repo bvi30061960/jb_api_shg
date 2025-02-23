@@ -152,8 +152,6 @@ export function Splines(po_main, /*, pv_count_allsplines, pv_nspline, pv_spline_
                     );
 
                     lo_segment_beg_point = lo_segment_data.segment_beg_point;
-
-
                     this.draw_curve(lo_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);
 
 
