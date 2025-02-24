@@ -590,6 +590,34 @@ export function Segments(
         }
 
         //------------------------------------------------------------------------
+        Segments.prototype.get_segment_points = function (po_segment_group) {
+
+
+            let lar_points = [];
+
+            try {
+
+                for (let lv_i = 0; lv_i < po_segment_group.children.length; lv_i++) {
+
+                    if (po_segment_group.children[lv_i] instanceof THREE.Mesh) {
+
+                        lar_points.push(po_segment_group.children[lv_i].position);
+                    }
+
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error get_segment_points: ' + e.stack);
+
+                return null;
+            }
+
+            return lar_points;
+        }
+        //------------------------------------------------------------------------
         //13022025 Segments.prototype.get_segment_transform_data = function (pv_ajust_curves_by_shape) {
         Segments.prototype.get_segment_transform_data = function (pv_ajust_curves_by_shape, pv_spline_amount_segments) //13022025
         {
