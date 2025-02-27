@@ -3417,7 +3417,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             try {
 
                 //23022025 lo_active_side.shapes.make_insert_segment_above_selected_segment();
-                lo_active_side.shapes.make_insert_segment_before_selected_segment();//23022025
+                //24022025 lo_active_side.shapes.make_insert_segment_before_selected_segment();//23022025
+                lo_active_side.shapes.make_insert_segments_before_selected_segments();//24022025
 
                 lo_active_side.shapes.adjust_splines_by_external_shape();
 
@@ -3463,31 +3464,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lo_active_side = get_active_side_shape_generator();
             lo_active_side.shapes.make_mirror_selected_segments();
 
-
-            //////////////////////////let lar_splines_order = [];
-            //////////////////////////lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();
-            //////////////////////////lo_active_side.shapes.redraw_meshes_color(lar_splines_order);
-
-
-            ////05082024 {
-            //lo_active_side.shapes.clear_group_contours();
-
-            //if (lo_active_side.group_contours.userData !== null) {
-
-            //    let lo_splines = {
-            //        spline_left: lo_active_side.group_contours.userData.spline_left,
-            //        spline_right: lo_active_side.group_contours.userData.spline_right
-            //    };
-            //    lo_active_side.shapes.select_shape_contour(lo_splines);
-            //}
-            ////05082024 }
-
-
             lo_active_side.shapes.adjust_splines_by_external_shape();
-
-            //lo_active_side.camera.updateProjectionMatrix();
-
-            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
 
             lo_active_side.render();
 

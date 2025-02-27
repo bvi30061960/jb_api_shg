@@ -182,7 +182,7 @@ export function Segments(
                 let lo_segment_data = this.main.segments.create_segment(
                     lo_segment_group,
                     this.main.segment_transform_data,
-                    lv_segment_id,// номер сегмента
+                    //26022025 lv_segment_id,// номер сегмента
                     po_segment_beg_point,
                     pv_is_first_segment, // признак первого сегмента
                     pv_is_last_segment  // признак последнего сегмента
@@ -218,7 +218,7 @@ export function Segments(
         Segments.prototype.create_segment = function (
             po_parent,
             po_transform_data,
-            pv_segment_id,
+            //26022025 pv_segment_id,
             po_beg_point,
             pv_is_first_segment, // признак первого сегмента
             pv_is_last_segment // признак последнего сегмента
@@ -246,6 +246,9 @@ export function Segments(
                 else {
                     lv_k_beg = 1;
                 }
+
+
+                let lv_segment_id = this.main.common_func.get_guid();//26022025 
 
                 let lv_k_end = this.ar_initial_segment_points.length;
 
@@ -290,7 +293,7 @@ export function Segments(
 
                     lo_node.userData = {
                         nspline: po_parent.id, //lv_i,
-                        nsegment: pv_segment_id, //lv_j,
+                        nsegment: lv_segment_id, //26022025 pv_segment_id, //lv_j,
                         npoint: lv_k
                     };
 
