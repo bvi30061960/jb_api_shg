@@ -2735,8 +2735,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         for (let lv_j = 0; lv_j < lo_spline_group_with_sel_segment.children.length; lv_j++) {
 
+                            if (lo_spline_group_with_sel_segment.children[lv_j].type !== "Group") {
+                                continue;
+                            }
 
-                            if (lo_segment_group_of_sel_segment.children[lv_j] == lo_selected_segment.parent) {
+
+                            if (lo_spline_group_with_sel_segment.children[lv_j] == lo_selected_segment.parent) {
 
 
 
@@ -2781,15 +2785,30 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                             if (lv_is_after) {
+
                                 // коррекция y-координаты на длину вставляемого сегмента
 
+                                let lo_current_point = null;
+
+                                for (let lv_k = 0; lv_k < lo_spline_group_with_sel_segment.children[lv_j].length; lv_k++) {
+
+                                    lo_current_point = lo_spline_group_with_sel_segment.children[lv_j].children[lv_k];
+                                   
+                                    lo_segment_point.position.y = lo_segment_point.position.y + lv_shift_y;
+
+
+                                    //lar_new_segment_points.push(lo_segment_point.position);
+
+                                }
+
 
                             }
-                            else {
+                            //else {
 
-                                lo_new_spline_group_with_sel_segment.add(lo_segment_group_of_sel_segment.children[lv_j]);
-                            }
+                            //    lo_new_spline_group_with_sel_segment.add(lo_segment_group_of_sel_segment.children[lv_j]);
+                            //}
 
+                            lo_new_spline_group_with_sel_segment.add(lo_segment_group_of_sel_segment.children[lv_j]);
 
 
 
@@ -2844,6 +2863,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 // Сжимаем - оставляем уникальные элементы (группы задействованных сплайнов)
                 lar_selected_spline_groups = [...new Set(lar_selected_spline_groups)];
+
+
+
+
 
 
 
