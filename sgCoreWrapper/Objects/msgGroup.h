@@ -1,5 +1,5 @@
 #pragma once
-#include "..\sgCore\sgGroup.h"
+#include "..\..\sgCore\sgGroup.h"
 #include "Objects/msgObject.h"
 #include "Interfaces/mIObjectsList.h"
 
@@ -16,7 +16,7 @@ namespace sgCoreWrapper
 			static msgGroup^ CreateGroup(array<msgObject^>^ objcts)
 			{
 				int count = objcts->Length;
-				sgCObject** uobjcts = new sgCObject*[count];
+				sgCObject** uobjcts = new sgCObject * [count];
 				for (int i = 0; i < count; i++)
 				{
 					uobjcts[i] = objcts[i]->_sgCObject;
@@ -37,7 +37,18 @@ namespace sgCoreWrapper
 			}
 
 			bool BreakGroup(array<msgObject^>^% objcts);
-			
+
+
+			//---------------------------------------------------------
+			//bvi 08102024 {
+			bool isNull()
+			{
+				return sgGroup == 0x000000;
+			}
+			//---------------------------------------------------------
+			//bvi 08102024 }
+
+
 		internal:
 			msgGroup(sgCGroup* group) : msgObject(group)
 			{
