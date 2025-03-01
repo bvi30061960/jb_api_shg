@@ -2064,7 +2064,7 @@ export function CommonFunc() {
 
             return lv_result;
         }
- //---------------------------------------------------------------------------------------------
+        //---------------------------------------------------------------------------------------------
         CommonFunc.prototype.get_textmesh_name = function (pv_nrow, pv_ncol) {
 
             let lv_result = "";
@@ -2491,7 +2491,40 @@ export function CommonFunc() {
 
         }
 
+        //-----------------------------------------------------------------
+        CommonFunc.prototype.get_points_from_geometry = function (po_geometry) {
 
+            try {
+
+                if (!po_geometry) {
+                    return null;
+                }
+                if (!po_geometry.attributes) {
+                    return null;
+                }
+                if (!po_geometry.attributes.position) {
+                    return null;
+                }
+
+
+                // Допустим, у нас есть объект Line
+                let lar_positions = po_geometry.attributes.position.array; // Получаем массив координат
+                let lar_vertices = []; // Массив для хранения Vector3
+
+                // Проходим по массиву и создаём Vector3 для каждой вершины
+                for (let i = 0; i < lar_positions.length; i += 3) {
+                    lar_vertices.push(new THREE.Vector3(lar_positions[i], lar_positions[i + 1], lar_positions[i + 2]));
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error get_points_from_geometry: ' + e.stack);
+
+            }
+            return lar_vertices;
+        }
         //-----------------------------------------------------------------
         CommonFunc.prototype.create_text_mesh = function (
             //po_font,
