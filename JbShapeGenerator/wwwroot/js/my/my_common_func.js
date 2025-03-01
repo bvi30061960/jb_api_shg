@@ -2494,6 +2494,9 @@ export function CommonFunc() {
         //-----------------------------------------------------------------
         CommonFunc.prototype.get_points_from_geometry = function (po_geometry) {
 
+            let lar_positions = null;
+            let lar_vertices = null;
+
             try {
 
                 if (!po_geometry) {
@@ -2508,8 +2511,8 @@ export function CommonFunc() {
 
 
                 // Допустим, у нас есть объект Line
-                let lar_positions = po_geometry.attributes.position.array; // Получаем массив координат
-                let lar_vertices = []; // Массив для хранения Vector3
+                lar_positions = po_geometry.attributes.position.array; // Получаем массив координат
+                lar_vertices = []; // Массив для хранения Vector3
 
                 // Проходим по массиву и создаём Vector3 для каждой вершины
                 for (let i = 0; i < lar_positions.length; i += 3) {

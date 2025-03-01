@@ -2694,6 +2694,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             let lo_new_spline_group = null; // new THREE.Group();
             let lv_shift_y = 0;
             let lo_spline_group_with_sel_segment = null;
+            let lar_segment_points = null;
+            let lo_copy_segment_group = null;
+
+
 
             try {
 
@@ -2774,7 +2778,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                                 //lo_segment_beg_point = lo_segment_data.segment_beg_point;
                                 this.main.splines.draw_curve(lo_new_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);
-
                                 lar_spline_points.push(...lo_segment_data.points);
                                 lo_new_spline_group.add(lo_new_segment_group);
 
@@ -2851,20 +2854,39 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                             //lo_new_spline_group_with_sel_segment.add(lo_segment_group_of_sel_segment.children[lv_j]);
                             //lo_new_spline_group.add(lo_spline_group_with_sel_segment.children[lv_j]);
 
-                            let lo_copy_segment_group = lo_spline_group_with_sel_segment.children[lv_j].clone();
+                            lo_copy_segment_group = lo_spline_group_with_sel_segment.children[lv_j].clone();
                             //lo_new_spline_group.add(lo_copy_segment_group);
 
 
                             // как из массива объектов выбрать объект типа "Line"?
+                            let lo_line = lo_copy_segment_group.children.find(obj => obj.type === "Line");
 
-                            this.main.common_func.get_points_from_geometry()
+                            if (lo_line.geometry) {
+
+                                lar_segment_points = this.main.common_func.get_points_from_geometry(lo_line.geometry)
+                            }
+                            else {
+
+                                continue;
+                            }
 
 
-                            this.main.splines.draw_curve(lo_copy_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);
 
-                            lar_spline_points.push(...lo_segment_data.points);
-                            lo_new_spline_group.add(lo_new_segment_group);
 
+                            this.main.splines.draw_curve(lo_copy_segment_group, lar_segment_points, cv_segment_name_prefix, false);
+                            lar_spline_points.push(...lar_segment_points);
+                            lo_new_spline_group.add(lo_copy_segment_group);
+
+
+
+
+                            //this.main.splines.draw_curve(lo_new_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);
+                            //lar_spline_points.push(...lo_segment_data.points);
+                            //lo_new_spline_group.add(lo_new_segment_group);
+
+
+
+                            //lar_spline_points.push(...lo_segment_data.points);
 
 
 
@@ -2906,7 +2928,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         }
 
 
-                        lar_spline_points.push(...lo_segment_data.points);
+                        //lar_spline_points.push(...lo_segment_data.points);
 
 
                     } // lv_j
