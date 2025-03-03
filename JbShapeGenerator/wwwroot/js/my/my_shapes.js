@@ -2710,17 +2710,18 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 }
 
 
+                // цикл по выделенным сегментам
                 for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
 
 
                     lo_selected_segment = this.ar_selected_segments[lv_i];
 
-                    if (lo_selected_segment.parent) {
+                    if (lo_selected_segment.parent) { 
 
 
 
-                        lo_spline_group_with_sel_segment = lo_selected_segment.parent.parent;
-                        lo_segment_group_of_sel_segment = lo_selected_segment.parent;
+                        lo_spline_group_with_sel_segment = lo_selected_segment.parent.parent;// группа сплайна выделенного сегмента
+                        lo_segment_group_of_sel_segment = lo_selected_segment.parent;// группа выделенного сегмента
 
 
                         lo_new_spline_group = new THREE.Group();
@@ -2730,7 +2731,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                         lv_segment_index = this.get_spline_group_index_of_selected_segment(lo_selected_segment);
-                        lo_beg_point_position = lo_selected_segment.parent.parent.children[lv_segment_index].children[0].position;
+                        //lo_beg_point_position = lo_selected_segment.parent.parent.children[lv_segment_index].children[0].position;
+
+                        let lar_segment_meshes = lo_selected_segment.parent.parent.children[lv_segment_index].children;
+                        //lo_beg_point_position = lo_selected_segment.parent.parent.children[lv_segment_index].children[0].position;
+                        lo_beg_point_position = lar_segment_meshes[lar_segment_meshes.length - 2].position; // позиция последнего узла сегмента, перед которым 
+                                                                                                            // вставляется новый сегмент
                         //02032025 lo_segment_beg_point = new THREE.Vector2(lo_beg_point_position.x, 0 /*lo_beg_point_position.y*/);
                         lo_segment_beg_point = new THREE.Vector2(lo_beg_point_position.x, lo_beg_point_position.y);//02032025
 
@@ -2753,6 +2759,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                         let lv_is_after = false;
 
+                        // цикл по группам сегментов,принадлежащих сплайну с выделенным сегментом
                         for (let lv_j = 0; lv_j < lo_spline_group_with_sel_segment.children.length; lv_j++) {
 
                             if (lo_spline_group_with_sel_segment.children[lv_j].type !== "Group") {
@@ -2761,6 +2768,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                             if (lo_spline_group_with_sel_segment.children[lv_j] == lo_selected_segment.parent) {
+                                // это группа выделенного сегмента
+
 
                                 let lo_new_segment_group = new THREE.Group();
                                 lo_new_segment_group.name = this.main.common_func.get_object_name(cv_segment_group_name_prefix, lo_new_segment_group);
@@ -2858,11 +2867,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
-                            // удаляем Line из прежней segment group
-                            let lo_line = lo_spline_group_with_sel_segment.children[lv_j].children.find(obj => obj.type === "Line");
-                            ///lo_spline_group_with_sel_segment.children[lv_j].remove(lo_line);
-
-                            this.main.common_func.removeObjectsWithChildren(lo_line, true);
+                            ////////////////// удаляем Line из прежней segment group
+                            ////////////////let lo_line = lo_spline_group_with_sel_segment.children[lv_j].children.find(obj => obj.type === "Line");
+                            ////////////////lo_spline_group_with_sel_segment.children[lv_j].remove(lo_line);
+                            ////////////////lo_line = null;
+                            ///////////////////////////////this.main.common_func.removeObjectsWithChildren(lo_line, true);
 
 
 
@@ -2982,7 +2991,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                     // удаление прежнего сплайна
-                    this.main.common_func.removeObjectsWithChildren(lo_spline_group_with_sel_segment, true);
+                 //   this.main.common_func.removeObjectsWithChildren(lo_spline_group_with_sel_segment, true);
+
+                    ////lo_main_curves_group.remove(lo_spline_group_with_sel_segment);
+                    ////////lo_spline_group_with_sel_segment = null;
+
+
 
 
                     lo_main_curves_group.add(lo_new_spline_group);
