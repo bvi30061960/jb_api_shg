@@ -366,7 +366,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                             if (this.ar_splines[lv_i].children[lv_j] instanceof THREE.Group) {
 
                                 lo_lineElement = this.ar_splines[lv_i].children[lv_j].children.find(item => item instanceof THREE.Line);
-                                if (po_selected_segment == lo_lineElement) {
+                                //04032025 if (po_selected_segment == lo_lineElement) {
+                                if (po_selected_segment.name == lo_lineElement.name) {
                                     lv_result = lv_j;
                                     break;
                                 }
