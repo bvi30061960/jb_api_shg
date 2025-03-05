@@ -20,7 +20,8 @@ export const cv_rectangle_name = "rectangle";
 export const cv_spline_group_name_prefix = "spline_group";
 export const cv_spline_name_prefix = "spline";
 export const cv_segment_group_name_prefix = "segment_group";
-export const cv_segment_name_prefix = "segment";
+//04032025 export const cv_segment_name_prefix = "segment";
+export const cv_segment_name_prefix = "segment_line"; //04032025
 
 
 

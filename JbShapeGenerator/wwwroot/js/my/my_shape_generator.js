@@ -3425,7 +3425,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-         ///////////////////////02032025 пока!!       lo_active_side.shapes.adjust_splines_by_external_shape();
+                lo_active_side.shapes.adjust_splines_by_external_shape();
 
                 lo_active_side.render();
 

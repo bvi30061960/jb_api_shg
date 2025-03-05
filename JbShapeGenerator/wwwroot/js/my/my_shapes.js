@@ -2706,8 +2706,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             try {
 
-
-
                 // группа всех кривых
                 let lo_main_curves_group = this.main.scene.getObjectByName(this.main_curves_group_prefix);
                 if (!lo_main_curves_group) {
@@ -2718,12 +2716,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 // цикл по выделенным сегментам
                 for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
 
-
                     lo_selected_segment = this.ar_selected_segments[lv_i];
 
                     if (lo_selected_segment.parent) {
-
-
 
                         lo_spline_group_with_sel_segment = lo_selected_segment.parent.parent;// группа сплайна выделенного сегмента
                         ///lo_spline_group_with_sel_segment = lo_selected_segment.parent.parent.clone();// 04032025 группа сплайна выделенного сегмента
@@ -2787,14 +2782,20 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                 //03032025 lo_new_spline_group_with_sel_segment.add(lo_spline_group_with_sel_segment.children[lv_j]);
 
                                 lar_segment_points = lo_curr_segment_group.children.map(mesh => mesh.position.clone());
-
-                                // удаление точки с нулевыми координатами (от объекта Line)
-                                lar_segment_points.pop();
-
+                                let lv_point = lar_segment_points[lar_segment_points.length - 1];
+                                if (lv_point.x == 0 && lv_point.y == 0 && lv_point.z == 0) {
+                                    // удаление точки с нулевыми координатами (от объекта Line)
+                                    lar_segment_points.pop();
+                                }
 
                                 lar_spline_points.push(...lar_segment_points);
 
                                 lo_copy_curr_segment_group = lo_curr_segment_group.clone();
+
+                                this.main.splines.draw_curve(lo_copy_curr_segment_group, lar_segment_points, cv_segment_name_prefix, false);
+
+
+
                                 //04032025 lo_new_spline_group_with_sel_segment.add(lo_curr_segment_group);
                                 lo_new_spline_group_with_sel_segment.add(lo_copy_curr_segment_group);
 
@@ -2891,6 +2892,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                                         ///lar_segment_points = JSON.parse(JSON.stringify(lo_spline_group_with_sel_segment.children[lv_j].children));
                                         lar_segment_points = lo_curr_segment_group.children.map(mesh => mesh.position.clone());
+                                        let lv_point = lar_segment_points[lar_segment_points.length - 1];
+                                        if (lv_point.x == 0 && lv_point.y == 0 && lv_point.z == 0) {
+                                            // удаление точки с нулевыми координатами (от объекта Line)
+                                            lar_segment_points.pop();
+                                        }
 
 
                                         //03032025 this.main.splines.draw_curve(lo_copy_segment_group, lar_segment_points, cv_segment_name_prefix, false);
@@ -2909,11 +2915,24 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                 }
                                 else { // not is_after
 
+                                    // удаление предыдущей линии сегмента
+                                    let lo_line = lo_curr_segment_group.children.find(obj => obj.type === "Line");
+                                    lo_curr_segment_group.remove(lo_line);
+                                    lo_line = null;
+
+
+
+
+
                                     //lar_meshes = lo_curr_segment_group.clone();
 
                                     ///lar_segment_points = JSON.parse(JSON.stringify(lo_spline_group_with_sel_segment.children[lv_j].children));
                                     lar_segment_points = lo_curr_segment_group.children.map(mesh => mesh.position.clone());
-
+                                    let lv_point = lar_segment_points[lar_segment_points.length - 1];
+                                    if (lv_point.x == 0 && lv_point.y == 0 && lv_point.z == 0) {
+                                        // удаление точки с нулевыми координатами (от объекта Line)
+                                        lar_segment_points.pop();
+                                    }
 
                                     //03032025 this.main.splines.draw_curve(lo_copy_segment_group, lar_segment_points, cv_segment_name_prefix, false);
                                     this.main.splines.draw_curve(lo_curr_segment_group, lar_segment_points, cv_segment_name_prefix, false);
