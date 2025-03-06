@@ -547,33 +547,34 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                     ////}
                                     //////03112024 }
 
-
-
                                     lar_segment_points.push(lo_segment_points.children[lv_k].position);
 
                                 }
                             }
 
+                            //06032025 {
+                            //////////// Удаление предыдущих линий сегментов
+                            //////////let lar_lines = this.main.shapes.get_lines_in_group(lo_segment_points);//16062024
 
-                            // Удаление предыдущих линий сегментов
-                            let lar_lines = this.main.shapes.get_lines_in_group(lo_segment_points);//16062024
+                            //////////for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
+                            //////////    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
 
-                            for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
-                                this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
-
-                                // Создание нового сегмента
-                                let lo_segment = this.main.splines.draw_curve(lo_segment_points, lar_segment_points, cv_segment_name_prefix, false);
+                            //////////    // Создание нового сегмента
+                            //////////    let lo_segment = this.main.splines.draw_curve(lo_segment_points, lar_segment_points, cv_segment_name_prefix, false);
 
 
-                                //05032025 {
-                                //if (this.clear_selected_segments_with_null_parents()) {
-                                //    this.ar_selected_segments.push(lo_segment);
-                                //}
+                            //////////    //05032025 {
+                            //////////    //if (this.clear_selected_segments_with_null_parents()) {
+                            //////////    //    this.ar_selected_segments.push(lo_segment);
+                            //////////    //}
 
-                                this.clear_selected_segments_with_null_parents();
+                            //////////    this.clear_selected_segments_with_null_parents();
 
-                                //05032025 }
-                            }
+                            //////////    //05032025 }
+                            //////////}
+                            //06032025 }
+
+
 
                             //lar_segments_points.push({
                             //	points: lar_segment_points,
@@ -1759,7 +1760,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 }
 
-            
+
 
 
 
@@ -1774,7 +1775,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             return lv_result;
         }
 
-    
+
 
         //------------------------------------------------------------------------
         Shapes.prototype.get_spline_points = function (po_spline_group) {
@@ -2664,6 +2665,307 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
+
+
+        //-----------------------------------------------------------------
+        // Сделать зеркальное отражение выделенных сегментов
+        Shapes.prototype.make_mirror_selected_segments = function () {
+
+            let lar_selected_spline_groups = [];
+
+            //26022025let lo_segment;//23042024
+
+            try {
+
+                for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
+
+                    let lo_selected_segment = this.ar_selected_segments[lv_i];
+
+                    if (lo_selected_segment.parent) {
+
+                        let lo_parent_parent = lo_selected_segment.parent.parent;
+
+                        this.ar_selected_segments[lv_i] = this.make_mirror_segment(lo_selected_segment);//23042024
+
+
+                        lar_selected_spline_groups.push(lo_parent_parent);
+                    }
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // Оставляем уникальные элементы
+                lar_selected_spline_groups = [...new Set(lar_selected_spline_groups)];
+
+
+                for (let lv_i = 0; lv_i < lar_selected_spline_groups.length; lv_i++) {
+
+                    let lar_spline_points = [];
+
+                    let lar_segments_groups = lar_selected_spline_groups[lv_i].children;
+
+                    for (let lv_j = 0; lv_j < lar_segments_groups.length; lv_j++) {
+
+                        let lar_segments_nodes = lar_segments_groups[lv_j];
+
+                        if (lar_segments_nodes.type == "Group") {
+
+                            for (let lv_k = 0; lv_k < lar_segments_nodes.children.length; lv_k++) {
+
+                                if (lar_segments_nodes.children[lv_k].type == "Mesh") {
+                                    lar_spline_points.push(lar_segments_nodes.children[lv_k].position);
+                                }
+                            }
+                        }
+
+                        if (lar_segments_nodes.type == "Line") {
+
+                            this.main.common_func.removeObjectsWithChildren(lar_segments_nodes, true);//22042024
+
+                        }
+
+
+                    }
+
+
+
+                    //26022025 lo_segment = this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//25042024
+                    this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//26022025
+
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error make_mirror_selected_segments: ' + e.stack);
+
+            }
+
+            return null;//? 26022025  lo_segment;
+        }
+
+
+
+        //-----------------------------------------------------------------
+        // Сделать зеркальное отражение выделенных сегментов
+        Shapes.prototype.make_mirror_segment = function (po_segment) {
+
+
+            let lar_new_segment_points = [];
+
+            let lo_segment_point;
+
+            let lv_base_x = 0;
+
+            let lo_segment;//23042024
+
+            try {
+
+                for (let lv_i = 0; lv_i < po_segment.parent.children.length - 1; lv_i++) {
+
+                    lo_segment_point = po_segment.parent.children[lv_i];
+
+                    if (lv_i == 0) {
+                        lv_base_x = lo_segment_point.position.x;
+                    }
+
+                    let lv_delta = lv_base_x - lo_segment_point.position.x;
+
+                    lo_segment_point.position.x = lv_base_x + lv_delta;
+
+
+                    lar_new_segment_points.push(lo_segment_point.position);
+
+                }
+
+
+                // Удаление предыдущих линий
+                let lo_parent = po_segment.parent;
+                let lar_lines = this.main.shapes.get_lines_in_group(po_segment.parent);
+                for (let lv_i = 0; lv_i < lar_lines.length; lv_i++) {
+                    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], true);
+                }
+
+                lo_segment = this.main.splines.draw_curve(lo_parent, lar_new_segment_points, cv_segment_name_prefix, false);//05082024
+
+            }
+
+            catch (e) {
+
+                alert('error make_mirror_segment: ' + e.stack);
+
+            }
+
+            return lo_segment;
+
+        }
+
+        //-----------------------------------------------------------------
+        // Сделать для выделенного сегмента случайные размеры
+        Shapes.prototype.make_random_segment = function (po_segment) {
+
+            let lar_new_segment_points = [];
+
+            let lo_segment_point;
+
+            let lv_base_x = 0;
+            //let lv_base_y = 0; //1102205
+
+            let lv_delta = 0;
+            let lo_segment;
+
+            try {
+
+                //11022025 for (let lv_i = 0; lv_i < po_segment.parent.children.length - 1; lv_i++) {
+                for (let lv_i = 0; lv_i < po_segment.parent.children.length/* - 1*/; lv_i++) {
+
+                    lo_segment_point = po_segment.parent.children[lv_i];
+
+                    if (lv_i == 0) {
+                        lv_base_x = lo_segment_point.position.x;
+                        //lv_base_y = lo_segment_point.position.y;//11022025 
+                    }
+
+                    lv_delta = lv_base_x - lo_segment_point.position.x;
+                    //let lv_delta_x = lv_base_x + lo_segment_point.position.x;
+                    //let lv_delta_y = lv_base_y - lo_segment_point.position.y;
+
+
+
+                    lo_segment_point.position.x = lv_base_x + lv_delta;
+
+                    //lo_segment_point.position.x = lv_base_x - lv_delta_x + Math.random() * 3; //11022025
+                    //lo_segment_point.position.y = lv_base_y - lv_delta_y + Math.random() * 3; //11022025
+
+
+
+
+
+                    lar_new_segment_points.push(lo_segment_point.position);
+
+                }
+
+
+                // Удаление предыдущих линий
+                let lo_parent = po_segment.parent;
+                let lar_lines = this.main.shapes.get_lines_in_group(po_segment.parent);
+                for (let lv_i = 0; lv_i < lar_lines.length; lv_i++) {
+                    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], true);
+                }
+
+                lo_segment = this.main.splines.draw_curve(lo_parent, lar_new_segment_points, cv_segment_name_prefix, false);//05082024
+
+            }
+
+            catch (e) {
+
+                alert('error make_random_segment: ' + e.stack);
+
+            }
+
+            return lo_segment;
+
+        }
+
+
+
+        //-----------------------------------------------------------------
+        // Сделать случайные размеры выделенных сегментов
+        Shapes.prototype.make_random_selected_segments = function () {
+
+            let lar_selected_spline_groups = [];
+
+
+            let lo_segment;//23042024
+
+            try {
+
+
+                for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
+
+                    let lo_selected_segment = this.ar_selected_segments[lv_i];
+
+                    if (lo_selected_segment.parent) {
+
+                        let lo_parent_parent = lo_selected_segment.parent.parent;
+
+                        this.ar_selected_segments[lv_i] = this.make_random_segment(lo_selected_segment);
+
+                        lar_selected_spline_groups.push(lo_parent_parent);
+                    }
+                }
+
+
+                for (let lv_i = 0; lv_i < lar_selected_spline_groups.length; lv_i++) {
+
+                    let lar_spline_points = [];
+
+                    let lar_segments_groups = lar_selected_spline_groups[lv_i].children;
+
+                    for (let lv_j = 0; lv_j < lar_segments_groups.length; lv_j++) {
+
+                        let lar_segments_nodes = lar_segments_groups[lv_j];
+
+                        if (lar_segments_nodes.type == "Group") {
+
+                            for (let lv_k = 0; lv_k < lar_segments_nodes.children.length; lv_k++) {
+
+                                if (lar_segments_nodes.children[lv_k].type == "Mesh") {
+                                    lar_spline_points.push(lar_segments_nodes.children[lv_k].position);
+                                }
+                            }
+                        }
+
+                        if (lar_segments_nodes.type == "Line") {
+
+                            this.main.common_func.removeObjectsWithChildren(lar_segments_nodes, true);//22042024
+
+                        }
+
+
+                    }
+
+
+
+
+
+                    lo_segment = this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//25042024
+
+                    //////11022025 {
+                    //lo_segment.scale.x = 0.5;
+                    //lo_segment.scale.у = 0.5;
+                    //lo_segment.updateMatrix();
+                    //lo_segment.updateMatrixWorld();
+                    //lo_segment.updateWorldMatrix();
+                    //////11022025 }
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error make_random_selected_segments: ' + e.stack);
+
+            }
+
+            return lo_segment;
+        }
+
+
+
         //-----------------------------------------------------------------
         // Сделать зеркальное отражение выделенных сегментов
         //Shapes.prototype.make_mirror_selected_segments = function () {
@@ -2697,6 +2999,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             //05032025 let lar_meshes = [];
 
             let lo_copy_curr_segment_group = null;
+            let lv_sel_index = -1;
 
             try {
 
@@ -2792,9 +3095,27 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                                 lar_spline_points.push(...lar_segment_points);
 
+
+                                // удаление из группы предыдущей кривой
+                                lo_curr_segment_group.remove(lo_selected_segment);
+
                                 lo_copy_curr_segment_group = lo_curr_segment_group.clone();
 
+
+
                                 let lo_result_curve = this.main.splines.draw_curve(lo_copy_curr_segment_group, lar_segment_points, cv_segment_name_prefix, false);
+
+
+                                //// удаление из группы предыдущей кривой
+                                //lo_copy_curr_segment_group.remove(lo_selected_segment);
+
+                                //lv_sel_index = lo_copy_curr_segment_group.children.findIndex(obj => obj.name === lo_selected_segment.name);
+                                //if (lv_sel_index !== -1) {
+                                //    this.ar_selected_segments.splice(lv_sel_index, 1);
+                                //}
+
+
+
 
                                 //04032025 lo_new_spline_group_with_sel_segment.add(lo_curr_segment_group);
                                 lo_new_spline_group_with_sel_segment.add(lo_copy_curr_segment_group);
@@ -2802,7 +3123,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                 //lo_new_spline_group_with_sel_segment.add(lo_curr_segment_group);
 
                                 // замена выделенного сегмента в массиве выделенных сегментов
-                                let lv_sel_index = this.ar_selected_segments.findIndex(obj => obj.name === lo_selected_segment.name);
+                                lv_sel_index = this.ar_selected_segments.findIndex(obj => obj.name === lo_selected_segment.name);
                                 if (lv_sel_index !== -1) {
                                     this.ar_selected_segments.splice(lv_sel_index, 1);
                                 }
@@ -3225,307 +3546,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             return lo_segment;
         }
-
-
-
-
-        //-----------------------------------------------------------------
-        // Сделать зеркальное отражение выделенных сегментов
-        Shapes.prototype.make_mirror_selected_segments = function () {
-
-            let lar_selected_spline_groups = [];
-
-            //26022025let lo_segment;//23042024
-
-            try {
-
-                for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
-
-                    let lo_selected_segment = this.ar_selected_segments[lv_i];
-
-                    if (lo_selected_segment.parent) {
-
-                        let lo_parent_parent = lo_selected_segment.parent.parent;
-
-                        this.ar_selected_segments[lv_i] = this.make_mirror_segment(lo_selected_segment);//23042024
-
-
-                        lar_selected_spline_groups.push(lo_parent_parent);
-                    }
-                }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                // Оставляем уникальные элементы
-                lar_selected_spline_groups = [...new Set(lar_selected_spline_groups)];
-
-
-                for (let lv_i = 0; lv_i < lar_selected_spline_groups.length; lv_i++) {
-
-                    let lar_spline_points = [];
-
-                    let lar_segments_groups = lar_selected_spline_groups[lv_i].children;
-
-                    for (let lv_j = 0; lv_j < lar_segments_groups.length; lv_j++) {
-
-                        let lar_segments_nodes = lar_segments_groups[lv_j];
-
-                        if (lar_segments_nodes.type == "Group") {
-
-                            for (let lv_k = 0; lv_k < lar_segments_nodes.children.length; lv_k++) {
-
-                                if (lar_segments_nodes.children[lv_k].type == "Mesh") {
-                                    lar_spline_points.push(lar_segments_nodes.children[lv_k].position);
-                                }
-                            }
-                        }
-
-                        if (lar_segments_nodes.type == "Line") {
-
-                            this.main.common_func.removeObjectsWithChildren(lar_segments_nodes, true);//22042024
-
-                        }
-
-
-                    }
-
-
-
-                    //26022025 lo_segment = this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//25042024
-                    this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//26022025
-
-                }
-
-            }
-
-            catch (e) {
-
-                alert('error make_mirror_selected_segments: ' + e.stack);
-
-            }
-
-            return null;//? 26022025  lo_segment;
-        }
-
-
-
-        //-----------------------------------------------------------------
-        // Сделать зеркальное отражение выделенных сегментов
-        Shapes.prototype.make_mirror_segment = function (po_segment) {
-
-
-            let lar_new_segment_points = [];
-
-            let lo_segment_point;
-
-            let lv_base_x = 0;
-
-            let lo_segment;//23042024
-
-            try {
-
-                for (let lv_i = 0; lv_i < po_segment.parent.children.length - 1; lv_i++) {
-
-                    lo_segment_point = po_segment.parent.children[lv_i];
-
-                    if (lv_i == 0) {
-                        lv_base_x = lo_segment_point.position.x;
-                    }
-
-                    let lv_delta = lv_base_x - lo_segment_point.position.x;
-
-                    lo_segment_point.position.x = lv_base_x + lv_delta;
-
-
-                    lar_new_segment_points.push(lo_segment_point.position);
-
-                }
-
-
-                // Удаление предыдущих линий
-                let lo_parent = po_segment.parent;
-                let lar_lines = this.main.shapes.get_lines_in_group(po_segment.parent);
-                for (let lv_i = 0; lv_i < lar_lines.length; lv_i++) {
-                    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], true);
-                }
-
-                lo_segment = this.main.splines.draw_curve(lo_parent, lar_new_segment_points, cv_segment_name_prefix, false);//05082024
-
-            }
-
-            catch (e) {
-
-                alert('error make_mirror_segment: ' + e.stack);
-
-            }
-
-            return lo_segment;
-
-        }
-
-        //-----------------------------------------------------------------
-        // Сделать для выделенного сегмента случайные размеры
-        Shapes.prototype.make_random_segment = function (po_segment) {
-
-            let lar_new_segment_points = [];
-
-            let lo_segment_point;
-
-            let lv_base_x = 0;
-            //let lv_base_y = 0; //1102205
-
-            let lv_delta = 0;
-            let lo_segment;
-
-            try {
-
-                //11022025 for (let lv_i = 0; lv_i < po_segment.parent.children.length - 1; lv_i++) {
-                for (let lv_i = 0; lv_i < po_segment.parent.children.length/* - 1*/; lv_i++) {
-
-                    lo_segment_point = po_segment.parent.children[lv_i];
-
-                    if (lv_i == 0) {
-                        lv_base_x = lo_segment_point.position.x;
-                        //lv_base_y = lo_segment_point.position.y;//11022025 
-                    }
-
-                    lv_delta = lv_base_x - lo_segment_point.position.x;
-                    //let lv_delta_x = lv_base_x + lo_segment_point.position.x;
-                    //let lv_delta_y = lv_base_y - lo_segment_point.position.y;
-
-
-
-                    lo_segment_point.position.x = lv_base_x + lv_delta;
-
-                    //lo_segment_point.position.x = lv_base_x - lv_delta_x + Math.random() * 3; //11022025
-                    //lo_segment_point.position.y = lv_base_y - lv_delta_y + Math.random() * 3; //11022025
-
-
-
-
-
-                    lar_new_segment_points.push(lo_segment_point.position);
-
-                }
-
-
-                // Удаление предыдущих линий
-                let lo_parent = po_segment.parent;
-                let lar_lines = this.main.shapes.get_lines_in_group(po_segment.parent);
-                for (let lv_i = 0; lv_i < lar_lines.length; lv_i++) {
-                    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], true);
-                }
-
-                lo_segment = this.main.splines.draw_curve(lo_parent, lar_new_segment_points, cv_segment_name_prefix, false);//05082024
-
-            }
-
-            catch (e) {
-
-                alert('error make_random_segment: ' + e.stack);
-
-            }
-
-            return lo_segment;
-
-        }
-
-
-
-        //-----------------------------------------------------------------
-        // Сделать случайные размеры выделенных сегментов
-        Shapes.prototype.make_random_selected_segments = function () {
-
-            let lar_selected_spline_groups = [];
-
-
-            let lo_segment;//23042024
-
-            try {
-
-
-                for (let lv_i = 0; lv_i < this.ar_selected_segments.length; lv_i++) {
-
-                    let lo_selected_segment = this.ar_selected_segments[lv_i];
-
-                    if (lo_selected_segment.parent) {
-
-                        let lo_parent_parent = lo_selected_segment.parent.parent;
-
-                        this.ar_selected_segments[lv_i] = this.make_random_segment(lo_selected_segment);
-
-                        lar_selected_spline_groups.push(lo_parent_parent);
-                    }
-                }
-
-
-                for (let lv_i = 0; lv_i < lar_selected_spline_groups.length; lv_i++) {
-
-                    let lar_spline_points = [];
-
-                    let lar_segments_groups = lar_selected_spline_groups[lv_i].children;
-
-                    for (let lv_j = 0; lv_j < lar_segments_groups.length; lv_j++) {
-
-                        let lar_segments_nodes = lar_segments_groups[lv_j];
-
-                        if (lar_segments_nodes.type == "Group") {
-
-                            for (let lv_k = 0; lv_k < lar_segments_nodes.children.length; lv_k++) {
-
-                                if (lar_segments_nodes.children[lv_k].type == "Mesh") {
-                                    lar_spline_points.push(lar_segments_nodes.children[lv_k].position);
-                                }
-                            }
-                        }
-
-                        if (lar_segments_nodes.type == "Line") {
-
-                            this.main.common_func.removeObjectsWithChildren(lar_segments_nodes, true);//22042024
-
-                        }
-
-
-                    }
-
-
-
-
-
-                    lo_segment = this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//25042024
-
-                    //////11022025 {
-                    //lo_segment.scale.x = 0.5;
-                    //lo_segment.scale.у = 0.5;
-                    //lo_segment.updateMatrix();
-                    //lo_segment.updateMatrixWorld();
-                    //lo_segment.updateWorldMatrix();
-                    //////11022025 }
-                }
-
-            }
-
-            catch (e) {
-
-                alert('error make_random_selected_segments: ' + e.stack);
-
-            }
-
-            return lo_segment;
-        }
-
 
 
 
