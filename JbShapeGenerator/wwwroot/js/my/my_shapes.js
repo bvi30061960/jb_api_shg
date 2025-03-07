@@ -462,7 +462,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         //------------------------------------------------------------------------
         Shapes.prototype.adjust_segments_nodes_by_external_shape = function (po_spline_group, pv_spline_offset_x/*pv_delta_x*/, pv_height_koef_relative) {
 
-            let lar_segments_points = [];
+            //06032025 let lar_segments_points = [];
 
             try {
 
@@ -483,11 +483,13 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 //13022025 }
 
+
+
+
+
                 for (let lv_i = 0; lv_i < po_spline_group.children.length; lv_i++) {
 
                     if (po_spline_group.children[lv_i] instanceof THREE.Group) {
-
-
 
                         let lo_segment_points = po_spline_group.children[lv_i];
 
@@ -506,10 +508,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                                     //lar_segment_points.push(lo_segment_points_group.children[lv_k].position);
 
+
+
                                     // двигаем всю кривую (сплайн)
                                     lo_segment_points.children[lv_k].position.x = lo_segment_points.children[lv_k].position.x + lv_delta_x;
-
-
 
 
                                     // растягиваем кривые по высоте
@@ -547,10 +549,21 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                     ////}
                                     //////03112024 }
 
-                                    lar_segment_points.push(lo_segment_points.children[lv_k].position);
+                                    //06032025 lar_segment_points.push(lo_segment_points.children[lv_k].position);
 
                                 }
+
+
+
                             }
+
+
+
+
+
+
+
+
 
                             //06032025 {
                             //////////// Удаление предыдущих линий сегментов
@@ -641,6 +654,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 let lv_spline_distance = this.params.shape_width / this.ar_splines.length;
 
 
+                ////// сортировка групп сплайнов по возрастанию x начальной точки
+                ////this.ar_splines = this.SortGroupsSplinesFromLeftToRight();
+
 
                 for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
@@ -665,7 +681,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     // Удаление предыдущих линий
                     let lar_lines = this.main.shapes.get_lines_in_group(this.ar_splines[lv_i]);
-                    //for (let lv_k = 0; lv_k < lar_lines.length; lv_k++) {
                     for (let lv_k = lar_lines.length - 1; lv_k >= 0; lv_k--) {
                         this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
                     }
@@ -682,6 +697,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 }
 
                 //04112024 this.height_koef_previous = lv_height_koef;
+
+
+
 
 
 
@@ -3001,6 +3019,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             let lo_copy_curr_segment_group = null;
             let lv_sel_index = -1;
 
+            let lv_index_spline_group = 0;
+
+
             try {
 
                 // группа всех кривых
@@ -3022,7 +3043,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
+
                         lo_segment_group_of_sel_segment = lo_selected_segment.parent;// группа выделенного сегмента
+
+                        // Определение индекса сплайн-группы выделенного сегмента в массиве сплайнов
+                        lv_index_spline_group = lo_main_curves_group.children.indexOf(lo_spline_group_with_sel_segment); 
 
 
                         lo_new_spline_group_with_sel_segment = new THREE.Group();
@@ -3097,7 +3122,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                                 // удаление из группы предыдущей кривой
-                                lo_curr_segment_group.remove(lo_selected_segment);
+
+                                this.main.common_func.removeObjectsWithChildren(lo_selected_segment, true, false, false);
+                                //lo_curr_segment_group.remove(lo_selected_segment);
 
                                 lo_copy_curr_segment_group = lo_curr_segment_group.clone();
 
@@ -3458,10 +3485,21 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     ////////lo_spline_group_with_sel_segment = null;
 
 
-                    lo_main_curves_group.remove(lo_spline_group_with_sel_segment);
 
-                    lo_main_curves_group.add(lo_new_spline_group_with_sel_segment);
+                    // Вставляем сплан-группу на своё место
 
+                    ////lo_main_curves_group.remove(lo_spline_group_with_sel_segment);//06032025
+                    ////lo_main_curves_group.add(lo_new_spline_group_with_sel_segment);//06032025
+                    
+
+                    lo_main_curves_group.children.splice(lv_index_spline_group, 1, lo_new_spline_group_with_sel_segment); 
+
+
+
+
+                    this.ar_splines = this.get_splines();//06032025
+                    this.ar_splines_nodes = this.get_splines_points();//06032025
+                    //this.adjust_splines_by_external_shape();//06032025
 
                 }
 
@@ -3533,9 +3571,14 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 ////}
 
 
+                //06032025 {
+                ////this.ar_splines = this.get_splines();
+                ////this.ar_splines_nodes = this.get_splines_points();
+                //06032025 }
 
-                this.ar_splines = this.get_splines();
-                this.ar_splines_nodes = this.get_splines_points();
+
+
+                //this.main.render();
 
             }
             catch (e) {
@@ -4309,8 +4352,58 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         //13122024 }
 
 
+        //-----------------------------------------------------------------------------------
+        // Упорядочивание групп сплайнов слева направо
+        Shapes.prototype.SortGroupsSplinesFromLeftToRight = function () {
 
 
+            //let lar_sorted = [];
+
+            let lar_result = [];
+
+            try {
+
+
+                //let boundingBox;
+                let lar_for_sort = [];
+
+                //let lo_sort_obj = {}
+
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+
+                    //////boundingBox = new THREE.Box3().setFromObject(this.ar_splines[lv_i]);
+
+                    //////// сплайн - последний дочерний член группы this.ar_splines[lv_i]
+                    //////let lv_index = this.ar_splines[lv_i].children.length - 1;
+
+                    //////let lo_spline = this.ar_splines[lv_i].children[lv_index];
+
+                    //let lv_index = this.ar_splines[lv_i].children[0].children.length - 1;
+                    let lv_x = this.ar_splines[lv_i].children[0].children[0].position.x;
+
+
+                    lar_for_sort.push({ x: lv_x, spline: this.ar_splines[lv_i] });
+
+                }
+
+                //lar_sorted = this.main.common_func.sortByProperty(lar_for_sort, "x");
+
+                lar_for_sort.sort((a, b) => a.x - b.x); // По возрастанию
+
+                for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
+
+                    lar_result.push(this.ar_splines[lv_i]);
+                }
+            }
+
+            catch (e) {
+                alert('error SortSplinesOrderFromLeftToRight: ' + e.stack);
+            }
+
+            return lar_result; // lar_sorted;
+
+
+        }
 
         //-----------------------------------------------------------------------------------
         // Упорядочивание сплайнов слева направо

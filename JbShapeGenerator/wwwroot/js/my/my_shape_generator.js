@@ -3420,11 +3420,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //24022025 lo_active_side.shapes.make_insert_segment_before_selected_segment();//23022025
                 lo_active_side.shapes.make_insert_segments_before_selected_segments();//24022025
 
-                //05032025 lo_active_side.shapes.ar_splines = lo_active_side.shapes.get_splines();
-                //05032025 lo_active_side.shapes.ar_splines_nodes = lo_active_side.shapes.get_splines_points();
-
-
-
                 lo_active_side.shapes.adjust_splines_by_external_shape();
 
                 lo_active_side.render();

@@ -231,77 +231,6 @@ export function CommonFunc() {
         }
 
 
-        //----------------------------------------------------------------------------------
-        // Remove all objects
-
-        CommonFunc.prototype.removeObjectsWithChildren = function (po_obj, pv_is_removeFromParent) {
-
-            //03022025 {
-            if (po_obj == null) {
-                return;
-            }
-            //03022025 }
-
-            if (po_obj.children) { //03022025 
-
-                if (po_obj.children.length > 0) {
-                    for (var x = po_obj.children.length - 1; x >= 0; x--) {
-                        this.removeObjectsWithChildren(po_obj.children[x], true);
-                    }
-                }
-            }
-
-
-            if (po_obj.geometry) {
-                po_obj.geometry.dispose();
-            }
-
-            if (po_obj.material) {
-
-                if (po_obj.material.length) {
-                    for (let i = 0; i < po_obj.material.length; ++i) {
-
-                        if (po_obj.material[i].map) po_obj.material[i].map.dispose();
-                        if (po_obj.material[i].lightMap) po_obj.material[i].lightMap.dispose();
-                        if (po_obj.material[i].bumpMap) po_obj.material[i].bumpMap.dispose();
-                        if (po_obj.material[i].normalMap) po_obj.material[i].normalMap.dispose();
-                        if (po_obj.material[i].specularMap) po_obj.material[i].specularMap.dispose();
-                        if (po_obj.material[i].envMap) po_obj.material[i].envMap.dispose();
-
-                        po_obj.material[i].dispose()
-                    }
-                }
-                else {
-                    if (po_obj.material.map) po_obj.material.map.dispose();
-                    if (po_obj.material.lightMap) po_obj.material.lightMap.dispose();
-                    if (po_obj.material.bumpMap) po_obj.material.bumpMap.dispose();
-                    if (po_obj.material.normalMap) po_obj.material.normalMap.dispose();
-                    if (po_obj.material.specularMap) po_obj.material.specularMap.dispose();
-                    if (po_obj.material.envMap) po_obj.material.envMap.dispose();
-
-                    po_obj.material.dispose();
-                }
-            }
-
-
-
-            if (pv_is_removeFromParent) {
-
-                if (po_obj.parent) {
-                    po_obj.parent.remove(po_obj);
-                    //if (po_obj.removeFromParent) {
-                    //    po_obj.removeFromParent();
-                    //}
-                }
-
-            }
-
-            po_obj = null;
-
-            return true;
-        }
-
-
 
         //------------------------------------------------------------------------
         CommonFunc.prototype.get_object_name = function (pv_prefix, po_group) {
@@ -2408,6 +2337,85 @@ export function CommonFunc() {
         ////    }
 
         ////}
+
+
+
+        //----------------------------------------------------------------------------------
+        // Remove all objects
+
+        CommonFunc.prototype.removeObjectsWithChildren = function (po_obj, pv_is_removeFromParent, pv_is_removeGeometry, pv_is_removeMaterial) {
+
+            //03022025 {
+            if (po_obj == null) {
+                return;
+            }
+            //03022025 }
+
+            if (po_obj.children) { //03022025 
+
+                if (po_obj.children.length > 0) {
+                    for (var x = po_obj.children.length - 1; x >= 0; x--) {
+                        this.removeObjectsWithChildren(po_obj.children[x], true);
+                    }
+                }
+            }
+
+            if (pv_is_removeGeometry) {
+
+                if (po_obj.geometry) {
+                    po_obj.geometry.dispose();
+                }
+            }
+
+            if (pv_is_removeMaterial) {
+
+                if (po_obj.material) {
+
+                    if (po_obj.material.length) {
+                        for (let i = 0; i < po_obj.material.length; ++i) {
+
+                            if (po_obj.material[i].map) po_obj.material[i].map.dispose();
+                            if (po_obj.material[i].lightMap) po_obj.material[i].lightMap.dispose();
+                            if (po_obj.material[i].bumpMap) po_obj.material[i].bumpMap.dispose();
+                            if (po_obj.material[i].normalMap) po_obj.material[i].normalMap.dispose();
+                            if (po_obj.material[i].specularMap) po_obj.material[i].specularMap.dispose();
+                            if (po_obj.material[i].envMap) po_obj.material[i].envMap.dispose();
+
+                            po_obj.material[i].dispose()
+                        }
+                    }
+                    else {
+                        if (po_obj.material.map) po_obj.material.map.dispose();
+                        if (po_obj.material.lightMap) po_obj.material.lightMap.dispose();
+                        if (po_obj.material.bumpMap) po_obj.material.bumpMap.dispose();
+                        if (po_obj.material.normalMap) po_obj.material.normalMap.dispose();
+                        if (po_obj.material.specularMap) po_obj.material.specularMap.dispose();
+                        if (po_obj.material.envMap) po_obj.material.envMap.dispose();
+
+                        po_obj.material.dispose();
+                    }
+                }
+            }
+
+
+            if (pv_is_removeFromParent) {
+
+                if (po_obj.parent) {
+                    po_obj.parent.remove(po_obj);
+                    //if (po_obj.removeFromParent) {
+                    //    po_obj.removeFromParent();
+                    //}
+                }
+
+            }
+
+            po_obj = null;
+
+            return true;
+        }
+
+
+
 
         //---------------------------------------------------------------------------------------------
         CommonFunc.prototype.showWaitingIndicator = function (pv_message) {
