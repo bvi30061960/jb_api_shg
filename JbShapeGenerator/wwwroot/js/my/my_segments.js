@@ -672,9 +672,9 @@ export function Segments(
         Segments.prototype.redefine_segment_nodes_types = function (po_segment_group, pv_is_first_node, pv_is_last_node) {
 
         // Переопределение типа узлов сегмента в зависимости от положения узла
-        // - на краю сплайна или внутри
+        // - на краю сплайна - квадрат, внутри сплайна - кружок
 
-
+            let lo_node = null;
             try {
 
                 for (let lv_i = 0; lv_i < po_segment_group.children.length; lv_i++) {
@@ -686,37 +686,31 @@ export function Segments(
 
 
 
-
-                    ////    let lo_node;
-
-                    ////    //if ((lv_j == 0 && lv_k == 0) || (lv_j == lo_spline.segments.length - 1 && lv_k == lo_segment.ar_segment_points.length - 1)) {
-                    ////    if ((lv_j == 0 && lv_k == 0) || (lv_j == this.main.params.spline_amount_segments - 1 && lv_k == this.ar_initial_segment_points.length - 1)) {
-                    ////        lo_node = new THREE.Mesh(this.square_geometry, this.material);
-                    ////    }
-                    ////    else {
-                    ////        lo_node = new THREE.Mesh(this.circle_geometry, this.material);
-                    ////    }
+                        if ((lv_i === 0 && pv_is_first_node) || (lv_i == po_segment_group.children.length - 2 && pv_is_last_node) {
+                            lo_node = new THREE.Mesh(this.square_geometry, this.material);
+                        }
+                        else {
+                            lo_node = new THREE.Mesh(this.circle_geometry, this.material);
+                        }
 
 
-                    ////    ////lo_node.position.x = lo_point.x;
-                    ////    ////lo_node.position.y = lo_point.y;
-                    ////    lo_node.position.x = this.ar_initial_segment_points.x;
-                    ////    lo_node.position.y = this.ar_initial_segment_points.y;
+                        lo_node.position.x = po_segment_group.children[lv_i].x;
+                        lo_node.position.y = po_segment_group.children[lv_i].y;
 
-                    ////    lo_node.castShadow = true;
-                    ////    lo_node.receiveShadow = true;
+                        lo_node.castShadow = true;
+                        lo_node.receiveShadow = true;
+                        lo_node.renderOrder = 3;
+                        lo_node.visible = false;
 
-                    ////    lo_node.visible = false;
-
-                    ////    lo_node.userData = {
-                    ////        nspline: po_parent.id, //lv_i,
-                    ////        nsegment: lv_j,
-                    ////        npoint: lv_k,
-                    ////        point: lo_point,
-                    ////        count_all_splines: this.shape_amount_curves,
-                    ////        count_allsegments: this.spline_amount_segments,
-                    ////        count_allpoints: lo_segment.ar_segment_points.length
-                    ////    };
+                        lo_node.userData = {
+                            nspline:            po_segment_group.children[lv_i].nspline,               // po_parent.id, //lv_i,
+                            nsegment:           po_segment_group.children[lv_i].nsegment,              // lv_j,
+                            npoint:             po_segment_group.children[lv_i].npoint,                // lv_k,
+                            point:              po_segment_group.children[lv_i].point,                 // lo_point,
+                            count_all_splines:  po_segment_group.children[lv_i].count_all_splines,     // this.shape_amount_curves,
+                            count_allsegments:  po_segment_group.children[lv_i].count_allsegments,     // this.spline_amount_segments,
+                            count_allpoints:    po_segment_group.children[lv_i].count_allpoints        // lo_segment.ar_segment_points.length
+                        };
 
 
 
@@ -724,7 +718,6 @@ export function Segments(
 
                     ////    //this.scene.add(lo_node);
 
-                    ////    lo_node.renderOrder = 3; //04082024
                     ////    this.parent.add(lo_node);
 
                     ////}// nodes
