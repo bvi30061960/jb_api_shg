@@ -657,6 +657,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                 ////// сортировка групп сплайнов по возрастанию x начальной точки
                 ////this.ar_splines = this.SortGroupsSplinesFromLeftToRight();
 
+                this.ar_splines = this.get_splines();//07032025
+                this.ar_splines_nodes = this.get_splines_points();//07032025
 
                 for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
 
@@ -682,7 +684,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     // Удаление предыдущих линий
                     let lar_lines = this.main.shapes.get_lines_in_group(this.ar_splines[lv_i]);
                     for (let lv_k = lar_lines.length - 1; lv_k >= 0; lv_k--) {
-                        this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
+                        //07032025 this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true);
+                        //08032025 this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true, true, true); //07032025
+                        this.main.common_func.removeObjectsWithChildren(lar_lines[lv_k], true, false, false); //08032025
                     }
 
                     // Перерисовка сегментов
@@ -732,7 +736,13 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     //298072024 }
                 }
 
+
                 this.redraw_meshes_color(lar_splines_order);
+
+
+                // Перерисовка сегментов
+                this.redraw_segments();//07032025 
+
 
             }
 
@@ -1004,9 +1014,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     );
                 }
 
-                this.main.common_func.removeObjectsWithChildren(lo_object, true);
+                this.main.common_func.removeObjectsWithChildren(lo_object, true, true, true);
 
             }
+
+
+            //this.main.common_func.removeObjectsWithChildren(po_spline_group);//07032025
 
             //return lv_deleted_splines_beg_x; // начальная координата x удаляемого сплайна
         }
@@ -1030,8 +1043,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     if (this.ar_selected_segments[lv_i].parent.parent) {
 
-                        let lo_parent = this.ar_selected_segments[lv_i].parent;
-                        let lo_parent_parent = this.ar_selected_segments[lv_i].parent.parent;
+                        let lo_segment_group = this.ar_selected_segments[lv_i].parent;
+                        let lo_spline_group = this.ar_selected_segments[lv_i].parent.parent;
 
 
                         ////08022025 {
@@ -1048,14 +1061,14 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         //}
                         ////08022025 }
 
-                        if (lo_parent.children[0].position) {
+                        if (lo_segment_group.children[0].position) {
 
-                            lv_deleted_splines_beg_x = lo_parent.children[0].position.x;
+                            lv_deleted_splines_beg_x = lo_segment_group.children[0].position.x;
                             lar_deleted_splines_beg_x.push(lv_deleted_splines_beg_x);
                         }
 
                         //lv_deleted_splines_beg_x = this.do_delete_spline(lo_parent_parent);
-                        this.do_delete_spline(lo_parent_parent);
+                        this.do_delete_spline(lo_spline_group);
 
 
 
@@ -1068,7 +1081,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         for (let lv_i = 0; lv_i < this.ar_splines.length; lv_i++) {
                             //for (let lv_i = this.ar_splines.length-1; lv_i >= 0; lv_i--) { //11122024
 
-                            if (this.ar_splines[lv_i] == lo_parent_parent) {
+                            if (this.ar_splines[lv_i] == lo_spline_group) {
 
                                 this.ar_splines.splice(lv_i, 1);
                                 lv_deleted_spline_num = lv_i; //07022025
@@ -1086,8 +1099,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         }
 
 
-                        lo_parent_parent.removeFromParent();
+                        //03072025 lo_spline_group.removeFromParent();
 
+                        this.main.common_func.removeObjectsWithChildren(lo_spline_group, true, true, true); //07032025
+                        this.main.scene.remove(lo_spline_group);//07032025
                         //lv_was_action = true;
                     }
 
@@ -1683,7 +1698,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 for (let lv_i = 0; lv_i < lar.length; lv_i++) {
                     if (lar[lv_i].name.indexOf(cv_spline_group_name_prefix) >= 0) { //30042024
-                        lar_out.push(lar[lv_i]);
+                        //if (lar[lv_i].parent != null) { //07032025 
+                        if (lar[lv_i].children.length > 0) { //07032025 
+                            lar_out.push(lar[lv_i]);
+                        //}
+                        }
                     }
                 }
 
@@ -2276,23 +2295,23 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             }
 
 
-            let lo_out_sline_left = null;
-            let lo_out_sline_right = null;
+            let lo_out_spline_left = null;
+            let lo_out_spline_right = null;
             //let lo_out_segment_right = null;
 
 
             if (lo_spline_result_left) {
-                lo_out_sline_left = lo_spline_result_left.object;
+                lo_out_spline_left = lo_spline_result_left.object;
             }
             if (lo_spline_result_right) {
-                lo_out_sline_right = lo_spline_result_right.object;
+                lo_out_spline_right = lo_spline_result_right.object;
             }
 
 
             return {
 
-                spline_left: lo_out_sline_left,
-                spline_right: lo_out_sline_right,
+                spline_left: lo_out_spline_left,
+                spline_right: lo_out_spline_right,
                 segment: lo_segment_result_right
             }
         }
@@ -3004,8 +3023,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             let lo_segment = null;
             let lo_segment_group_of_sel_segment = null;
 
-            //let lo_new_spline_group_with_sel_segment = lo_selected_segment.parent.parent.parent;
-
             let lar_spline_points = [];
             //05032025 let lar_new_spline_points = [];
             let lo_new_spline_group_with_sel_segment = null; // new THREE.Group();
@@ -3020,7 +3037,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             let lv_sel_index = -1;
 
             let lv_index_spline_group = 0;
-
+            let lo_line = null;
 
             try {
 
@@ -3152,10 +3169,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                 // замена выделенного сегмента в массиве выделенных сегментов
                                 lv_sel_index = this.ar_selected_segments.findIndex(obj => obj.name === lo_selected_segment.name);
                                 if (lv_sel_index !== -1) {
-                                    this.ar_selected_segments.splice(lv_sel_index, 1);
-                                }
-                                this.ar_selected_segments.push(lo_result_curve);
-
+                                    //    this.ar_selected_segments.splice(lv_sel_index, 1);
+                                    //}
+                                    //this.ar_selected_segments.push(lo_result_curve);
+                                    this.ar_selected_segments.splice(lv_sel_index, 1, lo_result_curve); // Вставка выделенного сегмента 
+                                }                                                            // на место прежнего выделенного сегмента
 
 
                                 // создание группы нового вставляемого сегмента
@@ -3180,19 +3198,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                 lar_spline_points.push(...lo_segment_data.points);
                                 lo_new_spline_group_with_sel_segment.add(lo_new_segment_group);
 
-
-
-
-                                //lo_new_segments_group.children.push(...lo_new_segment_data.points);
-
-
-                                // Вставка группы нового сегмента
-
-                                //array.splice(lv_j, 0, lo_new_segment_data);
-
-
-                                //lo_new_spline_group_with_sel_segment.children.add(lo_new_segment_data.segment_group);
-                                //lo_new_spline_group.add(lo_new_segment_group);
 
                                 lv_is_after = true;
                             }
@@ -3238,7 +3243,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                         // удаляем Line из прежней segment group
                                         //03032025 let lo_line = lo_spline_group_with_sel_segment.children[lv_j].children.find(obj => obj.type === "Line");
                                         //03032025lo_spline_group_with_sel_segment.children[lv_j].remove(lo_line);
-                                        let lo_line = lo_curr_segment_group.children.find(obj => obj.type === "Line");
+                                        lo_line = lo_curr_segment_group.children.find(obj => obj.type === "Line");
                                         lo_curr_segment_group.remove(lo_line);
                                         lo_line = null;
                                         ///////////////this.main.common_func.removeObjectsWithChildren(lo_line, true);
@@ -3272,7 +3277,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                 else { // not is_after
 
                                     // удаление предыдущей линии сегмента
-                                    let lo_line = lo_curr_segment_group.children.find(obj => obj.type === "Line");
+                                    lo_line = lo_curr_segment_group.children.find(obj => obj.type === "Line");
                                     lo_curr_segment_group.remove(lo_line);
                                     lo_line = null;
 
@@ -3309,159 +3314,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                 }
 
 
-
-
-                                // перемещение сегмента в новую сплайн группу
-                                //03032025 lo_new_spline_group_with_sel_segment.add(lo_spline_group_with_sel_segment.children[lv_j]);
-                                //      lo_new_spline_group_with_sel_segment.add(lo_curr_segment_group);
-
-
-
-
-                                //else {
-
-                                //    lo_new_spline_group_with_sel_segment.add(lo_segment_group_of_sel_segment.children[lv_j]);
-                                //}
-
-
-                                ////lo_segment_beg_point = lo_segment_data.segment_beg_point;
-
-                                ///this.draw_curve(lo_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);
-
-
-                                ////lar_spline_points.push(...lo_segment_data.points);
-                                ////lo_spline_group.add(lo_segment_group);
-
-
-
-
-
-
-                                // перенос группы сегмента в новый создаваемый сплайн
-
-
-
-                                //lo_new_spline_group_with_sel_segment.add(lo_segment_group_of_sel_segment.children[lv_j]);
-                                //lo_new_spline_group.add(lo_spline_group_with_sel_segment.children[lv_j]);
-
-
-
-
-                                ////////////////// удаляем Line из прежней segment group
-                                ////////////////let lo_line = lo_spline_group_with_sel_segment.children[lv_j].children.find(obj => obj.type === "Line");
-                                ////////////////lo_spline_group_with_sel_segment.children[lv_j].remove(lo_line);
-                                ////////////////lo_line = null;
-                                ///////////////////////////////this.main.common_func.removeObjectsWithChildren(lo_line, true);
-
-
-
-                                //let lv_line_spline_index_ = linesArray.indexOf(line);
-
-
-                                //// Освобождаем ресурсы
-                                //if (line.geometry) line.geometry.dispose();
-                                //if (line.material) line.material.dispose();
-
-                                //// Удаляем объект из массива
-                                //const index = linesArray.indexOf(line);
-                                //if (index !== -1) {
-                                //    linesArray.splice(index, 1);
-                                //}
-
-
-                                ////////lo_copy_segment_group = lo_spline_group_with_sel_segment.children[lv_j].clone();
-                                //lo_new_spline_group.add(lo_copy_segment_group);
-
-
-
-                                //03032025 let lar_meshes = lo_spline_group_with_sel_segment.children[lv_j].children;
-                                //let lar_meshes = lo_copy_segment_group;//03032025
-
-
-
-                                //03032025 let lar_meshes = lo_spline_group_with_sel_segment.children[lv_j].clone();
-                                //                    let lar_meshes = lo_curr_segment_group.clone();
-
-                                ///lar_segment_points = JSON.parse(JSON.stringify(lo_spline_group_with_sel_segment.children[lv_j].children));
-                                //                lar_segment_points = lar_meshes.map(mesh => mesh.position.clone());
-
-
-                                ////// как из массива объектов выбрать объект типа "Line"?
-                                ////let lo_line = lo_copy_segment_group.children.find(obj => obj.type === "Line");
-
-                                ////if (lo_line.geometry) {
-
-                                ////    lar_segment_points = this.main.common_func.get_points_from_geometry(lo_line.geometry)
-                                ////}
-                                ////else {
-
-                                ////    continue;
-                                ////}
-
-
-
-
-
-
-
-
-
-
-                                //this.main.splines.draw_curve(lo_copy_segment_group, lar_segment_points, cv_segment_name_prefix, false);
-
-                                //03032025 {
-                                //////////////////////////////this.main.splines.draw_curve(lo_copy_segment_group, lar_segment_points, cv_segment_name_prefix, false);
-                                //////////////////////////////lar_spline_points.push(...lar_segment_points);
-                                //////////////////////////////lo_new_spline_group.add(lo_copy_segment_group);
-                                //03032025 }
-
-
-
-                                //this.main.splines.draw_curve(lo_new_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);
-                                //lar_spline_points.push(...lo_segment_data.points);
-                                //lo_new_spline_group.add(lo_new_segment_group);
-
-
-
-                                //lar_spline_points.push(...lo_segment_data.points);
-
-
-
-
-
-
-
-
-
-                                ////////// Удаление предыдущих линий
-                                //////////let lo_parent = po_segment.parent;
-
-
-                                ////////let lar_lines = this.main.shapes.get_lines_in_group(lo_selected_segment.parent);
-                                ////////for (let lv_i = 0; lv_i < lar_lines.length; lv_i++) {
-                                ////////    //27022025 this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], true);
-                                ////////    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], false);//27022025
-                                ////////}
-
-
-                                ///lo_segment = this.main.splines.draw_curve(lo_selected_segment.parent, lo_segment_data.points, cv_segment_name_prefix, false);//05082024
-
-
-                                //lar_selected_spline_groups.push(lo_segment_group_of_sel_segment);
-                                ///lar_selected_spline_groups.push(lo_spline_group_with_sel_segment);
-
-
-
-
-
-
-                                ////////////////////////////////////////lo_segment_beg_point = lo_segment_data.segment_beg_point;
-                                //////////////////////////////////////this.draw_curve(lo_segment_group, lo_segment_data.points, cv_segment_name_prefix, false);
-
-                                //////////////////////////////////////lar_spline_points.push(...lo_segment_data.points);
-                                //////////////////////////////////////lo_spline_group.add(lo_segment_group);
-
-
                             }// else группа НЕ выделенного сегмента
 
 
@@ -3470,7 +3322,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     } // lv_j
 
-                    //lar_spline_points.push(...lo_segment_data.points);
+
+                    ////// Перерисовка сегментов
+                    ////this.redraw_segments(lo_new_spline_group_with_sel_segment);//07032025 
 
 
 
@@ -3495,90 +3349,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     lo_main_curves_group.children.splice(lv_index_spline_group, 1, lo_new_spline_group_with_sel_segment); 
 
 
-
-
                     this.ar_splines = this.get_splines();//06032025
                     this.ar_splines_nodes = this.get_splines_points();//06032025
-                    //this.adjust_splines_by_external_shape();//06032025
+
 
                 }
 
-
-
-
-
-
-
-
-
-
-
-
-                ////27022025 {
-                //// Удаление предыдущих линий
-                ////let lo_parent = po_segment.parent;
-
-
-                //let lar_lines = this.main.shapes.get_lines_in_group(lo_selected_segment.parent);
-                //for (let lv_i = 0; lv_i < lar_lines.length; lv_i++) {
-                //    //27022025 this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], true);
-                //    this.main.common_func.removeObjectsWithChildren(lar_lines[lv_i], false);//27022025
-                //}
-
-                ////27022025 }
-
-
-
-
-                ////// Сжимаем - оставляем уникальные элементы (группы задействованных сплайнов)
-                ////lar_selected_spline_groups = [...new Set(lar_selected_spline_groups)];
-
-                ////for (let lv_i = 0; lv_i < lar_selected_spline_groups.length; lv_i++) {
-
-                ////    let lar_spline_points = [];
-
-                ////    let lar_segments_groups = lar_selected_spline_groups[lv_i].children;
-
-                ////    for (let lv_j = 0; lv_j < lar_segments_groups.length; lv_j++) {
-
-                ////        let lar_segments_nodes = lar_segments_groups[lv_j];
-
-                ////        if (lar_segments_nodes.type == "Group") {
-
-                ////            for (let lv_k = 0; lv_k < lar_segments_nodes.children.length; lv_k++) {
-
-                ////                if (lar_segments_nodes.children[lv_k].type == "Mesh") {
-                ////                    lar_spline_points.push(lar_segments_nodes.children[lv_k].position);
-                ////                }
-                ////            }
-                ////        }
-
-                ////        if (lar_segments_nodes.type == "Line") {
-
-                ////            this.main.common_func.removeObjectsWithChildren(lar_segments_nodes, true);//22042024
-
-                ////        }
-
-
-                ////    }
-
-
-
-                ////    ////////    //lo_segment = this.main.splines.draw_curve(lar_selected_spline_groups[lv_i], lar_spline_points, cv_segment_name_prefix, true);//25042024
-
-                ////    ////////}
-
-                ////}
-
-
-                //06032025 {
-                ////this.ar_splines = this.get_splines();
-                ////this.ar_splines_nodes = this.get_splines_points();
-                //06032025 }
-
-
-
-                //this.main.render();
 
             }
             catch (e) {

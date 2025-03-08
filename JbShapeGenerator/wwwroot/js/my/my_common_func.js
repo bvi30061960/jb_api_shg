@@ -2355,7 +2355,8 @@ export function CommonFunc() {
 
                 if (po_obj.children.length > 0) {
                     for (var x = po_obj.children.length - 1; x >= 0; x--) {
-                        this.removeObjectsWithChildren(po_obj.children[x], true);
+                        //07032025 this.removeObjectsWithChildren(po_obj.children[x], true);
+                        this.removeObjectsWithChildren(po_obj.children[x], pv_is_removeFromParent, pv_is_removeGeometry, pv_is_removeMaterial); //07032025
                     }
                 }
             }

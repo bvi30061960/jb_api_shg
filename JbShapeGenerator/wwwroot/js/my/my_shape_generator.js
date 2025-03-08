@@ -3418,6 +3418,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 //23022025 lo_active_side.shapes.make_insert_segment_above_selected_segment();
                 //24022025 lo_active_side.shapes.make_insert_segment_before_selected_segment();//23022025
+
                 lo_active_side.shapes.make_insert_segments_before_selected_segments();//24022025
 
                 lo_active_side.shapes.adjust_splines_by_external_shape();
@@ -4471,15 +4472,12 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     if (this.is_shape_gragging)//05012025
                     {
 
-                        //06012025 {
                         if (lo_active_side.shapes == null) {
                             return;
                         }
 
                         let lar_splines_order = lo_active_side.shapes.SortSplinesOrderFromLeftToRight();//03082024
                         lo_active_side.shapes.redraw_meshes_color(lar_splines_order);//03082024
-
-                        //06012025 }
 
                         //this.is_shape_gragging = false;//05012025
 
@@ -4491,7 +4489,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         );
                         //05012025 }
 
-                        lo_active_side.select_contour_between_slides(po_event); //06012025
+                   ////////////07032025     lo_active_side.select_contour_between_slides(po_event); //06012025
 
                     }
                     //////05012025 }
