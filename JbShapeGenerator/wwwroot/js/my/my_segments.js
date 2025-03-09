@@ -666,15 +666,85 @@ export function Segments(
             return lo_segment_transform_data;
         }
 
+        //----------------------------------------------------------
+        Segments.prototype.redefine_spline_nodes_types = function (po_spline_group) {
+
+            // Переопределение типа узлов сплайна в зависимости от положения узла
+            // - на краю сплайна - квадрат, внутри сплайна - кружок
 
 
+            let lo_new_spline_line = null;
+            let lo_new_spline_group = new THREE.Group();
+
+            lo_new_spline_group.name = po_spline_group.name;
+            lo_new_spline_group.parent = po_spline_group.parent;
+
+
+            let lv_is_first_node = false;
+            let lv_is_last_node = false;
+            //let lar_segment_nodes = [];
+            let lar_spline_points = [];
+
+            let lo_segment_data = null;
+
+
+            try {
+
+                for (let lv_i = 0; lv_i < po_spline_group.children.length; lv_i++) {
+
+                    if (po_spline_group.children[lv_i] instanceof THREE.Group) {
+
+                        if (lv_i == 0) {
+                            lv_is_first_node = true;
+                        }
+                        else {
+                            lv_is_first_node = false;
+                        }
+
+                        if (lv_i == po_spline_group.children.length - 2) {
+                            lv_is_last_node = true;
+                        }
+                        else {
+                            lv_is_last_node = false;
+                        }
+
+
+                        //lar_segment_nodes = this.redefine_segment_nodes_types = function (po_spline_group.children[lv_i], lv_is_first_node, lv_is_last_node);
+                        lo_segment_data = this.redefine_segment_nodes_types(po_spline_group.children[lv_i], lv_is_first_node, lv_is_last_node);
+
+                        lar_spline_points.push(...lo_segment_data.points);
+                    }
+
+                }
+
+                this.main.common_func.removeObjectsWithChildren(po_spline_group, true, false, false);
+                lo_new_spline_line = this.main.splines.draw_curve(lo_new_spline_group, lar_spline_points, cv_spline_name_prefix, true);
+
+            }
+
+            catch (e) {
+
+                alert('error redefine_spline_nodes_types: ' + e.stack);
+
+            }
+
+            return lar_spline_points;
+        }
         //----------------------------------------------------------
         Segments.prototype.redefine_segment_nodes_types = function (po_segment_group, pv_is_first_node, pv_is_last_node) {
 
-        // Переопределение типа узлов сегмента в зависимости от положения узла
-        // - на краю сплайна - квадрат, внутри сплайна - кружок
+            // Переопределение типа узлов сегмента в зависимости от положения узла
+            // - на краю сплайна - квадрат, внутри сплайна - кружок
 
+            let lar_points = [];
             let lo_node = null;
+
+            let lo_new_segment_line = null;
+            let lo_new_segment_group = new THREE.Group();
+
+            lo_new_segment_group.name = po_segment_group.name;
+            lo_new_segment_group.parent = po_segment_group.parent;
+
             try {
 
                 for (let lv_i = 0; lv_i < po_segment_group.children.length; lv_i++) {
@@ -684,9 +754,9 @@ export function Segments(
                         //lar_points.push(po_segment_group.children[lv_i].position);
 
 
+                        if ((lv_i === 0 && pv_is_first_node)
+                            || (lv_i == (po_segment_group.children.length - 2) && pv_is_last_node)) {
 
-
-                        if ((lv_i === 0 && pv_is_first_node) || (lv_i == po_segment_group.children.length - 2 && pv_is_last_node) {
                             lo_node = new THREE.Mesh(this.square_geometry, this.material);
                         }
                         else {
@@ -694,8 +764,8 @@ export function Segments(
                         }
 
 
-                        lo_node.position.x = po_segment_group.children[lv_i].x;
-                        lo_node.position.y = po_segment_group.children[lv_i].y;
+                        lo_node.position.x = po_segment_group.children[lv_i].position.x;
+                        lo_node.position.y = po_segment_group.children[lv_i].position.y;
 
                         lo_node.castShadow = true;
                         lo_node.receiveShadow = true;
@@ -703,39 +773,36 @@ export function Segments(
                         lo_node.visible = false;
 
                         lo_node.userData = {
-                            nspline:            po_segment_group.children[lv_i].nspline,               // po_parent.id, //lv_i,
-                            nsegment:           po_segment_group.children[lv_i].nsegment,              // lv_j,
-                            npoint:             po_segment_group.children[lv_i].npoint,                // lv_k,
-                            point:              po_segment_group.children[lv_i].point,                 // lo_point,
-                            count_all_splines:  po_segment_group.children[lv_i].count_all_splines,     // this.shape_amount_curves,
-                            count_allsegments:  po_segment_group.children[lv_i].count_allsegments,     // this.spline_amount_segments,
-                            count_allpoints:    po_segment_group.children[lv_i].count_allpoints        // lo_segment.ar_segment_points.length
+                            nspline: po_segment_group.children[lv_i].nspline,               // po_parent.id, //lv_i,
+                            nsegment: po_segment_group.children[lv_i].nsegment,              // lv_j,
+                            npoint: po_segment_group.children[lv_i].npoint,                // lv_k,
+                            point: po_segment_group.children[lv_i].point,                 // lo_point,
+                            count_all_splines: po_segment_group.children[lv_i].count_all_splines,     // this.shape_amount_curves,
+                            count_allsegments: po_segment_group.children[lv_i].count_allsegments,     // this.spline_amount_segments,
+                            count_allpoints: po_segment_group.children[lv_i].count_allpoints        // lo_segment.ar_segment_points.length
                         };
 
 
 
-                    ////    ////this.splines_nodes.push(lo_node);
+                        lo_new_segment_group.add(lo_node);
 
-                    ////    //this.scene.add(lo_node);
+                        let lo_point = new THREE.Vector3(lo_node.position.x, lo_node.position.y, 0);
 
-                    ////    this.parent.add(lo_node);
-
-                    ////}// nodes
-
-
-
-
-
-
-
-
-
-
+                        lar_points.push(lo_point);
 
 
                     }
 
                 }
+
+                //// удаление предыдущего сегмента
+                //let lineObject = po_segment_group.children.find(child => child instanceof THREE.Line);
+                //if (lineObject) {
+                //    this.main.common_func.removeObjectsWithChildren(lineObject, true, false, false);
+                //}
+
+                this.main.common_func.removeObjectsWithChildren(po_segment_group, true, false, false);
+                lo_new_segment_line = this.main.splines.draw_curve(lo_new_segment_group, lar_points, cv_segment_name_prefix, false);
 
             }
 
@@ -745,6 +812,10 @@ export function Segments(
 
             }
 
+            return {
+                points: lar_points,
+                line: lo_new_segment_line
+            }
         }
 
 

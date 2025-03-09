@@ -3317,8 +3317,15 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                             }// else группа НЕ выделенного сегмента
 
 
+
+
+
                             //lar_spline_points.push(...lo_segment_data.points);
                         }
+
+
+                        this.main.segments.redefine_spline_nodes_types(lo_spline_group_with_sel_segment);
+
 
                     } // lv_j
 
@@ -3347,6 +3354,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     
 
                     lo_main_curves_group.children.splice(lv_index_spline_group, 1, lo_new_spline_group_with_sel_segment); 
+
+
 
 
                     this.ar_splines = this.get_splines();//06032025
