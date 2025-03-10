@@ -718,6 +718,9 @@ export function Segments(
 
                         lo_segment_data = this.redefine_segment_nodes_types(po_spline_group.children[lv_i], lv_is_first_node, lv_is_last_node);
 
+
+                        lo_new_spline_group.add(po_spline_group.children[lv_i]);//10032025
+
                         lar_spline_points.push(...lo_segment_data.points);
                     }
 
@@ -725,7 +728,7 @@ export function Segments(
 
                 //this.main.common_func.removeObjectsWithChildren(po_spline_group, true, false, false);
                 lo_new_spline_line = this.main.splines.draw_curve(lo_new_spline_group, lar_spline_points, cv_spline_name_prefix, true);
-                lo_new_spline_group_parent.add(lo_new_spline_line);
+                lo_new_spline_group_parent.add(lo_new_spline_group);
             }
 
             catch (e) {
@@ -795,7 +798,6 @@ export function Segments(
                         lo_new_segment_group.add(lo_node);
 
                         let lo_point = new THREE.Vector3(lo_node.position.x, lo_node.position.y, 0);
-
                         lar_points.push(lo_point);
 
 
@@ -804,15 +806,20 @@ export function Segments(
                 }
 
                 //// удаление предыдущего сегмента
-                //let lineObject = po_segment_group.children.find(child => child instanceof THREE.Line);
-                //if (lineObject) {
-                //    this.main.common_func.removeObjectsWithChildren(lineObject, true, false, false);
-                //}
-
-                this.main.common_func.removeObjectsWithChildren(po_segment_group, true, false, false);
-                lo_segment_group_parent.add(lo_new_segment_group);
+                let lineObject = po_segment_group.children.find(child => child instanceof THREE.Line);
+                if (lineObject) {
+                    this.main.common_func.removeObjectsWithChildren(lineObject, true, false, false);
+                }
 
                 lo_new_segment_line = this.main.splines.draw_curve(lo_new_segment_group, lar_points, cv_segment_name_prefix, false);
+
+
+                lo_segment_group_parent.add(lo_new_segment_group);
+
+
+                this.main.common_func.removeObjectsWithChildren(po_segment_group, true, false, false);
+
+                //lo_new_segment_line = this.main.splines.draw_curve(lo_new_segment_group, lar_points, cv_segment_name_prefix, false);
 
             }
 
