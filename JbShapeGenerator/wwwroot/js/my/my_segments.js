@@ -677,7 +677,7 @@ export function Segments(
             let lo_new_spline_group = new THREE.Group();
 
             lo_new_spline_group.name = po_spline_group.name;
-            let lo_new_spline_group_parent = po_spline_group.parent;
+            let lo_main_curves_group = po_spline_group.parent;
 
 
             let lv_is_first_node = false;
@@ -727,8 +727,25 @@ export function Segments(
                 }
 
                 //this.main.common_func.removeObjectsWithChildren(po_spline_group, true, false, false);
-                lo_new_spline_line = this.main.splines.draw_curve(lo_new_spline_group, lar_spline_points, cv_spline_name_prefix, true);
-                lo_new_spline_group_parent.add(lo_new_spline_group);
+                //lo_new_spline_line = this.main.splines.draw_curve(lo_new_spline_group, lar_spline_points, cv_spline_name_prefix, true);
+                this.main.splines.draw_curve(lo_new_spline_group, lar_spline_points, cv_spline_name_prefix, true);
+
+
+                ///lo_main_curves_group.children.splice(lv_index_spline_group, 1, lo_new_spline_group_with_sel_segment);
+                //lo_main_curves_group.add(lo_new_spline_group);
+
+
+                // Вставляем сплан-группу на своё место
+
+                let lv_index_spline_group = lo_main_curves_group.children.findIndex(spline_group => spline_group.name === lo_new_spline_group.name);
+                if (lv_index_spline_group !== -1) {
+                    //users.splice(index, 1);
+                    lo_main_curves_group.children.splice(lv_index_spline_group, 1, lo_new_spline_group_with_sel_segment);
+
+                }
+
+
+
             }
 
             catch (e) {
