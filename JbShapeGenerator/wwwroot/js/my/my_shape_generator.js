@@ -4489,7 +4489,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         );
                         //05012025 }
 
-                   ////////////07032025     lo_active_side.select_contour_between_slides(po_event); //06012025
+                        lo_active_side.select_contour_between_slides(po_event/*, this.is_shape_gragging*/); //10032025
 
                     }
                     //////05012025 }
@@ -4548,7 +4548,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                         //lo_active_side.button_down = true;
                         lv_is_gragging = false;
 
-                        //alert("раз");
                         lo_active_side.end_shape.handle_click_on_end_side(po_event);
 
                         //po_event.stopPropagation()
@@ -4725,8 +4724,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     ////}//04122024
 
+                    if (!lv_is_gragging) //10032025 
+                    {
+                        lo_active_side.select_contour_between_slides(po_event);
+                    }
 
-                    lo_active_side.select_contour_between_slides(po_event);
 
                     // 06012025 }
 
@@ -4748,7 +4750,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.select_contour_between_slides = function (po_event) {
+        Shape_generator.prototype.select_contour_between_slides = function (po_event/*, pv_is_shape_gragging*/) {
 
 
             // Выделение границ фигуры между кривыми
@@ -4783,13 +4785,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     if (lo_active_side.group_contours.userData == null) {
 
-                        lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+                        lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment/*, pv_is_shape_gragging*/);
 
                     }
                     else {
 
 
-                        if (lo_prev_clicked_splines) { //04122024
+                        if (lo_prev_clicked_splines) { 
 
                             if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
                                 && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right) {
@@ -4797,7 +4799,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                                 lo_active_side.group_contours.userData = null;
                             }
                             else {
-                                lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+                                lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment/*, pv_is_shape_gragging*/);
                             }
                         }
                     }

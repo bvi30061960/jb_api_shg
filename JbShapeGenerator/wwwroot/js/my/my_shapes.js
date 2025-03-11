@@ -1701,7 +1701,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         //if (lar[lv_i].parent != null) { //07032025 
                         if (lar[lv_i].children.length > 0) { //07032025 
                             lar_out.push(lar[lv_i]);
-                        //}
+                            //}
                         }
                     }
                 }
@@ -3064,7 +3064,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         lo_segment_group_of_sel_segment = lo_selected_segment.parent;// группа выделенного сегмента
 
                         // Определение индекса сплайн-группы выделенного сегмента в массиве сплайнов
-                        lv_index_spline_group = lo_main_curves_group.children.indexOf(lo_spline_group_with_sel_segment); 
+                        lv_index_spline_group = lo_main_curves_group.children.indexOf(lo_spline_group_with_sel_segment);
 
 
                         lo_new_spline_group_with_sel_segment = new THREE.Group();
@@ -3348,9 +3348,20 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                     // Вставляем сплан-группу на своё место
-                   //// lo_main_curves_group.remove(lo_spline_group_with_sel_segment);//06032025
-                   //// lo_main_curves_group.add(lo_new_spline_group_with_sel_segment);//06032025
-                   lo_main_curves_group.children.splice(lv_index_spline_group, 1, lo_new_spline_group_with_sel_segment); 
+                    lo_main_curves_group.remove(lo_spline_group_with_sel_segment);//06032025
+                    lo_main_curves_group.add(lo_new_spline_group_with_sel_segment);//06032025
+
+                    //lo_main_curves_group.children.splice(lv_index_spline_group, 1, lo_new_spline_group_with_sel_segment);
+
+
+                    //if (oldIndex < 0 || oldIndex >= array.length || newIndex < 0 || newIndex >= array.length) return;
+
+                    let lo_temp_spline_group = lo_main_curves_group.children.splice(lo_main_curves_group.children.length - 1, 1)[0]; // Удаляем элемент
+                    lo_main_curves_group.children.splice(lv_index_spline_group, 0, lo_temp_spline_group); // Вставляем на новое место
+
+
+
+
 
 
                     this.main.segments.redefine_spline_nodes_types(lo_new_spline_group_with_sel_segment);//09032025
@@ -3909,10 +3920,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
         //-----------------------------------------------------------------
 
-        Shapes.prototype.select_shape_contour = function (po_clicked_splines) {
+        Shapes.prototype.select_shape_contour = function (po_clicked_splines/*, pv_is_shape_gragging*/) {
 
+            //let pv_draw_contour = !pv_is_shape_gragging;
 
             this.draw_contour_and_shape(0x0f0, po_clicked_splines.spline_left, po_clicked_splines.spline_right, true, true, true, false);
+            //this.draw_contour_and_shape(0x0f0, po_clicked_splines.spline_left, po_clicked_splines.spline_right, true, true, pv_draw_contour, false); //10032025
 
             ////this.main.camera.updateProjectionMatrix();
             ////this.main.render();

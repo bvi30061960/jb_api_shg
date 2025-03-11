@@ -672,8 +672,6 @@ export function Segments(
             // Переопределение типа узлов сплайна в зависимости от положения узла
             // - на краю сплайна - квадрат, внутри сплайна - кружок
 
-
-            let lo_new_spline_line = null;
             let lo_new_spline_group = new THREE.Group();
 
             lo_new_spline_group.name = po_spline_group.name;
@@ -682,7 +680,6 @@ export function Segments(
 
             let lv_is_first_node = false;
             let lv_is_last_node = false;
-            //let lar_segment_nodes = [];
             let lar_spline_points = [];
 
             let lo_segment_data = null;
@@ -691,11 +688,11 @@ export function Segments(
             try {
 
                 // удаление прежней линии сплайна
-
                 let lv_line_index = po_spline_group.children.findIndex(object => object.type === "Line");
                 if (lv_line_index !== -1) {
                     po_spline_group.children.splice(lv_line_index, 1);
                 }
+
 
                 for (let lv_i = 0; lv_i < po_spline_group.children.length; lv_i++) {
 
@@ -708,7 +705,7 @@ export function Segments(
                             lv_is_first_node = false;
                         }
 
-                        if (lv_i == po_spline_group.children.length - 2) {
+                        if (lv_i == po_spline_group.children.length - 1) {
                             lv_is_last_node = true;
                         }
                         else {
@@ -718,32 +715,26 @@ export function Segments(
 
                         lo_segment_data = this.redefine_segment_nodes_types(po_spline_group.children[lv_i], lv_is_first_node, lv_is_last_node);
 
-
-                        lo_new_spline_group.add(po_spline_group.children[lv_i]);//10032025
-
+                        lo_new_spline_group.add(lo_segment_data.segment_group);
                         lar_spline_points.push(...lo_segment_data.points);
                     }
 
                 }
 
-                //this.main.common_func.removeObjectsWithChildren(po_spline_group, true, false, false);
-                //lo_new_spline_line = this.main.splines.draw_curve(lo_new_spline_group, lar_spline_points, cv_spline_name_prefix, true);
                 this.main.splines.draw_curve(lo_new_spline_group, lar_spline_points, cv_spline_name_prefix, true);
-
-
-                ///lo_main_curves_group.children.splice(lv_index_spline_group, 1, lo_new_spline_group_with_sel_segment);
-                //lo_main_curves_group.add(lo_new_spline_group);
 
 
                 // Вставляем сплан-группу на своё место
 
                 let lv_index_spline_group = lo_main_curves_group.children.findIndex(spline_group => spline_group.name === lo_new_spline_group.name);
                 if (lv_index_spline_group !== -1) {
-                    //users.splice(index, 1);
-                    lo_main_curves_group.children.splice(lv_index_spline_group, 1, lo_new_spline_group_with_sel_segment);
+                    lo_main_curves_group.children.splice(lv_index_spline_group, 1, lo_new_spline_group);
 
                 }
 
+
+                // удаление прежней группы сплайна
+                this.main.common_func.removeObjectsWithChildren(po_spline_group, true, false, false);
 
 
             }
@@ -769,9 +760,20 @@ export function Segments(
             let lo_new_segment_group = new THREE.Group();
 
             lo_new_segment_group.name = po_segment_group.name;
-            //lo_new_segment_group.parent = po_segment_group.parent;
 
             let lo_segment_group_parent = po_segment_group.parent;
+
+            let lv_visible = false;
+
+            // чтение имени прежней линии сегмента
+            let lv_prev_segment_line_name = "";
+            let lv_line_index = po_segment_group.children.findIndex(object => object.type === "Line");
+            if (lv_line_index !== -1) {
+                lv_prev_segment_line_name = po_segment_group.children[lv_line_index].name;
+            }
+
+
+
 
             try {
 
@@ -798,7 +800,7 @@ export function Segments(
                         lo_node.castShadow = true;
                         lo_node.receiveShadow = true;
                         lo_node.renderOrder = 3;
-                        lo_node.visible = false;
+                        lo_node.visible = po_segment_group.children[lv_i].visible;
 
                         lo_node.userData = {
                             nspline: po_segment_group.children[lv_i].nspline,               // po_parent.id, //lv_i,
@@ -818,25 +820,27 @@ export function Segments(
                         lar_points.push(lo_point);
 
 
+                        if (lv_i == 0) {
+                            lv_visible = lo_node.visible;
+                        }
+
                     }
 
                 }
 
-                //// удаление предыдущего сегмента
-                let lineObject = po_segment_group.children.find(child => child instanceof THREE.Line);
-                if (lineObject) {
-                    this.main.common_func.removeObjectsWithChildren(lineObject, true, false, false);
-                }
 
                 lo_new_segment_line = this.main.splines.draw_curve(lo_new_segment_group, lar_points, cv_segment_name_prefix, false);
 
+                if (lv_visible) {
 
-                lo_segment_group_parent.add(lo_new_segment_group);
+                    // занесение сегмента в массив выделенных сегментов
+                    let lv_sel_index = this.main.shapes.ar_selected_segments.findIndex(obj => obj.name === lv_prev_segment_line_name);
+                    if (lv_sel_index !== -1) {
+                        this.main.shapes.ar_selected_segments.splice(lv_sel_index, 1);
+                    }
+                    this.main.shapes.ar_selected_segments.push(lo_new_segment_line);
 
-
-                this.main.common_func.removeObjectsWithChildren(po_segment_group, true, false, false);
-
-                //lo_new_segment_line = this.main.splines.draw_curve(lo_new_segment_group, lar_points, cv_segment_name_prefix, false);
+                }
 
             }
 
@@ -848,7 +852,8 @@ export function Segments(
 
             return {
                 points: lar_points,
-                line: lo_new_segment_line
+                line: lo_new_segment_line,
+                segment_group: lo_new_segment_group
             }
         }
 
