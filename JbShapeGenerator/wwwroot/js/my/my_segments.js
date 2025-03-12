@@ -669,6 +669,8 @@ export function Segments(
         //----------------------------------------------------------
         Segments.prototype.redefine_spline_nodes_types = function (po_spline_group) {
 
+            return;
+
             // Переопределение типа узлов сплайна в зависимости от положения узла
             // - на краю сплайна - квадрат, внутри сплайна - кружок
 
@@ -684,6 +686,7 @@ export function Segments(
 
             let lo_segment_data = null;
 
+            let lar_selected_segments = [];
 
             try {
 
@@ -717,6 +720,11 @@ export function Segments(
 
                         lo_new_spline_group.add(lo_segment_data.segment_group);
                         lar_spline_points.push(...lo_segment_data.points);
+
+                        if (lo_segment_data.selected) {
+                            // Запоминание сегмента в списке выделенных
+                            lar_selected_segments.push(lo_segment_data.segment_line);
+                        }
                     }
 
                 }
@@ -737,6 +745,10 @@ export function Segments(
                 this.main.common_func.removeObjectsWithChildren(po_spline_group, true, false, false);
 
 
+                // Замена массива выделенных сегментов
+                //this.main.shapes.ar_selected_segments.splice(0, this.main.shapes.ar_selected_segments.length);
+                this.main.shapes.ar_selected_segments = [];
+                this.main.shapes.ar_selected_segments.push(...lar_selected_segments);
             }
 
             catch (e) {
@@ -831,17 +843,18 @@ export function Segments(
 
                 lo_new_segment_line = this.main.splines.draw_curve(lo_new_segment_group, lar_points, cv_segment_name_prefix, false);
 
-                if (lv_visible) {
+                //11032025 {
+                ////if (lv_visible) {
 
-                    // занесение сегмента в массив выделенных сегментов
-                    let lv_sel_index = this.main.shapes.ar_selected_segments.findIndex(obj => obj.name === lv_prev_segment_line_name);
-                    if (lv_sel_index !== -1) {
-                        this.main.shapes.ar_selected_segments.splice(lv_sel_index, 1);
-                    }
-                    this.main.shapes.ar_selected_segments.push(lo_new_segment_line);
+                ////    // занесение сегмента в массив выделенных сегментов
+                ////    let lv_sel_index = this.main.shapes.ar_selected_segments.findIndex(obj => obj.name === lv_prev_segment_line_name);
+                ////    if (lv_sel_index !== -1) {
+                ////        this.main.shapes.ar_selected_segments.splice(lv_sel_index, 1);
+                ////    }
+                ////    this.main.shapes.ar_selected_segments.push(lo_new_segment_line);
 
-                }
-
+                ////}
+                //11032025 }
             }
 
             catch (e) {
@@ -852,8 +865,9 @@ export function Segments(
 
             return {
                 points: lar_points,
-                line: lo_new_segment_line,
-                segment_group: lo_new_segment_group
+                segment_line: lo_new_segment_line,
+                segment_group: lo_new_segment_group,
+                selected: lv_visible
             }
         }
 
