@@ -8,7 +8,9 @@
 //import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 //import { STLLoader } from 'three/addons/loaders/STLLoader.js';//20082024
-import { STLLoader } from 'https://unpkg.com/three@v0.149.0/examples/jsm/loaders/STLLoader.js';
+
+//14032025 import { STLLoader } from 'https://unpkg.com/three@v0.149.0/examples/jsm/loaders/STLLoader.js';
+import { STLLoader } from 'three/addons/loaders/STLLoader.js';//14032025
 
 
 //import {
