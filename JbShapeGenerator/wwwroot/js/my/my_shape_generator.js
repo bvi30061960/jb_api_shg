@@ -3000,7 +3000,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $(this.id_prefix + this.id_side_shape).off("click").on("click", this.onclick_shape);//17072024 
 
                 $(this.id_prefix + "id_but_mirror").off("click").on("click", this.but_mirror_onclick);
-                $(this.id_prefix + "id_but_del_segment").off("click").on("click", this.but_del_segment_onclick);
+                $(this.id_prefix + "id_but_del_segment").off("click").on("click", this.but_delete_segment_onclick);
                 $(this.id_prefix + "id_but_add_segment").off("click").on("click", this.but_insert_segment_onclick);
                 $(this.id_prefix + "id_but_random").off("click").on("click", this.but_make_random_onclick);
 
@@ -3432,12 +3432,13 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.but_del_segment_onclick = function () {
+        Shape_generator.prototype.but_delete_segment_onclick = function () {
 
             // удалить из сплайна выделенный сегмент
             let lo_active_side = get_active_side_shape_generator();
             try {
-                //lo_active_side.shapes.make_mirror_selected_segments();
+
+                lo_active_side.shapes.make_delete_selected_segments();//24022025
 
                 lo_active_side.shapes.adjust_splines_by_external_shape();
 
@@ -3448,7 +3449,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             catch (e) {
 
-                alert('error ondblclick_id_shape: ' + e.stack);
+                alert('error but_delete_segment_onclick: ' + e.stack);
 
             }
         }
