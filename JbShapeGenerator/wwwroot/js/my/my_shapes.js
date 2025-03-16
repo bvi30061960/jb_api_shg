@@ -2893,6 +2893,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             let lo_end_point_position = 0;
             let lo_beg_point_position = 0;
+            let lo_first_node_position = null;
+            let lo_first_node_mesh = null;
+
 
             try {
 
@@ -2993,6 +2996,24 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                         if (lo_curr_segment_group.name === lo_line_selected_segment.parent.name) { //13032025
                             // это группа выделенного сегмента
 
+                            if (lv_j === 0) { // выделенный сегмент - первый, запоминаем его первый узел
+                                // который добавим к новому первому сегменту
+
+                                //lo_first_node = lo_curr_segment_group.children[0].clone();
+                                lo_first_node_mesh = lo_curr_segment_group.children[0].clone();
+                                lo_first_node_position = lo_curr_segment_group.children[0].position.clone();
+
+
+                            }
+
+
+
+
+
+
+
+
+
 
                             //////// перемещение выделенного сегмента в новую сплайн группу
 
@@ -3090,7 +3111,44 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
 
+
+
+
                                 lo_copy_curr_segment_group = lo_curr_segment_group.clone();
+
+
+
+
+                                //16032025 {
+                                // если сегмент стал первым, добавляем в него первый узел от удалённого первого сегмента
+                                if (lv_j == 1) {
+                                    if (lo_first_node_position) {
+                                        //lar_segment_points.push(lo_first_node);
+
+                                        //lar_segment_points.splice(0, 0, lo_first_node);
+                                        lar_segment_points.unshift(lo_first_node_position); // вставка на первое место массива
+                                        //lo_copy_curr_segment_group.children.unshift(lo_first_node_mesh); // вставка на первое место массива
+
+
+                                        // у добавляемого узла делаем то же состояние видимости, что и других (первого) узла сегмента
+                                        lo_first_node_mesh.visible = lo_copy_curr_segment_group.children[0].visible;
+
+                                        ////////lo_copy_curr_segment_group.add(lo_first_node_mesh);  // Добавляем объект
+                                        //////// Перемещаем объект на первое место в children
+                                        //////lo_copy_curr_segment_group.remove(lo_first_node_mesh);
+                                        //////lo_first_node_mesh.parent = lo_copy_curr_segment_group;
+
+                                        lo_first_node_mesh.parent = lo_copy_curr_segment_group
+                                        lo_copy_curr_segment_group.children.unshift(lo_first_node_mesh);
+
+                                    }
+                                }
+
+
+
+                                //16032025 }
+
+
 
 
 
@@ -3120,10 +3178,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                 lar_spline_points.push(...lar_segment_points);
 
 
-                                if (lv_is_exist_from_selects) {
-                                    // вставка сегмента в массив выделенных сегментов
-                                    this.ar_selected_segments.push(lo_result_curve);
-                                }
+                                //////if (lv_is_exist_from_selects) {
+                                //////    // вставка сегмента в массив выделенных сегментов
+                                //////    this.ar_selected_segments.push(lo_result_curve);
+                                //////}
 
                                 lo_new_spline_group_with_sel_segment.add(lo_copy_curr_segment_group);
 
