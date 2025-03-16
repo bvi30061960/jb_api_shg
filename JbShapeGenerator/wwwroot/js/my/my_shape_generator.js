@@ -3416,9 +3416,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-                //23022025 lo_active_side.shapes.make_insert_segment_above_selected_segment();
-                //24022025 lo_active_side.shapes.make_insert_segment_before_selected_segment();//23022025
-
                 lo_active_side.shapes.make_insert_segments_before_selected_segments();//24022025
 
                 lo_active_side.shapes.adjust_splines_by_external_shape();
