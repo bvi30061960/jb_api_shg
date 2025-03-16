@@ -692,8 +692,12 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     // Перерисовка сегментов
                     ///@@@@@ 08062024 this.main.shapes.redraw_segments(this.ar_splines[lv_i]);
 
-                    // создание новой линии
-                    this.main.splines.draw_curve(this.ar_splines[lv_i], lar_spline_points, this.main.splines.name_prefix, true);
+
+                    if (lar_spline_points.length > 0) {  //16032025
+                        // создание новой линии
+                        this.main.splines.draw_curve(this.ar_splines[lv_i], lar_spline_points, this.main.splines.name_prefix, true);
+
+                    } //16032025
 
 
                     //	 Запоминание новой кривой
@@ -2896,7 +2900,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             let lo_first_node_position = null;
             let lo_first_node_mesh = null;
 
-
+            let lar_to_remove = [];
             try {
 
                 this.ar_splines = this.get_splines();//11032025
@@ -2921,6 +2925,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                 for (let lv_i = 0; lv_i < lar_lines_names_selected_segments.length; lv_i++) {
+
+
+                    lar_to_remove = [];//16032025
 
                     lo_line_selected_segment = this.main.common_func.get_object_by_name_via_search_area(this.main.scene, lar_lines_names_selected_segments[lv_i]); //14032025
 
@@ -3006,7 +3013,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                             }
 
-
+                            // Заносим группу сегмента в массив для последующего удаления
+                            //this.main.common_func.removeObjectsWithChildren(lo_curr_segment_group, true, false, false);//14032025
+                            lar_to_remove.push(lo_curr_segment_group);//16032025
 
 
 
@@ -3237,15 +3246,33 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     } // lv_j
 
 
-                    this.main.splines.draw_curve(lo_new_spline_group_with_sel_segment, lar_spline_points, cv_spline_name_prefix, true);
-
-                    // Вставляем сплайн-группу на своё место
                     lo_main_curves_group.remove(lo_spline_group_with_sel_segment);//06032025
-                    lo_main_curves_group.add(lo_new_spline_group_with_sel_segment);//06032025
 
-                    // Постановка сплайн-группы на своё место
-                    let lo_temp_spline_group = lo_main_curves_group.children.splice(lo_main_curves_group.children.length - 1, 1)[0]; // Удаляем элемент
-                    lo_main_curves_group.children.splice(lv_index_spline_group, 0, lo_temp_spline_group); // Вставляем на новое место
+                    if (lar_spline_points.length > 0) {  //16032025 
+                        this.main.splines.draw_curve(lo_new_spline_group_with_sel_segment, lar_spline_points, cv_spline_name_prefix, true);
+
+                        // Вставляем сплайн-группу на своё место
+                        //16032025 lo_main_curves_group.remove(lo_spline_group_with_sel_segment);//06032025
+                        lo_main_curves_group.add(lo_new_spline_group_with_sel_segment);//06032025
+
+                        // Постановка сплайн-группы на своё место
+                        let lo_temp_spline_group = lo_main_curves_group.children.splice(lo_main_curves_group.children.length - 1, 1)[0]; // Удаляем элемент
+                        lo_main_curves_group.children.splice(lv_index_spline_group, 0, lo_temp_spline_group); // Вставляем на новое место
+
+                    } //16032025
+
+
+
+                    // удаление групп с выделенными сегментами
+                    for (let lo_obj_to_remove in lar_to_remove) {
+                        this.main.common_func.removeObjectsWithChildren(lo_obj_to_remove, true, false, false);//14032025
+                    }
+
+
+
+
+
+
 
                     this.ar_splines = this.get_splines();//06032025
                     this.ar_splines_nodes = this.get_splines_points();//06032025
@@ -3257,7 +3284,7 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
             }
             catch (e) {
 
-                alert('error make_insert_segments_before_selected_segments: ' + e.stack);
+                alert('error make_delete_selected_segments: ' + e.stack);
 
             }
 
