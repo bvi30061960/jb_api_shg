@@ -1702,13 +1702,18 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                 for (let lv_i = 0; lv_i < lar.length; lv_i++) {
                     if (lar[lv_i].name.indexOf(cv_spline_group_name_prefix) >= 0) { //30042024
-                        //if (lar[lv_i].parent != null) { //07032025 
-                        if (lar[lv_i].children.length > 0) { //07032025 
-                            lar_out.push(lar[lv_i]);
-                            //}
-                        }
+                        if (lar[lv_i].parent != null) { //16032025 
+                            if (lar[lv_i].children.length > 0) { //07032025 
+                                lar_out.push(lar[lv_i]);
+                            }
+                        } //1602025
                     }
                 }
+
+
+                ////// удаляем элементы, у которых число детей меньше 2 
+                ////lar_out = lar_out.filter(item => (item.type === "Group" && item.children.length > 0) 
+                ////                                        || (item.type === "Line")  );
 
 
             }
@@ -2989,6 +2994,8 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                     let lv_is_after = false;
+                    lar_spline_points = [];//16032025
+
 
                     // цикл по группам сегментов,принадлежащих сплайну с выделенным сегментом
                     for (let lv_j = 0; lv_j < lo_spline_group_with_sel_segment.children.length; lv_j++) {
@@ -3001,7 +3008,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
 
                         if (lo_curr_segment_group.name === lo_line_selected_segment.parent.name) { //13032025
+
                             // это группа выделенного сегмента
+
+
 
                             if (lv_j === 0) { // выделенный сегмент - первый, запоминаем его первый узел
                                 // который добавим к новому первому сегменту
@@ -3092,7 +3102,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                             //  группа не выделенного сегмента
 
-
                             if (lv_is_after) {
 
                                 // коррекция y-координаты на длину вставляемого сегмента
@@ -3117,9 +3126,6 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                     // удаление точки с нулевыми координатами (от объекта Line)
                                     lar_segment_points.pop();
                                 }
-
-
-
 
 
 
@@ -3191,6 +3197,9 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                                 //////    // вставка сегмента в массив выделенных сегментов
                                 //////    this.ar_selected_segments.push(lo_result_curve);
                                 //////}
+
+
+
 
                                 lo_new_spline_group_with_sel_segment.add(lo_copy_curr_segment_group);
 
@@ -3269,17 +3278,13 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
                     }
 
 
-
-
-
-
-
                     this.ar_splines = this.get_splines();//06032025
                     this.ar_splines_nodes = this.get_splines_points();//06032025
 
                 } // lv_i
 
-
+                // Очистка массива выделенных сегментов
+                this.ar_selected_segments = []; // 16032025
 
             }
             catch (e) {
