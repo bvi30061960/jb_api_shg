@@ -362,6 +362,36 @@ export function GridSelectModels(pv_prefix) {
         }
 
 
+
+        //------------------------------------------------------------------------------------------
+        GridSelectModels.prototype.do_row_choice = function (pv_rowid) {
+
+            let lv_ar;
+
+            try {
+
+                lv_ar = this.$grid.getRowData(pv_rowid);
+
+
+                let lv_pathFile = lv_ar["path_file_wo_ext"];
+
+                if (typeof (lv_pathFile) == "undefined" || lv_pathFile == "" || lv_pathFile == null) {
+                    return;
+                }
+
+                this.read_model_from_server(lv_pathFile);
+
+                this.$div_grid.dialog("close");
+            }
+
+            catch (e) {
+
+                alert('error do_row_choice: ' + e.stack);
+
+            }
+        }
+
+
         //-----------------------------------------------------------------------------------------
 
         GridSelectModels.prototype.imageformatter = function (pv_cellvalue, ps_options, po_rowObject) {
@@ -449,33 +479,131 @@ export function GridSelectModels(pv_prefix) {
 
         }
 
-        //------------------------------------------------------------------------------------------
-        GridSelectModels.prototype.do_row_choice = function (pv_rowid) {
 
-            let lv_ar;
+
+        //------------------------------------------------------------------------------------------
+        GridSelectModels.prototype.oncomplete_read_model_from_server = function (po_data) {
 
             try {
 
-                lv_ar = this.$grid.getRowData(pv_rowid);
+                let lo_active_side = get_active_side_shape_generator();
 
-
-                let lv_pathFile = lv_ar["path_file_wo_ext"];
-
-                if (typeof (lv_pathFile) == "undefined" || lv_pathFile == "" || lv_pathFile == null) {
+                if (!lo_active_side) {
                     return;
                 }
 
-                this.read_model_from_server(lv_pathFile);
+                //26012025 {
+                // очистка данных модели
+                go_up_side_shape_generator.clear_model_data();
+                go_lateral_side_shape_generator.clear_model_data();
+                go_end_side_shape_generator.clear_model_data();
+                //26012025 }
 
-                this.$div_grid.dialog("close");
+
+                lo_active_side.is_ask_about_save_file = false;
+                lo_active_side.is_model_changed = false;
+
+
+                //////// тестовый пример загрузки изображения
+                //////let $id_div_visual_model = $("#id_screenshot");
+                //////$id_div_visual_model.empty();
+                //////let lo_img = document.createElement("img");
+                //////lo_img.src = po_data;
+                //////$id_div_visual_model.append(lo_img);
+                //////$id_div_visual_model.css('display', 'block');
+
+
+                let lo_data = JSON.parse(po_data); //29102024
+
+                ////// Очистка группы с превью
+                ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
+
+
+                //27012025 {
+                ////// Очистка группы с деталями модели
+                ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
+                ////lo_active_side.render_mod();
+                //27012025 }
+
+
+                if (!lo_data) {
+                    return;
+                }
+
+
+                let loader = null;
+                let lo_geometry = null;
+
+                if (lo_data.prev_model.length > 100) {
+
+                    loader = new STLLoader();
+                    lo_geometry = loader.parse(lo_data.prev_model);
+
+                }
+
+
+                ////07012025 {
+                //if (!lo_active_side) {
+                //    return;
+                //}
+                ////07012025 }
+
+
+                // Задержка после парсинга ?
+                setTimeout(function () {
+
+                    let lo_active_side = get_active_side_shape_generator();
+
+                    if (!lo_active_side) {
+                        return;
+                    }
+
+                    $("#id_model_name").val(lo_data.model_name);
+
+
+                    if (lo_geometry) {
+                        lo_active_side.on_load_model(lo_geometry);
+                        lo_active_side.render_mod();
+                    }
+                    if (lo_data.sides_data) {
+                        lo_active_side.draw_shape_by_sides_data(lo_data.sides_data);
+
+                        go_up_side_shape_generator.common_func.hideWaitingIndicator();
+
+                        //lo_active_side.render();//27012025
+                    }
+
+                }, 100);
+
+
+
+                //// Очистка сцены
+                //let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh",
+                //28102024 lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+
+                ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
+                ////lo_active_side.render_mod();
+
+
+
+
+                ////////////////////////lo_active_side.on_load_model(lo_geometry);
+                ////////////////////////lo_active_side.render_mod();
+
+
             }
 
             catch (e) {
 
-                alert('error do_row_choice: ' + e.stack);
+                go_up_side_shape_generator.common_func.hideWaitingIndicator();
+
+                alert('error oncomplete_read_model_from_server: ' + e.stack);
 
             }
+
         }
+
+
 
         //------------------------------------------------------------------------------------------
         GridSelectModels.prototype.read_model_from_server = function (pv_pathFile, pv_is_initial_load) {
@@ -518,143 +646,18 @@ export function GridSelectModels(pv_prefix) {
 
         }
 
-
-            //------------------------------------------------------------------------------------------
-            GridSelectModels.prototype.oncomplete_read_model_from_server = function (po_data) {
-
-                try {
-
-                    let lo_active_side = get_active_side_shape_generator();
-
-                    if (!lo_active_side) {
-                        return;
-                    }
-
-                    //26012025 {
-                    // очистка данных модели
-                    go_up_side_shape_generator.clear_model_data();
-                    go_lateral_side_shape_generator.clear_model_data();
-                    go_end_side_shape_generator.clear_model_data();
-                    //26012025 }
-
-
-                    lo_active_side.is_ask_about_save_file = false;
-                    lo_active_side.is_model_changed = false;
-
-
-                    //////// тестовый пример загрузки изображения
-                    //////let $id_div_visual_model = $("#id_screenshot");
-                    //////$id_div_visual_model.empty();
-                    //////let lo_img = document.createElement("img");
-                    //////lo_img.src = po_data;
-                    //////$id_div_visual_model.append(lo_img);
-                    //////$id_div_visual_model.css('display', 'block');
-
-
-                    let lo_data = JSON.parse(po_data); //29102024
-
-                    ////// Очистка группы с превью
-                    ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
-
-
-                    //27012025 {
-                    ////// Очистка группы с деталями модели
-                    ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
-                    ////lo_active_side.render_mod();
-                    //27012025 }
-
-
-                    if (!lo_data) {
-                        return;
-                    }
-
-
-                    let loader = null;
-                    let lo_geometry = null;
-
-                    if (lo_data.prev_model.length > 100) {
-
-                        loader = new STLLoader();
-                        lo_geometry = loader.parse(lo_data.prev_model);
-
-                    }
-
-
-                    ////07012025 {
-                    //if (!lo_active_side) {
-                    //    return;
-                    //}
-                    ////07012025 }
-
-
-                    // Задержка после парсинга ?
-                    setTimeout(function () {
-
-                        let lo_active_side = get_active_side_shape_generator();
-
-                        if (!lo_active_side) {
-                            return;
-                        }
-
-                        $("#id_model_name").val(lo_data.model_name);
-
-
-                        if (lo_geometry) {
-                            lo_active_side.on_load_model(lo_geometry);
-                            lo_active_side.render_mod();
-                        }
-                        if (lo_data.sides_data) {
-                            lo_active_side.draw_shape_by_sides_data(lo_data.sides_data);
-
-                            go_up_side_shape_generator.common_func.hideWaitingIndicator();
-
-                            //lo_active_side.render();//27012025
-                        }
-
-                    }, 100);
-
-
-
-                    //// Очистка сцены
-                    //let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh",
-                    //28102024 lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
-
-                    ////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
-                    ////lo_active_side.render_mod();
-
-
-
-
-                    ////////////////////////lo_active_side.on_load_model(lo_geometry);
-                    ////////////////////////lo_active_side.render_mod();
-
-
-                }
-
-                catch (e) {
-
-                    go_up_side_shape_generator.common_func.hideWaitingIndicator();
-
-                    alert('error oncomplete_read_model_from_server: ' + e.stack);
-
-                }
-
-            }
-
-
-
-            //====================================================================
-
-        }  // if (typeof this.create_rectangle !== "function")
-
         //====================================================================
 
+    }  // if (typeof this.create_rectangle !== "function")
+
+    //====================================================================
 
 
-        this.create_grid_select_models();
+
+    this.create_grid_select_models();
 
 
-    }
+}
 
 // end Class GridSelectModels
 //=====================================================================

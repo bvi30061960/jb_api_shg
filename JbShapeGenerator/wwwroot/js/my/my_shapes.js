@@ -1320,7 +1320,16 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
                     //05022025 lo_mesh2.material.color.set(+po_color_rgb);//05022025 "плюс" - перевод аргумента из строкового в числовой тип
 
-                    lo_mesh2.material.color.setRGB(po_color_rgb.r, po_color_rgb.g, po_color_rgb.b); //05022025
+                    let lo_rgb = this.main.common_func.parseRGBString(po_color_rgb);
+
+                    //16032025 lo_mesh2.material.color.setRGB(po_color_rgb.r, po_color_rgb.g, po_color_rgb.b); //05022025
+                    ///lo_mesh2.material.color.setRGB(lo_rgb.r, lo_rgb.g, lo_rgb.b); //16032025
+
+                    lo_mesh2.material.color.r = lo_rgb.r;
+                    lo_mesh2.material.color.g = lo_rgb.g;
+                    lo_mesh2.material.color.b = lo_rgb.b;
+
+
 
                     //04022025 if (pv_remember_color) {
                     //04022025 // Запоминание в массиве цвета фигуры

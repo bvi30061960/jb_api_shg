@@ -5110,6 +5110,31 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 //go_end_side_shape_generator.ColorParts = ls_sides_data.ColorParts;//29012025
 
+
+                // 16032025 {
+                // Перезапись торцовых цветовых данных сторонам
+
+                ls_sides_data.data1.CurveColors = [];
+                ls_sides_data.data2.CurveColors = [];
+
+
+                let lv_length1 = ls_sides_data.ColorParts[0].length;
+                let lv_length2 = ls_sides_data.ColorParts.length;
+
+                for (let lv_i = 0; lv_i < lv_length1; lv_i++ )
+                {
+                    ls_sides_data.data1.CurveColors.push(ls_sides_data.ColorParts[0][lv_i].cell_color);
+
+                }
+
+                for (let lv_i = 0; lv_i < lv_length2; lv_i++ )
+                {
+                    ls_sides_data.data2.CurveColors.push(ls_sides_data.ColorParts[lv_i][lv_length1 - 1].cell_color);
+
+                }
+                // 16032025 }
+
+
                 go_up_side_shape_generator.make_shape(true, ls_sides_data.data1);
                 go_up_side_shape_generator.render();
 

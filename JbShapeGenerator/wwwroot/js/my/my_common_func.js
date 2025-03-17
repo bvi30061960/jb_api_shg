@@ -1692,6 +1692,27 @@ export function CommonFunc() {
         }
 
 
+        //-----------------------------------------------------------------------------------
+        CommonFunc.prototype.parseRGBString = function (rgbString) {
+            // Используем регулярное выражение для извлечения значений
+            const match = rgbString.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+
+            if (match) {
+                // Преобразуем извлечённые строки в числа и создаём объект
+                const [_, r, g, b] = match;
+                return {
+                    r: parseInt(r),
+                    g: parseInt(g),
+                    b: parseInt(b)
+                };
+            } else {
+                throw new Error('Invalid RGB format');
+            }
+        }
+
+
+
+
 
         //-----------------------------------------------------------------------------------
         // Функция для преобразования RGB в число
