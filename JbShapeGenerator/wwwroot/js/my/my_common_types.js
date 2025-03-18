@@ -59,17 +59,8 @@ export const cv_segment_name_prefix = "segment_line"; //04032025
 //29102024v {
 
 
-//export function typ_sides_data() {
-
-//    this.ColorParts = new typ_color_data();
-//    this.data1 = new typ_side_data();
-//    this.data2 = new typ_side_data();
-
-//};
 
 export function typ_color_data() {
-    //27012025 this.ColorParts = new Array();
-    //this.ColorParts = new typ_color_part(); //27012025
     this.ColorParts = [][new typ_color_part()]; //27012025
 }
 
@@ -80,13 +71,6 @@ export function typ_mesh_colors() {
     this.color = null;
 };
 
-//export function type_rotate_status() {
-//    this.None = 0;              // нет вращения
-//    this.Stop = 1;              // остановка вращения
-//    this.clockwise = 2;         // вращение по часовой стрелке
-//    this.Stop2 = 3;              // остановка вращения
-//    this.counterclockwise = 4;  // вращение по часовой стрелке
-//};
 
 export var type_rotate_mode = {
     //None: 0,                // нет вращения

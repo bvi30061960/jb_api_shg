@@ -150,25 +150,53 @@ function on_tab_side_activate(event, ui) {
     switch (lv_name_tab) {
 
         case "tab-1":
+            //////17032025 {
+            ////if (!go_end_side_shape_generator) {
+            ////    go_end_side_shape_generator = start_side_shape_generator(gc_id_prefix_end, gc_id_prefix_up);//12062024
+            ////}
+            //////17032025 }
+
+
 
             go_active_side_shape_generator = go_up_side_shape_generator;
             go_passive_side_shape_generator = go_lateral_side_shape_generator;
 
+
+            //////17032025 {
+            ////go_end_side_shape_generator.end_shape.draw_cells_contours_and_texts();
+            ////go_end_side_shape_generator.end_shape.refresh_end_shapes();
+            //////17032025 }
+
+
             break;
 
         case "tab-2":
-            if (!go_lateral_side_shape_generator) //12062024
-            {
+
+            //////17032025 {
+            ////if (!go_end_side_shape_generator) {
+            ////    go_end_side_shape_generator = start_side_shape_generator(gc_id_prefix_end, gc_id_prefix_up);//12062024
+            ////}
+            //////17032025 }
+
+
+            if (!go_lateral_side_shape_generator) {
                 go_lateral_side_shape_generator = start_side_shape_generator(gc_id_prefix_lateral, gc_id_prefix_up);//12062024
             }
 
             go_active_side_shape_generator = go_lateral_side_shape_generator;
             go_passive_side_shape_generator = go_up_side_shape_generator;
+
+
+            //////17032025 {
+
+            ////go_end_side_shape_generator.end_shape.draw_cells_contours_and_texts();
+            ////go_end_side_shape_generator.end_shape.refresh_end_shapes();
+            //////17032025 }
+
             break;
 
         case "tab-3":
-            if (!go_end_side_shape_generator) //12062024
-            {
+            if (!go_end_side_shape_generator) {
                 go_end_side_shape_generator = start_side_shape_generator(gc_id_prefix_end, gc_id_prefix_up);//12062024
             }
 
@@ -181,10 +209,8 @@ function on_tab_side_activate(event, ui) {
                 null, null    //   po_is_use_data, po_sides_data       
             );
 
-            ////28012025 {
             go_end_side_shape_generator.end_shape.draw_cells_contours_and_texts();
-            go_end_side_shape_generator.end_shape.refresh_end_shapes(); //23122024
-            ////28012025 }
+            go_end_side_shape_generator.end_shape.refresh_end_shapes();
             break;
 
         case "tab-4":
@@ -257,14 +283,6 @@ function get_side_shape_generator_by_prefix(pv_prefix) {
 
 
 //============================================================================================
-
-//29102023 {
-//function typ_sides_data() {
-//    this.colorParts = new typ_color_data();
-//    this.data1 = new typ_side_data();
-//    this.data2 = new typ_side_data();
-//};
-//29102023 }
 
 
 var go_sides_data = new typ_sides_data();
@@ -455,6 +473,898 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
         }
 
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.add_lights_for_model = function (po_scene) {
+
+            try {
+
+                let lo_spotLight;
+
+                let lv_intensity = 0.7;
+
+
+                lo_spotLight = new THREE.SpotLight(0xffffff);
+                lo_spotLight.position.set(0, 100, 100);
+                lo_spotLight.intensity = lv_intensity;
+                po_scene.add(lo_spotLight);
+
+                //lo_spotLight = new THREE.SpotLight(0xffffff);
+                //lo_spotLight.position.set(100, 100, 0);
+                //po_scene.add(lo_spotLight);
+
+                //lo_spotLight = new THREE.SpotLight(0xffffff);
+                //lo_spotLight.position.set(0, 100, -100);
+                //po_scene.add(lo_spotLight);
+
+                lo_spotLight = new THREE.PointLight(0xffffff);
+                lo_spotLight.position.set(-100, 100, 0);
+                lo_spotLight.intensity = lv_intensity;
+                po_scene.add(lo_spotLight);
+
+
+
+                //lo_spotLight = new THREE.SpotLight(0xffffff);
+                //lo_spotLight.position.set(0, -100, 100);
+                //po_scene.add(lo_spotLight);
+
+                lo_spotLight = new THREE.SpotLight(0xffffff);
+                lo_spotLight.position.set(100, -100, 0);
+                lo_spotLight.intensity = lv_intensity;
+                po_scene.add(lo_spotLight);
+
+                lo_spotLight = new THREE.PointLight(0xffffff);
+                lo_spotLight.position.set(0, -100, -100);
+                lo_spotLight.intensity = lv_intensity;
+                po_scene.add(lo_spotLight);
+
+                //lo_spotLight = new THREE.SpotLight(0xffffff);
+                //lo_spotLight.position.set(-100, -100, 0);
+                //po_scene.add(lo_spotLight);
+
+
+
+                //const geometry = new THREE.SphereGeometry(15);
+                //const material = new THREE.MeshBasicMaterial({ color: 0xff000f });
+
+                //let sphere = null;
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 0;
+                //sphere.position.y = 100;
+                //sphere.position.z = 100;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 100;
+                //sphere.position.y = 100;
+                //sphere.position.z = 0;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 0;
+                //sphere.position.y = 100;
+                //sphere.position.z = -100;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = -100;
+                //sphere.position.y = 100;
+                //sphere.position.z = 0;
+                //po_scene.add(sphere);
+
+
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 0;
+                //sphere.position.y = -80;
+                //sphere.position.z = 100;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 100;
+                //sphere.position.y = -80;
+                //sphere.position.z = 0;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = 0;
+                //sphere.position.y = -80;
+                //sphere.position.z = -100;
+                //po_scene.add(sphere);
+
+                //sphere = new THREE.Mesh(geometry, material);
+                //sphere.position.x = -100;
+                //sphere.position.y = -80;
+                //sphere.position.z = 0;
+                //po_scene.add(sphere);
+
+            }
+
+            catch (e) {
+
+                alert('error add_lights_for_model: ' + e.stack);
+
+            }
+        }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.adjust_splines_by_shape_in_side = function (po_side, pv_value) {
+
+
+            //po_side.params.shape_height = pv_value;
+
+            //05112024 let lv_scale = pv_value / po_side.params.shape_height_beg;
+            //05112024 let lv_scale = pv_value / po_side.params.shape_height;//05112024
+
+            let lv_scale = pv_value / po_side.rectangle.shape_height;//05112024
+
+
+            po_side.rectangle.shape.scale.y = lv_scale;
+
+            //13122024 po_side.render();
+
+
+            po_side.segment_transform_data = po_side.segments.get_segment_transform_data(
+                /* po_side.segment_gabarits, 02112024 */
+                //13022025 po_side.params.ajust_curves_by_shape);
+                po_side.params.ajust_curves_by_shape, this.params.spline_amount_segments);//13022025
+
+
+            if (po_side.params.is_space_adjust) {
+                po_side.shapes.adjust_splines_by_external_shape(pv_value);
+            }
+
+            po_side.render();//13122024 
+
+        }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.animate = function () {
+
+            //requestAnimationFrame(this.animate);
+            //this.scene.children.forEach(obj => obj.lookAt(this.camera.position)); // Все объекты смотрят на камеру
+            //this.controls.update();
+            //this.renderer.render(this.scene, this.camera);
+
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.animate_mod = function () {
+
+            //return;//15122024
+
+            let lo_active_side = get_active_side_shape_generator();
+
+            ////07012025 {
+            //if (!lo_active_side) {
+            //    return;
+            //}
+            ////07012025 }
+
+
+            let lv_slider_value = 0;
+            //let lv_delta_slider_value = 0;
+
+            if (lo_active_side) {
+
+                lv_slider_value = $(lo_active_side.id_prefix + "id_dist_part_slider").slider('value');
+
+                //lv_delta_slider_value = lv_slider_value - lo_active_side.slider_value_prev;
+                //lo_active_side.common_func.move_details_from_to_center(lo_active_side.group_parts_mod, lv_delta_slider_value);
+
+                //lv_delta_slider_value = lv_slider_value - lo_active_side.slider_value_prev;
+                lo_active_side.common_func.move_details_from_to_center(lo_active_side.group_parts_mod, lv_slider_value);
+
+
+                //lo_active_side.slider_value_prev = lv_slider_value;
+
+                //requestAnimationFrame(lo_active_side.animate_mod);
+
+
+
+
+                //07012025 {
+                if (!lo_active_side) {
+                    return;
+                }
+                //07012025 }
+
+                setTimeout(function () {
+                    //07012025 {
+                    if (!lo_active_side) {
+                        return;
+                    }
+                    //07012025 }
+
+                    requestAnimationFrame(lo_active_side.animate_mod);
+                    lo_active_side.render_mod();
+
+                }, 200); // 100);
+
+            }
+            else {
+
+                if (this) { //08012025
+
+                    lv_slider_value = $(this.id_prefix + "id_dist_part_slider").slider('value');
+                    //lv_delta_slider_value = lv_slider_value - this.slider_value_prev;
+
+                    //this.common_func.move_details_from_to_center(this.group_parts_mod, lv_delta_slider_value);
+                    this.common_func.move_details_from_to_center(this.group_parts_mod, lv_slider_value);
+
+
+                    setTimeout(function () {
+                        requestAnimationFrame(this.animate_mod);
+                        this.render_mod();
+
+                    }, 200); // 100);
+
+                }
+            }
+
+
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.but_insert_segment_onclick = function () {
+
+            // добавить к сплайну сегмент перед выделенным
+            let lo_active_side = get_active_side_shape_generator();
+
+            try {
+
+                lo_active_side.shapes.make_insert_segments_before_selected_segments();//24022025
+
+                lo_active_side.shapes.adjust_splines_by_external_shape();
+
+                lo_active_side.render();
+
+            }
+
+            catch (e) {
+
+                alert('error but_insert_segment_onclick: ' + e.stack);
+
+            }
+        }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.but_delete_segment_onclick = function () {
+
+            // удалить из сплайна выделенный сегмент
+            let lo_active_side = get_active_side_shape_generator();
+            try {
+
+                lo_active_side.shapes.make_delete_selected_segments();//24022025
+
+                lo_active_side.shapes.adjust_splines_by_external_shape();
+
+                lo_active_side.render();
+
+
+            }
+
+            catch (e) {
+
+                alert('error but_delete_segment_onclick: ' + e.stack);
+
+            }
+        }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.but_mirror_onclick = function () {
+
+            // Сделать зеркальное отражение выделенных сегментов
+            let lo_active_side = get_active_side_shape_generator();
+            lo_active_side.shapes.make_mirror_selected_segments();
+
+            lo_active_side.shapes.adjust_splines_by_external_shape();
+
+            lo_active_side.render();
+
+        }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.but_make_random_onclick = function () {
+
+            // Сделать для выделенных сегментов случайные размеры
+            let lo_active_side = get_active_side_shape_generator();
+            lo_active_side.shapes.make_random_selected_segments();
+
+            lo_active_side.shapes.adjust_splines_by_external_shape();
+
+            lo_active_side.render();
+
+        }
+
+        //------------------------------------------------------------------------------------------
+        Shape_generator.prototype.clear_model_data = function (po_data) {
+
+            try {
+
+                //return;
+
+
+                let lar_no_delete = [];
+
+                if (this.shapes) {
+                    if (this.shapes.scene) {
+                        lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "PerspectiveCamera"];//, "Group"];// "Mesh", 
+                        this.common_func.clearScene(this.shapes.scene, lar_no_delete);
+                    }
+                }
+
+                this.shapes = null;
+                this.splines = null;
+                this.segments = null;
+                //this.end_shape = null;
+
+                this.segment_gabarits = null;
+                this.segment_transform_data = null;
+                //this.controls = null;
+                //this.gui = null;
+
+
+
+                this.group_contours = null;
+                this.group_color_mesh = null;
+
+                this.is_gragging = false;
+
+                this.common_func.clear_group_childrens(this.group_contours);
+                this.common_func.clear_group_childrens(this.group_color_mesh);
+                this.common_func.clear_group_childrens(this.group_end_shape);
+                this.common_func.clear_group_childrens(this.group_end_cells_contours);
+                this.common_func.clear_group_childrens(this.end_group_cells_mesh);
+                this.common_func.clear_group_childrens(this.group_parts_mod);
+
+                this.is_big_window = false;
+
+
+                //return;
+
+
+                //this.resolution = null;
+
+                //this.container_mod;
+                //this.camera_mod;
+                //this.scene_mod;
+
+
+                //this.material_mod = new THREE.MeshPhongMaterial({ color: 0xff5533, specular: 0x111111, shininess: 200 });
+
+                //return;
+
+
+                //this.group_parts_mod = null;
+
+
+                //this.refreshModelInterval = 1000;
+                this.model_params_changed = false;
+                this.is_building_model = false;
+
+
+
+
+
+                this.model_prefix_filename = ""; // префикс имени файлов загружаемых деталей 
+                this.model_numparts = 0; // всего загружаемых деталей модели
+                this.num_loaded_model_parts = 0; //число загруженных деталей модели
+                this.model_parts_positions = []; // new Array();
+                this.rotate_status = 0; // режим вращения модели
+                //this.progress_bar = null;
+                this.is_shape_gragging = false;
+
+            }
+
+            catch (e) {
+
+                alert('error clear_model_data: ' + e.stack);
+
+            }
+
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.clear_shape_objects = function (po_side) {
+
+            try {
+
+
+                //this.common_func.clear_group_childrens(po_side.main_curves_group);
+                //this.common_func.clear_group_childrens(po_side.group_contours);
+                //this.common_func.clear_group_childrens(po_side.group_color_mesh);
+                //this.common_func.clear_group_childrens(po_side.group_rect);
+
+                if (this.shapes) {
+
+                    this.shapes.shape_amount_curves = 0;// po_params.shape_amount_curves;
+                    //this.spline_amount_segments = po_params.spline_amount_segments;
+
+                    this.shapes.shape_width = 0;// po_params.shape_width;
+                    this.shapes.shape_height = 0; // po_params.shape_height;
+
+                    this.shapes.ajust_shape_by_curves = false;// po_params.ajust_shape_by_curves;
+                    this.shapes.ajust_curves_by_shape = false;// po_params.ajust_curves_by_shape;
+
+                    this.shapes.distance_between_curves_in_percent_of_width = 0;// po_params.distance_between_curves_in_percent_of_width;
+                    this.shapes.distance_between_curves = 0;// po_params.distance_bt_curves;
+
+                    this.shapes.group_rect = null;
+                    this.shapes.segment_gabarits = null; // new struc_gabarits();
+                    this.shapes.segment_transform_data = null; // new struc_segment_transform_data();
+                    this.shapes.ar_splines = [];// Список group - сплайнов кривых в сцене
+                    this.shapes.ar_splines_nodes = [];// Список узлов всех сплайнов
+                    this.shapes.ar_selected_segments = []; // список выбранных сегментов 
+                    //11042024 this.shapes.height_koef_previous = 0; // 1;
+                    this.shapes.ar_shapes_colors = []; // список объектов со сплайнами и цветами фигур, упорядоченных слева направо
+
+                }
+
+
+
+
+
+                if (po_side) {
+                    po_side.segment_transform_data = null;
+                    po_side.segment_gabarits = null;
+                    po_side.segments = null;
+                    po_side.splines = null;
+                    po_side.shapes = null;
+                }
+
+
+
+                let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "Mesh", "Group"];// /*, "Group"*/14102024
+                this.common_func.clearScene(po_side.scene, lar_no_delete);
+
+
+                //return;
+
+                if (this.rectangle) {
+                    this.rectangle.shape.scale.y = 1;
+                }
+            }
+
+            catch (e) {
+
+                alert('error clear_shape_objects: ' + e.stack);
+
+            }
+        }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.delete_on_server_model_parts = function () {
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator(); //04102024
+
+                // Посылка команды на удаление промежуточных файлов на сервере
+
+                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
+                    "&filename=" + lo_active_side.model_prefix_filename
+                    + "&chdata=" + Math.random().toString(); // 23112024
+                ;
+
+                get_delete_on_server_model_parts(lv_url)
+                async function get_delete_on_server_model_parts(pv_url) {
+                    //--------------------------------------------------
+                    await $.get(pv_url);
+                }
+
+
+                lo_active_side.animate_mod();
+
+                let lv_is_before = false;
+                lo_active_side.do_before_after_model_request(lv_is_before, true);
+
+
+
+
+            }
+
+            catch (e) {
+
+                alert('error delete_on_server_model_parts: ' + e.stack);
+
+            }
+
+        }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.do_before_after_model_request = function (pv_is_before, pv_is_build_model) {
+
+
+            //26012025
+            ////try {
+
+            ////    let lo_active_side = get_active_side_shape_generator();
+            ////    let lo_passive_side = get_passive_side_shape_generator();
+
+            ////    if (pv_is_before) {
+
+            ////        $('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+            ////        $('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+
+            ////        $('#up_id_loading_indicator').show();// индикация ожидани
+            ////        $('#lateral_id_loading_indicator').show();// индикация ожидания
+            ////        $('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
+            ////        $('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
+
+
+            ////        lo_active_side.is_building_model = true;
+            ////        lo_passive_side.is_building_model = true;
+
+            ////        lo_active_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+            ////        lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+            ////        $(lo_active_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
+
+            ////        lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
+            ////        lo_active_side.controls_mod.reset();
+
+
+            ////        lo_active_side.progress_bar.div_progressbar.fadeIn();//26112024
+
+
+
+            ////        //24112024 {
+            ////        lo_passive_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+            ////        lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+            ////        $(lo_passive_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
+
+            ////        lo_passive_side.common_func.clear_group_childrens(lo_passive_side.group_parts_mod);
+            ////        lo_passive_side.controls_mod.reset();
+            ////        //24112024 }
+            ////    }
+
+            ////    else {
+
+            ////        // after
+
+            ////        /////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
+
+            ////        $('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+            ////        $('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
+
+            ////        $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+            ////        $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+
+            ////        lo_active_side.model_params_changed = false;
+            ////        lo_passive_side.model_params_changed = false;
+            ////        lo_active_side.is_building_model = false;
+            ////        lo_passive_side.is_building_model = false;
+
+
+            ////        if (pv_is_build_model) {
+            ////            lo_active_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+            ////            lo_active_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+            ////        }
+            ////        else {
+            ////            lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+            ////            lo_active_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
+            ////        }
+
+            ////        lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
+
+            ////        if (lo_active_side.progress_bar.div_progressbar) {
+            ////            lo_active_side.progress_bar.div_progressbar.fadeOut();//26112024
+            ////        }
+
+            ////        //24112024 {
+
+            ////        if (pv_is_build_model) {
+            ////            lo_passive_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+            ////            lo_passive_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+            ////        }
+            ////        else {
+            ////            lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+            ////            lo_passive_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
+            ////        }
+
+            ////        lo_passive_side.common_func.set_group_to_center(lo_passive_side.group_parts_mod);
+            ////        //24112024 }
+
+
+
+            ////    }
+            ////}
+
+
+
+
+
+
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+                //let lo_passive_side = get_passive_side_shape_generator();
+
+                if (pv_is_before) {
+
+                    $('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+                    $('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
+
+                    $('#up_id_loading_indicator').show();// индикация ожидани
+                    $('#lateral_id_loading_indicator').show();// индикация ожидания
+                    $('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
+                    $('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
+
+                    //31012025 {
+                    $('#up_id_id_div_progressbar').show();// индикация ожидани
+                    $('#lateral_id_div_progressbar').show();// индикация ожидания
+                    //31012025 }
+
+
+
+                    go_up_side_shape_generator.is_building_model = true;
+                    go_lateral_side_shape_generator.is_building_model = true;
+
+                    go_up_side_shape_generator.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+                    go_up_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                    $(go_up_side_shape_generator.id_prefix + 'id_dist_part_slider').slider('value', 0);
+
+                    go_up_side_shape_generator.common_func.clear_group_childrens(go_up_side_shape_generator.group_parts_mod);
+                    go_up_side_shape_generator.controls_mod.reset();
+
+                    if (lo_active_side.progress_bar) {
+                        if (lo_active_side.progress_bar.div_progressbar) {
+                            lo_active_side.progress_bar.div_progressbar.fadeIn();//26112024
+                        }
+                    }
+
+
+                    //24112024 {
+                    go_lateral_side_shape_generator.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
+                    go_lateral_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                    $(go_lateral_side_shape_generator.id_prefix + 'id_dist_part_slider').slider('value', 0);
+
+                    go_lateral_side_shape_generator.common_func.clear_group_childrens(go_lateral_side_shape_generator.group_parts_mod);
+                    go_lateral_side_shape_generator.controls_mod.reset();
+                    //24112024 }
+                }
+
+                else {
+
+                    // after
+
+                    /////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
+
+                    $('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
+                    $('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
+
+                    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+                    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+                    //31012025 {
+                    $('#up_id_id_div_progressbar').hide();// индикация ожидани
+                    $('#lateral_id_div_progressbar').hide();// индикация ожидания
+                    //31012025 }
+
+                    go_up_side_shape_generator.model_params_changed = false;
+                    go_up_side_shape_generator.model_params_changed = false;
+                    go_up_side_shape_generator.is_building_model = false;
+                    go_lateral_side_shape_generator.is_building_model = false;
+
+
+                    if (pv_is_build_model) {
+                        go_up_side_shape_generator.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+                        go_up_side_shape_generator.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+                    }
+                    else {
+                        go_up_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                        go_up_side_shape_generator.rotate_status = type_rotate_mode.stop; // выключить вращение модели
+                    }
+
+                    go_up_side_shape_generator.common_func.set_group_to_center(go_up_side_shape_generator.group_parts_mod);
+
+                    if (lo_active_side.progress_bar) {
+                        if (lo_active_side.progress_bar.div_progressbar) {
+                            lo_active_side.progress_bar.div_progressbar.fadeOut();//26112024
+                        }
+                    }
+
+                    //24112024 {
+
+                    if (pv_is_build_model) {
+                        go_lateral_side_shape_generator.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
+                        go_lateral_side_shape_generator.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
+                    }
+                    else {
+                        go_lateral_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
+                        go_lateral_side_shape_generator.rotate_status = type_rotate_mode.stop; // выключить вращение модели
+                    }
+
+                    go_lateral_side_shape_generator.common_func.set_group_to_center(go_lateral_side_shape_generator.group_parts_mod);
+                    //24112024 }
+
+
+
+                }
+            }
+
+
+
+            catch (e) {
+
+                alert('error do_before_after_model_request: ' + e.stack);
+
+            }
+
+
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.do_save_model = async function () {
+
+
+            this.is_ask_about_save_file = true;
+            this.is_model_changed = false;
+
+            try {
+
+                go_end_side_shape_generator.end_shape.draw_cells_contours_and_texts();//17032025
+                ////go_end_side_shape_generator.end_shape.refresh_end_shapes(); //23122024
+
+
+
+
+
+                let lo_sides_data = this.read_model_sides_data();
+                let lo_scene_mod = go_up_side_shape_generator.scene_mod; //24012025
+                await this.common_func.save_model(lo_sides_data, lo_scene_mod);
+            }
+
+            catch (e) {
+
+                alert('error do_save_model: ' + e.stack);
+
+            }
+
+        }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.draw_shape_by_sides_data = function (po_sides_data) {
+
+            try {
+                let ls_sides_data = JSON.parse(po_sides_data);
+
+                go_up_side_shape_generator.clear_shape_objects(go_up_side_shape_generator);
+
+                go_up_side_shape_generator.make_shape(true, ls_sides_data.data1);
+                go_up_side_shape_generator.render();
+
+
+                go_lateral_side_shape_generator.clear_shape_objects(go_lateral_side_shape_generator);
+                go_lateral_side_shape_generator.make_shape(true, ls_sides_data.data2);
+
+                go_end_side_shape_generator.clear_shape_objects(go_end_side_shape_generator);
+
+                go_end_side_shape_generator.end_shape.redraw_end_shape(
+                    null, //po_main,
+                    null, //pv_added_spline_num,
+                    null, //pv_deleted_spline_num,
+                    true, //po_is_use_data, 
+                    ls_sides_data
+                );
+
+
+                go_end_side_shape_generator.end_shape.draw_cells_contours_and_texts();//!!18032025
+
+                // 29012025 {
+                go_up_side_shape_generator.set_meshes_color_by_data();
+                go_lateral_side_shape_generator.set_meshes_color_by_data();
+                go_end_side_shape_generator.set_meshes_color_by_data();
+
+
+                go_up_side_shape_generator.render();
+                go_lateral_side_shape_generator.render();
+                go_end_side_shape_generator.render();
+                // 29012025 }
+            }
+
+            catch (e) {
+
+                go_up_side_shape_generator.common_func.hideWaitingIndicator();
+
+                alert('error draw_shape_by_sides_data: ' + e.stack);
+
+            }
+        }
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.get_parameters_from_side_data = function (po_side_data) {
+
+
+            let ls_parameters = new typ_parameters();
+
+            try {
+                ls_parameters.container_width = po_side_data.parameters.container_width;
+                ls_parameters.container_height = po_side_data.parameters.container_height;
+                ls_parameters.shape_width_beg = po_side_data.parameters.shape_width_beg;
+                ls_parameters.shape_width = po_side_data.parameters.shape_width;
+                ls_parameters.shape_height_beg = po_side_data.parameters.shape_height_beg;
+                ls_parameters.shape_height = po_side_data.parameters.shape_height;
+                ls_parameters.shape_amount_curves = po_side_data.parameters.shape_amount_curves;
+                ls_parameters.spline_amount_segments = po_side_data.parameters.spline_amount_segments;
+                ls_parameters.ajust_curves_by_shape = po_side_data.parameters.ajust_curves_by_shape;
+                ls_parameters.ajust_shape_by_curves = po_side_data.parameters.ajust_shape_by_curves;
+                ls_parameters.distance_between_curves_in_percent_of_width = po_side_data.parameters.distance_between_curves_in_percent_of_width;
+                ls_parameters.distance_bt_curves = po_side_data.parameters.distance_bt_curves;
+                ls_parameters.is_space_adjust = po_side_data.parameters.is_space_adjust;
+                ls_parameters.is_curve_width_adjust = po_side_data.parameters.is_curve_width_adjust;
+                ls_parameters.color = +po_side_data.parameters.color;//02052025
+            }
+
+            catch (e) {
+
+                this.model_params_changed = false;
+
+                alert('error get_parameters_from_side_data: ' + e.stack);
+
+            }
+
+            return ls_parameters;
+        }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.get_rectangle_coordinates_by_name = function (pv_name) {
+
+            let lo_gabarits = null;
+
+            let lo_rect = this.scene.getObjectByName(pv_name);
+
+            if (lo_rect) {
+                //13122024 lo_gabarits = this.shapes.GetTwoShapeIntersect(lo_rect, lo_rect);
+                lo_gabarits = this.common_func.GetTwoShapeIntersect(lo_rect, lo_rect); //13122024
+            }
+
+            return lo_gabarits;
+
+        }
+
+
+
+
+        //------------------------------------------------------------------------
+        // Формирование количества сегментов в создаваемых сплайнах
+        Shape_generator.prototype.inc_spline_segments_amount = function () {
+
+            try {
+
+                if (this.spline_segments_amount++ > Constants.spline_segments_amount_max) {
+                    this.spline_segments_amount = 1;
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error inc_spline_segments_amount: ' + e.stack);
+
+            }
+
+            return this.spline_segments_amount;
+        }
+
+
         //------------------------------------------------------------------------
         Shape_generator.prototype.init_containers_and_controls = function (/*pv_prefix*/) {
 
@@ -523,6 +1433,201 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             catch (e) {
 
                 alert('error init_containers_and_controls: ' + e.stack);
+
+            }
+
+        }
+
+
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.init_event_handlers = function () {
+
+            try {
+
+                let lo_active_side_shape_generator = get_active_side_shape_generator();
+                let lo_passive_side_shape_generator = get_passive_side_shape_generator();
+
+                //17062024 $(document).off('click doubleclick change pointerdown pointerup pointermove');
+                $(document).off('click  change pointerdown pointerup pointermove');//17062024
+                $(window).off('resize dblclick doubleclick mousemove');
+                $(window).off('resize dblclick doubleclick mousemove');
+                $(window).off('resize dblclick doubleclick mousemove');
+
+                //17062024 $(document).unbind('click doubleclick change pointerdown pointerup pointermove');
+                $(document).unbind('click change pointerdown pointerup pointermove');//17062024
+                $(window).unbind('resize dblclick mousemove');
+
+                if (lo_passive_side_shape_generator) {
+
+                    if (lo_passive_side_shape_generator.controls) {
+                        lo_passive_side_shape_generator.controls.removeEventListener('change', this.render);// очистка обработчика событий
+                        lo_passive_side_shape_generator.controls.removeEventListener('change', lo_passive_side_shape_generator.render);// очистка обработчика событий
+                    }
+
+                }
+
+                if (this.controls) {
+                    this.controls.addEventListener('change', this.render);
+                }
+
+
+                // очистка обработчиков событий
+                $(this.passive_id_prefix + "id_but_read_model").off("click");
+                $(this.passive_id_prefix + "id_but_new_model").off("click");
+
+
+                $(this.passive_id_prefix + "id_but_refresh").off("click");
+
+                $(this.passive_id_prefix + "id_chb_space_adjust").off("click");
+                $(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
+                $(this.passive_id_prefix + "id_chb_show_text_labels").off("click");
+
+
+                $(this.passive_id_prefix + "id_but_del_spline").off("click");
+                $(this.passive_id_prefix + "id_but_add_spline").off("click");
+                $(this.passive_id_prefix + "id_but_save_model").off("click");
+                $(this.passive_id_prefix + "id_but_make_model").off("click");
+                $(this.passive_id_prefix + "id_but_set_color").off("click");
+
+                $(this.passive_id_prefix + "id_but_rotate_mode").off("click");
+                $(this.passive_id_prefix + "id_but_ch_nsegm").off("click");
+
+
+
+                $(this.id_prefix + "id_chb_space_adjust").off("click").click(this.onclick_chb_space_adjust);
+                $(this.id_prefix + "id_chb_curve_width_adjust").off("click").click(this.onclick_chb_curve_width_adjust);
+                $(this.id_prefix + "id_chb_show_text_labels").off("click").click(this.onclick_chb_show_text_labels);
+
+                $(this.id_prefix + "id_but_read_model").off("click").click(this.onclick_read_model);
+                $(this.id_prefix + "id_but_new_model").off("click").click(this.onclick_new_model);
+
+                $(this.id_prefix + "id_but_del_spline").off("click").click(this.onclick_del_spline);
+                $(this.id_prefix + "id_but_add_spline").off("click").click(this.onclick_add_spline);
+                $(this.id_prefix + "id_but_save_model").off("click").click(this.onclick_save_model);
+                $(this.id_prefix + "id_but_make_model").off("click").click(this.onclick_make_model);
+                $(this.id_prefix + "id_but_set_color").off("click").click(this.onclick_id_but_set_color);
+                $(this.id_prefix + "id_but_rotate_mode").off("click").click(this.onclick_id_but_rotate_mode);
+                $(this.id_prefix + "id_but_ch_nsegm").off("click").click(this.onclick_but_change_segments_amount);
+
+                $(this.id_prefix + "id_but_refresh").off("click").click(this.onclick_refresh_model);
+
+                $(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(this.ondblclick_id_shape);//17062024
+                $(this.id_prefix + this.id_side_shape_mod).off("dblclick").dblclick(this.ondblclick_id_shape);//25082024
+                $(this.id_prefix + this.id_side_shape).dblclick(null);
+                $(this.id_prefix + this.id_side_shape_mod).dblclick(null);//25082024
+
+                //--------------------------------------------------------------------------------------------
+
+                ////// обработчики событий gui
+
+
+                //}
+                //--------------------------------------------------------------------------------------------
+
+
+                // очистка обработчиков событий
+                document.removeEventListener('pointerdown', this.onPointerDown);
+
+
+
+                document.removeEventListener('pointerup', this.onPointerUp);
+                //document.addEventListener('pointermove', null);
+                window.removeEventListener('resize', this.onWindowResize);
+                window.removeEventListener('mousemove', this.onmousemove);
+
+                $(this.id_prefix + this.id_side_shape).dblclick(null);//17062024 
+
+                if (lo_passive_side_shape_generator) {
+                    document.removeEventListener('pointerdown', lo_passive_side_shape_generator.onPointerDown);
+
+                    document.removeEventListener('pointerup', lo_passive_side_shape_generator.onPointerUp);
+                    //document.addEventListener('pointermove', null);
+                    window.removeEventListener('resize', lo_passive_side_shape_generator.onWindowResize);
+                    window.removeEventListener('mousemove', lo_passive_side_shape_generator.onmousemove);
+
+                    $(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(lo_passive_side_shape_generator.ondblclick_id_shape);//17062024
+                    $(this.id_prefix + this.id_side_shape).dblclick(null);//17062024 
+
+                }
+
+                //17062024 {
+
+                if (lo_active_side_shape_generator) {
+                    document.removeEventListener('pointerdown', lo_active_side_shape_generator.onPointerDown);
+                    document.removeEventListener('pointerup', lo_active_side_shape_generator.onPointerUp);
+                    //document.addEventListener('pointermove', null);
+                    window.removeEventListener('resize', lo_active_side_shape_generator.onWindowResize);
+                    window.removeEventListener('mousemove', lo_active_side_shape_generator.onmousemove);
+                    ////    window.removeEventListener('dblclick', lo_active_side_shape_generator.ondblclick_id_shape);//17062024
+                    ////    window.addEventListener('dblclick', null);//17062024
+
+                }
+
+
+                //17062024 {
+
+
+
+
+                document.addEventListener('pointerdown', this.onPointerDown);
+
+                document.addEventListener('pointerup', this.onPointerUp);
+                //document.addEventListener('pointermove', onPointerMove);
+                window.addEventListener('resize', this.onWindowResize);
+                window.addEventListener('mousemove', this.onmousemove);
+                //////////////////window.addEventListener('dblclick', this.ondblclick_id_shape);//17062024
+
+                //window.addEventListener('click', window_onclick	);
+                $(this.passive_id_prefix + this.id_side_shape).off("click");
+                $(this.passive_id_prefix + "id_but_mirror").off("click");
+                $(this.passive_id_prefix + "id_but_del_segment").off("click");
+                $(this.passive_id_prefix + "id_but_add_segment").off("click");
+
+                $(this.id_prefix + this.id_side_shape).off("click").on("click", this.onclick_shape);//17072024 
+
+                $(this.id_prefix + "id_but_mirror").off("click").on("click", this.but_mirror_onclick);
+                $(this.id_prefix + "id_but_del_segment").off("click").on("click", this.but_delete_segment_onclick);
+                $(this.id_prefix + "id_but_add_segment").off("click").on("click", this.but_insert_segment_onclick);
+                $(this.id_prefix + "id_but_random").off("click").on("click", this.but_make_random_onclick);
+
+
+                //this.render();//05052024
+                lo_active_side_shape_generator.onWindowResize();//21062024
+
+
+
+
+                // 05012025 this.render_mod();
+
+
+
+
+
+                //--------------------------------------------------------------------
+                // наблюдатель за изменением цвета элемента
+
+                // Создание экземпляра MutationObserver
+                const observer = new MutationObserver(this.common_func.handleColorChange);
+
+                // Целевой элемент, за которым нужно следить
+                const targetElement = document.getElementById(this.id_prefix_wo_sharp + "id_for_colorpicker");
+
+                // Параметры наблюдения
+                const config = { attributes: true, attributeFilter: ['style'] };
+
+                // Начало наблюдения за целевым элементом
+                observer.observe(targetElement, config); //, lf_callback);
+
+                //--------------------------------------------------------------------
+
+
+            }
+            catch (e) {
+
+                alert('error init_event_handlers: ' + e.stack);
 
             }
 
@@ -908,6 +2013,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
 
+
+
         //------------------------------------------------------------------------
         Shape_generator.prototype.load_initial_model = function () {
 
@@ -933,246 +2040,155 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-
-        //------------------------------------------------------------------------------------------
-        Shape_generator.prototype.clear_model_data = function (po_data) {
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.load_model_parts = function (po_data) {
 
             try {
 
-                //return;
 
+                let lo_active_side = get_active_side_shape_generator();
 
-                let lar_no_delete = [];
+                if (po_data == null || po_data.number_outfiles == null || po_data.number_outfiles <= 0) {
 
-                if (this.shapes) {
-                    if (this.shapes.scene) {
-                        lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "PerspectiveCamera"];//, "Group"];// "Mesh", 
-                        this.common_func.clearScene(this.shapes.scene, lar_no_delete);
-                    }
+                    let lv_is_before = false;
+                    lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                    return;
                 }
 
-                this.shapes = null;
-                this.splines = null;
-                this.segments = null;
-                //this.end_shape = null;
-
-                this.segment_gabarits = null;
-                this.segment_transform_data = null;
-                //this.controls = null;
-                //this.gui = null;
+                // Очистка сцены new THREE.Group();
+                let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "PerspectiveCamera", "Group"];// 14102024
+                lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
 
 
+                let lv_filename = "";
 
-                this.group_contours = null;
-                this.group_color_mesh = null;
+                lo_active_side.num_loaded_model_parts = 0;//16102024
 
-                this.is_gragging = false;
-
-                this.common_func.clear_group_childrens(this.group_contours);
-                this.common_func.clear_group_childrens(this.group_color_mesh);
-                this.common_func.clear_group_childrens(this.group_end_shape);
-                this.common_func.clear_group_childrens(this.group_end_cells_contours);
-                this.common_func.clear_group_childrens(this.end_group_cells_mesh);
-                this.common_func.clear_group_childrens(this.group_parts_mod);
-
-                this.is_big_window = false;
+                // Очистка группы деталей
+                lo_active_side.group_parts_mod.clear();
 
 
-                //return;
+                lo_active_side.model_prefix_filename = po_data.common_outfilename_part; // префикс - общая часть имён файлов деталей
+                go_tab_orders.model_prefix_filename = po_data.common_outfilename_part;
 
 
-                //this.resolution = null;
+                // Загрузка деталей модели
+                //26012025 for (let lv_i = 1; lv_i <= po_data.number_outfiles; lv_i++) {
+                for (let lv_i = 0; lv_i < po_data.names_part_files.length; lv_i++) { //26012025
 
-                //this.container_mod;
-                //this.camera_mod;
-                //this.scene_mod;
+                    //26012025 lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString() + Constants.file_model_ext;
+                    lv_filename = po_data.common_outfilename_part + Constants.data_delimiter + po_data.names_part_files[lv_i]; //26012025 
 
-
-                //this.material_mod = new THREE.MeshPhongMaterial({ color: 0xff5533, specular: 0x111111, shininess: 200 });
-
-                //return;
-
-
-                //this.group_parts_mod = null;
-
-
-                //this.refreshModelInterval = 1000;
-                this.model_params_changed = false;
-                this.is_building_model = false;
+                    //26012025 lo_active_side.model_numparts = po_data.number_outfiles;
+                    lo_active_side.model_numparts = po_data.names_part_files.length; //26012025
 
 
 
+                    //this.model_curr_numpart = lv_i;
 
+                    lo_active_side.load_model_part(lv_filename);
 
-                this.model_prefix_filename = ""; // префикс имени файлов загружаемых деталей 
-                this.model_numparts = 0; // всего загружаемых деталей модели
-                this.num_loaded_model_parts = 0; //число загруженных деталей модели
-                this.model_parts_positions = []; // new Array();
-                this.rotate_status = 0; // режим вращения модели
-                //this.progress_bar = null;
-                this.is_shape_gragging = false;
+                }
+
 
             }
 
             catch (e) {
 
-                alert('error clear_model_data: ' + e.stack);
+                alert('error load_model_parts: ' + e.stack);
 
             }
 
         }
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.add_lights_for_model = function (po_scene) {
-
-            try {
-
-                let lo_spotLight;
-
-                let lv_intensity = 0.7;
-
-
-                lo_spotLight = new THREE.SpotLight(0xffffff);
-                lo_spotLight.position.set(0, 100, 100);
-                lo_spotLight.intensity = lv_intensity;
-                po_scene.add(lo_spotLight);
-
-                //lo_spotLight = new THREE.SpotLight(0xffffff);
-                //lo_spotLight.position.set(100, 100, 0);
-                //po_scene.add(lo_spotLight);
-
-                //lo_spotLight = new THREE.SpotLight(0xffffff);
-                //lo_spotLight.position.set(0, 100, -100);
-                //po_scene.add(lo_spotLight);
-
-                lo_spotLight = new THREE.PointLight(0xffffff);
-                lo_spotLight.position.set(-100, 100, 0);
-                lo_spotLight.intensity = lv_intensity;
-                po_scene.add(lo_spotLight);
-
-
-
-                //lo_spotLight = new THREE.SpotLight(0xffffff);
-                //lo_spotLight.position.set(0, -100, 100);
-                //po_scene.add(lo_spotLight);
-
-                lo_spotLight = new THREE.SpotLight(0xffffff);
-                lo_spotLight.position.set(100, -100, 0);
-                lo_spotLight.intensity = lv_intensity;
-                po_scene.add(lo_spotLight);
-
-                lo_spotLight = new THREE.PointLight(0xffffff);
-                lo_spotLight.position.set(0, -100, -100);
-                lo_spotLight.intensity = lv_intensity;
-                po_scene.add(lo_spotLight);
-
-                //lo_spotLight = new THREE.SpotLight(0xffffff);
-                //lo_spotLight.position.set(-100, -100, 0);
-                //po_scene.add(lo_spotLight);
-
-
-
-                //const geometry = new THREE.SphereGeometry(15);
-                //const material = new THREE.MeshBasicMaterial({ color: 0xff000f });
-
-                //let sphere = null;
-
-                //sphere = new THREE.Mesh(geometry, material);
-                //sphere.position.x = 0;
-                //sphere.position.y = 100;
-                //sphere.position.z = 100;
-                //po_scene.add(sphere);
-
-                //sphere = new THREE.Mesh(geometry, material);
-                //sphere.position.x = 100;
-                //sphere.position.y = 100;
-                //sphere.position.z = 0;
-                //po_scene.add(sphere);
-
-                //sphere = new THREE.Mesh(geometry, material);
-                //sphere.position.x = 0;
-                //sphere.position.y = 100;
-                //sphere.position.z = -100;
-                //po_scene.add(sphere);
-
-                //sphere = new THREE.Mesh(geometry, material);
-                //sphere.position.x = -100;
-                //sphere.position.y = 100;
-                //sphere.position.z = 0;
-                //po_scene.add(sphere);
-
-
-
-                //sphere = new THREE.Mesh(geometry, material);
-                //sphere.position.x = 0;
-                //sphere.position.y = -80;
-                //sphere.position.z = 100;
-                //po_scene.add(sphere);
-
-                //sphere = new THREE.Mesh(geometry, material);
-                //sphere.position.x = 100;
-                //sphere.position.y = -80;
-                //sphere.position.z = 0;
-                //po_scene.add(sphere);
-
-                //sphere = new THREE.Mesh(geometry, material);
-                //sphere.position.x = 0;
-                //sphere.position.y = -80;
-                //sphere.position.z = -100;
-                //po_scene.add(sphere);
-
-                //sphere = new THREE.Mesh(geometry, material);
-                //sphere.position.x = -100;
-                //sphere.position.y = -80;
-                //sphere.position.z = 0;
-                //po_scene.add(sphere);
-
-            }
-
-            catch (e) {
-
-                alert('error add_lights_for_model: ' + e.stack);
-
-            }
-        }
-
 
 
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.get_parameters_from_side_data = function (po_side_data) {
+        Shape_generator.prototype.load_model_part = function (pv_filename) {
 
-
-            let ls_parameters = new typ_parameters();
+            let lo_active_side = get_active_side_shape_generator();
+            let lo_passive_side = get_passive_side_shape_generator();
 
             try {
-                ls_parameters.container_width = po_side_data.parameters.container_width;
-                ls_parameters.container_height = po_side_data.parameters.container_height;
-                ls_parameters.shape_width_beg = po_side_data.parameters.shape_width_beg;
-                ls_parameters.shape_width = po_side_data.parameters.shape_width;
-                ls_parameters.shape_height_beg = po_side_data.parameters.shape_height_beg;
-                ls_parameters.shape_height = po_side_data.parameters.shape_height;
-                ls_parameters.shape_amount_curves = po_side_data.parameters.shape_amount_curves;
-                ls_parameters.spline_amount_segments = po_side_data.parameters.spline_amount_segments;
-                ls_parameters.ajust_curves_by_shape = po_side_data.parameters.ajust_curves_by_shape;
-                ls_parameters.ajust_shape_by_curves = po_side_data.parameters.ajust_shape_by_curves;
-                ls_parameters.distance_between_curves_in_percent_of_width = po_side_data.parameters.distance_between_curves_in_percent_of_width;
-                ls_parameters.distance_bt_curves = po_side_data.parameters.distance_bt_curves;
-                ls_parameters.is_space_adjust = po_side_data.parameters.is_space_adjust;
-                ls_parameters.is_curve_width_adjust = po_side_data.parameters.is_curve_width_adjust;
-                ls_parameters.color = +po_side_data.parameters.color;//02052025
+
+                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts +
+                    "&filename=" + pv_filename
+                    + "&chdata=" + Math.random().toString(); // 23112024
+                ;
+
+
+                let lv_is_before = true;
+
+
+                get_model_part(lv_url);
+
+
+                //--------------------------------------------------
+                async function get_model_part(pv_url) {
+                    //--------------------------------------------------
+                    await $.get(pv_url, "", lo_active_side.oncomplete_read_model_part);
+                }
+                //--------------------------------------------------
+
+            }
+            catch (e) {
+
+                let lv_is_before = false;
+                lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+            }
+
+        }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.make_model = function () {
+
+            try {
+
+                let lv_end_watching_progress_value = 50;
+                this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_make_model, this.load_model_parts, lv_end_watching_progress_value);
+
+                this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
+
+
+                this.progress_bar.set_display_value(3);
+
+                let lv_url = "https://localhost:7095/CalcJBModel?method="
+                    + Constants.method_start_make_model
+                    + "&"
+                    + Constants.word_client_id + "=" + this.client_id
+                    + "&"
+                    + Constants.word_task_id + "=" + this.progress_bar.task_id
+                    + "&chdata=" + Math.random().toString(); // 23112024
+
+                //let lv_url = "https://localhost:7095/CalcJBModel?method="
+                //    + Constants.method_make_model
+                //    + "&chdata=" + Math.random().toString(); // 23112024
+
+
+                let lo_sides_data = this.read_model_sides_data(); lo_sides_data.task_id = this.progress_bar.task_id;
+                lo_sides_data.task_id = this.progress_bar.task_id;
+
+
+                this.send_side_data_for_start_make_model(lv_url, lo_sides_data);
+
+
             }
 
             catch (e) {
 
-                this.model_params_changed = false;
+                this.model_params_changed = false; //29082024
 
-                alert('error get_parameters_from_side_data: ' + e.stack);
+                alert('error make_model: ' + e.stack);
 
             }
 
-            return ls_parameters;
+
         }
+
 
 
         //------------------------------------------------------------------------
@@ -1285,597 +2301,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
 
-        //-----------------------------------------------------------------
-        // Задание цвета фигур по считанным данным
-        Shape_generator.prototype.set_meshes_color_by_data = function (/*par_splines_order*/) {
-
-            try {
-
-                //this.clear_group_color_mesh();//03082024
-
-                let lar_colorparts = go_end_side_shape_generator.end_shape.ColorParts;
-
-                let lar_splines_order = null;
-
-                let lo_spline_left = null;
-                let lo_spline_right = null;
-                let lv_cell_color = null;
-
-
-                if (this != go_end_side_shape_generator) {
-
-                    lar_splines_order = this.shapes.SortSplinesOrderFromLeftToRight();
-                }
-
-
-
-                for (let lv_i = 0; lv_i < lar_colorparts.length; lv_i++) {
-
-                    for (let lv_j = 0; lv_j < lar_colorparts[0].length; lv_j++) {
-
-                        if (lar_colorparts[lv_i][lv_j] == null || typeof lar_colorparts[lv_i][lv_j] == "undefined") {
-                            continue;
-                        }
-
-                        if (!lar_colorparts[lv_i][lv_j].cell_color || typeof lar_colorparts[lv_i][lv_j].cell_color == "undefined") {
-                            continue;
-                        }
-
-
-                        lv_cell_color = lar_colorparts[lv_i][lv_j].cell_color;//02052025
-
-
-                        if (this == go_end_side_shape_generator) { // Торцовая сторона
-
-                            this.end_shape.set_color_to_rectangle_cell(lv_cell_color, lv_i, lv_j);
-
-                        }
-
-                        //else {
-
-                        if (this == go_up_side_shape_generator) { // Верхняя сторона
-
-                            if (lv_i == 0) {
-
-                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_j - 1);
-                                lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_j);
-                                this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, true, false, true);
-
-                            }
-                        }
-
-                        if (this == go_lateral_side_shape_generator) { // Боковая сторона
-
-                            if (lv_j == lar_colorparts.length - 1) {
-
-                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_i - 1);
-                                lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_i);
-                                this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, true, false, true);
-
-                            }
-                        }
-
-                    }
-                }
-
-
-
-            }
-
-            catch (e) {
-
-                alert('error set_meshes_color_by_data: ' + e.stack);
-
-            }
-        }
-
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.reset_gui_parameters = function () {
-
-
-            try {
-
-                if (this.gui) {
-                    this.gui.close();
-                    this.gui.destroy();
-                }
-
-                this.gui = null;
-
-                this.gui = new GUI({ container: document.getElementById(this.id_prefix_wo_sharp + 'id_gui') });
-
-                this.gui.add(this.params, 'distance_bt_curves', 0, 40).step(0.5).name('Distance  between curves').onChange(this.onChange_distance_bt_curves).listen();//05112024
-                this.gui.add(this.params, 'shape_height', 20, 200).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param).listen();//05112024
-                this.gui.add(this.params, 'shape_width', 10, 100).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param).listen();//05112024
-
-                //this.gui.addColor(this.params, 'color').name('Color');
-
-                this.gui.open();
-
-            }
-
-            catch (e) {
-
-                alert('error reset_gui_parameters: ' + e.stack);
-
-            }
-
-        }
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.refreshModel = async function () {
-
-            try {
-
-                let lv_end_watching_progress_value = 50;
-                this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_refresh_premodel, this.read_result_refresh_premodel, lv_end_watching_progress_value);
-                this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
-
-
-                this.progress_bar.set_display_value(3);
-
-
-                let lv_url = "https://localhost:7095/CalcJBModel?method="
-                    + Constants.method_start_refresh_premodel
-                    + "&"
-                    + Constants.word_client_id + "=" + this.client_id
-                    + "&"
-                    + Constants.word_task_id + "=" + this.progress_bar.task_id
-                    + "&chdata=" + Math.random().toString(); // 23112024
-
-
-                let lo_sides_data = this.read_model_sides_data();
-                lo_sides_data.task_id = this.progress_bar.task_id;
-
-                this.send_side_data_for_refresh_model(lv_url, lo_sides_data);
-
-
-            }
-
-            catch (e) {
-
-                this.model_params_changed = false; //29082024
-
-                alert('error refreshModel: ' + e.stack);
-
-            }
-        }
-
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.send_side_data_for_refresh_model = function (pv_url, po_json_data) {
-
-
-            try {
-                let lv_is_before = true;
-                this.do_before_after_model_request(lv_is_before, true);
-
-                send_for_refresh_model(pv_url, po_json_data);
-
-                //-------------------------------------------------------------------
-                async function send_for_refresh_model(pv_url, po_json_data) {
-
-
-                    let lo_active_side = get_active_side_shape_generator(); //04102024
-                    let lo_passive_side = get_passive_side_shape_generator(); //04102024
-
-                    try {
-
-                        var lv_for_body = JSON.stringify(po_json_data);
-                        const response = await fetch(pv_url, {
-                            method: "POST",
-                            headers: {
-                                "Content-Type": "application/json"
-                            },
-                            body: lv_for_body
-                        });
-
-                        ////const message = await response.json();
-                        const message = await response.text();
-
-                        lo_active_side.OnCompleteRefreshModel(message);
-
-                    }
-
-                    catch (e) {
-
-
-                        lo_active_side.model_params_changed = false;
-
-                        let lv_is_before = false;
-                        lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-                        //alert('error send_for_refresh_model: ' + e.stack);
-                        go_this.Show_message("Error updating model!", 2000);
-
-
-                    }
-
-                }
-
-
-            }
-
-            catch (e) {
-
-                this.model_params_changed = false; //29082024
-
-                alert('error send_side_data: ' + e.stack);
-
-            }
-        }
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.OnCompleteRefreshModel = function (po_data) {
-            try {
-
-
-                let lo_active_side = get_active_side_shape_generator();
-                let lo_passive_side = get_passive_side_shape_generator();
-
-                if (po_data == null || po_data == "") {
-
-                    let lv_is_before = false;
-                    lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-                    alert("Error updating model!")
-
-                    return;
-                }
-
-                let ls_progress_data = JSON.parse(po_data);
-
-                ////if (po_data.indexOf(Constants.word_task_id) < 0) {
-                ////    return;
-                ////}
-
-
-                if (ls_progress_data == null || typeof ls_progress_data == "undefined") {
-                    return;
-                }
-
-                if (ls_progress_data.client_id != lo_active_side.client_id
-                    || ls_progress_data.task_id != lo_active_side.progress_bar.task_id
-                ) {
-                    return;
-                }
-
-
-
-
-
-                /////////////////////////////21112024 lo_active_side.progress_bar.set_display_value(5);
-
-                this.progress_bar.start_progress();
-
-
-
-                /////////////this.refresh_model_data = 
-
-                //16112025 { in the load_refresh_model
-
-                //////const loader = new STLLoader();
-                //////const lo_geometry = loader.parse(po_data);
-
-                //////// Очистка сцены
-                //////let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
-                //////lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
-                //////lo_active_side.on_load_model(lo_geometry);
-                //16112025 }
-
-
-            }
-
-            catch (e) {
-
-                this.model_params_changed = false; //29082024
-
-                alert('error OnCompleteRefreshModel: ' + e.stack);
-
-            }
-        }
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.OnErrorRefreshModel = function () {
-
-            let lo_active_side = get_active_side_shape_generator();
-            let lv_is_before = false;
-
-            lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-
-            /////alert("OnErrorRefreshModel");
-
-            //02092024 lo_active_side.is_building_model = false;
-
-        }
-
-
-
-        //-------------------------------------------------------------------
-        /*async*/ Shape_generator.prototype.read_result_refresh_premodel = function (po_data) {
-
-
-            let lo_active_side = get_active_side_shape_generator(); //04102024
-            let lo_passive_side = get_passive_side_shape_generator(); //04102024
-
-            try {
-
-                lo_active_side.progress_bar.set_display_value(51);
-
-
-                let lv_url = "https://localhost:7095/CalcJBModel?method="
-                    + Constants.method_read_result_refresh_premodel
-                    + "&"
-                    + Constants.word_client_id + "=" + this.client_id
-                    + "&"
-                    + Constants.word_task_id + "=" + po_data.task_id
-                    + "&"
-                    + Constants.path_result_file + "=" + po_data.path_result_file
-                    + "&chdata=" + Math.random().toString(); // 23112024
-
-
-
-                get_read_result_refresh_premodel(lv_url);
-
-
-                //--------------------------------------------------
-                async function get_read_result_refresh_premodel(pv_url) {
-                    //--------------------------------------------------
-                    await $.get(pv_url, "", lo_active_side.oncomplete_read_result_refresh_premodel);
-                }
-
-
-            }
-
-            catch (e) {
-
-
-                lo_active_side.model_params_changed = false; //04102024
-                lo_passive_side.model_params_changed = false; //04102024
-
-                let lv_is_before = false;
-                lo_active_side.do_before_after_model_request(lv_is_before, false);
-                lo_passive_side.do_before_after_model_request(lv_is_before, false);
-
-                alert('error read_result_refresh_premodel: ' + e.stack);
-
-            }
-
-        }
-
-        //}
-
-
-        //-------------------------------------------------------------------
-        //22112024 Shape_generator.prototype.load_refresh_model = function (po_data) {
-        Shape_generator.prototype.oncomplete_read_result_refresh_premodel = function (po_data) {
-
-            let lo_active_side = get_active_side_shape_generator();
-            let lo_passive_side = get_passive_side_shape_generator(); //04102024
-
-            const loader = new STLLoader();
-            const lo_geometry = loader.parse(po_data);
-
-            // Очистка сцены
-            let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "PerspectiveCamera", "Group"];// "Mesh", 
-            lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
-            lo_passive_side.common_func.clearScene(lo_passive_side.scene_mod, lar_no_delete); //24112024
-
-            lo_active_side.on_load_model(lo_geometry);
-            lo_passive_side.on_load_model(lo_geometry);
-
-        }
-
-
-        //-------------------------------------------------------------------
-        Shape_generator.prototype.on_load_model = function (geometry_mod) {
-
-
-            try {
-
-                go_up_side_shape_generator.is_building_model = false;//27012025
-                go_lateral_side_shape_generator.is_building_model = false;//27012025
-
-                //26012025 {
-
-                geometry_mod.center();// Объект - в центре вращения
-
-
-
-                ////let lo_active_side = get_active_side_shape_generator();
-                ////let lo_passive_side = get_passive_side_shape_generator();
-
-
-                ////lo_active_side.progress_bar.set_display_value(70);
-
-
-                //////-------------------------------------------------------------------
-                ////const mesh_mod1 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
-                ////const mesh_mod2 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
-
-
-                ////lo_active_side.group_parts_mod.add(mesh_mod1);
-                ////lo_passive_side.group_parts_mod.add(mesh_mod2);//24112024
-
-                ////lo_active_side.progress_bar.set_display_value(90);
-
-                ////let lv_is_before = false;
-                ////lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-                ////lo_active_side.progress_bar.set_display_value(100);
-                ////lo_active_side.progress_bar.stop_progress();
-
-                ////lo_active_side.animate_mod();
-
-                ////lo_active_side.is_building_model = false;
-                ////lo_passive_side.is_building_model = false;
-
-
-
-
-                let lo_active_side = get_active_side_shape_generator();
-                //let lo_passive_side = get_passive_side_shape_generator();
-
-                if (lo_active_side.progress_bar) { //27012025
-                    lo_active_side.progress_bar.set_display_value(70);
-                }
-
-                //-------------------------------------------------------------------
-                const mesh_mod1 = new THREE.Mesh(geometry_mod, go_up_side_shape_generator.material_mod);
-                const mesh_mod2 = new THREE.Mesh(geometry_mod, go_lateral_side_shape_generator.material_mod);
-
-
-                go_up_side_shape_generator.group_parts_mod.add(mesh_mod1);
-                go_lateral_side_shape_generator.group_parts_mod.add(mesh_mod2);//24112024
-
-                if (lo_active_side.progress_bar) { //27012025
-                    lo_active_side.progress_bar.set_display_value(90);
-                }
-
-                let lv_is_before = false;
-                lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-                if (lo_active_side.progress_bar) { //27012025
-                    lo_active_side.progress_bar.set_display_value(100);
-                    lo_active_side.progress_bar.stop_progress();
-                }
-
-
-                lo_active_side.animate_mod();
-
-                go_up_side_shape_generator.is_building_model = false;
-                go_lateral_side_shape_generator.is_building_model = false;
-
-
-
-                //26012025 }
-
-            }
-
-            catch (e) {
-
-                go_up_side_shape_generator.model_params_changed = false; //29082024
-                go_lateral_side_shape_generator.model_params_changed = false; //29082024
-
-                alert('error on_load_model: ' + e.stack);
-
-            }
-
-        }
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.make_model = function () {
-
-            try {
-
-                let lv_end_watching_progress_value = 50;
-                this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_make_model, this.load_model_parts, lv_end_watching_progress_value);
-
-                this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
-
-
-                this.progress_bar.set_display_value(3);
-
-                let lv_url = "https://localhost:7095/CalcJBModel?method="
-                    + Constants.method_start_make_model
-                    + "&"
-                    + Constants.word_client_id + "=" + this.client_id
-                    + "&"
-                    + Constants.word_task_id + "=" + this.progress_bar.task_id
-                    + "&chdata=" + Math.random().toString(); // 23112024
-
-                //let lv_url = "https://localhost:7095/CalcJBModel?method="
-                //    + Constants.method_make_model
-                //    + "&chdata=" + Math.random().toString(); // 23112024
-
-
-                let lo_sides_data = this.read_model_sides_data(); lo_sides_data.task_id = this.progress_bar.task_id;
-                lo_sides_data.task_id = this.progress_bar.task_id;
-
-
-                this.send_side_data_for_start_make_model(lv_url, lo_sides_data);
-
-
-            }
-
-            catch (e) {
-
-                this.model_params_changed = false; //29082024
-
-                alert('error make_model: ' + e.stack);
-
-            }
-
-
-        }
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.send_side_data_for_start_make_model = function (pv_url, po_json_data) {
-
-
-            try {
-
-                let lv_is_before = true;
-                this.do_before_after_model_request(lv_is_before, true);
-
-                send_for_start_make_model(pv_url, po_json_data);
-
-                //-------------------------------------------------------------------
-                async function send_for_start_make_model(pv_url, po_json_data) {
-
-
-                    let lo_active_side = get_active_side_shape_generator(); //04102024
-                    let lo_passive_side = get_passive_side_shape_generator(); //04102024
-
-                    try {
-
-                        var lv_for_body = JSON.stringify(po_json_data);
-                        const response = await fetch(pv_url, {
-                            method: "POST",
-                            headers: {
-                                //"Accept": "application/json",
-                                "Content-Type": "application/json"
-                            },
-                            body: lv_for_body
-                        });
-
-                        const message = await response.json();
-                        //const message = await response.text();
-
-                        lo_active_side.OnCompleteStartMakeModel(message);
-
-                    }
-
-                    catch (e) {
-
-                        lo_active_side.model_params_changed = false;
-
-                        let lv_is_before = false;
-                        lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-
-                        //alert('error send_for_start_make_model: ' + e.stack);
-                        lo_active_side.common_func.Show_message("Error making model!", 2000);
-
-
-                    }
-
-
-                }
-            }
-
-            catch (e) {
-
-                alert('error send_side_data_make_model: ' + e.stack);
-
-            }
-        }
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.OnCompleteStartMakeModel = function (po_data) {
@@ -1910,108 +2335,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
         }
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.load_model_parts = function (po_data) {
-
-            try {
-
-
-                let lo_active_side = get_active_side_shape_generator();
-
-                if (po_data == null || po_data.number_outfiles == null || po_data.number_outfiles <= 0) {
-
-                    let lv_is_before = false;
-                    lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-                    return;
-                }
-
-                // Очистка сцены new THREE.Group();
-                let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "PerspectiveCamera", "Group"];// 14102024
-                lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
-
-
-                let lv_filename = "";
-
-                lo_active_side.num_loaded_model_parts = 0;//16102024
-
-                // Очистка группы деталей
-                lo_active_side.group_parts_mod.clear();
-
-
-                lo_active_side.model_prefix_filename = po_data.common_outfilename_part; // префикс - общая часть имён файлов деталей
-                go_tab_orders.model_prefix_filename = po_data.common_outfilename_part;
-
-
-                // Загрузка деталей модели
-                //26012025 for (let lv_i = 1; lv_i <= po_data.number_outfiles; lv_i++) {
-                for (let lv_i = 0; lv_i < po_data.names_part_files.length; lv_i++) { //26012025
-
-                    //26012025 lv_filename = po_data.common_outfilename_part + "_" + lv_i.toString() + Constants.file_model_ext;
-                    lv_filename = po_data.common_outfilename_part + Constants.data_delimiter + po_data.names_part_files[lv_i]; //26012025 
-
-                    //26012025 lo_active_side.model_numparts = po_data.number_outfiles;
-                    lo_active_side.model_numparts = po_data.names_part_files.length; //26012025
-
-
-
-                    //this.model_curr_numpart = lv_i;
-
-                    lo_active_side.load_model_part(lv_filename);
-
-                }
-
-
-            }
-
-            catch (e) {
-
-                alert('error load_model_parts: ' + e.stack);
-
-            }
-
-        }
-
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.load_model_part = function (pv_filename) {
-
-            let lo_active_side = get_active_side_shape_generator();
-            let lo_passive_side = get_passive_side_shape_generator();
-
-            try {
-
-                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_read_model_parts +
-                    "&filename=" + pv_filename
-                    + "&chdata=" + Math.random().toString(); // 23112024
-                ;
-
-
-                let lv_is_before = true;
-
-
-                get_model_part(lv_url);
-
-
-                //--------------------------------------------------
-                async function get_model_part(pv_url) {
-                    //--------------------------------------------------
-                    await $.get(pv_url, "", lo_active_side.oncomplete_read_model_part);
-                }
-                //--------------------------------------------------
-
-            }
-            catch (e) {
-
-                let lv_is_before = false;
-                lo_active_side.do_before_after_model_request(lv_is_before, false);
-
-            }
-
-        }
-
 
 
         //------------------------------------------------------------------------
@@ -2185,891 +2508,213 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.delete_on_server_model_parts = function () {
+        Shape_generator.prototype.OnCompleteRefreshModel = function (po_data) {
+            try {
+
+
+                let lo_active_side = get_active_side_shape_generator();
+                let lo_passive_side = get_passive_side_shape_generator();
+
+                if (po_data == null || po_data == "") {
+
+                    let lv_is_before = false;
+                    lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                    alert("Error updating model!")
+
+                    return;
+                }
+
+                let ls_progress_data = JSON.parse(po_data);
+
+                ////if (po_data.indexOf(Constants.word_task_id) < 0) {
+                ////    return;
+                ////}
+
+
+                if (ls_progress_data == null || typeof ls_progress_data == "undefined") {
+                    return;
+                }
+
+                if (ls_progress_data.client_id != lo_active_side.client_id
+                    || ls_progress_data.task_id != lo_active_side.progress_bar.task_id
+                ) {
+                    return;
+                }
+
+
+
+
+
+                /////////////////////////////21112024 lo_active_side.progress_bar.set_display_value(5);
+
+                this.progress_bar.start_progress();
+
+
+
+                /////////////this.refresh_model_data = 
+
+                //16112025 { in the load_refresh_model
+
+                //////const loader = new STLLoader();
+                //////const lo_geometry = loader.parse(po_data);
+
+                //////// Очистка сцены
+                //////let lar_no_delete = ["PointLight", "PerspectiveCamera", "Group"];// "Mesh", 
+                //////lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+                //////lo_active_side.on_load_model(lo_geometry);
+                //16112025 }
+
+
+            }
+
+            catch (e) {
+
+                this.model_params_changed = false; //29082024
+
+                alert('error OnCompleteRefreshModel: ' + e.stack);
+
+            }
+        }
+
+
+
+        //-------------------------------------------------------------------
+        //22112024 Shape_generator.prototype.load_refresh_model = function (po_data) {
+        Shape_generator.prototype.oncomplete_read_result_refresh_premodel = function (po_data) {
+
+            let lo_active_side = get_active_side_shape_generator();
+            let lo_passive_side = get_passive_side_shape_generator(); //04102024
+
+            const loader = new STLLoader();
+            const lo_geometry = loader.parse(po_data);
+
+            // Очистка сцены
+            let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "PerspectiveCamera", "Group"];// "Mesh", 
+            lo_active_side.common_func.clearScene(lo_active_side.scene_mod, lar_no_delete);
+            lo_passive_side.common_func.clearScene(lo_passive_side.scene_mod, lar_no_delete); //24112024
+
+            lo_active_side.on_load_model(lo_geometry);
+            lo_passive_side.on_load_model(lo_geometry);
+
+        }
+
+
+        //-------------------------------------------------------------------
+        Shape_generator.prototype.on_load_model = function (geometry_mod) {
+
 
             try {
 
-                let lo_active_side = get_active_side_shape_generator(); //04102024
+                go_up_side_shape_generator.is_building_model = false;//27012025
+                go_lateral_side_shape_generator.is_building_model = false;//27012025
 
-                // Посылка команды на удаление промежуточных файлов на сервере
+                //26012025 {
 
-                let lv_url = "https://localhost:7095/CalcJBModel?method=" + Constants.method_delete_model_parts +
-                    "&filename=" + lo_active_side.model_prefix_filename
-                    + "&chdata=" + Math.random().toString(); // 23112024
-                ;
+                geometry_mod.center();// Объект - в центре вращения
 
-                get_delete_on_server_model_parts(lv_url)
-                async function get_delete_on_server_model_parts(pv_url) {
-                    //--------------------------------------------------
-                    await $.get(pv_url);
+
+
+                ////let lo_active_side = get_active_side_shape_generator();
+                ////let lo_passive_side = get_passive_side_shape_generator();
+
+
+                ////lo_active_side.progress_bar.set_display_value(70);
+
+
+                //////-------------------------------------------------------------------
+                ////const mesh_mod1 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+                ////const mesh_mod2 = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+
+
+                ////lo_active_side.group_parts_mod.add(mesh_mod1);
+                ////lo_passive_side.group_parts_mod.add(mesh_mod2);//24112024
+
+                ////lo_active_side.progress_bar.set_display_value(90);
+
+                ////let lv_is_before = false;
+                ////lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                ////lo_active_side.progress_bar.set_display_value(100);
+                ////lo_active_side.progress_bar.stop_progress();
+
+                ////lo_active_side.animate_mod();
+
+                ////lo_active_side.is_building_model = false;
+                ////lo_passive_side.is_building_model = false;
+
+
+
+
+                let lo_active_side = get_active_side_shape_generator();
+                //let lo_passive_side = get_passive_side_shape_generator();
+
+                if (lo_active_side.progress_bar) { //27012025
+                    lo_active_side.progress_bar.set_display_value(70);
+                }
+
+                //-------------------------------------------------------------------
+                const mesh_mod1 = new THREE.Mesh(geometry_mod, go_up_side_shape_generator.material_mod);
+                const mesh_mod2 = new THREE.Mesh(geometry_mod, go_lateral_side_shape_generator.material_mod);
+
+
+                go_up_side_shape_generator.group_parts_mod.add(mesh_mod1);
+                go_lateral_side_shape_generator.group_parts_mod.add(mesh_mod2);//24112024
+
+                if (lo_active_side.progress_bar) { //27012025
+                    lo_active_side.progress_bar.set_display_value(90);
+                }
+
+                let lv_is_before = false;
+                lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                if (lo_active_side.progress_bar) { //27012025
+                    lo_active_side.progress_bar.set_display_value(100);
+                    lo_active_side.progress_bar.stop_progress();
                 }
 
 
                 lo_active_side.animate_mod();
 
-                let lv_is_before = false;
-                lo_active_side.do_before_after_model_request(lv_is_before, true);
+                go_up_side_shape_generator.is_building_model = false;
+                go_lateral_side_shape_generator.is_building_model = false;
 
 
 
+                //26012025 }
 
             }
 
             catch (e) {
 
-                alert('error delete_on_server_model_parts: ' + e.stack);
+                go_up_side_shape_generator.model_params_changed = false; //29082024
+                go_lateral_side_shape_generator.model_params_changed = false; //29082024
+
+                alert('error on_load_model: ' + e.stack);
 
             }
 
         }
 
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.do_before_after_model_request = function (pv_is_before, pv_is_build_model) {
-
-
-            //26012025
-            ////try {
-
-            ////    let lo_active_side = get_active_side_shape_generator();
-            ////    let lo_passive_side = get_passive_side_shape_generator();
-
-            ////    if (pv_is_before) {
-
-            ////        $('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
-            ////        $('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
-
-            ////        $('#up_id_loading_indicator').show();// индикация ожидани
-            ////        $('#lateral_id_loading_indicator').show();// индикация ожидания
-            ////        $('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
-            ////        $('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
-
-
-            ////        lo_active_side.is_building_model = true;
-            ////        lo_passive_side.is_building_model = true;
-
-            ////        lo_active_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
-            ////        lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-            ////        $(lo_active_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
-
-            ////        lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
-            ////        lo_active_side.controls_mod.reset();
-
-
-            ////        lo_active_side.progress_bar.div_progressbar.fadeIn();//26112024
-
-
-
-            ////        //24112024 {
-            ////        lo_passive_side.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
-            ////        lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-            ////        $(lo_passive_side.id_prefix + 'id_dist_part_slider').slider('value', 0);
-
-            ////        lo_passive_side.common_func.clear_group_childrens(lo_passive_side.group_parts_mod);
-            ////        lo_passive_side.controls_mod.reset();
-            ////        //24112024 }
-            ////    }
-
-            ////    else {
-
-            ////        // after
-
-            ////        /////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
-
-            ////        $('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
-            ////        $('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-
-            ////        $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-            ////        $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-
-
-            ////        lo_active_side.model_params_changed = false;
-            ////        lo_passive_side.model_params_changed = false;
-            ////        lo_active_side.is_building_model = false;
-            ////        lo_passive_side.is_building_model = false;
-
-
-            ////        if (pv_is_build_model) {
-            ////            lo_active_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
-            ////            lo_active_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
-            ////        }
-            ////        else {
-            ////            lo_active_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-            ////            lo_active_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
-            ////        }
-
-            ////        lo_active_side.common_func.set_group_to_center(lo_active_side.group_parts_mod);
-
-            ////        if (lo_active_side.progress_bar.div_progressbar) {
-            ////            lo_active_side.progress_bar.div_progressbar.fadeOut();//26112024
-            ////        }
-
-            ////        //24112024 {
-
-            ////        if (pv_is_build_model) {
-            ////            lo_passive_side.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
-            ////            lo_passive_side.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
-            ////        }
-            ////        else {
-            ////            lo_passive_side.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-            ////            lo_passive_side.rotate_status = type_rotate_mode.stop; // выключить вращение модели
-            ////        }
-
-            ////        lo_passive_side.common_func.set_group_to_center(lo_passive_side.group_parts_mod);
-            ////        //24112024 }
-
-
-
-            ////    }
-            ////}
-
-
-
-
-
-
-
-            try {
-
-                let lo_active_side = get_active_side_shape_generator();
-                //let lo_passive_side = get_passive_side_shape_generator();
-
-                if (pv_is_before) {
-
-                    $('#up_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
-                    $('#lateral_id_div_visual_model').css('opacity', 0.3);// прозрачность контента
-
-                    $('#up_id_loading_indicator').show();// индикация ожидани
-                    $('#lateral_id_loading_indicator').show();// индикация ожидания
-                    $('#up_id_loading_indicator').css('opacity', 1);// индикация ожидания
-                    $('#lateral_id_loading_indicator').css('opacity', 1);// индикация ожидания
-
-                    //31012025 {
-                    $('#up_id_id_div_progressbar').show();// индикация ожидани
-                    $('#lateral_id_div_progressbar').show();// индикация ожидания
-                    //31012025 }
-
-
-
-                    go_up_side_shape_generator.is_building_model = true;
-                    go_lateral_side_shape_generator.is_building_model = true;
-
-                    go_up_side_shape_generator.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
-                    go_up_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-                    $(go_up_side_shape_generator.id_prefix + 'id_dist_part_slider').slider('value', 0);
-
-                    go_up_side_shape_generator.common_func.clear_group_childrens(go_up_side_shape_generator.group_parts_mod);
-                    go_up_side_shape_generator.controls_mod.reset();
-
-                    if (lo_active_side.progress_bar) {
-                        if (lo_active_side.progress_bar.div_progressbar) {
-                            lo_active_side.progress_bar.div_progressbar.fadeIn();//26112024
-                        }
-                    }
-
-
-                    //24112024 {
-                    go_lateral_side_shape_generator.rotate_status = type_rotate_mode.stop; // None; // выключить вращение модели
-                    go_lateral_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-                    $(go_lateral_side_shape_generator.id_prefix + 'id_dist_part_slider').slider('value', 0);
-
-                    go_lateral_side_shape_generator.common_func.clear_group_childrens(go_lateral_side_shape_generator.group_parts_mod);
-                    go_lateral_side_shape_generator.controls_mod.reset();
-                    //24112024 }
-                }
-
-                else {
-
-                    // after
-
-                    /////lo_active_side.common_func.clear_group_childrens(lo_active_side.group_parts_mod);
-
-                    $('#up_id_div_visual_model').css('opacity', 1);// прозрачность контента
-                    $('#lateral_id_div_visual_model').css('opacity', 1);// прозрачность контента
-
-                    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-                    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-
-                    //31012025 {
-                    $('#up_id_id_div_progressbar').hide();// индикация ожидани
-                    $('#lateral_id_div_progressbar').hide();// индикация ожидания
-                    //31012025 }
-
-                    go_up_side_shape_generator.model_params_changed = false;
-                    go_up_side_shape_generator.model_params_changed = false;
-                    go_up_side_shape_generator.is_building_model = false;
-                    go_lateral_side_shape_generator.is_building_model = false;
-
-
-                    if (pv_is_build_model) {
-                        go_up_side_shape_generator.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
-                        go_up_side_shape_generator.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
-                    }
-                    else {
-                        go_up_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-                        go_up_side_shape_generator.rotate_status = type_rotate_mode.stop; // выключить вращение модели
-                    }
-
-                    go_up_side_shape_generator.common_func.set_group_to_center(go_up_side_shape_generator.group_parts_mod);
-
-                    if (lo_active_side.progress_bar) {
-                        if (lo_active_side.progress_bar.div_progressbar) {
-                            lo_active_side.progress_bar.div_progressbar.fadeOut();//26112024
-                        }
-                    }
-
-                    //24112024 {
-
-                    if (pv_is_build_model) {
-                        go_lateral_side_shape_generator.set_visible_rotate_controls(true); // сделать видимым контрол  - слайд расстояния между деталями
-                        go_lateral_side_shape_generator.rotate_status = type_rotate_mode.clockwise; // включить вращение модели
-                    }
-                    else {
-                        go_lateral_side_shape_generator.set_visible_rotate_controls(false); // сделать невидимым контрол  - слайд расстояния между деталями
-                        go_lateral_side_shape_generator.rotate_status = type_rotate_mode.stop; // выключить вращение модели
-                    }
-
-                    go_lateral_side_shape_generator.common_func.set_group_to_center(go_lateral_side_shape_generator.group_parts_mod);
-                    //24112024 }
-
-
-
-                }
-            }
-
-
-
-
-
-
-
-            //26012025 }
-
-            catch (e) {
-
-                alert('error do_before_after_model_request: ' + e.stack);
-
-            }
-
-
-        }
-
-
-        ////////-------------------------------------------------------------------
-        //////Shape_generator.prototype.on_load_read_model_part = function (geometry_mod) {
-
-
-
-        //////    let lo_active_side = get_active_side_shape_generator();
-        //////    let lo_passive_side = get_passive_side_shape_generator();
-
-        //////    geometry_mod.center();// Объект - в центре вращения
-
-
-
-        //////    //////////////////////const dirLight2 = new THREE.DirectionalLight(0xccccff, 3);
-        //////    //////////////////////dirLight2.position.set(- 1, 0.75, - 0.5);
-        //////    //////////////////////lo_active_side.scene_mod.add(dirLight2);
-
-
-        //////    //const material_mod = new THREE.MeshPhongMaterial(/*{ color: 0x555555 }*/);
-
-
-        //////    //const material_mod = new THREE.MeshPhongMaterial({
-        //////    //    specular: 0x444444,
-        //////    //    //map: decalDiffuse,
-        //////    //    //normalMap: decalNormal,
-        //////    //    normalScale: new THREE.Vector2(1, 1),
-        //////    //    shininess: 30,
-        //////    //    transparent: false, //true,
-        //////    //    depthTest: true,
-        //////    //    depthWrite: false,
-        //////    //    polygonOffset: true,
-        //////    //    polygonOffsetFactor: - 4,
-        //////    //    wireframe: false //true // false
-        //////    //});
-
-
-        //////    ////const material_mod = new THREE.MeshLambertMaterial({
-        //////    ////    //color: 0xffffff,
-        //////    ////    color: 0xfff0f0,
-        //////    ////    opacity: 0.5,
-        //////    ////    //side: THREE.DoubleSide,
-        //////    ////    transparent: true
-        //////    ////});
-
-
-        //////    //const material_mod = new THREE.MeshBasicMaterial({
-        //////    //    color: 0x00ff00, // черный цвет номера
-        //////    //    side: THREE.DoubleSide,
-        //////    //    shading: THREE.FlatShading
-        //////    //});
-
-
-
-        //////    ////camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100);
-        //////    ////camera.position.set(1, 2, - 3);
-        //////    ////camera.lookAt(0, 1, 0);
-        //////    //var material_mod = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
-        //////    ///const material_mod = new THREE.MeshPhongMaterial({ color: 0xcbcbcb, depthWrite: false }) 
-
-        //////    //////let materialFront = new THREE.MeshBasicMaterial({ color: new THREE.Color(Math.random() * 0xffffff) });
-        //////    //////let materialSide = new THREE.MeshBasicMaterial({ color: new THREE.Color(Math.random() * 0x00ffff) });
-
-        //////    //////let materialArray = [materialFront, materialSide];
-        //////    //////let material_mod = new THREE.MeshLambertMaterial(materialArray);
-
-
-        //////    //const dirLight = new THREE.DirectionalLight(0xffffff, 3);
-        //////    //dirLight.position.set(- 3, 10, - 10);
-        //////    //dirLight.castShadow = true;
-        //////    //dirLight.shadow.camera.top = 2;
-        //////    //dirLight.shadow.camera.bottom = - 2;
-        //////    //dirLight.shadow.camera.left = - 2;
-        //////    //dirLight.shadow.camera.right = 2;
-        //////    //dirLight.shadow.camera.near = 0.1;
-        //////    //dirLight.shadow.camera.far = 40;
-        //////    //lo_active_side.scene_mod.add(dirLight);
-
-
-
-        //////    //=========================================================================
-        //////    const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
-
-        //////    lo_active_side.scene_mod.add(mesh_mod);
-
-
-        //////    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
-        //////    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
-
-
-        //////    lo_active_side.animate_mod();
-
-        //////    lo_active_side.is_building_model = false;
-        //////    lo_passive_side.is_building_model = false;
-
-
-        //////}
-
-
 
         //------------------------------------------------------------------------
-        Shape_generator.prototype.animate = function () {
-
-            //requestAnimationFrame(this.animate);
-            //this.scene.children.forEach(obj => obj.lookAt(this.camera.position)); // Все объекты смотрят на камеру
-            //this.controls.update();
-            //this.renderer.render(this.scene, this.camera);
-
-        }
-
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.animate_mod = function () {
-
-            //return;//15122024
+        Shape_generator.prototype.OnErrorRefreshModel = function () {
 
             let lo_active_side = get_active_side_shape_generator();
+            let lv_is_before = false;
 
-            ////07012025 {
-            //if (!lo_active_side) {
-            //    return;
-            //}
-            ////07012025 }
+            lo_active_side.do_before_after_model_request(lv_is_before, false);
 
 
-            let lv_slider_value = 0;
-            //let lv_delta_slider_value = 0;
+            /////alert("OnErrorRefreshModel");
 
-            if (lo_active_side) {
-
-                lv_slider_value = $(lo_active_side.id_prefix + "id_dist_part_slider").slider('value');
-
-                //lv_delta_slider_value = lv_slider_value - lo_active_side.slider_value_prev;
-                //lo_active_side.common_func.move_details_from_to_center(lo_active_side.group_parts_mod, lv_delta_slider_value);
-
-                //lv_delta_slider_value = lv_slider_value - lo_active_side.slider_value_prev;
-                lo_active_side.common_func.move_details_from_to_center(lo_active_side.group_parts_mod, lv_slider_value);
-
-
-                //lo_active_side.slider_value_prev = lv_slider_value;
-
-                //requestAnimationFrame(lo_active_side.animate_mod);
-
-
-
-
-                //07012025 {
-                if (!lo_active_side) {
-                    return;
-                }
-                //07012025 }
-
-                setTimeout(function () {
-                    //07012025 {
-                    if (!lo_active_side) {
-                        return;
-                    }
-                    //07012025 }
-
-                    requestAnimationFrame(lo_active_side.animate_mod);
-                    lo_active_side.render_mod();
-
-                }, 200); // 100);
-
-            }
-            else {
-
-                if (this) { //08012025
-
-                    lv_slider_value = $(this.id_prefix + "id_dist_part_slider").slider('value');
-                    //lv_delta_slider_value = lv_slider_value - this.slider_value_prev;
-
-                    //this.common_func.move_details_from_to_center(this.group_parts_mod, lv_delta_slider_value);
-                    this.common_func.move_details_from_to_center(this.group_parts_mod, lv_slider_value);
-
-
-                    setTimeout(function () {
-                        requestAnimationFrame(this.animate_mod);
-                        this.render_mod();
-
-                    }, 200); // 100);
-
-                }
-            }
-
+            //02092024 lo_active_side.is_building_model = false;
 
         }
 
 
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.render_mod = function () {
 
-            try {
 
-                let lo_active_side = get_active_side_shape_generator();
-
-                //07012025 {
-                if (!lo_active_side) {
-                    return;
-                }
-                //07012025 }
-
-                if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
-
-
-                    if (lo_active_side) {
-
-                        lo_active_side.common_func.model_rotation(lo_active_side.group_parts_mod);
-
-                        lo_active_side.renderer_mod.render(lo_active_side.scene_mod, lo_active_side.camera_mod);
-
-
-
-                    }
-                }
-            }
-
-            catch (e) {
-
-                alert('error render_mod: ' + e.stack);
-
-            }
-        }
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.reset_event_handlers = function (po_side) {
-
-            try {
-
-                //let lo_active_side_shape_generator = get_active_side_shape_generator();
-                //let lo_passive_side_shape_generator = get_passive_side_shape_generator();
-
-                $(document).off('click  change pointerdown pointerup pointermove');//17062024
-                $(window).off('resize dblclick doubleclick mousemove');
-                $(window).off('resize dblclick doubleclick mousemove');
-                $(window).off('resize dblclick doubleclick mousemove');
-
-                $(document).unbind('click change pointerdown pointerup pointermove');//17062024
-                $(window).unbind('resize dblclick mousemove');
-
-                if (po_side) {
-
-                    if (po_side.controls) {
-
-                        if (po_side.render) {
-                            po_side.controls.removeEventListener('change', po_side.render);// очистка обработчика событий
-                        }
-                    }
-
-                    //if (this.render) {
-                    //    po_side.controls.removeEventListener('change', this.render);// очистка обработчика событий
-                    //}
-
-                }
-
-                //if (po_side.controls) {
-                //    po_side.controls.addEventListener('change', po_side.render);
-                //}
-
-
-                // очистка обработчиков событий
-                $(this.passive_id_prefix + "id_but_read_model").off("click");
-                $(this.passive_id_prefix + "id_but_new_model").off("click");
-                $(this.passive_id_prefix + "id_but_refresh").off("click");
-                $(this.passive_id_prefix + "id_chb_space_adjust").off("click");
-                $(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
-                $(this.passive_id_prefix + "id_but_del_spline").off("click");
-                $(this.passive_id_prefix + "id_but_add_spline").off("click");
-                $(this.passive_id_prefix + "id_but_save_model").off("click");
-                $(this.passive_id_prefix + "id_but_make_model").off("click");
-                $(this.passive_id_prefix + "id_but_set_color").off("click");
-                $(this.passive_id_prefix + "id_but_rotate_mode").off("click");
-                $(this.passive_id_prefix + "id_but_ch_nsegm").off("click");
-
-
-
-                //$(this.id_prefix + "id_chb_space_adjust").off("click").click(this.onclick_chb_space_adjust);
-                //$(this.id_prefix + "id_chb_curve_width_adjust").off("click").click(this.onclick_chb_curve_width_adjust);
-
-                //$(this.id_prefix + "id_but_read_model").off("click").click(this.onclick_read_model);
-
-                //$(this.id_prefix + "id_but_del_spline").off("click").click(this.onclick_del_spline);
-                //$(this.id_prefix + "id_but_add_spline").off("click").click(this.onclick_add_spline);
-                //$(this.id_prefix + "id_but_save_model").off("click").click(this.onclick_save_model);
-                //$(this.id_prefix + "id_but_make_model").off("click").click(this.onclick_make_model);
-                //$(this.id_prefix + "id_but_set_color").off("click").click(this.onclick_id_but_set_color);
-                //$(this.id_prefix + "id_but_rotate_mode").off("click").click(this.onclick_id_but_rotate_mode);
-
-                //$(this.id_prefix + "id_but_refresh").off("click").click(this.onclick_refresh_model);
-
-                //$(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(this.ondblclick_id_shape);//17062024
-                //$(this.id_prefix + this.id_side_shape_mod).off("dblclick").dblclick(this.ondblclick_id_shape);//25082024
-                //$(this.id_prefix + this.id_side_shape).dblclick(null);
-                //$(this.id_prefix + this.id_side_shape_mod).dblclick(null);//25082024
-
-                //--------------------------------------------------------------------------------------------
-
-                ////// обработчики событий gui
-
-
-                //}
-                //--------------------------------------------------------------------------------------------
-
-
-                // очистка обработчиков событий
-                document.removeEventListener('pointerdown', this.onPointerDown);
-                document.removeEventListener('pointerup', this.onPointerUp);
-                //document.addEventListener('pointermove', null);
-                window.removeEventListener('resize', this.onWindowResize);
-                window.removeEventListener('mousemove', this.onmousemove);
-
-                $(this.id_prefix + this.id_side_shape).dblclick(null);//17062024 
-
-                //if (lo_passive_side_shape_generator) {
-                //    document.removeEventListener('pointerdown', lo_passive_side_shape_generator.onPointerDown);
-
-                //    document.removeEventListener('pointerup', lo_passive_side_shape_generator.onPointerUp);
-                //    //document.addEventListener('pointermove', null);
-                //    window.removeEventListener('resize', lo_passive_side_shape_generator.onWindowResize);
-                //    window.removeEventListener('mousemove', lo_passive_side_shape_generator.onmousemove);
-
-                //    $(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(lo_passive_side_shape_generator.ondblclick_id_shape);//17062024
-                //    $(this.id_prefix + this.id_side_shape).dblclick(null);//17062024 
-
-                //}
-
-
-                if (po_side) {
-                    document.removeEventListener('pointerdown', po_side.onPointerDown);
-                    document.removeEventListener('pointerup', po_side.onPointerUp);
-                    //document.addEventListener('pointermove', null);
-                    window.removeEventListener('resize', po_side.onWindowResize);
-                    window.removeEventListener('mousemove', po_side.onmousemove);
-
-                }
-
-
-                //17062024 {
-
-
-
-
-                //document.addEventListener('pointerdown', this.onPointerDown);
-                //document.addEventListener('pointerup', this.onPointerUp);
-                ////document.addEventListener('pointermove', onPointerMove);
-                //window.addEventListener('resize', this.onWindowResize);
-                //window.addEventListener('mousemove', this.onmousemove);
-                ////////////////////window.addEventListener('dblclick', this.ondblclick_id_shape);//17062024
-
-                ////window.addEventListener('click', window_onclick	);
-                //$(this.passive_id_prefix + this.id_side_shape).off("click");
-                //$(this.passive_id_prefix + "id_but_mirror").off("click");
-
-                //$(this.id_prefix + this.id_side_shape).off("click").on("click", this.onclick_shape);//17072024 
-
-                //$(this.id_prefix + "id_but_mirror").off("click").on("click", this.but_mirror_onclick);
-
-
-                ////this.render();//05052024
-                //lo_active_side_shape_generator.onWindowResize();//21062024
-
-
-
-
-                // 05012025 this.render_mod();
-
-
-
-
-
-                ////--------------------------------------------------------------------
-                //// наблюдатель за изменением цвета элемента
-
-                //// Создание экземпляра MutationObserver
-                //const observer = new MutationObserver(this.common_func.handleColorChange);
-
-                //// Целевой элемент, за которым нужно следить
-                //const targetElement = document.getElementById(this.id_prefix_wo_sharp + "id_for_colorpicker");
-
-                //// Параметры наблюдения
-                //const config = { attributes: true, attributeFilter: ['style'] };
-
-                //// Начало наблюдения за целевым элементом
-                //observer.observe(targetElement, config); //, lf_callback);
-
-                ////--------------------------------------------------------------------
-
-
-            }
-            catch (e) {
-
-                alert('error reset_event_handlers: ' + e.stack);
-
-            }
-
-        }
-
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.init_event_handlers = function () {
-
-            try {
-
-                let lo_active_side_shape_generator = get_active_side_shape_generator();
-                let lo_passive_side_shape_generator = get_passive_side_shape_generator();
-
-                //17062024 $(document).off('click doubleclick change pointerdown pointerup pointermove');
-                $(document).off('click  change pointerdown pointerup pointermove');//17062024
-                $(window).off('resize dblclick doubleclick mousemove');
-                $(window).off('resize dblclick doubleclick mousemove');
-                $(window).off('resize dblclick doubleclick mousemove');
-
-                //17062024 $(document).unbind('click doubleclick change pointerdown pointerup pointermove');
-                $(document).unbind('click change pointerdown pointerup pointermove');//17062024
-                $(window).unbind('resize dblclick mousemove');
-
-                if (lo_passive_side_shape_generator) {
-
-                    if (lo_passive_side_shape_generator.controls) {
-                        lo_passive_side_shape_generator.controls.removeEventListener('change', this.render);// очистка обработчика событий
-                        lo_passive_side_shape_generator.controls.removeEventListener('change', lo_passive_side_shape_generator.render);// очистка обработчика событий
-                    }
-
-                }
-
-                if (this.controls) {
-                    this.controls.addEventListener('change', this.render);
-                }
-
-
-                // очистка обработчиков событий
-                $(this.passive_id_prefix + "id_but_read_model").off("click");
-                $(this.passive_id_prefix + "id_but_new_model").off("click");
-
-
-                $(this.passive_id_prefix + "id_but_refresh").off("click");
-
-                $(this.passive_id_prefix + "id_chb_space_adjust").off("click");
-                $(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
-                $(this.passive_id_prefix + "id_chb_show_text_labels").off("click");
-
-
-                $(this.passive_id_prefix + "id_but_del_spline").off("click");
-                $(this.passive_id_prefix + "id_but_add_spline").off("click");
-                $(this.passive_id_prefix + "id_but_save_model").off("click");
-                $(this.passive_id_prefix + "id_but_make_model").off("click");
-                $(this.passive_id_prefix + "id_but_set_color").off("click");
-
-                $(this.passive_id_prefix + "id_but_rotate_mode").off("click");
-                $(this.passive_id_prefix + "id_but_ch_nsegm").off("click");
-
-
-
-                $(this.id_prefix + "id_chb_space_adjust").off("click").click(this.onclick_chb_space_adjust);
-                $(this.id_prefix + "id_chb_curve_width_adjust").off("click").click(this.onclick_chb_curve_width_adjust);
-                $(this.id_prefix + "id_chb_show_text_labels").off("click").click(this.onclick_chb_show_text_labels);
-
-                $(this.id_prefix + "id_but_read_model").off("click").click(this.onclick_read_model);
-                $(this.id_prefix + "id_but_new_model").off("click").click(this.onclick_new_model);
-
-                $(this.id_prefix + "id_but_del_spline").off("click").click(this.onclick_del_spline);
-                $(this.id_prefix + "id_but_add_spline").off("click").click(this.onclick_add_spline);
-                $(this.id_prefix + "id_but_save_model").off("click").click(this.onclick_save_model);
-                $(this.id_prefix + "id_but_make_model").off("click").click(this.onclick_make_model);
-                $(this.id_prefix + "id_but_set_color").off("click").click(this.onclick_id_but_set_color);
-                $(this.id_prefix + "id_but_rotate_mode").off("click").click(this.onclick_id_but_rotate_mode);
-                $(this.id_prefix + "id_but_ch_nsegm").off("click").click(this.onclick_but_change_segments_amount);
-
-                $(this.id_prefix + "id_but_refresh").off("click").click(this.onclick_refresh_model);
-
-                $(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(this.ondblclick_id_shape);//17062024
-                $(this.id_prefix + this.id_side_shape_mod).off("dblclick").dblclick(this.ondblclick_id_shape);//25082024
-                $(this.id_prefix + this.id_side_shape).dblclick(null);
-                $(this.id_prefix + this.id_side_shape_mod).dblclick(null);//25082024
-
-                //--------------------------------------------------------------------------------------------
-
-                ////// обработчики событий gui
-
-
-                //}
-                //--------------------------------------------------------------------------------------------
-
-
-                // очистка обработчиков событий
-                document.removeEventListener('pointerdown', this.onPointerDown);
-
-
-
-                document.removeEventListener('pointerup', this.onPointerUp);
-                //document.addEventListener('pointermove', null);
-                window.removeEventListener('resize', this.onWindowResize);
-                window.removeEventListener('mousemove', this.onmousemove);
-
-                $(this.id_prefix + this.id_side_shape).dblclick(null);//17062024 
-
-                if (lo_passive_side_shape_generator) {
-                    document.removeEventListener('pointerdown', lo_passive_side_shape_generator.onPointerDown);
-
-                    document.removeEventListener('pointerup', lo_passive_side_shape_generator.onPointerUp);
-                    //document.addEventListener('pointermove', null);
-                    window.removeEventListener('resize', lo_passive_side_shape_generator.onWindowResize);
-                    window.removeEventListener('mousemove', lo_passive_side_shape_generator.onmousemove);
-
-                    $(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(lo_passive_side_shape_generator.ondblclick_id_shape);//17062024
-                    $(this.id_prefix + this.id_side_shape).dblclick(null);//17062024 
-
-                }
-
-                //17062024 {
-
-                if (lo_active_side_shape_generator) {
-                    document.removeEventListener('pointerdown', lo_active_side_shape_generator.onPointerDown);
-                    document.removeEventListener('pointerup', lo_active_side_shape_generator.onPointerUp);
-                    //document.addEventListener('pointermove', null);
-                    window.removeEventListener('resize', lo_active_side_shape_generator.onWindowResize);
-                    window.removeEventListener('mousemove', lo_active_side_shape_generator.onmousemove);
-                    ////    window.removeEventListener('dblclick', lo_active_side_shape_generator.ondblclick_id_shape);//17062024
-                    ////    window.addEventListener('dblclick', null);//17062024
-
-                }
-
-
-                //17062024 {
-
-
-
-
-                document.addEventListener('pointerdown', this.onPointerDown);
-
-                document.addEventListener('pointerup', this.onPointerUp);
-                //document.addEventListener('pointermove', onPointerMove);
-                window.addEventListener('resize', this.onWindowResize);
-                window.addEventListener('mousemove', this.onmousemove);
-                //////////////////window.addEventListener('dblclick', this.ondblclick_id_shape);//17062024
-
-                //window.addEventListener('click', window_onclick	);
-                $(this.passive_id_prefix + this.id_side_shape).off("click");
-                $(this.passive_id_prefix + "id_but_mirror").off("click");
-                $(this.passive_id_prefix + "id_but_del_segment").off("click");
-                $(this.passive_id_prefix + "id_but_add_segment").off("click");
-
-                $(this.id_prefix + this.id_side_shape).off("click").on("click", this.onclick_shape);//17072024 
-
-                $(this.id_prefix + "id_but_mirror").off("click").on("click", this.but_mirror_onclick);
-                $(this.id_prefix + "id_but_del_segment").off("click").on("click", this.but_delete_segment_onclick);
-                $(this.id_prefix + "id_but_add_segment").off("click").on("click", this.but_insert_segment_onclick);
-                $(this.id_prefix + "id_but_random").off("click").on("click", this.but_make_random_onclick);
-
-
-                //this.render();//05052024
-                lo_active_side_shape_generator.onWindowResize();//21062024
-
-
-
-
-                // 05012025 this.render_mod();
-
-
-
-
-
-                //--------------------------------------------------------------------
-                // наблюдатель за изменением цвета элемента
-
-                // Создание экземпляра MutationObserver
-                const observer = new MutationObserver(this.common_func.handleColorChange);
-
-                // Целевой элемент, за которым нужно следить
-                const targetElement = document.getElementById(this.id_prefix_wo_sharp + "id_for_colorpicker");
-
-                // Параметры наблюдения
-                const config = { attributes: true, attributeFilter: ['style'] };
-
-                // Начало наблюдения за целевым элементом
-                observer.observe(targetElement, config); //, lf_callback);
-
-                //--------------------------------------------------------------------
-
-
-            }
-            catch (e) {
-
-                alert('error init_event_handlers: ' + e.stack);
-
-            }
-
-        }
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.set_visible_rotate_controls = function (pv_is_visible) {
-
-            try {
-
-                if (pv_is_visible) {
-
-                    $("#up_id_dist_part_slider").css("visibility", "visible");
-                    $("#lateral_id_dist_part_slider").css("visibility", "visible");
-                }
-                else {
-
-                    $("#up_id_dist_part_slider").css("visibility", "hidden");
-                    $("#lateral_id_dist_part_slider").css("visibility", "hidden");
-                }
-
-
-
-            }
-
-            catch (e) {
-
-                alert('error switch_visible_rotate_controls: ' + e.stack);
-
-            }
-
-        }
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_id_but_rotate_mode = function () {
 
@@ -3224,6 +2869,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             let lv_num_spline_right2 = null;
             let lo_spline_left2 = null;
             let lo_spline_right2 = null;
+
+
+            let lv_color_hex = 0;
             //19012025 }
 
 
@@ -3242,6 +2890,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                     ////color.convertSRGBToLinear(); // Преобразуем в линейное пространство
                     lo_color_rgb = new THREE.Color(pv_value /*"rgb(0, 0, 255)"*/); // RGB-синий
 
+
+                    //lv_color_hex = this.common_func.rgbToNumber(pv_value);//17032025 
                     ////lo_color_rgb = color;
 
                     //lo_color_rgb
@@ -3389,7 +3039,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                                     break;
                             }
 
-                            go_end_side_shape_generator.end_shape.set_color_to_rectangle_cell(lo_color_rgb, lv_cell_num_row, lv_cell_num_col);
+                            //17032025 go_end_side_shape_generator.end_shape.set_color_to_rectangle_cell(lo_color_rgb, lv_cell_num_row, lv_cell_num_col);
+                            go_end_side_shape_generator.end_shape.set_color_to_rectangle_cell(pv_value, lv_cell_num_row, lv_cell_num_col);//17032025
+                            //go_end_side_shape_generator.end_shape.set_color_to_rectangle_cell(lv_color_hex, lv_cell_num_row, lv_cell_num_col);//17032025
 
 
                         }
@@ -3397,6 +3049,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                     break;
                 } // while true
+
 
                 lo_active_side.render();
 
@@ -3407,114 +3060,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             }
         }
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.but_insert_segment_onclick = function () {
-
-            // добавить к сплайну сегмент перед выделенным
-            let lo_active_side = get_active_side_shape_generator();
-
-            try {
-
-                lo_active_side.shapes.make_insert_segments_before_selected_segments();//24022025
-
-                lo_active_side.shapes.adjust_splines_by_external_shape();
-
-                lo_active_side.render();
-
-            }
-
-            catch (e) {
-
-                alert('error but_insert_segment_onclick: ' + e.stack);
-
-            }
-        }
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.but_delete_segment_onclick = function () {
-
-            // удалить из сплайна выделенный сегмент
-            let lo_active_side = get_active_side_shape_generator();
-            try {
-
-                lo_active_side.shapes.make_delete_selected_segments();//24022025
-
-                lo_active_side.shapes.adjust_splines_by_external_shape();
-
-                lo_active_side.render();
-
-
-            }
-
-            catch (e) {
-
-                alert('error but_delete_segment_onclick: ' + e.stack);
-
-            }
-        }
-
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.but_mirror_onclick = function () {
-
-            // Сделать зеркальное отражение выделенных сегментов
-            let lo_active_side = get_active_side_shape_generator();
-            lo_active_side.shapes.make_mirror_selected_segments();
-
-            lo_active_side.shapes.adjust_splines_by_external_shape();
-
-            lo_active_side.render();
-
-        }
-
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.but_make_random_onclick = function () {
-
-            // Сделать для выделенных сегментов случайные размеры
-            let lo_active_side = get_active_side_shape_generator();
-            lo_active_side.shapes.make_random_selected_segments();
-
-            lo_active_side.shapes.adjust_splines_by_external_shape();
-
-            lo_active_side.render();
-
-        }
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.adjust_splines_by_shape_in_side = function (po_side, pv_value) {
-
-
-            //po_side.params.shape_height = pv_value;
-
-            //05112024 let lv_scale = pv_value / po_side.params.shape_height_beg;
-            //05112024 let lv_scale = pv_value / po_side.params.shape_height;//05112024
-
-            let lv_scale = pv_value / po_side.rectangle.shape_height;//05112024
-
-
-            po_side.rectangle.shape.scale.y = lv_scale;
-
-            //13122024 po_side.render();
-
-
-            po_side.segment_transform_data = po_side.segments.get_segment_transform_data(
-                /* po_side.segment_gabarits, 02112024 */
-                //13022025 po_side.params.ajust_curves_by_shape);
-                po_side.params.ajust_curves_by_shape, this.params.spline_amount_segments);//13022025
-
-
-            if (po_side.params.is_space_adjust) {
-                po_side.shapes.adjust_splines_by_external_shape(pv_value);
-            }
-
-            po_side.render();//13122024 
-
-        }
-
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.onFinishChange_param = function (pv_value) {
@@ -3955,26 +3500,8 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
         }
 
-        //------------------------------------------------------------------------
-        // Формирование количества сегментов в создаваемых сплайнах
-        Shape_generator.prototype.inc_spline_segments_amount = function () {
 
-            try {
 
-                if (this.spline_segments_amount++ > Constants.spline_segments_amount_max) {
-                    this.spline_segments_amount = 1;
-                }
-
-            }
-
-            catch (e) {
-
-                alert('error inc_spline_segments_amount: ' + e.stack);
-
-            }
-
-            return this.spline_segments_amount;
-        }
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_add_spline = function () {
@@ -4151,21 +3678,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
         }
 
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.do_save_model = async function () {
-
-
-            this.is_ask_about_save_file = true;
-            this.is_model_changed = false;
-
-            let lo_sides_data = this.read_model_sides_data();
-            //24012025 let lo_scene_mod = this.scene_mod;
-            let lo_scene_mod = go_up_side_shape_generator.scene_mod; //24012025
-            await this.common_func.save_model(lo_sides_data, lo_scene_mod);
-
-
-        }
-
 
         //27112024 {
         //------------------------------------------------------------------------
@@ -4197,31 +3709,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         //------------------------------------------------------------------------
         Shape_generator.prototype.onChange_distance_bt_curves = function () {
 
-        }
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.render = function () {
-
-            try {
-
-                let lo_active_side = get_active_side_shape_generator();
-
-                if (lo_active_side) {
-
-                    lo_active_side.renderer.render(
-                        lo_active_side.scene,
-                        lo_active_side.camera);
-
-                }
-
-            }
-
-            catch (e) {
-
-                alert('error render: ' + e.stack);
-
-            }
         }
 
 
@@ -4433,6 +3920,39 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             //return false;
 
         }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.onPassInterval = function (po_this) {
+
+            try {
+
+                let lo_passive_side = get_passive_side_shape_generator();
+
+                if (po_this.model_params_changed) {
+
+                    if (!po_this.is_building_model && !lo_passive_side.is_building_model) {
+
+                        po_this.model_params_changed = false;
+                        ////19102024 po_this.is_building_model = true;
+                        ////19102024 lo_passive_side.is_building_model = true;
+
+
+                        po_this.refreshModel();
+
+                    }
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error onPassInterval: ' + e.stack);
+
+            }
+        }
+
+
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.onPointerUp = function (po_event) {
@@ -4747,71 +4267,98 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.select_contour_between_slides = function (po_event/*, pv_is_shape_gragging*/) {
+        //-------------------------------------------------------------------
+        /*async*/ Shape_generator.prototype.read_result_refresh_premodel = function (po_data) {
 
 
-            // Выделение границ фигуры между кривыми
+            let lo_active_side = get_active_side_shape_generator(); //04102024
+            let lo_passive_side = get_passive_side_shape_generator(); //04102024
 
             try {
 
-                let lo_active_side = get_active_side_shape_generator();
-
-                let lo_clicked_splines_and_segment = lo_active_side.shapes.get_splines_and_segment_of_clicked_figure(po_event);
-
-                let lo_clicked_splines = {
-                    spline_left: lo_clicked_splines_and_segment.spline_left,
-                    spline_right: lo_clicked_splines_and_segment.spline_right
-                };
+                lo_active_side.progress_bar.set_display_value(51);
 
 
-                let lo_prev_clicked_splines = null;
+                let lv_url = "https://localhost:7095/CalcJBModel?method="
+                    + Constants.method_read_result_refresh_premodel
+                    + "&"
+                    + Constants.word_client_id + "=" + this.client_id
+                    + "&"
+                    + Constants.word_task_id + "=" + po_data.task_id
+                    + "&"
+                    + Constants.path_result_file + "=" + po_data.path_result_file
+                    + "&chdata=" + Math.random().toString(); // 23112024
 
-                if (lo_active_side.group_contours) {
-                    if (lo_active_side.group_contours.userData) {
 
-                        lo_prev_clicked_splines = lo_active_side.group_contours.userData;
-                    }
 
+                get_read_result_refresh_premodel(lv_url);
+
+
+                //--------------------------------------------------
+                async function get_read_result_refresh_premodel(pv_url) {
+                    //--------------------------------------------------
+                    await $.get(pv_url, "", lo_active_side.oncomplete_read_result_refresh_premodel);
                 }
-
-
-                lo_active_side.shapes.clear_group_contours();
-
-
-                if (lo_active_side.group_contours) { //04122024
-
-                    if (lo_active_side.group_contours.userData == null) {
-
-                        lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment/*, pv_is_shape_gragging*/);
-
-                    }
-                    else {
-
-
-                        if (lo_prev_clicked_splines) { 
-
-                            if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
-                                && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right) {
-
-                                lo_active_side.group_contours.userData = null;
-                            }
-                            else {
-                                lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment/*, pv_is_shape_gragging*/);
-                            }
-                        }
-                    }
-
-
-                }
-
 
 
             }
 
             catch (e) {
 
-                alert('error select_contour_between_slides: ' + e.stack);
+
+                lo_active_side.model_params_changed = false; //04102024
+                lo_passive_side.model_params_changed = false; //04102024
+
+                let lv_is_before = false;
+                lo_active_side.do_before_after_model_request(lv_is_before, false);
+                lo_passive_side.do_before_after_model_request(lv_is_before, false);
+
+                alert('error read_result_refresh_premodel: ' + e.stack);
+
+            }
+
+        }
+
+        //}
+
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.refreshModel = async function () {
+
+            try {
+
+                let lv_end_watching_progress_value = 50;
+                this.progress_bar = new ProgressBar(this, this.client_id, "https://localhost:7095/CalcJBModel", Constants.method_start_refresh_premodel, this.read_result_refresh_premodel, lv_end_watching_progress_value);
+                this.progress_bar.task_id = this.common_func.get_random_number_int(1, 9999999999).toString(); //22112024
+
+
+                this.progress_bar.set_display_value(3);
+
+
+                let lv_url = "https://localhost:7095/CalcJBModel?method="
+                    + Constants.method_start_refresh_premodel
+                    + "&"
+                    + Constants.word_client_id + "=" + this.client_id
+                    + "&"
+                    + Constants.word_task_id + "=" + this.progress_bar.task_id
+                    + "&chdata=" + Math.random().toString(); // 23112024
+
+
+                let lo_sides_data = this.read_model_sides_data();
+                lo_sides_data.task_id = this.progress_bar.task_id;
+
+                this.send_side_data_for_refresh_model(lv_url, lo_sides_data);
+
+
+            }
+
+            catch (e) {
+
+                this.model_params_changed = false; //29082024
+
+                alert('error refreshModel: ' + e.stack);
 
             }
         }
@@ -4819,74 +4366,273 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-        //////////------------------------------------------------------------------------
-        ////Shape_generator.prototype.onclick_shape = function (po_event) {
-
-        ////    ////    //14072024 {
-        ////    ////    //////////let lo_active_side_shape_generator = get_active_side_shape_generator();
-
-        ////    ////    //////////if (lo_active_side_shape_generator.was_draggable) {
-        ////    ////    //////////    lo_active_side_shape_generator.was_draggable = false;
-        ////    ////    //////////    return;
-        ////    ////    //////////}
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.reset_gui_parameters = function () {
 
 
+            try {
+
+                if (this.gui) {
+                    this.gui.close();
+                    this.gui.destroy();
+                }
+
+                this.gui = null;
+
+                this.gui = new GUI({ container: document.getElementById(this.id_prefix_wo_sharp + 'id_gui') });
+
+                this.gui.add(this.params, 'distance_bt_curves', 0, 40).step(0.5).name('Distance  between curves').onChange(this.onChange_distance_bt_curves).listen();//05112024
+                this.gui.add(this.params, 'shape_height', 20, 200).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param).listen();//05112024
+                this.gui.add(this.params, 'shape_width', 10, 100).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param).listen();//05112024
+
+                //this.gui.addColor(this.params, 'color').name('Color');
+
+                this.gui.open();
+
+            }
+
+            catch (e) {
+
+                alert('error reset_gui_parameters: ' + e.stack);
+
+            }
+
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.render = function () {
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                if (lo_active_side) {
+
+                    lo_active_side.renderer.render(
+                        lo_active_side.scene,
+                        lo_active_side.camera);
+
+                }
+
+            }
+
+            catch (e) {
+
+                alert('error render: ' + e.stack);
+
+            }
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.render_mod = function () {
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                //07012025 {
+                if (!lo_active_side) {
+                    return;
+                }
+                //07012025 }
+
+                if (lo_active_side.my_prefix != gc_id_prefix_end) { // 06122024
+
+
+                    if (lo_active_side) {
+
+                        lo_active_side.common_func.model_rotation(lo_active_side.group_parts_mod);
+
+                        lo_active_side.renderer_mod.render(lo_active_side.scene_mod, lo_active_side.camera_mod);
+
+
+
+                    }
+                }
+            }
+
+            catch (e) {
+
+                alert('error render_mod: ' + e.stack);
+
+            }
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.reset_event_handlers = function (po_side) {
+
+            try {
+
+                //let lo_active_side_shape_generator = get_active_side_shape_generator();
+                //let lo_passive_side_shape_generator = get_passive_side_shape_generator();
+
+                $(document).off('click  change pointerdown pointerup pointermove');//17062024
+                $(window).off('resize dblclick doubleclick mousemove');
+                $(window).off('resize dblclick doubleclick mousemove');
+                $(window).off('resize dblclick doubleclick mousemove');
+
+                $(document).unbind('click change pointerdown pointerup pointermove');//17062024
+                $(window).unbind('resize dblclick mousemove');
+
+                if (po_side) {
+
+                    if (po_side.controls) {
+
+                        if (po_side.render) {
+                            po_side.controls.removeEventListener('change', po_side.render);// очистка обработчика событий
+                        }
+                    }
+
+                    //if (this.render) {
+                    //    po_side.controls.removeEventListener('change', this.render);// очистка обработчика событий
+                    //}
+
+                }
+
+                //if (po_side.controls) {
+                //    po_side.controls.addEventListener('change', po_side.render);
+                //}
+
+
+                // очистка обработчиков событий
+                $(this.passive_id_prefix + "id_but_read_model").off("click");
+                $(this.passive_id_prefix + "id_but_new_model").off("click");
+                $(this.passive_id_prefix + "id_but_refresh").off("click");
+                $(this.passive_id_prefix + "id_chb_space_adjust").off("click");
+                $(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
+                $(this.passive_id_prefix + "id_but_del_spline").off("click");
+                $(this.passive_id_prefix + "id_but_add_spline").off("click");
+                $(this.passive_id_prefix + "id_but_save_model").off("click");
+                $(this.passive_id_prefix + "id_but_make_model").off("click");
+                $(this.passive_id_prefix + "id_but_set_color").off("click");
+                $(this.passive_id_prefix + "id_but_rotate_mode").off("click");
+                $(this.passive_id_prefix + "id_but_ch_nsegm").off("click");
+
+
+
+                //$(this.id_prefix + "id_chb_space_adjust").off("click").click(this.onclick_chb_space_adjust);
+                //$(this.id_prefix + "id_chb_curve_width_adjust").off("click").click(this.onclick_chb_curve_width_adjust);
+
+                //$(this.id_prefix + "id_but_read_model").off("click").click(this.onclick_read_model);
+
+                //$(this.id_prefix + "id_but_del_spline").off("click").click(this.onclick_del_spline);
+                //$(this.id_prefix + "id_but_add_spline").off("click").click(this.onclick_add_spline);
+                //$(this.id_prefix + "id_but_save_model").off("click").click(this.onclick_save_model);
+                //$(this.id_prefix + "id_but_make_model").off("click").click(this.onclick_make_model);
+                //$(this.id_prefix + "id_but_set_color").off("click").click(this.onclick_id_but_set_color);
+                //$(this.id_prefix + "id_but_rotate_mode").off("click").click(this.onclick_id_but_rotate_mode);
+
+                //$(this.id_prefix + "id_but_refresh").off("click").click(this.onclick_refresh_model);
+
+                //$(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(this.ondblclick_id_shape);//17062024
+                //$(this.id_prefix + this.id_side_shape_mod).off("dblclick").dblclick(this.ondblclick_id_shape);//25082024
+                //$(this.id_prefix + this.id_side_shape).dblclick(null);
+                //$(this.id_prefix + this.id_side_shape_mod).dblclick(null);//25082024
+
+                //--------------------------------------------------------------------------------------------
+
+                ////// обработчики событий gui
+
+
+                //}
+                //--------------------------------------------------------------------------------------------
+
+
+                // очистка обработчиков событий
+                document.removeEventListener('pointerdown', this.onPointerDown);
+                document.removeEventListener('pointerup', this.onPointerUp);
+                //document.addEventListener('pointermove', null);
+                window.removeEventListener('resize', this.onWindowResize);
+                window.removeEventListener('mousemove', this.onmousemove);
+
+                $(this.id_prefix + this.id_side_shape).dblclick(null);//17062024 
+
+                //if (lo_passive_side_shape_generator) {
+                //    document.removeEventListener('pointerdown', lo_passive_side_shape_generator.onPointerDown);
+
+                //    document.removeEventListener('pointerup', lo_passive_side_shape_generator.onPointerUp);
+                //    //document.addEventListener('pointermove', null);
+                //    window.removeEventListener('resize', lo_passive_side_shape_generator.onWindowResize);
+                //    window.removeEventListener('mousemove', lo_passive_side_shape_generator.onmousemove);
+
+                //    $(this.id_prefix + this.id_side_shape).off("dblclick").dblclick(lo_passive_side_shape_generator.ondblclick_id_shape);//17062024
+                //    $(this.id_prefix + this.id_side_shape).dblclick(null);//17062024 
+
+                //}
+
+
+                if (po_side) {
+                    document.removeEventListener('pointerdown', po_side.onPointerDown);
+                    document.removeEventListener('pointerup', po_side.onPointerUp);
+                    //document.addEventListener('pointermove', null);
+                    window.removeEventListener('resize', po_side.onWindowResize);
+                    window.removeEventListener('mousemove', po_side.onmousemove);
+
+                }
+
+
+                //17062024 {
 
 
 
 
-        ////    ////////25072024 {
+                //document.addEventListener('pointerdown', this.onPointerDown);
+                //document.addEventListener('pointerup', this.onPointerUp);
+                ////document.addEventListener('pointermove', onPointerMove);
+                //window.addEventListener('resize', this.onWindowResize);
+                //window.addEventListener('mousemove', this.onmousemove);
+                ////////////////////window.addEventListener('dblclick', this.ondblclick_id_shape);//17062024
 
-        ////    //////    let lo_active_side_shape_generator = get_active_side_shape_generator();
+                ////window.addEventListener('click', window_onclick	);
+                //$(this.passive_id_prefix + this.id_side_shape).off("click");
+                //$(this.passive_id_prefix + "id_but_mirror").off("click");
 
+                //$(this.id_prefix + this.id_side_shape).off("click").on("click", this.onclick_shape);//17072024 
 
-        ////    //////    if (lo_active_side_shape_generator.is_gragging) {
-        ////    //////        // dragging
-        ////    //////        return;
-        ////    //////    }
-
-        ////    //////    // click
-
-        ////    //////    let lo_clicked_splines_and_segment = lo_active_side_shape_generator.shapes.get_splines_and_segment_of_clicked_figure(po_event);
-
-        ////    //////    let lo_clicked_splines = {
-        ////    //////        spline_left: lo_clicked_splines_and_segment.spline_left,
-        ////    //////        spline_right: lo_clicked_splines_and_segment.spline_right
-        ////    //////    };
-
-        ////    //////    let lo_prev_clicked_splines = lo_active_side_shape_generator.group_contours.userData;
-
-        ////    //////    lo_active_side_shape_generator.shapes.clear_group_contours();
-
-        ////    //////    if (lo_active_side_shape_generator.group_contours.userData == null)
-        ////    //////    {
-        ////    //////        lo_active_side_shape_generator.shapes.select_shape_contour(lo_clicked_splines_and_segment);
-
-        ////    //////    }
-        ////    //////    else
-        ////    //////    {
-
-        ////    //////        if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
-        ////    //////            && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right)
-        ////    //////        {
-        ////    //////            lo_active_side_shape_generator.group_contours.userData = null;
-        ////    //////        }
-        ////    //////        else {
-        ////    //////            lo_active_side_shape_generator.shapes.select_shape_contour(lo_clicked_splines_and_segment);
-        ////    //////        }
-
-        ////    //////    }
-
-        ////    //////
+                //$(this.id_prefix + "id_but_mirror").off("click").on("click", this.but_mirror_onclick);
 
 
-        ////    //////    lo_active_side_shape_generator.render();
-
-        ////    //25072024 }
+                ////this.render();//05052024
+                //lo_active_side_shape_generator.onWindowResize();//21062024
 
 
 
-        ////}
+
+                // 05012025 this.render_mod();
+
+
+
+
+
+                ////--------------------------------------------------------------------
+                //// наблюдатель за изменением цвета элемента
+
+                //// Создание экземпляра MutationObserver
+                //const observer = new MutationObserver(this.common_func.handleColorChange);
+
+                //// Целевой элемент, за которым нужно следить
+                //const targetElement = document.getElementById(this.id_prefix_wo_sharp + "id_for_colorpicker");
+
+                //// Параметры наблюдения
+                //const config = { attributes: true, attributeFilter: ['style'] };
+
+                //// Начало наблюдения за целевым элементом
+                //observer.observe(targetElement, config); //, lf_callback);
+
+                ////--------------------------------------------------------------------
+
+
+            }
+            catch (e) {
+
+                alert('error reset_event_handlers: ' + e.stack);
+
+            }
+
+        }
 
 
 
@@ -4918,20 +4664,10 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 let lar_data1 = lo_up_side_shape_generator.read_side_model_data();
                 let lar_data2 = lo_lateral_side_shape_generator.read_side_model_data();
 
-
-
-
                 lo_sides_data.ColorParts = lar_colorParts;
                 lo_sides_data.data1 = lar_data1;
                 lo_sides_data.data2 = lar_data2;
 
-
-
-                ////return {
-                ////    ColorParts: lar_colorParts,
-                ////    data1: lar_data1,
-                ////    data2: lar_data2
-                ////}
 
             }
 
@@ -4949,33 +4685,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             let lar_ColorParts = [];
 
-            //lar_ColorParts = this.end_shape.ColorParts;
             lar_ColorParts = go_end_side_shape_generator.end_shape.ColorParts;
 
-
-            // 27012025 {
-            //return {
-            //    ColorParts: lar_ColorParts
-            //}
-
             return lar_ColorParts;
-
-            // 27012025 }
-
-        }
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.get_rectangle_coordinates_by_name = function (pv_name) {
-
-            let lo_gabarits = null;
-
-            let lo_rect = this.scene.getObjectByName(pv_name);
-
-            if (lo_rect) {
-                //13122024 lo_gabarits = this.shapes.GetTwoShapeIntersect(lo_rect, lo_rect);
-                lo_gabarits = this.common_func.GetTwoShapeIntersect(lo_rect, lo_rect); //13122024
-            }
-
-            return lo_gabarits;
 
         }
 
@@ -5093,6 +4805,492 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
             return ls_parameters;
         }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.select_contour_between_slides = function (po_event/*, pv_is_shape_gragging*/) {
+
+
+            // Выделение границ фигуры между кривыми
+
+            try {
+
+                let lo_active_side = get_active_side_shape_generator();
+
+                let lo_clicked_splines_and_segment = lo_active_side.shapes.get_splines_and_segment_of_clicked_figure(po_event);
+
+                let lo_clicked_splines = {
+                    spline_left: lo_clicked_splines_and_segment.spline_left,
+                    spline_right: lo_clicked_splines_and_segment.spline_right
+                };
+
+
+                let lo_prev_clicked_splines = null;
+
+                if (lo_active_side.group_contours) {
+                    if (lo_active_side.group_contours.userData) {
+
+                        lo_prev_clicked_splines = lo_active_side.group_contours.userData;
+                    }
+
+                }
+
+
+                lo_active_side.shapes.clear_group_contours();
+
+
+                if (lo_active_side.group_contours) { //04122024
+
+                    if (lo_active_side.group_contours.userData == null) {
+
+                        lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment/*, pv_is_shape_gragging*/);
+
+                    }
+                    else {
+
+
+                        if (lo_prev_clicked_splines) {
+
+                            if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
+                                && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right) {
+
+                                lo_active_side.group_contours.userData = null;
+                            }
+                            else {
+                                lo_active_side.shapes.select_shape_contour(lo_clicked_splines_and_segment/*, pv_is_shape_gragging*/);
+                            }
+                        }
+                    }
+
+
+                }
+
+
+
+            }
+
+            catch (e) {
+
+                alert('error select_contour_between_slides: ' + e.stack);
+
+            }
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.send_side_data_for_refresh_model = function (pv_url, po_json_data) {
+
+
+            try {
+                let lv_is_before = true;
+                this.do_before_after_model_request(lv_is_before, true);
+
+                send_for_refresh_model(pv_url, po_json_data);
+
+                //-------------------------------------------------------------------
+                async function send_for_refresh_model(pv_url, po_json_data) {
+
+
+                    let lo_active_side = get_active_side_shape_generator(); //04102024
+                    let lo_passive_side = get_passive_side_shape_generator(); //04102024
+
+                    try {
+
+                        var lv_for_body = JSON.stringify(po_json_data);
+                        const response = await fetch(pv_url, {
+                            method: "POST",
+                            headers: {
+                                "Content-Type": "application/json"
+                            },
+                            body: lv_for_body
+                        });
+
+                        ////const message = await response.json();
+                        const message = await response.text();
+
+                        lo_active_side.OnCompleteRefreshModel(message);
+
+                    }
+
+                    catch (e) {
+
+
+                        lo_active_side.model_params_changed = false;
+
+                        let lv_is_before = false;
+                        lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+                        //alert('error send_for_refresh_model: ' + e.stack);
+                        go_this.Show_message("Error updating model!", 2000);
+
+
+                    }
+
+                }
+
+
+            }
+
+            catch (e) {
+
+                this.model_params_changed = false; //29082024
+
+                alert('error send_side_data: ' + e.stack);
+
+            }
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.send_side_data_for_start_make_model = function (pv_url, po_json_data) {
+
+
+            try {
+
+                let lv_is_before = true;
+                this.do_before_after_model_request(lv_is_before, true);
+
+                send_for_start_make_model(pv_url, po_json_data);
+
+                //-------------------------------------------------------------------
+                async function send_for_start_make_model(pv_url, po_json_data) {
+
+
+                    let lo_active_side = get_active_side_shape_generator(); //04102024
+                    let lo_passive_side = get_passive_side_shape_generator(); //04102024
+
+                    try {
+
+                        var lv_for_body = JSON.stringify(po_json_data);
+                        const response = await fetch(pv_url, {
+                            method: "POST",
+                            headers: {
+                                //"Accept": "application/json",
+                                "Content-Type": "application/json"
+                            },
+                            body: lv_for_body
+                        });
+
+                        const message = await response.json();
+                        //const message = await response.text();
+
+                        lo_active_side.OnCompleteStartMakeModel(message);
+
+                    }
+
+                    catch (e) {
+
+                        lo_active_side.model_params_changed = false;
+
+                        let lv_is_before = false;
+                        lo_active_side.do_before_after_model_request(lv_is_before, false);
+
+
+                        //alert('error send_for_start_make_model: ' + e.stack);
+                        lo_active_side.common_func.Show_message("Error making model!", 2000);
+
+
+                    }
+
+
+                }
+            }
+
+            catch (e) {
+
+                alert('error send_side_data_make_model: ' + e.stack);
+
+            }
+        }
+
+
+        ////////-------------------------------------------------------------------
+        //////Shape_generator.prototype.on_load_read_model_part = function (geometry_mod) {
+
+
+
+        //////    let lo_active_side = get_active_side_shape_generator();
+        //////    let lo_passive_side = get_passive_side_shape_generator();
+
+        //////    geometry_mod.center();// Объект - в центре вращения
+
+
+
+        //////    //////////////////////const dirLight2 = new THREE.DirectionalLight(0xccccff, 3);
+        //////    //////////////////////dirLight2.position.set(- 1, 0.75, - 0.5);
+        //////    //////////////////////lo_active_side.scene_mod.add(dirLight2);
+
+
+        //////    //const material_mod = new THREE.MeshPhongMaterial(/*{ color: 0x555555 }*/);
+
+
+        //////    //const material_mod = new THREE.MeshPhongMaterial({
+        //////    //    specular: 0x444444,
+        //////    //    //map: decalDiffuse,
+        //////    //    //normalMap: decalNormal,
+        //////    //    normalScale: new THREE.Vector2(1, 1),
+        //////    //    shininess: 30,
+        //////    //    transparent: false, //true,
+        //////    //    depthTest: true,
+        //////    //    depthWrite: false,
+        //////    //    polygonOffset: true,
+        //////    //    polygonOffsetFactor: - 4,
+        //////    //    wireframe: false //true // false
+        //////    //});
+
+
+        //////    ////const material_mod = new THREE.MeshLambertMaterial({
+        //////    ////    //color: 0xffffff,
+        //////    ////    color: 0xfff0f0,
+        //////    ////    opacity: 0.5,
+        //////    ////    //side: THREE.DoubleSide,
+        //////    ////    transparent: true
+        //////    ////});
+
+
+        //////    //const material_mod = new THREE.MeshBasicMaterial({
+        //////    //    color: 0x00ff00, // черный цвет номера
+        //////    //    side: THREE.DoubleSide,
+        //////    //    shading: THREE.FlatShading
+        //////    //});
+
+
+
+        //////    ////camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 100);
+        //////    ////camera.position.set(1, 2, - 3);
+        //////    ////camera.lookAt(0, 1, 0);
+        //////    //var material_mod = new THREE.MeshBasicMaterial({ vertexColors: THREE.FaceColors });
+        //////    ///const material_mod = new THREE.MeshPhongMaterial({ color: 0xcbcbcb, depthWrite: false }) 
+
+        //////    //////let materialFront = new THREE.MeshBasicMaterial({ color: new THREE.Color(Math.random() * 0xffffff) });
+        //////    //////let materialSide = new THREE.MeshBasicMaterial({ color: new THREE.Color(Math.random() * 0x00ffff) });
+
+        //////    //////let materialArray = [materialFront, materialSide];
+        //////    //////let material_mod = new THREE.MeshLambertMaterial(materialArray);
+
+
+        //////    //const dirLight = new THREE.DirectionalLight(0xffffff, 3);
+        //////    //dirLight.position.set(- 3, 10, - 10);
+        //////    //dirLight.castShadow = true;
+        //////    //dirLight.shadow.camera.top = 2;
+        //////    //dirLight.shadow.camera.bottom = - 2;
+        //////    //dirLight.shadow.camera.left = - 2;
+        //////    //dirLight.shadow.camera.right = 2;
+        //////    //dirLight.shadow.camera.near = 0.1;
+        //////    //dirLight.shadow.camera.far = 40;
+        //////    //lo_active_side.scene_mod.add(dirLight);
+
+
+
+        //////    //=========================================================================
+        //////    const mesh_mod = new THREE.Mesh(geometry_mod, lo_active_side.material_mod);
+
+        //////    lo_active_side.scene_mod.add(mesh_mod);
+
+
+        //////    $('#up_id_loading_indicator').hide();// прекращение индикации ожидания
+        //////    $('#lateral_id_loading_indicator').hide();// прекращение индикации ожидания
+
+
+        //////    lo_active_side.animate_mod();
+
+        //////    lo_active_side.is_building_model = false;
+        //////    lo_passive_side.is_building_model = false;
+
+
+        //////}
+
+
+
+        //-----------------------------------------------------------------
+        // Задание цвета фигур по считанным данным
+        Shape_generator.prototype.set_meshes_color_by_data = function (/*par_splines_order*/) {
+
+            try {
+
+                //this.clear_group_color_mesh();//03082024
+
+                let lar_colorparts = go_end_side_shape_generator.end_shape.ColorParts;
+
+                let lar_splines_order = null;
+
+                let lo_spline_left = null;
+                let lo_spline_right = null;
+                let lv_cell_color = null;
+
+
+                if (this != go_end_side_shape_generator) {
+
+                    lar_splines_order = this.shapes.SortSplinesOrderFromLeftToRight();
+                }
+
+
+
+                for (let lv_i = 0; lv_i < lar_colorparts.length; lv_i++) {
+
+                    for (let lv_j = 0; lv_j < lar_colorparts[0].length; lv_j++) {
+
+                        if (lar_colorparts[lv_i][lv_j] == null || typeof lar_colorparts[lv_i][lv_j] == "undefined") {
+                            continue;
+                        }
+
+                        if (!lar_colorparts[lv_i][lv_j].cell_color || typeof lar_colorparts[lv_i][lv_j].cell_color == "undefined") {
+                            continue;
+                        }
+
+
+                        lv_cell_color = lar_colorparts[lv_i][lv_j].cell_color;
+
+
+                        if (this == go_end_side_shape_generator) { // Торцовая сторона
+
+                            this.end_shape.set_color_to_rectangle_cell(lv_cell_color, lv_i, lv_j);
+
+                        }
+
+                        //else {
+
+                        if (this == go_up_side_shape_generator) { // Верхняя сторона
+
+                            if (lv_i == 0) {
+
+                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_j - 1);
+                                lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_j);
+                                this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, true, false, true);
+
+                            }
+                        }
+
+                        if (this == go_lateral_side_shape_generator) { // Боковая сторона
+
+                            if (lv_j == lar_colorparts.length - 1) {
+
+                                lo_spline_left = this.common_func.getSplineByNumber(lar_splines_order, lv_i - 1);
+                                lo_spline_right = this.common_func.getSplineByNumber(lar_splines_order, lv_i);
+                                this.shapes.draw_contour_and_shape(lv_cell_color, lo_spline_left, lo_spline_right, false, true, false, true);
+
+                            }
+                        }
+
+                    }
+                }
+
+
+
+            }
+
+            catch (e) {
+
+                alert('error set_meshes_color_by_data: ' + e.stack);
+
+            }
+        }
+
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.set_visible_rotate_controls = function (pv_is_visible) {
+
+            try {
+
+                if (pv_is_visible) {
+
+                    $("#up_id_dist_part_slider").css("visibility", "visible");
+                    $("#lateral_id_dist_part_slider").css("visibility", "visible");
+                }
+                else {
+
+                    $("#up_id_dist_part_slider").css("visibility", "hidden");
+                    $("#lateral_id_dist_part_slider").css("visibility", "hidden");
+                }
+
+
+
+            }
+
+            catch (e) {
+
+                alert('error switch_visible_rotate_controls: ' + e.stack);
+
+            }
+
+        }
+
+
+
+        //////////------------------------------------------------------------------------
+        ////Shape_generator.prototype.onclick_shape = function (po_event) {
+
+        ////    ////    //14072024 {
+        ////    ////    //////////let lo_active_side_shape_generator = get_active_side_shape_generator();
+
+        ////    ////    //////////if (lo_active_side_shape_generator.was_draggable) {
+        ////    ////    //////////    lo_active_side_shape_generator.was_draggable = false;
+        ////    ////    //////////    return;
+        ////    ////    //////////}
+
+
+
+
+
+
+        ////    ////////25072024 {
+
+        ////    //////    let lo_active_side_shape_generator = get_active_side_shape_generator();
+
+
+        ////    //////    if (lo_active_side_shape_generator.is_gragging) {
+        ////    //////        // dragging
+        ////    //////        return;
+        ////    //////    }
+
+        ////    //////    // click
+
+        ////    //////    let lo_clicked_splines_and_segment = lo_active_side_shape_generator.shapes.get_splines_and_segment_of_clicked_figure(po_event);
+
+        ////    //////    let lo_clicked_splines = {
+        ////    //////        spline_left: lo_clicked_splines_and_segment.spline_left,
+        ////    //////        spline_right: lo_clicked_splines_and_segment.spline_right
+        ////    //////    };
+
+        ////    //////    let lo_prev_clicked_splines = lo_active_side_shape_generator.group_contours.userData;
+
+        ////    //////    lo_active_side_shape_generator.shapes.clear_group_contours();
+
+        ////    //////    if (lo_active_side_shape_generator.group_contours.userData == null)
+        ////    //////    {
+        ////    //////        lo_active_side_shape_generator.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+
+        ////    //////    }
+        ////    //////    else
+        ////    //////    {
+
+        ////    //////        if (lo_clicked_splines.spline_left == lo_prev_clicked_splines.spline_left
+        ////    //////            && lo_clicked_splines.spline_right == lo_prev_clicked_splines.spline_right)
+        ////    //////        {
+        ////    //////            lo_active_side_shape_generator.group_contours.userData = null;
+        ////    //////        }
+        ////    //////        else {
+        ////    //////            lo_active_side_shape_generator.shapes.select_shape_contour(lo_clicked_splines_and_segment);
+        ////    //////        }
+
+        ////    //////    }
+
+        ////    //////
+
+
+        ////    //////    lo_active_side_shape_generator.render();
+
+        ////    //25072024 }
+
+
+
+        ////}
+
+
+
+
         //const cv_width = this.params.container_width;
         //const cv_height = this.params.container_height;
         //const cv_shape_width = this.params.shape_width;
@@ -5100,180 +5298,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
 
 
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.draw_shape_by_sides_data = function (po_sides_data) {
-
-            try {
-                let ls_sides_data = JSON.parse(po_sides_data);
-
-                go_up_side_shape_generator.clear_shape_objects(go_up_side_shape_generator);
-
-                //go_end_side_shape_generator.ColorParts = ls_sides_data.ColorParts;//29012025
-
-
-                // 16032025 {
-                // Перезапись торцовых цветовых данных сторонам
-
-                ls_sides_data.data1.CurveColors = [];
-                ls_sides_data.data2.CurveColors = [];
-
-
-                let lv_length1 = ls_sides_data.ColorParts[0].length;
-                let lv_length2 = ls_sides_data.ColorParts.length;
-
-                for (let lv_i = 0; lv_i < lv_length1; lv_i++ )
-                {
-                    ls_sides_data.data1.CurveColors.push(ls_sides_data.ColorParts[0][lv_i].cell_color);
-
-                }
-
-                for (let lv_i = 0; lv_i < lv_length2; lv_i++ )
-                {
-                    ls_sides_data.data2.CurveColors.push(ls_sides_data.ColorParts[lv_i][lv_length1 - 1].cell_color);
-
-                }
-                // 16032025 }
-
-
-                go_up_side_shape_generator.make_shape(true, ls_sides_data.data1);
-                go_up_side_shape_generator.render();
-
-
-                go_lateral_side_shape_generator.clear_shape_objects(go_lateral_side_shape_generator);
-                go_lateral_side_shape_generator.make_shape(true, ls_sides_data.data2);
-                //131220244 go_lateral_side_shape_generator.render();
-
-
-                go_end_side_shape_generator.clear_shape_objects(go_end_side_shape_generator);//27012025
-
-                go_end_side_shape_generator.end_shape.redraw_end_shape(
-                    null, //po_main,
-                    null, //pv_added_spline_num,
-                    null, //pv_deleted_spline_num,
-                    true, //po_is_use_data, 
-                    ls_sides_data
-                );
-
-
-                // 29012025 {
-                go_up_side_shape_generator.set_meshes_color_by_data();
-                go_lateral_side_shape_generator.set_meshes_color_by_data();
-                go_end_side_shape_generator.set_meshes_color_by_data();
-
-
-                go_up_side_shape_generator.render();
-                go_lateral_side_shape_generator.render();
-                go_end_side_shape_generator.render();
-                // 29012025 }
-            }
-
-            catch (e) {
-
-                go_up_side_shape_generator.common_func.hideWaitingIndicator();
-
-                alert('error draw_shape_by_sides_data: ' + e.stack);
-
-            }
-        }
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.clear_shape_objects = function (po_side) {
-
-            try {
-
-
-                //this.common_func.clear_group_childrens(po_side.main_curves_group);
-                //this.common_func.clear_group_childrens(po_side.group_contours);
-                //this.common_func.clear_group_childrens(po_side.group_color_mesh);
-                //this.common_func.clear_group_childrens(po_side.group_rect);
-
-                if (this.shapes) {
-
-                    this.shapes.shape_amount_curves = 0;// po_params.shape_amount_curves;
-                    //this.spline_amount_segments = po_params.spline_amount_segments;
-
-                    this.shapes.shape_width = 0;// po_params.shape_width;
-                    this.shapes.shape_height = 0; // po_params.shape_height;
-
-                    this.shapes.ajust_shape_by_curves = false;// po_params.ajust_shape_by_curves;
-                    this.shapes.ajust_curves_by_shape = false;// po_params.ajust_curves_by_shape;
-
-                    this.shapes.distance_between_curves_in_percent_of_width = 0;// po_params.distance_between_curves_in_percent_of_width;
-                    this.shapes.distance_between_curves = 0;// po_params.distance_bt_curves;
-
-                    this.shapes.group_rect = null;
-                    this.shapes.segment_gabarits = null; // new struc_gabarits();
-                    this.shapes.segment_transform_data = null; // new struc_segment_transform_data();
-                    this.shapes.ar_splines = [];// Список group - сплайнов кривых в сцене
-                    this.shapes.ar_splines_nodes = [];// Список узлов всех сплайнов
-                    this.shapes.ar_selected_segments = []; // список выбранных сегментов 
-                    //11042024 this.shapes.height_koef_previous = 0; // 1;
-                    this.shapes.ar_shapes_colors = []; // список объектов со сплайнами и цветами фигур, упорядоченных слева направо
-
-                }
-
-
-
-
-
-                if (po_side) {
-                    po_side.segment_transform_data = null;
-                    po_side.segment_gabarits = null;
-                    po_side.segments = null;
-                    po_side.splines = null;
-                    po_side.shapes = null;
-                }
-
-
-
-                let lar_no_delete = ["AmbientLight", "PointLight", "SpotLight", "Mesh", "Group"];// /*, "Group"*/14102024
-                this.common_func.clearScene(po_side.scene, lar_no_delete);
-
-
-                //return;
-
-                if (this.rectangle) {
-                    this.rectangle.shape.scale.y = 1;
-                }
-            }
-
-            catch (e) {
-
-                alert('error clear_shape_objects: ' + e.stack);
-
-            }
-        }
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.onPassInterval = function (po_this) {
-
-            try {
-
-                let lo_passive_side = get_passive_side_shape_generator();
-
-                if (po_this.model_params_changed) {
-
-                    if (!po_this.is_building_model && !lo_passive_side.is_building_model) {
-
-                        po_this.model_params_changed = false;
-                        ////19102024 po_this.is_building_model = true;
-                        ////19102024 lo_passive_side.is_building_model = true;
-
-
-                        po_this.refreshModel();
-
-                    }
-                }
-
-            }
-
-            catch (e) {
-
-                alert('error onPassInterval: ' + e.stack);
-
-            }
-        }
 
 
         ////////------------------------------------------------------------------------
