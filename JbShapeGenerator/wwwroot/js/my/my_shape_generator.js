@@ -1218,7 +1218,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             try {
 
-                go_end_side_shape_generator.end_shape.draw_cells_contours_and_texts();//17032025
+                //18032025 go_end_side_shape_generator.end_shape.draw_cells_contours_and_texts();//17032025
                 ////go_end_side_shape_generator.end_shape.refresh_end_shapes(); //23122024
 
 

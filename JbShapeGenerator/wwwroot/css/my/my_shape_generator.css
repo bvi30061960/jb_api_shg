@@ -604,31 +604,6 @@ my_class_invisible {
     display: none;
 }
 
-/*#up_id_tab_button_bar3,
-#lateral_id_tab_button_bar3,
-#end_id_tab_button_bar3 {
-    border-spacing: 0 50px;
-}
-*/
-/*
-#up_id_div_button_bar3 table,
-#lateral_id_div_button_bar3 table,
-#end_id_div_button_bar3 table {
-    border-spacing: 0 50px;
-}*/
-
-/*#up_id_tab_button_bar3 tr,
-    #lateral_id_tab_button_bar3 tr,
-    #end_id_tab_button_bar3 tr {
-        display: block;
-        margin-bottom: 3px;*/ /* Отступ между строками */
-/*}*/
-
-/*#up_id_tab_button_bar3 td,
-#lateral_id_tab_button_bar3 td,
-#end_id_tab_button_bar3 td {
-    padding: 1px 0;
-}*/
 
 
 /* кнопки toolbar */
@@ -640,6 +615,103 @@ my_class_invisible {
     margin: 2px 5px 2px 5px;
 }
 
+
+/*================================ кнопки с иконками с сайта https://fontawesome.com ========================== { =====*/
+.icon-btn {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 1rem; /* Reduced icon size */
+}
+
+.icon-btn:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 50%;
+}
+
+.fa-list {
+    color: #8A2BE2; /*#FFD700;*/
+}
+
+/*
+.fa-folder-open {
+    color: #FFD700;*/ /* жёлтый */
+/*}*/
+
+/* Gold */
+.fa-plus-square {
+    color: #32CD32; /* #8A2BE2;  */
+}
+
+/* Lime Green */
+/*.fa-sync {
+    color: #1E90FF;
+}
+*/
+
+.fa-arrows-rotate {
+    color: #1E90FF;
+}
+
+/* Dodger Blue */
+.fa-save {
+    color: #8A2BE2;
+}
+/* Blue Violet */
+.fa-cube {
+    color: #FF4500;
+}
+
+
+/* Orange Red */
+/*.fa-random {
+    color: #FF6347;
+}*/
+
+/* Orange Red */
+.fa-brands fa-airbnb {
+    color: #FF6347;
+}
+
+
+
+/* Tomato */
+/*.fa-dice {
+    color: #20B2AA;
+}*/
+.fa-shuffle {
+    color: #20B2AA;
+}
+
+
+/* Light Sea Green */
+.fa-palette {
+    color: #FF69B4;
+}
+/* Hot Pink */
+.fa-trash {
+    color: #DC143C;
+}
+/* Crimson */
+.fa-level-up-alt {
+    color: #4682B4;
+}
+/* Steel Blue */
+.fa-eraser {
+    color: #708090;
+}
+/* Slate Gray */
+.fa-draw-polygon {
+    color: #FFD700;
+}
+/* Gold */
+
+/*================================ кнопки с иконками с сайта https://fontawesome.com ============================ } ==*/
+
+
+
+
 /*================================ отладка ===============================*/
-/*  * {   border: 1px solid red; } */
+/*  * {   border: 1px solid red; }  */
 /*================================ отладка ===============================*/
