@@ -146,12 +146,12 @@
 
             <div id=@id_shg_right>
 
-                <div id=@id_shg_right_top>
+                <div id=@id_shg_right_top>  @* margin-top:1em; *@
 
 
                     <div id=@id_pos_color_picker style="display:none"></div>
 
-                    <div id=@id_my_gui_1>
+                    <div id=@id_my_gui_1> @* style="margin-bottom:2em;" *@
                         <div>
                             <input type="checkbox" id=@id_chb_space_adjust checked>
                             <label for=@id_chb_space_adjust><b>&nbsp;Adjusting space btw curves by the shape</b></label>
@@ -168,6 +168,13 @@
                         </div>
 
                     </div>
+
+
+                    @* // <br />
+                    // <br />
+                    // <br />
+                    // <br /> *@
+
 
                     <div id=@id_my_gui_2>
 
@@ -220,10 +227,12 @@
 
                     </div>
 
+
+
                     <div id=@id_gui></div>
 
 
-                    <div id=@id_my_gui_3>
+                    <div id=@id_my_gui_3 >
 
                         <div id=@id_div_button_bar3 style="width:100%; padding-left:20px;">
 
@@ -249,6 +258,29 @@
 
 
 
+                                <tr>
+                                    <td>
+                                        @* <button id=@id_but_del_segment class="btn btn-sm  btn-primary " title="Delete selected segment"> <i class="bi-node-minus"></i> </button> *@
+                                        <button id=@id_but_del_segment class="icon-btn" title="Delete selected segment"> <i class="fas fa-circle-minus"></i> </button>
+                                    </td>
+
+                                    <td>
+                                        @* <button id=@id_but_add_segment class="btn btn-sm btn-primary btn-toolbar" title="Add above selected segment"> <i class="bi-node-plus"></i> </button> *@
+                                        <button id=@id_but_add_segment class="icon-btn" title="Add above selected segment"> <i class="fas fa-circle-plus"></i> </button>
+                                    </td>
+
+                                    <td>
+                                        @* <button id=@id_but_del_spline class="btn btn-sm btn-primary btn-toolbar" title="Delete selected curve"> <i class="bi-journal-minus"></i> </button> *@
+                                        <button id=@id_but_del_spline class="icon-btn" title="Delete selected curve"> <i class="fas fa-minus"></i> </button>
+                                    </td>
+
+                                    <td>
+                                        @* <button id=@id_but_add_spline class="btn btn-sm  btn-group-sm btn-primary " title="Add curve"> <i class="bi-journal-plus"></i> </button> *@
+                                        <button id=@id_but_add_spline class="icon-btn" title="Add curve"><i class="fas fa-plus"></i></button>
+                                    </td>
+
+
+                                </tr>
 
 
 

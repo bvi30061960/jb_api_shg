@@ -341,7 +341,7 @@ opacity: 1;
     width: 80%;
     /*margin-left: auto;
     margin-right: auto;*/
-    margin: auto;
+    /*margin: auto;*/
 }
 
 
@@ -352,7 +352,8 @@ opacity: 1;
     padding-bottom: 2vh;
     padding-left: 1em;
     text-align: left;
-    font-size: 0.7em
+    font-size: 0.7em;
+    margin-bottom: 3vh;
 }
 
 
@@ -690,9 +691,17 @@ my_class_invisible {
     color: #FF69B4;
 }
 /* Hot Pink */
-.fa-trash {
+/*.fa-trash {
+    color: #DC143C;
+}*/
+
+.fa-minus {
     color: #DC143C;
 }
+.fa-circle-minus {
+    color: #DC143C;
+}
+
 /* Crimson */
 .fa-level-up-alt {
     color: #4682B4;
@@ -705,7 +714,31 @@ my_class_invisible {
 .fa-draw-polygon {
     color: #FFD700;
 }
+
 /* Gold */
+
+
+.fa-circle-minus {
+    color: #DC143C;   /* #708090;*/
+}
+
+
+.fa-minus {
+    color: #DC143C;   /* #708090;*/
+}
+
+
+.fa-circle-plus {
+    color: #32CD32;
+}
+
+
+.fa-plus {
+    color: #32CD32;
+}
+
+
+
 
 /*================================ кнопки с иконками с сайта https://fontawesome.com ============================ } ==*/
 
