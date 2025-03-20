@@ -1,0 +1,38 @@
+﻿// Configure bundling and minification for the project.
+// More info at https://go.microsoft.com/fwlink/?LinkId=808241
+[
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    // An array of relative input file paths. Globbing patterns supported
+    "inputFiles": [
+      "wwwroot/css/my/my_shape_generator.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/my/my_validation.js",
+      "wwwroot/js/my/my_common_const.js",
+      "wwwroot/js/my/my_shape_generator.js",
+      "wwwroot/js/my/my_common_types.js",
+      "wwwroot/js/my/my_common_func.js",
+      "wwwroot/js/my/my_segments.js",
+      "wwwroot/js/my/my_splines.js",
+      "wwwroot/js/my/my_shapes.js",
+      "wwwroot/js/my/my_progress_dialog.js",
+      "wwwroot/js/my/my_filesaver.js",
+      "wwwroot/js/my/my_tab_orders.js",
+      "wwwroot/js/my/my_end_shape.js",
+      "wwwroot/js/my/my_grid_select_models.js",
+      "wwwroot/js/my/my_progress_bar.js",
+      "wwwroot/js/my/my_rectangle.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": false,
+      "renameLocals": false
+    },
+    // Optinally generate .map file
+    "sourceMap": false
+  }
+]

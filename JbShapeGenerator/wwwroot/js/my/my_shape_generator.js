@@ -83,7 +83,7 @@ var go_active_side_shape_generator = null;
 var go_passive_side_shape_generator = null;
 
 
-start();
+start(); // точка запуска javascript
 
 
 function start() {

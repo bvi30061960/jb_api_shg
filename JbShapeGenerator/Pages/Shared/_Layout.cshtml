@@ -16,7 +16,7 @@
 
 
 
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* 20032025 <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" /> *@
 
     @* <link rel="stylesheet" href="~/JbShapeGenerator.styles.css" asp-append-version="true" /> *@
 
@@ -126,9 +126,8 @@
  04022025 } *@ 
 
 
-
+    @* 19032025 {  
     <script src="~/js/my/my_validation.js"></script>
-
     <script type="module" src="~/js/my/my_common_const.js"></script>
     <script type="module" src="~/js/my/my_shape_generator.js"></script>
     <script type="module" src="~/js/my/my_common_types.js"></script>
@@ -138,13 +137,10 @@
     <script type="module" src="~/js/my/my_shapes.js"></script>
     <script type="module" src="~/js/my/my_progress_dialog.js"></script>
     <script src="~/js/my/my_filesaver.js"></script>
-
     <script type="module" src="~/js/my/my_tab_orders.js"></script>
+     19032025 } *@
 
-
-    @* <script type="module" src="~/js/my/my_start.js?version=1"></script> *@
-    @* <script type="module" src="~/js/my/my_segment.js"></script> *@
-    @*  <script type="module" src="~/js/my/my_spline.js"></script> *@
+    <script type="module" src="~/js/bundled_my_shape_generator.js"></script>
 
 </head>
 
@@ -182,13 +178,6 @@
 
 
 
-    @*     <script type="module" src="~/js/my/my_draw_spline.js"></script>*@
-
-    @*  <div style="text-align:center"> *@
-
-
-
-
     @* <form id="id_mainForm"> *@
     @RenderBody()
 
@@ -207,13 +196,11 @@
     <div id="id_div_footer" style="text-align:center; ">
             &copy; 2023 - JbShapeGenerator 
     </div>
- *@
+    *@
 
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-
-    @* <script src="~/js/jquery/jquery.colorpicker.min.js"></script> *@ 
+   @* 20032025 <script src="~/js/site.js" asp-append-version="true"></script> *@
     <script src="~/js/jquery/jquery.colorpicker.js"></script>
 
 
