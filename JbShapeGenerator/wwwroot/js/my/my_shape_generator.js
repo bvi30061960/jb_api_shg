@@ -407,8 +407,16 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         ajust_shape_by_curves: false,
         distance_between_curves_in_percent_of_width: 10,
         distance_bt_curves: 30,
-        is_space_adjust: $(this.id_prefix + "id_chb_space_adjust")[0].checked, //false, // ;//,// $("id_chb_space_adjust")[0].checked,
-        is_curve_width_adjust: $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked, // ;// // $("id_chb_curve_width_adjust")[0].checked
+
+        //20052025 {
+        ////is_space_adjust: $(this.id_prefix + "id_chb_space_adjust")[0].checked, //false, // ;//,// $("id_chb_space_adjust")[0].checked,
+        ////is_curve_width_adjust: $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked, // ;// // $("id_chb_curve_width_adjust")[0].checked
+        is_space_adjust: true,
+        is_curve_width_adjust:true,
+        //20052025 }
+
+
+
         is_show_text_labels: $(this.id_prefix + "id_chb_show_text_labels")[0].checked,
 
         color: '#0000ff'
@@ -460,8 +468,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
             this.init_containers_and_controls(/*pv_prefix *//*30112024*/);
             this.init_three_elements(/*pv_prefix *//*30112024*/);
-            ////////////////this.animate_mod();//04122024
-
 
             // Загрузка данных начальной премодели
             /// 26012025 this.load_initial_model(/*pv_prefix*/ /*30112024*/);
@@ -758,20 +764,6 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
             }
         }
 
-
-
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.but_mirror_onclick = function () {
-
-            // Сделать зеркальное отражение выделенных сегментов
-            let lo_active_side = get_active_side_shape_generator();
-            lo_active_side.shapes.make_mirror_selected_segments();
-
-            lo_active_side.shapes.adjust_splines_by_external_shape();
-
-            lo_active_side.render();
-
-        }
 
 
 
@@ -1481,8 +1473,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 $(this.passive_id_prefix + "id_but_refresh").off("click");
 
-                $(this.passive_id_prefix + "id_chb_space_adjust").off("click");
-                $(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
+                ////20032025 {
+                //$(this.passive_id_prefix + "id_chb_space_adjust").off("click");
+                //$(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
+                ////20032025 }
+
                 $(this.passive_id_prefix + "id_chb_show_text_labels").off("click");
 
 
@@ -1496,9 +1491,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $(this.passive_id_prefix + "id_but_ch_nsegm").off("click");
 
 
+                //20032025 {
+                ////$(this.id_prefix + "id_chb_space_adjust").off("click").click(this.onclick_chb_space_adjust);
+                ////$(this.id_prefix + "id_chb_curve_width_adjust").off("click").click(this.onclick_chb_curve_width_adjust);
+                //20032025 }
 
-                $(this.id_prefix + "id_chb_space_adjust").off("click").click(this.onclick_chb_space_adjust);
-                $(this.id_prefix + "id_chb_curve_width_adjust").off("click").click(this.onclick_chb_curve_width_adjust);
                 $(this.id_prefix + "id_chb_show_text_labels").off("click").click(this.onclick_chb_show_text_labels);
 
                 $(this.id_prefix + "id_but_read_model").off("click").click(this.onclick_read_model);
@@ -1588,7 +1585,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 $(this.id_prefix + this.id_side_shape).off("click").on("click", this.onclick_shape);//17072024 
 
-                $(this.id_prefix + "id_but_mirror").off("click").on("click", this.but_mirror_onclick);
+                $(this.id_prefix + "id_but_mirror").off("click").on("click", this.onclick_but_mirror);
                 $(this.id_prefix + "id_but_del_segment").off("click").on("click", this.but_delete_segment_onclick);
                 $(this.id_prefix + "id_but_add_segment").off("click").on("click", this.but_insert_segment_onclick);
                 $(this.id_prefix + "id_but_random").off("click").on("click", this.but_make_random_onclick);
@@ -3406,28 +3403,34 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.onclick_del_spline = function () {
 
             let lo_active_side = get_active_side_shape_generator();
+
             lo_active_side.shapes.delete_splines();
 
         }
 
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.onclick_chb_space_adjust = function (po_event, pv_value) {
 
-            let lo_active_side = get_active_side_shape_generator();
-            lo_active_side.params.is_space_adjust = $(lo_active_side.id_prefix + "id_chb_space_adjust")[0].checked;//08052024
-            lo_active_side.shapes.adjust_splines_by_external_shape();
+        ////////------------------------------------------------------------------------
+        //////Shape_generator.prototype.onclick_chb_space_adjust = function (po_event, pv_value) {
 
-            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
-            lo_active_side.render(); //13122024 
-        }
-        //------------------------------------------------------------------------
-        Shape_generator.prototype.onclick_chb_curve_width_adjust = function (po_event, pv_value) {
+        //////    let lo_active_side = get_active_side_shape_generator();
+        //////    lo_active_side.params.is_space_adjust = $(lo_active_side.id_prefix + "id_chb_space_adjust")[0].checked;//08052024
+        //////    lo_active_side.shapes.adjust_splines_by_external_shape();
 
-            let lo_active_side = get_active_side_shape_generator();
-            lo_active_side.params.is_curve_width_adjust = $(lo_active_side.id_prefix + "id_chb_curve_width_adjust")[0].checked;
-            //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
+        //////    //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
+        //////    lo_active_side.render(); //13122024
+        //////}
 
-        }
+
+        //20032025 {
+        ////////------------------------------------------------------------------------
+        //////Shape_generator.prototype.onclick_chb_curve_width_adjust = function (po_event, pv_value) {
+
+        //////    let lo_active_side = get_active_side_shape_generator();
+        //////    lo_active_side.params.is_curve_width_adjust = $(lo_active_side.id_prefix + "id_chb_curve_width_adjust")[0].checked;
+        //////    //27112024 lo_active_side.model_params_changed = true; // признак изменения параметров модели
+
+        //////}
+        //20032025 }
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.onclick_chb_show_text_labels = function (po_event, pv_value) {
@@ -3530,6 +3533,21 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 alert('error onclick_add_spline: ' + e.stack);
 
             }
+        }
+
+
+        //------------------------------------------------------------------------
+        Shape_generator.prototype.onclick_but_mirror = function () {
+
+            // Сделать зеркальное отражение выделенных сегментов
+            let lo_active_side = get_active_side_shape_generator();
+
+            lo_active_side.shapes.make_mirror_selected_segments();
+
+            lo_active_side.shapes.adjust_splines_by_external_shape();
+
+            lo_active_side.render();
+
         }
 
 
@@ -4501,8 +4519,11 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 $(this.passive_id_prefix + "id_but_read_model").off("click");
                 $(this.passive_id_prefix + "id_but_new_model").off("click");
                 $(this.passive_id_prefix + "id_but_refresh").off("click");
-                $(this.passive_id_prefix + "id_chb_space_adjust").off("click");
-                $(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
+                // 20032025 {
+                ////$(this.passive_id_prefix + "id_chb_space_adjust").off("click");
+                ////$(this.passive_id_prefix + "id_chb_curve_width_adjust").off("click");
+                // 20032025 }
+
                 $(this.passive_id_prefix + "id_but_del_spline").off("click");
                 $(this.passive_id_prefix + "id_but_add_spline").off("click");
                 $(this.passive_id_prefix + "id_but_save_model").off("click");
@@ -4590,9 +4611,9 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 //$(this.passive_id_prefix + this.id_side_shape).off("click");
                 //$(this.passive_id_prefix + "id_but_mirror").off("click");
 
-                //$(this.id_prefix + this.id_side_shape).off("click").on("click", this.onclick_shape);//17072024 
+                //$(this.id_prefix + this.id_side_shape).off("click").on("click", this.onclick_shape);//17072024
 
-                //$(this.id_prefix + "id_but_mirror").off("click").on("click", this.but_mirror_onclick);
+                //$(this.id_prefix + "id_but_mirror").off("click").on("click", this.onclick_but_mirror);
 
 
                 ////this.render();//05052024
@@ -4785,15 +4806,23 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
                 ls_parameters.shape_height = this.params.shape_height;
                 ls_parameters.shape_amount_curves = this.params.shape_amount_curves;
                 ls_parameters.spline_amount_segments = this.params.spline_amount_segments;
-                ls_parameters.ajust_curves_by_shape = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.ajust_curves_by_shape;  
-                ls_parameters.ajust_shape_by_curves = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.ajust_shape_by_curves;
+
+                //20032025 {
+                ////ls_parameters.ajust_curves_by_shape = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.ajust_curves_by_shape;
+                ////ls_parameters.ajust_shape_by_curves = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.ajust_shape_by_curves;
+                //20032025 }
+
 
                 ls_parameters.is_show_text_labels = $(this.id_prefix + "id_chb_show_text_labels")[0].checked; //this.params.ajust_shape_by_curves;//09022025
 
                 ls_parameters.distance_between_curves_in_percent_of_width = this.params.distance_between_curves_in_percent_of_width;
                 ls_parameters.distance_bt_curves = this.params.distance_bt_curves;
-                ls_parameters.is_space_adjust = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.is_space_adjust;       
-                ls_parameters.is_curve_width_adjust = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.is_curve_width_adjust; 
+
+                //20032025 {
+                ////ls_parameters.is_space_adjust = $(this.id_prefix + "id_chb_space_adjust")[0].checked; //this.params.is_space_adjust;
+                ////ls_parameters.is_curve_width_adjust = $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked; //this.params.is_curve_width_adjust;
+                //20032025 }
+
                 ls_parameters.color = this.params.color;
 
             }

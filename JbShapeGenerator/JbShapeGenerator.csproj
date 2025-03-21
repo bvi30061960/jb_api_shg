@@ -56,7 +56,7 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="npm run build" />
+    <Exec Command="::npm run build" />
   </Target>
 
 </Project>

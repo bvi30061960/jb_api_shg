@@ -99,3 +99,12 @@ npm run build
 <script type="module" src="/js/bundle.js"></script>
 
 Готово! 🎉 Теперь Webpack собирает твои модули в один файл, а ты можешь использовать современные возможности JavaScript.
+
+
+
+Установка минифаера:
+npm install css-minimizer-webpack-plugin terser-webpack-plugin --save-dev
+
+
+
+

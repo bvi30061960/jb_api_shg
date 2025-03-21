@@ -2036,6 +2036,33 @@ export function CommonFunc() {
 
 
         //---------------------------------------------------------------------------------------------
+        CommonFunc.prototype.showMessage = function (pv_message_text, pv_duration) {
+
+            let lv_duration = 2000;
+
+            if (pv_duration > 0) {
+                lv_duration = pv_duration;
+            };
+
+
+            Toastify({
+                style: {
+                    color: "#0d47a1",
+                    fontWeight: "bold",
+                },
+                text: pv_message_text,
+                duration: lv_duration, // Время показа в миллисекундах
+                gravity: "bottom", // Положение: "top" или "bottom"
+                position: "right", //"center", // "left", "center", "right"
+                //backgroundColor: "linear-gradient(to right, #00b09b, #96c93d)",
+                backgroundColor: "linear-gradient(to bottom, #e0f7fa, #b3e5fc)", 
+                stopOnFocus: true // Останавливать таймер при наведении
+
+            }).showToast();
+        }
+
+
+        //---------------------------------------------------------------------------------------------
         CommonFunc.prototype.show_question = function (pv_message, pv_callbackOk, pv_callbackNo, pv_callbackCancel) {
 
             var lv_dialog = this.$dialog_question;

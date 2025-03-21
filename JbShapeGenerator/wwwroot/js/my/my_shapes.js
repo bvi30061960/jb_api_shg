@@ -948,7 +948,11 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             if (this.ar_selected_segments.length == 0) {
 
-                this.main.common_func.Show_message("Right click to select curves to delete", 2500);
+                //this.main.common_func.Show_message("Right click to select curves to delete", 2500);
+
+                this.main.common_func.showMessage("Right-click on the curve to be deleted", 3000);
+                return;
+
 
                 return;
             }
@@ -2592,7 +2596,10 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
             let lar_selected_spline_groups = [];
 
-            //26022025let lo_segment;//23042024
+            if (this.ar_selected_segments.length <= 0) {
+                this.main.common_func.showMessage("Right-click on the segment to be mirror");
+                return;
+            }
 
             try {
 
