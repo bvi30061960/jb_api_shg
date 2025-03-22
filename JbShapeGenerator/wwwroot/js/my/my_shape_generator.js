@@ -83,6 +83,64 @@ var go_active_side_shape_generator = null;
 var go_passive_side_shape_generator = null;
 
 
+var gv_is_get_perform = false; // выполнять измерение производительности
+
+export var gar_perfomance = [];//21032025
+
+
+export function perfom_measure() {
+
+    if (!gv_is_get_perform) {
+        return;
+    }
+
+    let lv_time = performance.now();
+
+    gar_perfomance.push(lv_time);
+
+    if (gar_perfomance.length > 1) {
+
+        let lv_end = gar_perfomance.pop();
+        let lv_start = gar_perfomance.pop();
+        gar_perfomance.push(lv_end);
+
+        //let lv_exec_time = gar_perfomance[gar_perfomance.length - 1] - gar_perfomance[gar_perfomance.length - 2];
+        let lv_exec_time = lv_end - lv_start;
+
+        getCurrentFileFunctionAndLine();
+
+        console.log(`Время выполнения: ${lv_exec_time.toFixed(4)} мс`);
+
+
+    }
+
+
+}
+
+function getCurrentFileFunctionAndLine() {
+
+    ////let lv_st = new Error().stack.split('\n');
+    //const stack = new Error().stack.split('\n')[2]; // Берём третью строку стека (где текущий вызов)
+    const stack = new Error().stack.split('\n')[3]; // Берём четвёртую строку стека (где текущий вызов)
+    const match = stack.match(/at (.+?) \((.*):(\d+):\d+\)/) || stack.match(/at (.*):(\d+):\d+/);
+
+    if (match) {
+        const functionName = match[1].includes(' ') ? 'anonymous' : match[1];
+        const file = match[2] || match[1];
+        const line = match[3] || match[2];
+
+        console.log(`Файл: ${file}, Функция: ${functionName}, Строка: ${line}`);
+    } else {
+        console.log('Не удалось определить местоположение кода.');
+    }
+}
+
+
+
+
+
+//==============================================================================
+
 start(); // точка запуска javascript
 
 
@@ -203,14 +261,27 @@ function on_tab_side_activate(event, ui) {
             go_active_side_shape_generator = go_end_side_shape_generator;
             go_passive_side_shape_generator = go_up_side_shape_generator;
 
+
+            perfom_measure();//21032025
+
             go_end_side_shape_generator.end_shape.redraw_end_shape(
                 null,         //   po_main,
                 null, null,   //   pv_added_spline_num, pv_deleted_spline_num,       
                 null, null    //   po_is_use_data, po_sides_data       
             );
 
+            perfom_measure();//21032025
+
+
             go_end_side_shape_generator.end_shape.draw_cells_contours_and_texts();
+
+            perfom_measure();//21032025
+
+
             go_end_side_shape_generator.end_shape.refresh_end_shapes();
+
+            perfom_measure();//21032025
+
             break;
 
         case "tab-4":
@@ -412,7 +483,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         ////is_space_adjust: $(this.id_prefix + "id_chb_space_adjust")[0].checked, //false, // ;//,// $("id_chb_space_adjust")[0].checked,
         ////is_curve_width_adjust: $(this.id_prefix + "id_chb_curve_width_adjust")[0].checked, // ;// // $("id_chb_curve_width_adjust")[0].checked
         is_space_adjust: true,
-        is_curve_width_adjust:true,
+        is_curve_width_adjust: true,
         //20052025 }
 
 
@@ -745,14 +816,48 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         Shape_generator.prototype.but_delete_segment_onclick = function () {
 
             // удалить из сплайна выделенный сегмент
-            let lo_active_side = get_active_side_shape_generator();
+
             try {
 
-                lo_active_side.shapes.make_delete_selected_segments();//24022025
 
-                lo_active_side.shapes.adjust_splines_by_external_shape();
+                let lo_active_side = get_active_side_shape_generator();
 
-                lo_active_side.render();
+
+                //21032025 {
+
+                if (lo_active_side.shapes.ar_selected_segments.length == 0) {
+                    lo_active_side.common_func.showMessage("Right click on the segment to be deleted", 3000);
+                    return;
+                }
+
+
+                let lv_question = "Delete segment?";
+
+                if (lo_active_side.shapes.ar_selected_segments.length > 1) {
+                    lv_question = "Delete segments?";
+                }
+
+                lo_active_side.common_func.show_question(lv_question,
+                    function () {
+
+                        let lo_active_side = get_active_side_shape_generator();
+                        lo_active_side.shapes.make_delete_selected_segments();//24022025
+                        lo_active_side.shapes.adjust_splines_by_external_shape();
+                        lo_active_side.render();
+
+                        $(this).dialog("close");
+                    },
+                    function () { $(this).dialog("close"); }, null);
+
+                //21032025 }
+
+
+
+                //21032025 {
+                ////lo_active_side.shapes.make_delete_selected_segments();//24022025
+                ////lo_active_side.shapes.adjust_splines_by_external_shape();
+                ////lo_active_side.render();
+                //21032025 }
 
 
             }
@@ -4399,7 +4504,7 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
 
                 this.gui = new GUI({ container: document.getElementById(this.id_prefix_wo_sharp + 'id_gui') });
 
-                this.gui.add(this.params, 'distance_bt_curves', 0, 40).step(0.5).name('Distance  between curves').onChange(this.onChange_distance_bt_curves).listen();//05112024
+                //21032025 this.gui.add(this.params, 'distance_bt_curves', 0, 40).step(0.5).name('Distance  between curves').onChange(this.onChange_distance_bt_curves).listen();//05112024
                 this.gui.add(this.params, 'shape_height', 20, 200).step(0.5).name('Shape length').onChange(this.onChange_shape_height).onFinishChange(this.onFinishChange_param).listen();//05112024
                 this.gui.add(this.params, 'shape_width', 10, 100).step(0.5).name('Shape width').onChange(this.onChange_shape_width).onFinishChange(this.onFinishChange_param).listen();//05112024
 

@@ -1440,83 +1440,83 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
 
         }
 
-
-        //------------------------------------------------------------------------
-        Shapes.prototype.draw_rectangle = function (pv_distance_bt_curves) {
-
-
-            const cv_rect_width = this.shape_width; // 100;// mm figure width
-            const cv_rect_height = this.shape_height; // 200; // mm figure height
-
-            try {
-
-                let lo_group = new THREE.Group();
+        //21032025 {
+        ////////------------------------------------------------------------------------
+        //////Shapes.prototype.draw_rectangle = function (/* 21032025 pv_distance_bt_curves*/) {
 
 
-                const positions = [];
-                positions.push(0, 0, 0);
-                positions.push(0, cv_rect_height, 0);
-                positions.push(cv_rect_width, cv_rect_height, 0);
-                positions.push(cv_rect_width, 0, 0);
-                positions.push(0, 0, 0);
+        //////    const cv_rect_width = this.shape_width; // 100;// mm figure width
+        //////    const cv_rect_height = this.shape_height; // 200; // mm figure height
+
+        //////    try {
+
+        //////        let lo_group = new THREE.Group();
 
 
-                let lv_color = 0x0040f0;
-                ////let lv_x = 0; //13032024  pv_distance_bt_curves/2;// / 2; // 0;
-                ////let lv_y = 0;
-
-                const clrs = [];
-                positions.forEach(() => {
-                    clrs.push(255, 0, 255);
-                });
+        //////        const positions = [];
+        //////        positions.push(0, 0, 0);
+        //////        positions.push(0, cv_rect_height, 0);
+        //////        positions.push(cv_rect_width, cv_rect_height, 0);
+        //////        positions.push(cv_rect_width, 0, 0);
+        //////        positions.push(0, 0, 0);
 
 
-                let geometry = new LineGeometry();
+        //////        let lv_color = 0x0040f0;
+        //////        ////let lv_x = 0; //13032024  pv_distance_bt_curves/2;// / 2; // 0;
+        //////        ////let lv_y = 0;
 
-                //let lo_points = rectangleShape.getPoints();
-
-                geometry.setPositions(positions);/////
-                geometry.setColors(clrs);
-
-                ////let resolution = new THREE.Vector2();
-                ////let renderer = new THREE.WebGLRenderer({ antialias: true });
-                ////renderer.getSize(resolution);
-
-                let material = new LineMaterial({
-                    vertexColors: true, //0xf0f, //VertexColors,
-                    linewidth: Constants.line_width_shape_contour, //7, //30012025  0.5, //1, //2,
-                    resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // 30012025 Обязательно
-                });
-
-                material.needsUpdate = true;
-
-                let lo_line = new Line2(geometry, material);
-                lo_line.computeLineDistances();
-                //lo_line.scale.set(1, 1, 1);
-
-                //lo_line.name = cv_rectangle_name;
-
-                ////30012025 lo_line.position.set(lv_x, lv_y);//, 0 pv_z - 25);
-
-                //lo_group.add(lo_line);
+        //////        const clrs = [];
+        //////        positions.forEach(() => {
+        //////            clrs.push(255, 0, 255);
+        //////        });
 
 
-                lo_group.renderOrder = 3;
-                this.group_rect = lo_group;
+        //////        let geometry = new LineGeometry();
 
-                this.scene.add(lo_group);
-                //this.plane.add(lo_group);//31012025
+        //////        //let lo_points = rectangleShape.getPoints();
 
-            }
+        //////        geometry.setPositions(positions);/////
+        //////        geometry.setColors(clrs);
 
-            catch (e) {
+        //////        ////let resolution = new THREE.Vector2();
+        //////        ////let renderer = new THREE.WebGLRenderer({ antialias: true });
+        //////        ////renderer.getSize(resolution);
 
-                alert('error draw_rectangle: ' + e.stack);
+        //////        let material = new LineMaterial({
+        //////            vertexColors: true, //0xf0f, //VertexColors,
+        //////            linewidth: Constants.line_width_shape_contour, //7, //30012025  0.5, //1, //2,
+        //////            resolution: new THREE.Vector2(window.innerWidth, window.innerHeight), // 30012025 Обязательно
+        //////        });
 
-            }
+        //////        material.needsUpdate = true;
 
-        }
+        //////        let lo_line = new Line2(geometry, material);
+        //////        lo_line.computeLineDistances();
+        //////        //lo_line.scale.set(1, 1, 1);
 
+        //////        //lo_line.name = cv_rectangle_name;
+
+        //////        ////30012025 lo_line.position.set(lv_x, lv_y);//, 0 pv_z - 25);
+
+        //////        //lo_group.add(lo_line);
+
+
+        //////        lo_group.renderOrder = 3;
+        //////        this.group_rect = lo_group;
+
+        //////        this.scene.add(lo_group);
+        //////        //this.plane.add(lo_group);//31012025
+
+        //////    }
+
+        //////    catch (e) {
+
+        //////        alert('error draw_rectangle: ' + e.stack);
+
+        //////    }
+
+        //////}
+        //21032025 }
 
 
         //-----------------------------------------------------------------
@@ -2897,6 +2897,15 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         // удалить выделенные сегменты
         Shapes.prototype.make_delete_selected_segments = function () {
 
+
+            if (this.ar_selected_segments.length == 0) {
+                this.main.common_func.showMessage("Right click on the segment to be deleted", 3000);
+                return;
+            }
+
+
+
+
             let lo_line_selected_segment = null;
             //let lo_beg_point_position = null;
             let lo_segment_beg_point = null;
@@ -3326,6 +3335,18 @@ export function Shapes(po_main, po_scene, po_params, pv_is_use_data, po_side_dat
         //-----------------------------------------------------------------
         // Вставить сегменты перед выделенными
         Shapes.prototype.make_insert_segments_before_selected_segments = function () {
+
+
+
+
+            if (this.ar_selected_segments.length == 0) {
+                this.main.common_func.showMessage("Right click on the segment before which to insert", 3000);
+                return;
+            }
+
+
+
+
 
             let lo_line_selected_segment = null;
             let lo_beg_point_position = null;
