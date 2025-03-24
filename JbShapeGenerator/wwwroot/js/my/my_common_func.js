@@ -338,7 +338,8 @@ export function CommonFunc() {
 
 
                 //08022025 lo_cell_text_mesh = new THREE.Mesh(go_end_side_shape_generator.end_shape.cell_text_geometry, lo_cell_text_material);
-                lo_cell_text_mesh = new THREE.Mesh(lo_text_geometry, lo_cell_text_material);//08022025
+                //23032025 lo_cell_text_mesh = new THREE.Mesh(lo_text_geometry, lo_cell_text_material);//08022025
+                lo_cell_text_mesh = new THREE.InstancedMesh(lo_text_geometry, lo_cell_text_material);//23032025
 
 
                 //go_end_side_shape_generator.end_shape.cell_text_mesh = new THREE.Mesh(go_end_side_shape_generator.end_shape.cell_text_geometry, lo_cell_text_material);

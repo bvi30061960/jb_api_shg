@@ -1244,9 +1244,11 @@ export function EndShape(po_main) { //, po_is_use_data, po_sides_data ) {
                 let lo_shape = new THREE.Shape(lar_shape_points);
                 let lo_geometry = new THREE.ShapeGeometry(lo_shape);
 
-                let lo_material = new THREE.MeshBasicMaterial({ color: po_color });//05022025
+                let lo_material = new THREE.MeshBasicMaterial({ color: po_color });
 
                 let lo_mesh = new THREE.Mesh(lo_geometry, lo_material);
+
+
                 lo_mesh.name = lv_cell_name;
 
 

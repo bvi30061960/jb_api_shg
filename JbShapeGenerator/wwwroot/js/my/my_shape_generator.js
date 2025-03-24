@@ -699,6 +699,28 @@ export function Shape_generator(pv_active_id_prefix, pv_passive_id_prefix) {
         }
 
 
+        //------------------------------------------------------------------------
+        // 23032025 {
+        // Подгоняем размер сцены под экран
+        Shape_generator.prototype.resizeRendererToDisplaySize = function (renderer) {
+            const canvas = renderer.domElement;
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            if (canvas.width !== width || canvas.height !== height) {
+                renderer.setSize(width, height, false);
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            }
+        }
+        // 23032025 }
+
+        ////------------------------------------------------------------------------
+        //// Вызываем при каждом кадре
+        //function animate() {
+        //    requestAnimationFrame(animate);
+        //    resizeRendererToDisplaySize(renderer);
+        //    renderer.render(scene, camera);
+        //}
 
         //------------------------------------------------------------------------
         Shape_generator.prototype.animate = function () {
